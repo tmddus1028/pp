@@ -1,0 +1,1741 @@
+{
+  "schema_version": "1.0",
+  "analysis_id": "c2ea1f6d73bce88033d6",
+  "provider": "local",
+  "documents": [
+    {
+      "document_id": "97d8791e64485e349337",
+      "filename": "claims.txt",
+      "kind": "patent",
+      "text": "Claims\n1. A control system comprising a controller and a sensor.\n2. The control system of claim 1, wherein the sensor measures signal 2.\n3. The control system of claim 1, wherein the sensor measures signal 3.\n4. The control system of claim 1, wherein the sensor measures signal 4.\n5. The control system of claim 1, wherein the sensor measures signal 5.\n6. The control system of claim 1, wherein the sensor measures signal 6.\n7. The control system of claim 1, wherein the sensor measures signal 7.\n8. The control system of claim 1, wherein the sensor measures signal 8.\n9. The control system of claim 1, wherein the sensor measures signal 9.\n10. The control system of claim 1, wherein the sensor measures signal 10.\n11. The control system of claim 1, wherein the sensor measures signal 11.\n12. The control system of claim 1, wherein the sensor measures signal 12.\n13. The control system of claim 1, wherein the sensor measures signal 13.\n14. The control system of claim 1, wherein the sensor measures signal 14.\n15. The control system of claim 1, wherein the sensor measures signal 15.\n16. The control system of claim 1, wherein the sensor measures signal 16.\n17. The control system of claim 1, wherein the sensor measures signal 17.\n18. The control system of claim 1, wherein the sensor measures signal 18.\n19. The control system of claim 1, wherein the sensor measures signal 19.",
+      "pages": [
+        {
+          "number": 1,
+          "text": "Claims\n1. A control system comprising a controller and a sensor.\n2. The control system of claim 1, wherein the sensor measures signal 2.\n3. The control system of claim 1, wherein the sensor measures signal 3.\n4. The control system of claim 1, wherein the sensor measures signal 4.\n5. The control system of claim 1, wherein the sensor measures signal 5.\n6. The control system of claim 1, wherein the sensor measures signal 6.\n7. The control system of claim 1, wherein the sensor measures signal 7.\n8. The control system of claim 1, wherein the sensor measures signal 8.\n9. The control system of claim 1, wherein the sensor measures signal 9.\n10. The control system of claim 1, wherein the sensor measures signal 10.\n11. The control system of claim 1, wherein the sensor measures signal 11.\n12. The control system of claim 1, wherein the sensor measures signal 12.\n13. The control system of claim 1, wherein the sensor measures signal 13.\n14. The control system of claim 1, wherein the sensor measures signal 14.\n15. The control system of claim 1, wherein the sensor measures signal 15.\n16. The control system of claim 1, wherein the sensor measures signal 16.\n17. The control system of claim 1, wherein the sensor measures signal 17.\n18. The control system of claim 1, wherein the sensor measures signal 18.\n19. The control system of claim 1, wherein the sensor measures signal 19.",
+          "start": 0,
+          "end": 1380
+        }
+      ],
+      "warnings": [],
+      "metadata": {
+        "ocr_used": false,
+        "ocr_pages": [],
+        "ocr_engine": null,
+        "ocr_renderer": null,
+        "ocr_dpi": null,
+        "ocr_language": null,
+        "ocr_raw_text": {}
+      }
+    },
+    {
+      "document_id": "d41d89be4f0859c20810",
+      "filename": "office_action_scan.pdf",
+      "kind": "office_action",
+      "text": "SYNTHETIC OFFICE ACTION - OCR TEST\n\nApplication No. 14/623,904\n\nClaim Rejections - 35 U.S.C. § 112\n\nClaims 1-19 are rejected under 35 U.S.C. 112(b) as indefinite.\nClaim 1 does not identify the antecedent basis for the controller.\nThe same issue applies to the dependent claims.\n\nThis is a fabricated test document, not an actual USPTO action.\n\nSYNTHETIC OFFICE ACTION - OCR TEST\n\nApplication No. 14/623,904\n\nClaim Rejections - 35 U.S.C. § 103\n\nClaims 1-19 are rejected under 35 U.S.C. 103 as being\nunpatentable over Smith (US 2010/0123456 A1) in view of\nJohnson (U.S. Patent No. 8,765,432 B2).\n\nSmith describes a controller and Johnson describes a sensor.\n\nThis is a fabricated test document, not an actual USPTO action.",
+      "pages": [
+        {
+          "number": 1,
+          "text": "SYNTHETIC OFFICE ACTION - OCR TEST\n\nApplication No. 14/623,904\n\nClaim Rejections - 35 U.S.C. § 112\n\nClaims 1-19 are rejected under 35 U.S.C. 112(b) as indefinite.\nClaim 1 does not identify the antecedent basis for the controller.\nThe same issue applies to the dependent claims.\n\nThis is a fabricated test document, not an actual USPTO action.",
+          "start": 0,
+          "end": 342
+        },
+        {
+          "number": 2,
+          "text": "SYNTHETIC OFFICE ACTION - OCR TEST\n\nApplication No. 14/623,904\n\nClaim Rejections - 35 U.S.C. § 103\n\nClaims 1-19 are rejected under 35 U.S.C. 103 as being\nunpatentable over Smith (US 2010/0123456 A1) in view of\nJohnson (U.S. Patent No. 8,765,432 B2).\n\nSmith describes a controller and Johnson describes a sensor.\n\nThis is a fabricated test document, not an actual USPTO action.",
+          "start": 344,
+          "end": 720
+        }
+      ],
+      "warnings": [
+        "PyMuPDF를 불러올 수 없어 로컬 PDFium으로 페이지를 렌더링했습니다. OCR 엔진은 Tesseract입니다.",
+        "스캔 PDF가 감지되어 로컬 OCR을 수행했습니다. (2페이지, PDF 페이지: 1, 2) OCR 문구·번호는 원본과 대조하세요.",
+        "PDF 텍스트 추출과 OCR의 읽기 순서를 사용합니다. 다단 편집/표/줄 번호가 있는 원문은 추출 순서를 확인하세요."
+      ],
+      "metadata": {
+        "ocr_used": true,
+        "ocr_pages": [
+          1,
+          2
+        ],
+        "ocr_engine": "tesseract",
+        "ocr_renderer": "pdfium",
+        "ocr_dpi": 300,
+        "ocr_language": "eng",
+        "ocr_raw_text": {
+          "1": "SYNTHETIC OFFICE ACTION - OCR TEST\n\nApplication No. 14/623,904\n\nClaim Rejections - 35 U.S.C. § 112\n\nClaims 1-19 are rejected under 35 U.S.C. 112(b) as indefinite.\nClaim 1 does not identify the antecedent basis for the controller.\nThe same issue applies to the dependent claims.\n\nThis is a fabricated test document, not an actual USPTO action.\n",
+          "2": "SYNTHETIC OFFICE ACTION - OCR TEST\n\nApplication No. 14/623,904\n\nClaim Rejections - 35 U.S.C. § 103\n\nClaims 1-19 are rejected under 35 U.S.C. 103 as being\nunpatentable over Smith (US 2010/0123456 A1) in view of\nJohnson (U.S. Patent No. 8,765,432 B2).\n\nSmith describes a controller and Johnson describes a sensor.\n\nThis is a fabricated test document, not an actual USPTO action.\n"
+        }
+      }
+    }
+  ],
+  "patent": {
+    "document_id": "97d8791e64485e349337",
+    "claims": [
+      {
+        "claim_number": 1,
+        "text": "A control system comprising a controller and a sensor.",
+        "independent": true,
+        "depends_on": [],
+        "status": "active",
+        "evidence": {
+          "document_id": "97d8791e64485e349337",
+          "text": "A control system comprising a controller and a sensor.",
+          "start": 10,
+          "end": 64,
+          "page_numbers": [
+            1
+          ]
+        }
+      },
+      {
+        "claim_number": 2,
+        "text": "The control system of claim 1, wherein the sensor measures signal 2.",
+        "independent": false,
+        "depends_on": [
+          1
+        ],
+        "status": "active",
+        "evidence": {
+          "document_id": "97d8791e64485e349337",
+          "text": "The control system of claim 1, wherein the sensor measures signal 2.",
+          "start": 68,
+          "end": 136,
+          "page_numbers": [
+            1
+          ]
+        }
+      },
+      {
+        "claim_number": 3,
+        "text": "The control system of claim 1, wherein the sensor measures signal 3.",
+        "independent": false,
+        "depends_on": [
+          1
+        ],
+        "status": "active",
+        "evidence": {
+          "document_id": "97d8791e64485e349337",
+          "text": "The control system of claim 1, wherein the sensor measures signal 3.",
+          "start": 140,
+          "end": 208,
+          "page_numbers": [
+            1
+          ]
+        }
+      },
+      {
+        "claim_number": 4,
+        "text": "The control system of claim 1, wherein the sensor measures signal 4.",
+        "independent": false,
+        "depends_on": [
+          1
+        ],
+        "status": "active",
+        "evidence": {
+          "document_id": "97d8791e64485e349337",
+          "text": "The control system of claim 1, wherein the sensor measures signal 4.",
+          "start": 212,
+          "end": 280,
+          "page_numbers": [
+            1
+          ]
+        }
+      },
+      {
+        "claim_number": 5,
+        "text": "The control system of claim 1, wherein the sensor measures signal 5.",
+        "independent": false,
+        "depends_on": [
+          1
+        ],
+        "status": "active",
+        "evidence": {
+          "document_id": "97d8791e64485e349337",
+          "text": "The control system of claim 1, wherein the sensor measures signal 5.",
+          "start": 284,
+          "end": 352,
+          "page_numbers": [
+            1
+          ]
+        }
+      },
+      {
+        "claim_number": 6,
+        "text": "The control system of claim 1, wherein the sensor measures signal 6.",
+        "independent": false,
+        "depends_on": [
+          1
+        ],
+        "status": "active",
+        "evidence": {
+          "document_id": "97d8791e64485e349337",
+          "text": "The control system of claim 1, wherein the sensor measures signal 6.",
+          "start": 356,
+          "end": 424,
+          "page_numbers": [
+            1
+          ]
+        }
+      },
+      {
+        "claim_number": 7,
+        "text": "The control system of claim 1, wherein the sensor measures signal 7.",
+        "independent": false,
+        "depends_on": [
+          1
+        ],
+        "status": "active",
+        "evidence": {
+          "document_id": "97d8791e64485e349337",
+          "text": "The control system of claim 1, wherein the sensor measures signal 7.",
+          "start": 428,
+          "end": 496,
+          "page_numbers": [
+            1
+          ]
+        }
+      },
+      {
+        "claim_number": 8,
+        "text": "The control system of claim 1, wherein the sensor measures signal 8.",
+        "independent": false,
+        "depends_on": [
+          1
+        ],
+        "status": "active",
+        "evidence": {
+          "document_id": "97d8791e64485e349337",
+          "text": "The control system of claim 1, wherein the sensor measures signal 8.",
+          "start": 500,
+          "end": 568,
+          "page_numbers": [
+            1
+          ]
+        }
+      },
+      {
+        "claim_number": 9,
+        "text": "The control system of claim 1, wherein the sensor measures signal 9.",
+        "independent": false,
+        "depends_on": [
+          1
+        ],
+        "status": "active",
+        "evidence": {
+          "document_id": "97d8791e64485e349337",
+          "text": "The control system of claim 1, wherein the sensor measures signal 9.",
+          "start": 572,
+          "end": 640,
+          "page_numbers": [
+            1
+          ]
+        }
+      },
+      {
+        "claim_number": 10,
+        "text": "The control system of claim 1, wherein the sensor measures signal 10.",
+        "independent": false,
+        "depends_on": [
+          1
+        ],
+        "status": "active",
+        "evidence": {
+          "document_id": "97d8791e64485e349337",
+          "text": "The control system of claim 1, wherein the sensor measures signal 10.",
+          "start": 645,
+          "end": 714,
+          "page_numbers": [
+            1
+          ]
+        }
+      },
+      {
+        "claim_number": 11,
+        "text": "The control system of claim 1, wherein the sensor measures signal 11.",
+        "independent": false,
+        "depends_on": [
+          1
+        ],
+        "status": "active",
+        "evidence": {
+          "document_id": "97d8791e64485e349337",
+          "text": "The control system of claim 1, wherein the sensor measures signal 11.",
+          "start": 719,
+          "end": 788,
+          "page_numbers": [
+            1
+          ]
+        }
+      },
+      {
+        "claim_number": 12,
+        "text": "The control system of claim 1, wherein the sensor measures signal 12.",
+        "independent": false,
+        "depends_on": [
+          1
+        ],
+        "status": "active",
+        "evidence": {
+          "document_id": "97d8791e64485e349337",
+          "text": "The control system of claim 1, wherein the sensor measures signal 12.",
+          "start": 793,
+          "end": 862,
+          "page_numbers": [
+            1
+          ]
+        }
+      },
+      {
+        "claim_number": 13,
+        "text": "The control system of claim 1, wherein the sensor measures signal 13.",
+        "independent": false,
+        "depends_on": [
+          1
+        ],
+        "status": "active",
+        "evidence": {
+          "document_id": "97d8791e64485e349337",
+          "text": "The control system of claim 1, wherein the sensor measures signal 13.",
+          "start": 867,
+          "end": 936,
+          "page_numbers": [
+            1
+          ]
+        }
+      },
+      {
+        "claim_number": 14,
+        "text": "The control system of claim 1, wherein the sensor measures signal 14.",
+        "independent": false,
+        "depends_on": [
+          1
+        ],
+        "status": "active",
+        "evidence": {
+          "document_id": "97d8791e64485e349337",
+          "text": "The control system of claim 1, wherein the sensor measures signal 14.",
+          "start": 941,
+          "end": 1010,
+          "page_numbers": [
+            1
+          ]
+        }
+      },
+      {
+        "claim_number": 15,
+        "text": "The control system of claim 1, wherein the sensor measures signal 15.",
+        "independent": false,
+        "depends_on": [
+          1
+        ],
+        "status": "active",
+        "evidence": {
+          "document_id": "97d8791e64485e349337",
+          "text": "The control system of claim 1, wherein the sensor measures signal 15.",
+          "start": 1015,
+          "end": 1084,
+          "page_numbers": [
+            1
+          ]
+        }
+      },
+      {
+        "claim_number": 16,
+        "text": "The control system of claim 1, wherein the sensor measures signal 16.",
+        "independent": false,
+        "depends_on": [
+          1
+        ],
+        "status": "active",
+        "evidence": {
+          "document_id": "97d8791e64485e349337",
+          "text": "The control system of claim 1, wherein the sensor measures signal 16.",
+          "start": 1089,
+          "end": 1158,
+          "page_numbers": [
+            1
+          ]
+        }
+      },
+      {
+        "claim_number": 17,
+        "text": "The control system of claim 1, wherein the sensor measures signal 17.",
+        "independent": false,
+        "depends_on": [
+          1
+        ],
+        "status": "active",
+        "evidence": {
+          "document_id": "97d8791e64485e349337",
+          "text": "The control system of claim 1, wherein the sensor measures signal 17.",
+          "start": 1163,
+          "end": 1232,
+          "page_numbers": [
+            1
+          ]
+        }
+      },
+      {
+        "claim_number": 18,
+        "text": "The control system of claim 1, wherein the sensor measures signal 18.",
+        "independent": false,
+        "depends_on": [
+          1
+        ],
+        "status": "active",
+        "evidence": {
+          "document_id": "97d8791e64485e349337",
+          "text": "The control system of claim 1, wherein the sensor measures signal 18.",
+          "start": 1237,
+          "end": 1306,
+          "page_numbers": [
+            1
+          ]
+        }
+      },
+      {
+        "claim_number": 19,
+        "text": "The control system of claim 1, wherein the sensor measures signal 19.",
+        "independent": false,
+        "depends_on": [
+          1
+        ],
+        "status": "active",
+        "evidence": {
+          "document_id": "97d8791e64485e349337",
+          "text": "The control system of claim 1, wherein the sensor measures signal 19.",
+          "start": 1311,
+          "end": 1380,
+          "page_numbers": [
+            1
+          ]
+        }
+      }
+    ],
+    "warnings": []
+  },
+  "rejections": [
+    {
+      "rejection_id": "R1",
+      "action_type": "rejection",
+      "statute": "35 USC 112(b)",
+      "claims": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19
+      ],
+      "primary_claims": [
+        1
+      ],
+      "reason_summary": "Claims 1-19 are rejected under 35 U.S.C. 112(b) as indefinite.",
+      "examiner_explanation": "Claims 1-19 are rejected under 35 U.S.C. 112(b) as indefinite.\nClaim 1 does not identify the antecedent basis for the controller.\nThe same issue applies to the dependent claims.\n\nThis is a fabricated test document, not an actual USPTO action.\n\nSYNTHETIC OFFICE ACTION - OCR TEST\n\nApplication No. 14/623,904",
+      "cited_references": [],
+      "evidence": {
+        "document_id": "d41d89be4f0859c20810",
+        "text": "Claims 1-19 are rejected under 35 U.S.C. 112(b) as indefinite.\nClaim 1 does not identify the antecedent basis for the controller.\nThe same issue applies to the dependent claims.\n\nThis is a fabricated test document, not an actual USPTO action.\n\nSYNTHETIC OFFICE ACTION - OCR TEST\n\nApplication No. 14/623,904",
+        "start": 100,
+        "end": 406,
+        "page_numbers": [
+          1,
+          2
+        ]
+      },
+      "extraction_method": "local"
+    },
+    {
+      "rejection_id": "R2",
+      "action_type": "rejection",
+      "statute": "35 USC 103",
+      "claims": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19
+      ],
+      "primary_claims": [
+        1
+      ],
+      "reason_summary": "Claims 1-19 are rejected under 35 U.S.C. 103 as being\nunpatentable over Smith (US 2010/0123456 A1) in view of\nJohnson (U.S.",
+      "examiner_explanation": "Claims 1-19 are rejected under 35 U.S.C. 103 as being\nunpatentable over Smith (US 2010/0123456 A1) in view of\nJohnson (U.S. Patent No. 8,765,432 B2).\n\nSmith describes a controller and Johnson describes a sensor.\n\nThis is a fabricated test document, not an actual USPTO action.",
+      "cited_references": [
+        {
+          "citation_id": "CIT-6b01444534d1",
+          "name": "Smith",
+          "publication_number": "US20100123456A1",
+          "evidence": {
+            "document_id": "d41d89be4f0859c20810",
+            "text": "Claims 1-19 are rejected under 35 U.S.C. 103 as being\nunpatentable over Smith (US 2010/0123456 A1) in view of\nJohnson (U.S. Patent No. 8,765,432 B2).\n\nSmith describes a controller and Johnson describes a sensor.\n\nThis is a fabricated test document, not an actual USPTO action.",
+            "start": 444,
+            "end": 720,
+            "page_numbers": [
+              2
+            ]
+          }
+        },
+        {
+          "citation_id": "CIT-5b42747bcb62",
+          "name": "Johnson",
+          "publication_number": "US8765432B2",
+          "evidence": {
+            "document_id": "d41d89be4f0859c20810",
+            "text": "Claims 1-19 are rejected under 35 U.S.C. 103 as being\nunpatentable over Smith (US 2010/0123456 A1) in view of\nJohnson (U.S. Patent No. 8,765,432 B2).\n\nSmith describes a controller and Johnson describes a sensor.\n\nThis is a fabricated test document, not an actual USPTO action.",
+            "start": 444,
+            "end": 720,
+            "page_numbers": [
+              2
+            ]
+          }
+        }
+      ],
+      "evidence": {
+        "document_id": "d41d89be4f0859c20810",
+        "text": "Claims 1-19 are rejected under 35 U.S.C. 103 as being\nunpatentable over Smith (US 2010/0123456 A1) in view of\nJohnson (U.S. Patent No. 8,765,432 B2).\n\nSmith describes a controller and Johnson describes a sensor.\n\nThis is a fabricated test document, not an actual USPTO action.",
+        "start": 444,
+        "end": 720,
+        "page_numbers": [
+          2
+        ]
+      },
+      "extraction_method": "local"
+    }
+  ],
+  "impacts": [
+    {
+      "rejection_id": "R1",
+      "direct_claims": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19
+      ],
+      "dependency_impacted_claims": [],
+      "missing_claims": [],
+      "citations": [],
+      "review_items": [
+        {
+          "item_id": "R1-T1",
+          "rejection_id": "R1",
+          "claim_numbers": [
+            1
+          ],
+          "text": "Claim 1: 35 USC 112(b) 지적 사유와 OA 근거를 대조하세요.",
+          "evidence": {
+            "document_id": "d41d89be4f0859c20810",
+            "text": "Claims 1-19 are rejected under 35 U.S.C. 112(b) as indefinite.\nClaim 1 does not identify the antecedent basis for the controller.\nThe same issue applies to the dependent claims.\n\nThis is a fabricated test document, not an actual USPTO action.\n\nSYNTHETIC OFFICE ACTION - OCR TEST\n\nApplication No. 14/623,904",
+            "start": 100,
+            "end": 406,
+            "page_numbers": [
+              1,
+              2
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "rejection_id": "R2",
+      "direct_claims": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19
+      ],
+      "dependency_impacted_claims": [],
+      "missing_claims": [],
+      "citations": [
+        "CIT-5b42747bcb62",
+        "CIT-6b01444534d1"
+      ],
+      "review_items": [
+        {
+          "item_id": "R2-T1",
+          "rejection_id": "R2",
+          "claim_numbers": [
+            1
+          ],
+          "text": "Claim 1: 35 USC 103 지적 사유와 OA 근거를 대조하세요.",
+          "evidence": {
+            "document_id": "d41d89be4f0859c20810",
+            "text": "Claims 1-19 are rejected under 35 U.S.C. 103 as being\nunpatentable over Smith (US 2010/0123456 A1) in view of\nJohnson (U.S. Patent No. 8,765,432 B2).\n\nSmith describes a controller and Johnson describes a sensor.\n\nThis is a fabricated test document, not an actual USPTO action.",
+            "start": 444,
+            "end": 720,
+            "page_numbers": [
+              2
+            ]
+          }
+        },
+        {
+          "item_id": "R2-T2",
+          "rejection_id": "R2",
+          "claim_numbers": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19
+          ],
+          "text": "Smith: 심사관이 인용한 내용과 해당 청구항의 구성요소 대응을 확인하세요.",
+          "evidence": {
+            "document_id": "d41d89be4f0859c20810",
+            "text": "Claims 1-19 are rejected under 35 U.S.C. 103 as being\nunpatentable over Smith (US 2010/0123456 A1) in view of\nJohnson (U.S. Patent No. 8,765,432 B2).\n\nSmith describes a controller and Johnson describes a sensor.\n\nThis is a fabricated test document, not an actual USPTO action.",
+            "start": 444,
+            "end": 720,
+            "page_numbers": [
+              2
+            ]
+          }
+        },
+        {
+          "item_id": "R2-T3",
+          "rejection_id": "R2",
+          "claim_numbers": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19
+          ],
+          "text": "Johnson: 심사관이 인용한 내용과 해당 청구항의 구성요소 대응을 확인하세요.",
+          "evidence": {
+            "document_id": "d41d89be4f0859c20810",
+            "text": "Claims 1-19 are rejected under 35 U.S.C. 103 as being\nunpatentable over Smith (US 2010/0123456 A1) in view of\nJohnson (U.S. Patent No. 8,765,432 B2).\n\nSmith describes a controller and Johnson describes a sensor.\n\nThis is a fabricated test document, not an actual USPTO action.",
+            "start": 444,
+            "end": 720,
+            "page_numbers": [
+              2
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "graph": {
+    "nodes": [
+      {
+        "id": "OA",
+        "label": "Office Action",
+        "kind": "office_action",
+        "status": "",
+        "claim_number": null
+      },
+      {
+        "id": "CL1",
+        "label": "Claim 1",
+        "kind": "claim",
+        "status": "direct",
+        "claim_number": 1
+      },
+      {
+        "id": "CL2",
+        "label": "Claim 2",
+        "kind": "claim",
+        "status": "direct",
+        "claim_number": 2
+      },
+      {
+        "id": "CL3",
+        "label": "Claim 3",
+        "kind": "claim",
+        "status": "direct",
+        "claim_number": 3
+      },
+      {
+        "id": "CL4",
+        "label": "Claim 4",
+        "kind": "claim",
+        "status": "direct",
+        "claim_number": 4
+      },
+      {
+        "id": "CL5",
+        "label": "Claim 5",
+        "kind": "claim",
+        "status": "direct",
+        "claim_number": 5
+      },
+      {
+        "id": "CL6",
+        "label": "Claim 6",
+        "kind": "claim",
+        "status": "direct",
+        "claim_number": 6
+      },
+      {
+        "id": "CL7",
+        "label": "Claim 7",
+        "kind": "claim",
+        "status": "direct",
+        "claim_number": 7
+      },
+      {
+        "id": "CL8",
+        "label": "Claim 8",
+        "kind": "claim",
+        "status": "direct",
+        "claim_number": 8
+      },
+      {
+        "id": "CL9",
+        "label": "Claim 9",
+        "kind": "claim",
+        "status": "direct",
+        "claim_number": 9
+      },
+      {
+        "id": "CL10",
+        "label": "Claim 10",
+        "kind": "claim",
+        "status": "direct",
+        "claim_number": 10
+      },
+      {
+        "id": "CL11",
+        "label": "Claim 11",
+        "kind": "claim",
+        "status": "direct",
+        "claim_number": 11
+      },
+      {
+        "id": "CL12",
+        "label": "Claim 12",
+        "kind": "claim",
+        "status": "direct",
+        "claim_number": 12
+      },
+      {
+        "id": "CL13",
+        "label": "Claim 13",
+        "kind": "claim",
+        "status": "direct",
+        "claim_number": 13
+      },
+      {
+        "id": "CL14",
+        "label": "Claim 14",
+        "kind": "claim",
+        "status": "direct",
+        "claim_number": 14
+      },
+      {
+        "id": "CL15",
+        "label": "Claim 15",
+        "kind": "claim",
+        "status": "direct",
+        "claim_number": 15
+      },
+      {
+        "id": "CL16",
+        "label": "Claim 16",
+        "kind": "claim",
+        "status": "direct",
+        "claim_number": 16
+      },
+      {
+        "id": "CL17",
+        "label": "Claim 17",
+        "kind": "claim",
+        "status": "direct",
+        "claim_number": 17
+      },
+      {
+        "id": "CL18",
+        "label": "Claim 18",
+        "kind": "claim",
+        "status": "direct",
+        "claim_number": 18
+      },
+      {
+        "id": "CL19",
+        "label": "Claim 19",
+        "kind": "claim",
+        "status": "direct",
+        "claim_number": 19
+      },
+      {
+        "id": "R1",
+        "label": "R1 · 35 USC 112(b)",
+        "kind": "rejection",
+        "status": "",
+        "claim_number": null
+      },
+      {
+        "id": "R2",
+        "label": "R2 · 35 USC 103",
+        "kind": "rejection",
+        "status": "",
+        "claim_number": null
+      },
+      {
+        "id": "CIT-6b01444534d1",
+        "label": "Smith",
+        "kind": "citation",
+        "status": "",
+        "claim_number": null
+      },
+      {
+        "id": "CIT-5b42747bcb62",
+        "label": "Johnson",
+        "kind": "citation",
+        "status": "",
+        "claim_number": null
+      }
+    ],
+    "edges": [
+      {
+        "source": "CL1",
+        "target": "CL2",
+        "relation": "depends_on",
+        "evidence": {
+          "document_id": "97d8791e64485e349337",
+          "text": "The control system of claim 1, wherein the sensor measures signal 2.",
+          "start": 68,
+          "end": 136,
+          "page_numbers": [
+            1
+          ]
+        }
+      },
+      {
+        "source": "CL1",
+        "target": "CL3",
+        "relation": "depends_on",
+        "evidence": {
+          "document_id": "97d8791e64485e349337",
+          "text": "The control system of claim 1, wherein the sensor measures signal 3.",
+          "start": 140,
+          "end": 208,
+          "page_numbers": [
+            1
+          ]
+        }
+      },
+      {
+        "source": "CL1",
+        "target": "CL4",
+        "relation": "depends_on",
+        "evidence": {
+          "document_id": "97d8791e64485e349337",
+          "text": "The control system of claim 1, wherein the sensor measures signal 4.",
+          "start": 212,
+          "end": 280,
+          "page_numbers": [
+            1
+          ]
+        }
+      },
+      {
+        "source": "CL1",
+        "target": "CL5",
+        "relation": "depends_on",
+        "evidence": {
+          "document_id": "97d8791e64485e349337",
+          "text": "The control system of claim 1, wherein the sensor measures signal 5.",
+          "start": 284,
+          "end": 352,
+          "page_numbers": [
+            1
+          ]
+        }
+      },
+      {
+        "source": "CL1",
+        "target": "CL6",
+        "relation": "depends_on",
+        "evidence": {
+          "document_id": "97d8791e64485e349337",
+          "text": "The control system of claim 1, wherein the sensor measures signal 6.",
+          "start": 356,
+          "end": 424,
+          "page_numbers": [
+            1
+          ]
+        }
+      },
+      {
+        "source": "CL1",
+        "target": "CL7",
+        "relation": "depends_on",
+        "evidence": {
+          "document_id": "97d8791e64485e349337",
+          "text": "The control system of claim 1, wherein the sensor measures signal 7.",
+          "start": 428,
+          "end": 496,
+          "page_numbers": [
+            1
+          ]
+        }
+      },
+      {
+        "source": "CL1",
+        "target": "CL8",
+        "relation": "depends_on",
+        "evidence": {
+          "document_id": "97d8791e64485e349337",
+          "text": "The control system of claim 1, wherein the sensor measures signal 8.",
+          "start": 500,
+          "end": 568,
+          "page_numbers": [
+            1
+          ]
+        }
+      },
+      {
+        "source": "CL1",
+        "target": "CL9",
+        "relation": "depends_on",
+        "evidence": {
+          "document_id": "97d8791e64485e349337",
+          "text": "The control system of claim 1, wherein the sensor measures signal 9.",
+          "start": 572,
+          "end": 640,
+          "page_numbers": [
+            1
+          ]
+        }
+      },
+      {
+        "source": "CL1",
+        "target": "CL10",
+        "relation": "depends_on",
+        "evidence": {
+          "document_id": "97d8791e64485e349337",
+          "text": "The control system of claim 1, wherein the sensor measures signal 10.",
+          "start": 645,
+          "end": 714,
+          "page_numbers": [
+            1
+          ]
+        }
+      },
+      {
+        "source": "CL1",
+        "target": "CL11",
+        "relation": "depends_on",
+        "evidence": {
+          "document_id": "97d8791e64485e349337",
+          "text": "The control system of claim 1, wherein the sensor measures signal 11.",
+          "start": 719,
+          "end": 788,
+          "page_numbers": [
+            1
+          ]
+        }
+      },
+      {
+        "source": "CL1",
+        "target": "CL12",
+        "relation": "depends_on",
+        "evidence": {
+          "document_id": "97d8791e64485e349337",
+          "text": "The control system of claim 1, wherein the sensor measures signal 12.",
+          "start": 793,
+          "end": 862,
+          "page_numbers": [
+            1
+          ]
+        }
+      },
+      {
+        "source": "CL1",
+        "target": "CL13",
+        "relation": "depends_on",
+        "evidence": {
+          "document_id": "97d8791e64485e349337",
+          "text": "The control system of claim 1, wherein the sensor measures signal 13.",
+          "start": 867,
+          "end": 936,
+          "page_numbers": [
+            1
+          ]
+        }
+      },
+      {
+        "source": "CL1",
+        "target": "CL14",
+        "relation": "depends_on",
+        "evidence": {
+          "document_id": "97d8791e64485e349337",
+          "text": "The control system of claim 1, wherein the sensor measures signal 14.",
+          "start": 941,
+          "end": 1010,
+          "page_numbers": [
+            1
+          ]
+        }
+      },
+      {
+        "source": "CL1",
+        "target": "CL15",
+        "relation": "depends_on",
+        "evidence": {
+          "document_id": "97d8791e64485e349337",
+          "text": "The control system of claim 1, wherein the sensor measures signal 15.",
+          "start": 1015,
+          "end": 1084,
+          "page_numbers": [
+            1
+          ]
+        }
+      },
+      {
+        "source": "CL1",
+        "target": "CL16",
+        "relation": "depends_on",
+        "evidence": {
+          "document_id": "97d8791e64485e349337",
+          "text": "The control system of claim 1, wherein the sensor measures signal 16.",
+          "start": 1089,
+          "end": 1158,
+          "page_numbers": [
+            1
+          ]
+        }
+      },
+      {
+        "source": "CL1",
+        "target": "CL17",
+        "relation": "depends_on",
+        "evidence": {
+          "document_id": "97d8791e64485e349337",
+          "text": "The control system of claim 1, wherein the sensor measures signal 17.",
+          "start": 1163,
+          "end": 1232,
+          "page_numbers": [
+            1
+          ]
+        }
+      },
+      {
+        "source": "CL1",
+        "target": "CL18",
+        "relation": "depends_on",
+        "evidence": {
+          "document_id": "97d8791e64485e349337",
+          "text": "The control system of claim 1, wherein the sensor measures signal 18.",
+          "start": 1237,
+          "end": 1306,
+          "page_numbers": [
+            1
+          ]
+        }
+      },
+      {
+        "source": "CL1",
+        "target": "CL19",
+        "relation": "depends_on",
+        "evidence": {
+          "document_id": "97d8791e64485e349337",
+          "text": "The control system of claim 1, wherein the sensor measures signal 19.",
+          "start": 1311,
+          "end": 1380,
+          "page_numbers": [
+            1
+          ]
+        }
+      },
+      {
+        "source": "OA",
+        "target": "R1",
+        "relation": "contains",
+        "evidence": {
+          "document_id": "d41d89be4f0859c20810",
+          "text": "Claims 1-19 are rejected under 35 U.S.C. 112(b) as indefinite.\nClaim 1 does not identify the antecedent basis for the controller.\nThe same issue applies to the dependent claims.\n\nThis is a fabricated test document, not an actual USPTO action.\n\nSYNTHETIC OFFICE ACTION - OCR TEST\n\nApplication No. 14/623,904",
+          "start": 100,
+          "end": 406,
+          "page_numbers": [
+            1,
+            2
+          ]
+        }
+      },
+      {
+        "source": "R1",
+        "target": "CL1",
+        "relation": "directly_addresses",
+        "evidence": {
+          "document_id": "d41d89be4f0859c20810",
+          "text": "Claims 1-19 are rejected under 35 U.S.C. 112(b) as indefinite.\nClaim 1 does not identify the antecedent basis for the controller.\nThe same issue applies to the dependent claims.\n\nThis is a fabricated test document, not an actual USPTO action.\n\nSYNTHETIC OFFICE ACTION - OCR TEST\n\nApplication No. 14/623,904",
+          "start": 100,
+          "end": 406,
+          "page_numbers": [
+            1,
+            2
+          ]
+        }
+      },
+      {
+        "source": "R1",
+        "target": "CL2",
+        "relation": "directly_addresses",
+        "evidence": {
+          "document_id": "d41d89be4f0859c20810",
+          "text": "Claims 1-19 are rejected under 35 U.S.C. 112(b) as indefinite.\nClaim 1 does not identify the antecedent basis for the controller.\nThe same issue applies to the dependent claims.\n\nThis is a fabricated test document, not an actual USPTO action.\n\nSYNTHETIC OFFICE ACTION - OCR TEST\n\nApplication No. 14/623,904",
+          "start": 100,
+          "end": 406,
+          "page_numbers": [
+            1,
+            2
+          ]
+        }
+      },
+      {
+        "source": "R1",
+        "target": "CL3",
+        "relation": "directly_addresses",
+        "evidence": {
+          "document_id": "d41d89be4f0859c20810",
+          "text": "Claims 1-19 are rejected under 35 U.S.C. 112(b) as indefinite.\nClaim 1 does not identify the antecedent basis for the controller.\nThe same issue applies to the dependent claims.\n\nThis is a fabricated test document, not an actual USPTO action.\n\nSYNTHETIC OFFICE ACTION - OCR TEST\n\nApplication No. 14/623,904",
+          "start": 100,
+          "end": 406,
+          "page_numbers": [
+            1,
+            2
+          ]
+        }
+      },
+      {
+        "source": "R1",
+        "target": "CL4",
+        "relation": "directly_addresses",
+        "evidence": {
+          "document_id": "d41d89be4f0859c20810",
+          "text": "Claims 1-19 are rejected under 35 U.S.C. 112(b) as indefinite.\nClaim 1 does not identify the antecedent basis for the controller.\nThe same issue applies to the dependent claims.\n\nThis is a fabricated test document, not an actual USPTO action.\n\nSYNTHETIC OFFICE ACTION - OCR TEST\n\nApplication No. 14/623,904",
+          "start": 100,
+          "end": 406,
+          "page_numbers": [
+            1,
+            2
+          ]
+        }
+      },
+      {
+        "source": "R1",
+        "target": "CL5",
+        "relation": "directly_addresses",
+        "evidence": {
+          "document_id": "d41d89be4f0859c20810",
+          "text": "Claims 1-19 are rejected under 35 U.S.C. 112(b) as indefinite.\nClaim 1 does not identify the antecedent basis for the controller.\nThe same issue applies to the dependent claims.\n\nThis is a fabricated test document, not an actual USPTO action.\n\nSYNTHETIC OFFICE ACTION - OCR TEST\n\nApplication No. 14/623,904",
+          "start": 100,
+          "end": 406,
+          "page_numbers": [
+            1,
+            2
+          ]
+        }
+      },
+      {
+        "source": "R1",
+        "target": "CL6",
+        "relation": "directly_addresses",
+        "evidence": {
+          "document_id": "d41d89be4f0859c20810",
+          "text": "Claims 1-19 are rejected under 35 U.S.C. 112(b) as indefinite.\nClaim 1 does not identify the antecedent basis for the controller.\nThe same issue applies to the dependent claims.\n\nThis is a fabricated test document, not an actual USPTO action.\n\nSYNTHETIC OFFICE ACTION - OCR TEST\n\nApplication No. 14/623,904",
+          "start": 100,
+          "end": 406,
+          "page_numbers": [
+            1,
+            2
+          ]
+        }
+      },
+      {
+        "source": "R1",
+        "target": "CL7",
+        "relation": "directly_addresses",
+        "evidence": {
+          "document_id": "d41d89be4f0859c20810",
+          "text": "Claims 1-19 are rejected under 35 U.S.C. 112(b) as indefinite.\nClaim 1 does not identify the antecedent basis for the controller.\nThe same issue applies to the dependent claims.\n\nThis is a fabricated test document, not an actual USPTO action.\n\nSYNTHETIC OFFICE ACTION - OCR TEST\n\nApplication No. 14/623,904",
+          "start": 100,
+          "end": 406,
+          "page_numbers": [
+            1,
+            2
+          ]
+        }
+      },
+      {
+        "source": "R1",
+        "target": "CL8",
+        "relation": "directly_addresses",
+        "evidence": {
+          "document_id": "d41d89be4f0859c20810",
+          "text": "Claims 1-19 are rejected under 35 U.S.C. 112(b) as indefinite.\nClaim 1 does not identify the antecedent basis for the controller.\nThe same issue applies to the dependent claims.\n\nThis is a fabricated test document, not an actual USPTO action.\n\nSYNTHETIC OFFICE ACTION - OCR TEST\n\nApplication No. 14/623,904",
+          "start": 100,
+          "end": 406,
+          "page_numbers": [
+            1,
+            2
+          ]
+        }
+      },
+      {
+        "source": "R1",
+        "target": "CL9",
+        "relation": "directly_addresses",
+        "evidence": {
+          "document_id": "d41d89be4f0859c20810",
+          "text": "Claims 1-19 are rejected under 35 U.S.C. 112(b) as indefinite.\nClaim 1 does not identify the antecedent basis for the controller.\nThe same issue applies to the dependent claims.\n\nThis is a fabricated test document, not an actual USPTO action.\n\nSYNTHETIC OFFICE ACTION - OCR TEST\n\nApplication No. 14/623,904",
+          "start": 100,
+          "end": 406,
+          "page_numbers": [
+            1,
+            2
+          ]
+        }
+      },
+      {
+        "source": "R1",
+        "target": "CL10",
+        "relation": "directly_addresses",
+        "evidence": {
+          "document_id": "d41d89be4f0859c20810",
+          "text": "Claims 1-19 are rejected under 35 U.S.C. 112(b) as indefinite.\nClaim 1 does not identify the antecedent basis for the controller.\nThe same issue applies to the dependent claims.\n\nThis is a fabricated test document, not an actual USPTO action.\n\nSYNTHETIC OFFICE ACTION - OCR TEST\n\nApplication No. 14/623,904",
+          "start": 100,
+          "end": 406,
+          "page_numbers": [
+            1,
+            2
+          ]
+        }
+      },
+      {
+        "source": "R1",
+        "target": "CL11",
+        "relation": "directly_addresses",
+        "evidence": {
+          "document_id": "d41d89be4f0859c20810",
+          "text": "Claims 1-19 are rejected under 35 U.S.C. 112(b) as indefinite.\nClaim 1 does not identify the antecedent basis for the controller.\nThe same issue applies to the dependent claims.\n\nThis is a fabricated test document, not an actual USPTO action.\n\nSYNTHETIC OFFICE ACTION - OCR TEST\n\nApplication No. 14/623,904",
+          "start": 100,
+          "end": 406,
+          "page_numbers": [
+            1,
+            2
+          ]
+        }
+      },
+      {
+        "source": "R1",
+        "target": "CL12",
+        "relation": "directly_addresses",
+        "evidence": {
+          "document_id": "d41d89be4f0859c20810",
+          "text": "Claims 1-19 are rejected under 35 U.S.C. 112(b) as indefinite.\nClaim 1 does not identify the antecedent basis for the controller.\nThe same issue applies to the dependent claims.\n\nThis is a fabricated test document, not an actual USPTO action.\n\nSYNTHETIC OFFICE ACTION - OCR TEST\n\nApplication No. 14/623,904",
+          "start": 100,
+          "end": 406,
+          "page_numbers": [
+            1,
+            2
+          ]
+        }
+      },
+      {
+        "source": "R1",
+        "target": "CL13",
+        "relation": "directly_addresses",
+        "evidence": {
+          "document_id": "d41d89be4f0859c20810",
+          "text": "Claims 1-19 are rejected under 35 U.S.C. 112(b) as indefinite.\nClaim 1 does not identify the antecedent basis for the controller.\nThe same issue applies to the dependent claims.\n\nThis is a fabricated test document, not an actual USPTO action.\n\nSYNTHETIC OFFICE ACTION - OCR TEST\n\nApplication No. 14/623,904",
+          "start": 100,
+          "end": 406,
+          "page_numbers": [
+            1,
+            2
+          ]
+        }
+      },
+      {
+        "source": "R1",
+        "target": "CL14",
+        "relation": "directly_addresses",
+        "evidence": {
+          "document_id": "d41d89be4f0859c20810",
+          "text": "Claims 1-19 are rejected under 35 U.S.C. 112(b) as indefinite.\nClaim 1 does not identify the antecedent basis for the controller.\nThe same issue applies to the dependent claims.\n\nThis is a fabricated test document, not an actual USPTO action.\n\nSYNTHETIC OFFICE ACTION - OCR TEST\n\nApplication No. 14/623,904",
+          "start": 100,
+          "end": 406,
+          "page_numbers": [
+            1,
+            2
+          ]
+        }
+      },
+      {
+        "source": "R1",
+        "target": "CL15",
+        "relation": "directly_addresses",
+        "evidence": {
+          "document_id": "d41d89be4f0859c20810",
+          "text": "Claims 1-19 are rejected under 35 U.S.C. 112(b) as indefinite.\nClaim 1 does not identify the antecedent basis for the controller.\nThe same issue applies to the dependent claims.\n\nThis is a fabricated test document, not an actual USPTO action.\n\nSYNTHETIC OFFICE ACTION - OCR TEST\n\nApplication No. 14/623,904",
+          "start": 100,
+          "end": 406,
+          "page_numbers": [
+            1,
+            2
+          ]
+        }
+      },
+      {
+        "source": "R1",
+        "target": "CL16",
+        "relation": "directly_addresses",
+        "evidence": {
+          "document_id": "d41d89be4f0859c20810",
+          "text": "Claims 1-19 are rejected under 35 U.S.C. 112(b) as indefinite.\nClaim 1 does not identify the antecedent basis for the controller.\nThe same issue applies to the dependent claims.\n\nThis is a fabricated test document, not an actual USPTO action.\n\nSYNTHETIC OFFICE ACTION - OCR TEST\n\nApplication No. 14/623,904",
+          "start": 100,
+          "end": 406,
+          "page_numbers": [
+            1,
+            2
+          ]
+        }
+      },
+      {
+        "source": "R1",
+        "target": "CL17",
+        "relation": "directly_addresses",
+        "evidence": {
+          "document_id": "d41d89be4f0859c20810",
+          "text": "Claims 1-19 are rejected under 35 U.S.C. 112(b) as indefinite.\nClaim 1 does not identify the antecedent basis for the controller.\nThe same issue applies to the dependent claims.\n\nThis is a fabricated test document, not an actual USPTO action.\n\nSYNTHETIC OFFICE ACTION - OCR TEST\n\nApplication No. 14/623,904",
+          "start": 100,
+          "end": 406,
+          "page_numbers": [
+            1,
+            2
+          ]
+        }
+      },
+      {
+        "source": "R1",
+        "target": "CL18",
+        "relation": "directly_addresses",
+        "evidence": {
+          "document_id": "d41d89be4f0859c20810",
+          "text": "Claims 1-19 are rejected under 35 U.S.C. 112(b) as indefinite.\nClaim 1 does not identify the antecedent basis for the controller.\nThe same issue applies to the dependent claims.\n\nThis is a fabricated test document, not an actual USPTO action.\n\nSYNTHETIC OFFICE ACTION - OCR TEST\n\nApplication No. 14/623,904",
+          "start": 100,
+          "end": 406,
+          "page_numbers": [
+            1,
+            2
+          ]
+        }
+      },
+      {
+        "source": "R1",
+        "target": "CL19",
+        "relation": "directly_addresses",
+        "evidence": {
+          "document_id": "d41d89be4f0859c20810",
+          "text": "Claims 1-19 are rejected under 35 U.S.C. 112(b) as indefinite.\nClaim 1 does not identify the antecedent basis for the controller.\nThe same issue applies to the dependent claims.\n\nThis is a fabricated test document, not an actual USPTO action.\n\nSYNTHETIC OFFICE ACTION - OCR TEST\n\nApplication No. 14/623,904",
+          "start": 100,
+          "end": 406,
+          "page_numbers": [
+            1,
+            2
+          ]
+        }
+      },
+      {
+        "source": "OA",
+        "target": "R2",
+        "relation": "contains",
+        "evidence": {
+          "document_id": "d41d89be4f0859c20810",
+          "text": "Claims 1-19 are rejected under 35 U.S.C. 103 as being\nunpatentable over Smith (US 2010/0123456 A1) in view of\nJohnson (U.S. Patent No. 8,765,432 B2).\n\nSmith describes a controller and Johnson describes a sensor.\n\nThis is a fabricated test document, not an actual USPTO action.",
+          "start": 444,
+          "end": 720,
+          "page_numbers": [
+            2
+          ]
+        }
+      },
+      {
+        "source": "R2",
+        "target": "CL1",
+        "relation": "directly_addresses",
+        "evidence": {
+          "document_id": "d41d89be4f0859c20810",
+          "text": "Claims 1-19 are rejected under 35 U.S.C. 103 as being\nunpatentable over Smith (US 2010/0123456 A1) in view of\nJohnson (U.S. Patent No. 8,765,432 B2).\n\nSmith describes a controller and Johnson describes a sensor.\n\nThis is a fabricated test document, not an actual USPTO action.",
+          "start": 444,
+          "end": 720,
+          "page_numbers": [
+            2
+          ]
+        }
+      },
+      {
+        "source": "R2",
+        "target": "CL2",
+        "relation": "directly_addresses",
+        "evidence": {
+          "document_id": "d41d89be4f0859c20810",
+          "text": "Claims 1-19 are rejected under 35 U.S.C. 103 as being\nunpatentable over Smith (US 2010/0123456 A1) in view of\nJohnson (U.S. Patent No. 8,765,432 B2).\n\nSmith describes a controller and Johnson describes a sensor.\n\nThis is a fabricated test document, not an actual USPTO action.",
+          "start": 444,
+          "end": 720,
+          "page_numbers": [
+            2
+          ]
+        }
+      },
+      {
+        "source": "R2",
+        "target": "CL3",
+        "relation": "directly_addresses",
+        "evidence": {
+          "document_id": "d41d89be4f0859c20810",
+          "text": "Claims 1-19 are rejected under 35 U.S.C. 103 as being\nunpatentable over Smith (US 2010/0123456 A1) in view of\nJohnson (U.S. Patent No. 8,765,432 B2).\n\nSmith describes a controller and Johnson describes a sensor.\n\nThis is a fabricated test document, not an actual USPTO action.",
+          "start": 444,
+          "end": 720,
+          "page_numbers": [
+            2
+          ]
+        }
+      },
+      {
+        "source": "R2",
+        "target": "CL4",
+        "relation": "directly_addresses",
+        "evidence": {
+          "document_id": "d41d89be4f0859c20810",
+          "text": "Claims 1-19 are rejected under 35 U.S.C. 103 as being\nunpatentable over Smith (US 2010/0123456 A1) in view of\nJohnson (U.S. Patent No. 8,765,432 B2).\n\nSmith describes a controller and Johnson describes a sensor.\n\nThis is a fabricated test document, not an actual USPTO action.",
+          "start": 444,
+          "end": 720,
+          "page_numbers": [
+            2
+          ]
+        }
+      },
+      {
+        "source": "R2",
+        "target": "CL5",
+        "relation": "directly_addresses",
+        "evidence": {
+          "document_id": "d41d89be4f0859c20810",
+          "text": "Claims 1-19 are rejected under 35 U.S.C. 103 as being\nunpatentable over Smith (US 2010/0123456 A1) in view of\nJohnson (U.S. Patent No. 8,765,432 B2).\n\nSmith describes a controller and Johnson describes a sensor.\n\nThis is a fabricated test document, not an actual USPTO action.",
+          "start": 444,
+          "end": 720,
+          "page_numbers": [
+            2
+          ]
+        }
+      },
+      {
+        "source": "R2",
+        "target": "CL6",
+        "relation": "directly_addresses",
+        "evidence": {
+          "document_id": "d41d89be4f0859c20810",
+          "text": "Claims 1-19 are rejected under 35 U.S.C. 103 as being\nunpatentable over Smith (US 2010/0123456 A1) in view of\nJohnson (U.S. Patent No. 8,765,432 B2).\n\nSmith describes a controller and Johnson describes a sensor.\n\nThis is a fabricated test document, not an actual USPTO action.",
+          "start": 444,
+          "end": 720,
+          "page_numbers": [
+            2
+          ]
+        }
+      },
+      {
+        "source": "R2",
+        "target": "CL7",
+        "relation": "directly_addresses",
+        "evidence": {
+          "document_id": "d41d89be4f0859c20810",
+          "text": "Claims 1-19 are rejected under 35 U.S.C. 103 as being\nunpatentable over Smith (US 2010/0123456 A1) in view of\nJohnson (U.S. Patent No. 8,765,432 B2).\n\nSmith describes a controller and Johnson describes a sensor.\n\nThis is a fabricated test document, not an actual USPTO action.",
+          "start": 444,
+          "end": 720,
+          "page_numbers": [
+            2
+          ]
+        }
+      },
+      {
+        "source": "R2",
+        "target": "CL8",
+        "relation": "directly_addresses",
+        "evidence": {
+          "document_id": "d41d89be4f0859c20810",
+          "text": "Claims 1-19 are rejected under 35 U.S.C. 103 as being\nunpatentable over Smith (US 2010/0123456 A1) in view of\nJohnson (U.S. Patent No. 8,765,432 B2).\n\nSmith describes a controller and Johnson describes a sensor.\n\nThis is a fabricated test document, not an actual USPTO action.",
+          "start": 444,
+          "end": 720,
+          "page_numbers": [
+            2
+          ]
+        }
+      },
+      {
+        "source": "R2",
+        "target": "CL9",
+        "relation": "directly_addresses",
+        "evidence": {
+          "document_id": "d41d89be4f0859c20810",
+          "text": "Claims 1-19 are rejected under 35 U.S.C. 103 as being\nunpatentable over Smith (US 2010/0123456 A1) in view of\nJohnson (U.S. Patent No. 8,765,432 B2).\n\nSmith describes a controller and Johnson describes a sensor.\n\nThis is a fabricated test document, not an actual USPTO action.",
+          "start": 444,
+          "end": 720,
+          "page_numbers": [
+            2
+          ]
+        }
+      },
+      {
+        "source": "R2",
+        "target": "CL10",
+        "relation": "directly_addresses",
+        "evidence": {
+          "document_id": "d41d89be4f0859c20810",
+          "text": "Claims 1-19 are rejected under 35 U.S.C. 103 as being\nunpatentable over Smith (US 2010/0123456 A1) in view of\nJohnson (U.S. Patent No. 8,765,432 B2).\n\nSmith describes a controller and Johnson describes a sensor.\n\nThis is a fabricated test document, not an actual USPTO action.",
+          "start": 444,
+          "end": 720,
+          "page_numbers": [
+            2
+          ]
+        }
+      },
+      {
+        "source": "R2",
+        "target": "CL11",
+        "relation": "directly_addresses",
+        "evidence": {
+          "document_id": "d41d89be4f0859c20810",
+          "text": "Claims 1-19 are rejected under 35 U.S.C. 103 as being\nunpatentable over Smith (US 2010/0123456 A1) in view of\nJohnson (U.S. Patent No. 8,765,432 B2).\n\nSmith describes a controller and Johnson describes a sensor.\n\nThis is a fabricated test document, not an actual USPTO action.",
+          "start": 444,
+          "end": 720,
+          "page_numbers": [
+            2
+          ]
+        }
+      },
+      {
+        "source": "R2",
+        "target": "CL12",
+        "relation": "directly_addresses",
+        "evidence": {
+          "document_id": "d41d89be4f0859c20810",
+          "text": "Claims 1-19 are rejected under 35 U.S.C. 103 as being\nunpatentable over Smith (US 2010/0123456 A1) in view of\nJohnson (U.S. Patent No. 8,765,432 B2).\n\nSmith describes a controller and Johnson describes a sensor.\n\nThis is a fabricated test document, not an actual USPTO action.",
+          "start": 444,
+          "end": 720,
+          "page_numbers": [
+            2
+          ]
+        }
+      },
+      {
+        "source": "R2",
+        "target": "CL13",
+        "relation": "directly_addresses",
+        "evidence": {
+          "document_id": "d41d89be4f0859c20810",
+          "text": "Claims 1-19 are rejected under 35 U.S.C. 103 as being\nunpatentable over Smith (US 2010/0123456 A1) in view of\nJohnson (U.S. Patent No. 8,765,432 B2).\n\nSmith describes a controller and Johnson describes a sensor.\n\nThis is a fabricated test document, not an actual USPTO action.",
+          "start": 444,
+          "end": 720,
+          "page_numbers": [
+            2
+          ]
+        }
+      },
+      {
+        "source": "R2",
+        "target": "CL14",
+        "relation": "directly_addresses",
+        "evidence": {
+          "document_id": "d41d89be4f0859c20810",
+          "text": "Claims 1-19 are rejected under 35 U.S.C. 103 as being\nunpatentable over Smith (US 2010/0123456 A1) in view of\nJohnson (U.S. Patent No. 8,765,432 B2).\n\nSmith describes a controller and Johnson describes a sensor.\n\nThis is a fabricated test document, not an actual USPTO action.",
+          "start": 444,
+          "end": 720,
+          "page_numbers": [
+            2
+          ]
+        }
+      },
+      {
+        "source": "R2",
+        "target": "CL15",
+        "relation": "directly_addresses",
+        "evidence": {
+          "document_id": "d41d89be4f0859c20810",
+          "text": "Claims 1-19 are rejected under 35 U.S.C. 103 as being\nunpatentable over Smith (US 2010/0123456 A1) in view of\nJohnson (U.S. Patent No. 8,765,432 B2).\n\nSmith describes a controller and Johnson describes a sensor.\n\nThis is a fabricated test document, not an actual USPTO action.",
+          "start": 444,
+          "end": 720,
+          "page_numbers": [
+            2
+          ]
+        }
+      },
+      {
+        "source": "R2",
+        "target": "CL16",
+        "relation": "directly_addresses",
+        "evidence": {
+          "document_id": "d41d89be4f0859c20810",
+          "text": "Claims 1-19 are rejected under 35 U.S.C. 103 as being\nunpatentable over Smith (US 2010/0123456 A1) in view of\nJohnson (U.S. Patent No. 8,765,432 B2).\n\nSmith describes a controller and Johnson describes a sensor.\n\nThis is a fabricated test document, not an actual USPTO action.",
+          "start": 444,
+          "end": 720,
+          "page_numbers": [
+            2
+          ]
+        }
+      },
+      {
+        "source": "R2",
+        "target": "CL17",
+        "relation": "directly_addresses",
+        "evidence": {
+          "document_id": "d41d89be4f0859c20810",
+          "text": "Claims 1-19 are rejected under 35 U.S.C. 103 as being\nunpatentable over Smith (US 2010/0123456 A1) in view of\nJohnson (U.S. Patent No. 8,765,432 B2).\n\nSmith describes a controller and Johnson describes a sensor.\n\nThis is a fabricated test document, not an actual USPTO action.",
+          "start": 444,
+          "end": 720,
+          "page_numbers": [
+            2
+          ]
+        }
+      },
+      {
+        "source": "R2",
+        "target": "CL18",
+        "relation": "directly_addresses",
+        "evidence": {
+          "document_id": "d41d89be4f0859c20810",
+          "text": "Claims 1-19 are rejected under 35 U.S.C. 103 as being\nunpatentable over Smith (US 2010/0123456 A1) in view of\nJohnson (U.S. Patent No. 8,765,432 B2).\n\nSmith describes a controller and Johnson describes a sensor.\n\nThis is a fabricated test document, not an actual USPTO action.",
+          "start": 444,
+          "end": 720,
+          "page_numbers": [
+            2
+          ]
+        }
+      },
+      {
+        "source": "R2",
+        "target": "CL19",
+        "relation": "directly_addresses",
+        "evidence": {
+          "document_id": "d41d89be4f0859c20810",
+          "text": "Claims 1-19 are rejected under 35 U.S.C. 103 as being\nunpatentable over Smith (US 2010/0123456 A1) in view of\nJohnson (U.S. Patent No. 8,765,432 B2).\n\nSmith describes a controller and Johnson describes a sensor.\n\nThis is a fabricated test document, not an actual USPTO action.",
+          "start": 444,
+          "end": 720,
+          "page_numbers": [
+            2
+          ]
+        }
+      },
+      {
+        "source": "R2",
+        "target": "CIT-6b01444534d1",
+        "relation": "cites",
+        "evidence": {
+          "document_id": "d41d89be4f0859c20810",
+          "text": "Claims 1-19 are rejected under 35 U.S.C. 103 as being\nunpatentable over Smith (US 2010/0123456 A1) in view of\nJohnson (U.S. Patent No. 8,765,432 B2).\n\nSmith describes a controller and Johnson describes a sensor.\n\nThis is a fabricated test document, not an actual USPTO action.",
+          "start": 444,
+          "end": 720,
+          "page_numbers": [
+            2
+          ]
+        }
+      },
+      {
+        "source": "R2",
+        "target": "CIT-5b42747bcb62",
+        "relation": "cites",
+        "evidence": {
+          "document_id": "d41d89be4f0859c20810",
+          "text": "Claims 1-19 are rejected under 35 U.S.C. 103 as being\nunpatentable over Smith (US 2010/0123456 A1) in view of\nJohnson (U.S. Patent No. 8,765,432 B2).\n\nSmith describes a controller and Johnson describes a sensor.\n\nThis is a fabricated test document, not an actual USPTO action.",
+          "start": 444,
+          "end": 720,
+          "page_numbers": [
+            2
+          ]
+        }
+      }
+    ]
+  },
+  "warnings": [
+    "PyMuPDF를 불러올 수 없어 로컬 PDFium으로 페이지를 렌더링했습니다. OCR 엔진은 Tesseract입니다.",
+    "스캔 PDF가 감지되어 로컬 OCR을 수행했습니다. (2페이지, PDF 페이지: 1, 2) OCR 문구·번호는 원본과 대조하세요.",
+    "PDF 텍스트 추출과 OCR의 읽기 순서를 사용합니다. 다단 편집/표/줄 번호가 있는 원문은 추출 순서를 확인하세요.",
+    "로컬 규칙 모드: 표준 거절/지적 문장만 추출합니다. 문맥 해석과 누락 여부는 원문 확인이 필요합니다."
+  ]
+}

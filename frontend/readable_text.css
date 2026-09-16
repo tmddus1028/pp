@@ -1,0 +1,16 @@
+/* Shared by Streamlit and both iframe viewers. Source characters are never rewritten. */
+.readable-text,.readable-panel{box-sizing:border-box;display:block;width:100%;max-width:100%;min-width:0}
+.readable-text{white-space:normal;word-break:normal;overflow-wrap:break-word;line-height:1.6;text-align:left}
+.readable-text-content{display:block;white-space:inherit;word-break:inherit;overflow-wrap:inherit;line-height:inherit}
+.readable-text.preview>.readable-text-content,
+.readable-panel:has(>.readable-toggle:not([open]))>.readable-text>.readable-text-content{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:var(--readable-lines,5);overflow:hidden}
+.readable-toggle{margin:7px 0 0;font-size:12px}
+.readable-toggle>summary{cursor:pointer;color:#41776d;line-height:1.6;white-space:normal;word-break:normal;overflow-wrap:break-word}
+.readable-toggle .readable-less{display:none}
+.readable-toggle[open] .readable-less{display:inline}
+.readable-toggle[open] .readable-more{display:none}
+/* Protect the actual Streamlit wrapper, not just the paragraph inside it. */
+[data-testid="stElementContainer"]:has(.readable-text),
+[data-testid="stMarkdown"]:has(.readable-text),
+[data-testid="stMarkdownContainer"]:has(.readable-text){display:block;width:100%;max-width:100%;min-width:0}
+

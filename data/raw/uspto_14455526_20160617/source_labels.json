@@ -1,0 +1,26 @@
+{
+  "application_number": "14/455,526",
+  "office_action_date": "2016-06-17",
+  "claims_listing_date": "2016-07-05",
+  "effective_claims_amendment_date": "2016-05-06",
+  "version_match_basis": "Unchanged later relisting, explicit no-amendment statement and certified prosecution chronology; not a byte-for-byte comparison with the original May 6 claim filing, which is absent from this appendix.",
+  "claims": {"1": "canceled", "2": "canceled", "3": "active", "4": "active", "5": "active", "6": "canceled", "7": "canceled", "8": "active"},
+  "independent_active_claims": [8],
+  "primary_claims_per_rejection": [8],
+  "source_spans": [
+    {"label": "prosecution chronology", "appendix_pdf_pages": [24], "printed_pages": ["Appx21"]},
+    {"label": "May 6 amended/pending claim statement", "appendix_pdf_pages": [103], "printed_pages": ["Appx209"]},
+    {"label": "OA notification date", "appendix_pdf_pages": [110], "printed_pages": ["Appx225"]},
+    {"label": "OA responsive to May 6; pending/rejected claims; no attachments selected", "appendix_pdf_pages": [111], "printed_pages": ["Appx226"]},
+    {"label": "101 rejection", "appendix_pdf_pages": [112, 113], "printed_pages": ["Appx227", "Appx228"]},
+    {"label": "103 rejection and four patent references", "appendix_pdf_pages": [114], "printed_pages": ["Appx229"]},
+    {"label": "last OA page and examiner signature", "appendix_pdf_pages": [125], "printed_pages": ["Appx240"]},
+    {"label": "claims, status and dependencies", "appendix_pdf_pages": [127, 128, 129], "printed_pages": ["Appx243", "Appx244", "Appx245"]},
+    {"label": "No claims are amended", "appendix_pdf_pages": [130], "printed_pages": ["Appx246"]},
+    {"label": "July 5 signature date", "appendix_pdf_pages": [132], "printed_pages": ["Appx248"]}
+  ],
+  "discrepancies": [
+    {"appendix_pdf_page": 126, "printed_page": "Appx242", "text": "The response cover references an Office Action mailed May 31, 2016. The actual OA cover and certified chronology both say June 17, 2016. The apparent cover error is preserved, not corrected in the input. Same-version assessment relies on the explicit no-amendment statement and chronological record, not that cover date."}
+  ],
+  "annotation_scope": "Structural extraction labels by source review; not independently adjudicated by patent counsel. Patent prior-art references only: case-law citations, legal merits, text-perfect OCR and narrative completeness are outside the scored labels."
+}

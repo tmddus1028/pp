@@ -1,0 +1,8 @@
+{
+  "completed": false,
+  "exception": "DocumentError",
+  "message": "Claim 1 번호가 중복됩니다. 동일 시점의 청구항 한 세트를 사용하세요.",
+  "case": "14/455,526; Final OA 2016-06-17; unchanged claims 2016-07-05",
+  "pipeline": "Unmodified LocalAdapter PDF + local analysis",
+  "recorded_on": "2026-09-14"
+}

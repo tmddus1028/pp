@@ -1,0 +1,17 @@
+{
+  "provenance": "Source-page review of In re Fote joint appendix, application 14/455,526: June 17, 2016 Final Office Action (Appx225-240), July 5, 2016 unchanged claims listing (Appx243-245), and explicit no-amendment statement (Appx246). Labels transcribed from the source, not generated from predictions. One development/regression case, not a held-out benchmark. See README.md for the date discrepancy and version evidence.",
+  "rejections": [
+    {
+      "statute": "35 USC 101",
+      "claims": [3, 4, 5, 8],
+      "citations": []
+    },
+    {
+      "statute": "35 USC 103",
+      "claims": [3, 4, 5, 8],
+      "citations": ["US20020062281", "US20120296821", "US8073775", "US20090070263"]
+    }
+  ],
+  "dependency_edges": [[8, 3], [8, 4], [8, 5]],
+  "impacted_claims": []
+}

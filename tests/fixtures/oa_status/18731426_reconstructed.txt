@@ -1,0 +1,17 @@
+SYNTHETIC REGRESSION: reconstructed from user-provided expected statuses.
+Application 18/731,426. This is not the user's pp_vd3.pdf or an original USPTO document.
+
+Claims 1-20 are pending.
+Claim Rejections - 35 USC §103
+Claims 1-3 and 8 are rejected under 35 U.S.C. 103 as unpatentable over Wu (US 2023/0402512) in view of Ando (US 2021/0328013).
+Regarding claim 2, Wu teaches the recited limitation.
+Claims 4-7 and 9-10 depend directly or indirectly on claim 1.
+Another patent, Smith (US 2010/0123456), is mentioned in the background discussion.
+Allowable Subject Matter
+Claims 4-7 and 9-10 are objected to as being dependent upon a rejected base claim, but would be allowable if rewritten in independent form including all of the limitations of the base claim and any intervening claims.
+Claims 11-20 are allowed.
+Reasons for Allowance
+Regarding claim 15, the claimed combination is not taught by the prior art.
+Regarding claim 16, the particular combination is allowable.
+Conclusion
+The prior art made of record and not relied upon includes Jones (US 2012/0987654).

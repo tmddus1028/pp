@@ -1,0 +1,40 @@
+{
+  "passed": true,
+  "checks": {
+    "local_provider": true,
+    "input_page_counts": true,
+    "exactly_two_rejections": true,
+    "all_actions_are_rejections": true,
+    "no_duplicate_groups": true,
+    "four_unique_patent_references": true,
+    "active_independent_claim_8": true,
+    "primary_claim_8_for_each_ground": true,
+    "no_missing_claims": true,
+    "no_additional_dependency_impacts": true,
+    "all_four_claims_directly_addressed_per_ground": true,
+    "checklists_present": true,
+    "graph_node_counts": true,
+    "graph_edge_counts": true,
+    "graph_dependencies": true,
+    "claim_8_spans_all_three_pages": true,
+    "oa_cover_date_present": true,
+    "oa_summary_response_date_present": true,
+    "response_to_arguments_preserved": true,
+    "oa_last_page_preserved": true,
+    "all_evidence_offsets_and_pages_valid": true,
+    "all_scored_sets_match": true
+  },
+  "evidence_occurrences_checked": 37,
+  "source_sha256": {
+    "joint_appendix.pdf": "ec98b47571c942ca2a8b1c00b449324d9df2eb6388de4e7bcff32e9163341616",
+    "office_action.pdf": "d91352c42e79306cb1f9bf8f64b8c0d58a24443539e98522d23b9f0c65831f35",
+    "claims.pdf": "cf88cdaa9aa9f30f2d73384a9ae64414995c8753bc7dd99f3a87a3bc8435a1fc",
+    "version_evidence.pdf": "739165ba11fbbc21c00585fa173df1690f838088f645d4069b4f55b05d446e8b",
+    "ground_truth.json": "9ec943cd0f86cb0479387c1e5c687633196ffa01720c91ead88e0dc73f4a53f9",
+    "source_labels.json": "687e43b0ebee450320d4c8333ffc40557b43dd04d6f33b31474aeb9f977682b3"
+  },
+  "api_status": 200,
+  "api_matches_service": true,
+  "cli_exit_code": 0,
+  "cli_matches_service": true
+}

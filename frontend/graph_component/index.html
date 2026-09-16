@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="ko"><meta charset="utf-8"><style>
+body{margin:0;font:13px system-ui,sans-serif;color:#183a33;background:#fff}*{box-sizing:border-box}
+.bar{display:flex;align-items:center;gap:18px;padding:14px 18px;border-bottom:1px solid #e6eeeb;color:#536d65}
+.dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:5px}.canvas{overflow:auto;height:430px;background-image:radial-gradient(#dce7e2 .8px,transparent .8px);background-size:18px 18px}
+.node{cursor:default}.clickable{cursor:pointer}.clickable:hover rect,.clickable:focus rect{stroke:#116d60;stroke-width:3}.clickable:focus{outline:none}
+</style><body><div class="bar"><b>관계 지도</b><span><i class="dot" style="background:#c36642"></i>직접 지적</span><span><i class="dot" style="background:#e1ad45"></i>종속 영향</span><span><i class="dot" style="background:#91aaa0"></i>기타</span><span style="margin-left:auto">Claim 또는 인용문헌을 클릭하여 근거 확인</span></div><div class="canvas"><svg id="graph" role="img" aria-label="Office Action과 청구항의 관계 그래프"></svg></div>
+<script>
+const NS='http://www.w3.org/2000/svg';
+function send(type,extra={}){window.parent.postMessage({isStreamlitMessage:true,type,...extra},'*')}
+function element(tag,attrs={},text){const n=document.createElementNS(NS,tag);for(const [k,v] of Object.entries(attrs))n.setAttribute(k,v);if(text!==undefined)n.textContent=text;return n}
+function render(graph){
+const svg=document.getElementById('graph');svg.replaceChildren();
+const defs=element('defs'),marker=element('marker',{id:'arrow',viewBox:'0 0 10 10',refX:9,refY:5,markerWidth:5,markerHeight:5,orient:'auto-start-reverse'});marker.append(element('path',{d:'M 0 0 L 10 5 L 0 10 z',fill:'#99afa5'}));defs.append(marker);svg.append(defs);
+const levels=new Map(graph.nodes.map(n=>[n.id,n.kind==='office_action'?0:n.kind==='rejection'?1:n.kind==='citation'?2:2]));
+for(let i=0;i<graph.nodes.length;i++){let changed=false;for(const e of graph.edges.filter(e=>e.relation==='depends_on')){const next=levels.get(e.source)+1;if(next>levels.get(e.target)){levels.set(e.target,next);changed=true}}if(!changed)break}
+const counters=new Map(),positions=new Map();
+const ordered=[...graph.nodes].sort((a,b)=>(a.kind==='citation')-(b.kind==='citation')||(a.claim_number||0)-(b.claim_number||0));
+for(const n of ordered){const level=levels.get(n.id),row=counters.get(level)||0;positions.set(n.id,{x:28+level*225,y:35+row*78});counters.set(level,row+1)}
+const width=Math.max(940,...[...positions.values()].map(p=>p.x+215)),height=Math.max(420,...[...positions.values()].map(p=>p.y+80));svg.setAttribute('width',width);svg.setAttribute('height',height);
+for(const edge of graph.edges){const a=positions.get(edge.source),b=positions.get(edge.target);if(!a||!b)continue;const x=a.x+185,y=a.y+25;svg.append(element('path',{d:`M ${x} ${y} C ${x+32} ${y}, ${b.x-32} ${b.y+25}, ${b.x-5} ${b.y+25}`,fill:'none',stroke:edge.relation==='directly_addresses'?'#c4876d':'#acbdb5','stroke-width':1.5,'stroke-dasharray':edge.relation==='cites'?'5 4':'none','marker-end':'url(#arrow)'}))}
+for(const n of graph.nodes){const p=positions.get(n.id),g=element('g',{class:'node '+(['claim','citation'].includes(n.kind)?'clickable':''),transform:`translate(${p.x},${p.y})`});const colors={direct:['#fff0e8','#d89b7f'],impacted:['#fff7de','#ddbd66'],missing:['#fff0ed','#d6a5a0'],canceled:['#f1f2f1','#ccd4cf']};const [fill,stroke]=colors[n.status]||(n.kind==='office_action'?['#163f35','#163f35']:n.kind==='rejection'?['#e1eeea','#81aa9b']:['#f6f9f7','#b8ccc2']);g.append(element('rect',{width:185,height:50,rx:9,fill,stroke}));const label=element('text',{x:12,y:n.kind==='citation'?20:29,fill:n.kind==='office_action'?'white':'#284c3e','font-size':12.5});const parts=n.kind==='citation'?n.label.split(' · '):[n.label];parts.forEach((part,i)=>label.append(element('tspan',{x:12,dy:i?17:0},part.length>25?part.slice(0,24)+'…':part)));g.append(label);g.append(element('title',{},n.label));if(['claim','citation'].includes(n.kind)){g.setAttribute('tabindex','0');g.setAttribute('role','button');g.setAttribute('aria-label',n.label+' 상세 보기');const select=()=>send('streamlit:setComponentValue',{value:n.kind==='claim'?n.claim_number:n.id,dataType:'json'});g.addEventListener('click',select);g.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();select()}})}svg.append(g)}
+send('streamlit:setFrameHeight',{height:480});
+}
+window.addEventListener('message',e=>{if(e.data.type==='streamlit:render')render(e.data.args.graph)});
+send('streamlit:componentReady',{apiVersion:1});send('streamlit:setFrameHeight',{height:480});
+</script></body></html>

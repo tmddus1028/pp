@@ -1,0 +1,21 @@
+SYNTHETIC REGRESSION FIXTURE - reconstructed from user-supplied citation facts.
+Application No. 14/623,904
+
+Claim Rejections - 35 U.S.C. 112
+Claims 1-19 are rejected under 35 U.S.C. 112 as indefinite.
+The examiner requests clarification of the claim language.
+
+Claim Rejections - 35 U.S.C. 103
+Claims 1-19 are rejected under 35 U.S.C. 103(a) as unpatentable over
+Lombardi et al. (WO2009/013126 A1) in view of
+Bendiera et al. (WO2008/074749 A1) and Hout et al. (WO2013/119950 A2),
+and further in view of Greco et al., Molecular and Cellular Endocrinology
+(2010), Vol. 321(1), pp. 44-49; and Lipska et al., BMC Cancer (2009),
+9:436, pp. 1-9.
+The combination is described by the examiner. Lombardi et al. (WO 2009/013126 A1)
+and Hout et al. (WO2013/119950 A2) are mentioned again.
+The same paper is cited again: Greco et al., Molecular and Cellular Endocrinology
+(2010), Vol. 321(1), pp. 44-49. The finding is taught by Lipska.
+
+Conclusion
+End of synthetic example. This is not the actual Office Action or its legal reasoning.

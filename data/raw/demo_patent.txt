@@ -1,0 +1,11 @@
+SYNTHETIC DEMONSTRATION — not a real patent or USPTO record.
+Claims
+1. A sensor system comprising a sensor and a processor configured to receive sensor data.
+2. The system of claim 1, further comprising a wireless transmitter.
+3. The system of claim 1, wherein the processor filters the sensor data.
+4. The system according to claim 3, wherein the filter is adaptive.
+5. The system of any one of claims 2-4, further comprising a display.
+6. A method comprising collecting measurements and transmitting a status notification.
+7. The method of claim 6, wherein the notification includes a timestamp.
+8. The method of claim 7, wherein the timestamp is synchronized with a server.
+9. (Canceled).

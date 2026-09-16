@@ -1,0 +1,11 @@
+{
+  "source_url": "https://patentimages.storage.googleapis.com/09/b0/9c/a46e422b185a1c/US20150283132A1.pdf",
+  "source_sha256": "7dc885c64c922259ea2d195abd1dd433c8a397bdaf98f3a51a4a544791e6c316",
+  "source_pages": 41,
+  "fixture_source_pages": [
+    40,
+    41
+  ],
+  "fixture_sha256": "1f8f86c67e4e9ad4ae8f1019716ded2e509e734e573a3cfa71aab4cb1553daa1",
+  "note": "Unmodified page objects from public patent. OA fixture is synthetic and is not a verified same-date claim/OA pair."
+}

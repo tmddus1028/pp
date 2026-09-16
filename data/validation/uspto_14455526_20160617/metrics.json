@@ -1,0 +1,68 @@
+{
+  "provenance": "Source-page review of In re Fote joint appendix, application 14/455,526: June 17, 2016 Final Office Action (Appx225-240), July 5, 2016 unchanged claims listing (Appx243-245), and explicit no-amendment statement (Appx246). Labels transcribed from the source, not generated from predictions. One development/regression case, not a held-out benchmark. See README.md for the date discrepancy and version evidence.",
+  "rejected_claims": {
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1": 1.0,
+    "true_positives": 4,
+    "predicted": 4,
+    "expected": 4,
+    "exact_match": 1.0
+  },
+  "statute_claim_links": {
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1": 1.0,
+    "true_positives": 8,
+    "predicted": 8,
+    "expected": 8,
+    "exact_match": 1.0
+  },
+  "citations": {
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1": 1.0,
+    "true_positives": 4,
+    "predicted": 4,
+    "expected": 4,
+    "exact_match": 1.0
+  },
+  "dependency_edges": {
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1": 1.0,
+    "true_positives": 3,
+    "predicted": 3,
+    "expected": 3,
+    "exact_match": 1.0
+  },
+  "impacted_claims": {
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1": 1.0,
+    "true_positives": 0,
+    "predicted": 0,
+    "expected": 0,
+    "exact_match": 1.0
+  },
+  "note": "Statute/claim link scoring does not evaluate rejection grouping or natural-language explanations.",
+  "claim_statuses": {
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1": 1.0,
+    "true_positives": 8,
+    "predicted": 8,
+    "expected": 8,
+    "exact_match": 1.0
+  },
+  "rejection_groups": {
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1": 1.0,
+    "true_positives": 2,
+    "predicted": 2,
+    "expected": 2,
+    "exact_match": 1.0
+  },
+  "scope": "One source-reviewed development/regression pair; no held-out accuracy claim. Empty additional-impact sets are not positive recall evidence. Narrative quality, case-law references and OCR character accuracy are not scored."
+}

@@ -1,0 +1,22 @@
+{
+  "source": "User-supplied files from Desktop/dltmddus, copied byte-for-byte; no PDF rewrite",
+  "files": [
+    {"filename": "pp_ex2.pdf", "pages": 47, "sha256": "b1ec2080b2c1c1bb9ef30e7f63b9baa513a390029954bb744ae8072308e24755"},
+    {"filename": "pp_vd2.pdf", "pages": 13, "sha256": "c8dca604d1472691d41da181d270929bcc9cec785603293806fcef01839e6f91"}
+  ],
+  "expected": {
+    "claims": [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20],
+    "rejections": [
+      {"statute":"35 USC 103(a)", "claims":[1,2,3,4,5,6,7,8,9,10,11,12,20], "start_page":5, "citations":["Han et al","Lin et al","Vogelstein et al"]},
+      {"statute":"35 USC 103(a)", "claims":[13,17,18,19], "start_page":8, "citations":["Han et al","Lin et al","Vogelstein et al","Empedocles et al"]},
+      {"statute":"35 USC 103(a)", "claims":[14,15,16], "start_page":10, "citations":["Han et al","Lin et al","Vogelstein et al","Empedocles et al","Newton et al"]}
+    ],
+    "unique_citations": 5,
+    "patent_citations": ["WO2012058638A2", "US20020022273A1", "US20070072211A1"],
+    "npl": [
+      {"name":"Han et al", "publication":"Nature Biotechnology", "year":2001},
+      {"name":"Vogelstein et al", "publication":"PNAS", "year":1999}
+    ]
+  },
+  "baseline": {"pp_vd2.pdf": "pypdf PdfReadError: Invalid object in /Pages"}
+}

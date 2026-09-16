@@ -1,0 +1,34 @@
+[
+  {
+    "filename": "official_112f_sample.pdf",
+    "type": "official_hypothetical_training_example",
+    "url": "https://www.uspto.gov/sites/default/files/documents/112f_sample_action.pdf",
+    "sha256": "ebe59bc157f467df5a8db43bc1976b92a177e2922e6900b68723570d5b7e56fc",
+    "pages": 3
+  },
+  {
+    "filename": "US20140201856A1.pdf",
+    "type": "public_uspto_application_publication_mirror",
+    "url": "https://patentimages.storage.googleapis.com/df/00/7c/b59446f4f14dcc/US20140201856A1.pdf",
+    "sha256": "4b8c1a09aa1cada313f645c229cfb0c771cfc70c1d2501f30855da91188af1b8",
+    "pages": 127
+  },
+  {
+    "filename": "US20140201856A1.html",
+    "type": "public_patent_html_mirror",
+    "url": "https://patents.google.com/patent/US20140201856A1/en",
+    "sha256": "72f378ec495a67bcffa7940d86e1aa7d5adbb2d17db340b4be97849c0bb2cc53"
+  },
+  {
+    "filename": "US20140201856A1_claims.json",
+    "type": "claims_extracted_from_html",
+    "url": "https://patents.google.com/patent/US20140201856A1/en",
+    "sha256": "762420d4677bd7e61b2d6d69e4b3ef7412db0dc7b0de3eecc57109230d914b50"
+  },
+  {
+    "filename": "application_14040405_oa_excerpt.txt",
+    "type": "public_oa_excerpt_printed_page_17",
+    "url": "https://ptacts.uspto.gov/ptacts/public-informations/petitions/1529125/download-documents?artifactId=TShcY2BGuTctpTQBXCo0ikH__gGTZ6y97LNNn2JoCZfJquxZDqK8538",
+    "sha256": "25a88c661b2a32c38019c485524bb5127e1f46a7e651d580732a54b5b225b760"
+  }
+]

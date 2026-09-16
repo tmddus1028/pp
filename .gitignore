@@ -1,0 +1,12 @@
+.venv/
+__pycache__/
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+.env
+data/outputs/*
+!data/outputs/.gitkeep
+data/processed/*
+!data/processed/.gitkeep
+*.log

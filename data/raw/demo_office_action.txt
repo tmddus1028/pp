@@ -1,0 +1,13 @@
+SYNTHETIC DEMONSTRATION — names and publication numbers below are fictional test fixtures.
+Office Action
+
+Claim Rejections - 35 USC 103
+Claims 1-3 are rejected under 35 U.S.C. 103 as being unpatentable over Smith (US 2010/0123456 A1) in view of Johnson (US 8,765,432 B2).
+Smith describes a sensor coupled to a processor and a wireless transmitter. Johnson describes filtering sensor measurements. The examiner cites the filtering disclosure in combination with Smith's sensor system.
+
+Claim Rejections - 35 USC 112
+Claim 6 is rejected under 35 U.S.C. 112(b) as being indefinite because the phrase "status notification" lacks a clear antecedent basis.
+
+Claim Rejections - 35 USC 102
+Claim 7 is rejected under 35 U.S.C. 102(a)(1) as being anticipated by Lee (US 2012/0987654 A1).
+Lee describes transmitting a notification that includes a timestamp.

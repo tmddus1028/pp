@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="stylesheet" href="map.css"></head><body>
+<main id="map-workspace">
+  <section class="map-panel" aria-label="관계 지도">
+    <header class="map-toolbar"><div><span class="eyebrow">RELATIONSHIP MAP</span><h2>원문을 연결하는 관계</h2></div><button id="reset">기본 보기</button></header>
+    <nav id="filters" aria-label="관계 유형 필터">
+      <button data-filter="all">전체</button><button data-filter="rejection">거절 사유</button>
+      <button data-filter="claim">Claim</button><button data-filter="dependency">종속 관계</button><button data-filter="citation">인용 문헌</button>
+    </nav>
+    <div class="options"><label><input id="direct-only" type="checkbox"> 직접 지적만</label><label><input id="dependencies" type="checkbox"> 종속관계 표시</label><label><input id="citations" type="checkbox"> 인용문헌 표시</label></div>
+    <div class="selectors"><label>거절 범위 <select id="scope" aria-label="지도 거절 범위"></select></label><label>Claim 찾기 <select id="claim-picker" aria-label="지도 Claim 찾기"></select></label></div>
+    <div id="branches" aria-label="접힌 청구항 펼치기"></div>
+    <div id="map-scroll" tabindex="0" aria-label="관계 지도 스크롤"><svg id="map" role="group" aria-label="Office Action 관계 지도"></svg></div>
+    <footer class="map-footer"><div class="legend"><span class="root">● Office Action</span><span class="rejection">● 거절 / 근거</span><span class="direct">● 직접 지적</span><span class="impacted">● 종속 영향</span><span class="citation">● 인용문헌</span></div><p id="map-status" aria-live="polite"></p></footer>
+  </section>
+  <aside id="map-detail" aria-label="관계 상세"></aside>
+</main>
+<script src="map.js"></script></body></html>

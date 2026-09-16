@@ -1,0 +1,89 @@
+{
+  "date": "2026-09-14",
+  "fixture_is_synthetic": true,
+  "scan_has_no_text_layer": true,
+  "provider": "local",
+  "ocr_metadata": {
+    "ocr_used": true,
+    "ocr_pages": [
+      1,
+      2
+    ],
+    "ocr_engine": "tesseract",
+    "ocr_renderer": "pdfium",
+    "ocr_dpi": 300,
+    "ocr_language": "eng"
+  },
+  "live_api_status": 200,
+  "live_api_matches_cli": true,
+  "claim_count": 19,
+  "rejections": [
+    {
+      "statute": "35 USC 112(b)",
+      "claims": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19
+      ],
+      "citations": []
+    },
+    {
+      "statute": "35 USC 103",
+      "claims": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19
+      ],
+      "citations": [
+        "US20100123456A1",
+        "US8765432B2"
+      ]
+    }
+  ],
+  "versions": {
+    "pymupdf": "1.28.2",
+    "pypdfium2": "5.13.0",
+    "pytesseract": "0.3.13",
+    "pypdf": "6.18.1"
+  },
+  "tesseract_version": "tesseract v5.4.0.20240606",
+  "fixture_sha256": {
+    "claims.txt": "a1dc66ff645228235e9c31ce64a8d678946640eb758c6f855767626b6d63e451",
+    "expected_pages.json": "9e6eb33bd9aefec5e03c66e0ba43b7f2a78940ef6f873656da210c1407e47672",
+    "office_action_mixed.pdf": "da3b44e97fb34cf49c367e1cd5893cfdd38b8bf54dc6e302ea740924a32af38c",
+    "office_action_scan.pdf": "8c3761da118e5eac667ee7410ffc843d960301604f5e5fff239c1c1915459cb1",
+    "office_action_text.pdf": "d2b6cf209dcf2812df1a4ed807ddbf3c418514cee9ce07a6a99fc3f91ba47958"
+  }
+}
