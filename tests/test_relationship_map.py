@@ -82,6 +82,7 @@ def test_map_claim_to_pdf_preserves_rejection_scope_and_consumes_event(result):
         assert not app.exception
         component.return_value = {
             "nonce": "claim-jump",
+            "navigation": app.session_state["relationship_navigation"],
             "action": "open_pdf",
             "ui": {"selected": "CL4", "scope": "R1"},
         }
@@ -106,6 +107,7 @@ def test_map_citation_to_pdf_and_pdf_back_to_map(result):
         app.sidebar.radio[0].set_value("관계 지도").run()
         component.return_value = {
             "nonce": "citation-jump",
+            "navigation": app.session_state["relationship_navigation"],
             "action": "open_pdf",
             "ui": {"selected": ref.citation_id, "scope": "R1"},
         }

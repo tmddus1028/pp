@@ -5,6 +5,7 @@
 .readable-text.preview>.readable-text-content,
 .readable-panel:has(>.readable-toggle:not([open]))>.readable-text>.readable-text-content{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:var(--readable-lines,5);overflow:hidden}
 .readable-toggle{margin:7px 0 0;font-size:12px}
+.readable-panel>.readable-toggle[hidden],.readable-panel>.source-toggle[hidden]{display:none!important}
 .readable-toggle>summary{cursor:pointer;color:#41776d;line-height:1.6;white-space:normal;word-break:normal;overflow-wrap:break-word}
 .readable-toggle .readable-less{display:none}
 .readable-toggle[open] .readable-less{display:inline}
@@ -13,4 +14,3 @@
 [data-testid="stElementContainer"]:has(.readable-text),
 [data-testid="stMarkdown"]:has(.readable-text),
 [data-testid="stMarkdownContainer"]:has(.readable-text){display:block;width:100%;max-width:100%;min-width:0}
-

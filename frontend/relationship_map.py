@@ -5,7 +5,7 @@ from pathlib import Path
 import streamlit as st
 import streamlit.components.v1 as components
 
-from frontend.readable_text import READABLE_CSS
+from frontend.readable_text import READABLE_CSS, READABLE_JS
 from frontend.review_model import build_review_model
 
 _component = components.declare_component(
@@ -72,13 +72,18 @@ def relationship_map(result, initial_item=None, initial_scope="all"):
             st.session_state.relationship_navigation += 1
     event = _component(
         readable_css=READABLE_CSS,
+        readable_js=READABLE_JS,
         model=model,
         ui=st.session_state.relationship_ui,
         navigation=st.session_state.relationship_navigation,
         key="relationships-" + key,
         default=None,
     )
-    if isinstance(event, dict) and event.get("nonce") != st.session_state.relationship_event:
+    if (
+        isinstance(event, dict)
+        and event.get("nonce") != st.session_state.relationship_event
+        and event.get("navigation") == st.session_state.relationship_navigation
+    ):
         incoming = event.get("ui", {})
         selected = incoming.get("selected")
         if selected is not None and not any(n["id"] == selected for n in model["nodes"]):

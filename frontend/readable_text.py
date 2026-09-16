@@ -7,6 +7,7 @@ import streamlit as st
 import streamlit.components.v1 as components
 
 READABLE_CSS = Path(__file__).with_suffix(".css").read_text(encoding="utf-8")
+READABLE_JS = Path(__file__).with_suffix(".js").read_text(encoding="utf-8")
 
 
 def text_html(text, class_name="", *, label=None, collapsed_lines=5, expandable=False):
@@ -21,7 +22,7 @@ def text_html(text, class_name="", *, label=None, collapsed_lines=5, expandable=
         lines = max(1, int(collapsed_lines))
         html = (
             f'<div class="readable-panel" style="--readable-lines:{lines}">{html}'
-            '<details class="readable-toggle"><summary><span class="readable-more">더 보기</span>'
+            '<details class="readable-toggle" hidden><summary><span class="readable-more">더 보기</span>'
             '<span class="readable-less">접기</span></summary></details></div>'
         )
     return html
@@ -31,7 +32,9 @@ def readable_text(text, class_name="", **options):
     st.markdown(text_html(text, class_name, **options), unsafe_allow_html=True)
 
 
-def observe_comparison_overflow():
+def observe_readable_overflow():
     """Measure rendered preview lines, including after responsive layout changes."""
-    script = Path(__file__).with_suffix(".js").read_text(encoding="utf-8")
-    components.html(f"<script>{script}</script>", height=0)
+    components.html(
+        f"<script>{READABLE_JS}\nwindow.observeReadableOverflow(window.parent.document);</script>",
+        height=0,
+    )

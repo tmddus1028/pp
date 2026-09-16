@@ -7,7 +7,7 @@ from html import escape
 import streamlit as st
 
 from frontend.readable_text import readable_text
-from frontend.review_model import build_review_model
+from frontend.review_model import build_review_model, relied_references
 
 FILTERS = ["전체", "직접 지적", "추가 검토", "허용"]
 STATUS_LABELS = {
@@ -185,7 +185,7 @@ def claim_details(row, model, result):
     references = {
         ref["citation_id"]: ref
         for rejection in row["rejections"]
-        for ref in rejection["cited_references"]
+        for ref in relied_references(rejection)
     }
     if references:
         st.caption(

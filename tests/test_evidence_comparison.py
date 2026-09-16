@@ -180,6 +180,7 @@ def test_other_views_send_claim_and_scope_to_comparison(app, origin):
     else:
         event = {
             "nonce": "comparison-map",
+            "navigation": app.session_state["relationship_navigation"],
             "action": "open_comparison",
             "ui": {"selected": "CL14", "scope": "R1"},
         }

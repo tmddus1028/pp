@@ -16,13 +16,14 @@ def search_claim(page, value):
 def check_claim_analysis(page, pdf, claim_page="41", ocr=True):
     page.get_by_test_id("stSidebar").get_by_text("청구항 분석", exact=True).click()
     expect(page.locator(".claim-summary")).to_have_count(19, timeout=30000)
-    expect(page.get_by_test_id("stMetricValue")).to_have_text(["19", "2", "19", "0"])
+    expect(page.get_by_test_id("stMetricValue")).to_have_text(["19", "2", "19", "0", "0"])
     expect(page.get_by_test_id("stMetricLabel")).to_have_text(
         [
             "전체 청구항",
             "거절/지적 사유",
             "직접 지적 Claim",
             "추가 검토 Claim",
+            "허용 Claim",
         ]
     )
     info = (
@@ -62,7 +63,7 @@ def check_claim_analysis(page, pdf, claim_page="41", ocr=True):
     expect(page.locator(".claim-empty")).to_be_visible()
     expect(page.get_by_role("radio", name="§112", exact=True)).to_have_count(0)
     expect(page.get_by_role("radio", name="§103", exact=True)).to_have_count(0)
-    page.get_by_role("radio", name="허용", exact=True).click()
+    page.get_by_text("허용", exact=True).click()
     expect(page.locator(".claim-summary")).to_have_count(0)
     page.get_by_test_id("stRadio").filter(has_text="추가 검토").get_by_text(
         "직접 지적", exact=True
@@ -88,7 +89,8 @@ def check_claim_analysis(page, pdf, claim_page="41", ocr=True):
         row.locator(".readable-text").filter(has_text="Molecular and Cellular Endocrinology").last
     ).to_be_visible()
     checkbox = row.get_by_role("checkbox").first
-    row.get_by_test_id("stCheckbox").first.locator("label").click()
+    if not checkbox.is_checked():
+        row.get_by_test_id("stCheckbox").first.locator("label").click()
     expect(checkbox).to_be_checked()
     label = row.get_by_test_id("stCheckbox").first.locator("label").inner_text().strip()
     row.get_by_role("button", name="PDF에서 보기", exact=True).click()

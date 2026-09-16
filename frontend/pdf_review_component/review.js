@@ -8,6 +8,8 @@ const citationRoleLabels={relied_upon:'거절 근거'};
 const citationRoleHelp={citation:'심사관이 실제 거절 논리에 사용한 선행기술'};
 const itemLabel=item=>item.kind==='claim'&&item.status==='objected'&&!item.direct.length?'Objection · 추가 검토':labels[role(item)];
 let model, state, currentPage, initialized=false, searchHits=[], searchIndex=-1, timer, pendingScroll=false, pendingSearch=false, serverNavigation=-1;
+const expandedSources = new Map();
+const sourceKey = (card, detail) => card.dataset.reviewId+'|'+detail.querySelector('summary')?.textContent;
 const itemById = id => model.items.find(item=>item.id===id);
 const docById = id => model.documents.find(doc=>doc.id===id);
 const visibleScope = item => state.scope==='all'||item.rejection_ids.includes(state.scope);
@@ -263,7 +265,11 @@ function details(item,body){
       entry.append(el('summary','',(occurrence.rejection_id||'기록')+' · '+citationRoleLabels[occurrence.role]+' · p. '+occurrence.evidence.page_numbers.join(', ')));
       evidenceSection(entry,occurrence.evidence,'해당 문헌을 사용한 원문');
       entry.append(button((occurrence.rejection_id||'기록')+' 인용 원문 보기',()=>{
-        state.scope=occurrence.rejection_id||'all';state.filter='all';selectItem(item.id);
+        // Source navigation changes evidence focus, not the review scope/list filter.
+        state.selected=item.id;state.expanded=item.id;state.viewer_evidence=item.id;
+        state.active_rejection=occurrence.rejection_id||null;
+        if(state.document!==occurrence.evidence.document_id){state.search='';searchHits=[];searchIndex=-1;}
+        jump(occurrence.evidence.document_id,occurrence.evidence.page_numbers[0]);
       }));body.append(entry);
     }
     body.append(el('h4','','연결된 거절 · 법조항'));
@@ -314,6 +320,8 @@ function details(item,body){
   }
 }
 function drawPanel(){
+  // A page image/resize response must not close a source accordion the user just opened.
+  document.querySelectorAll('#review-list .review-card').forEach(card=>card.querySelectorAll('details').forEach(detail=>expandedSources.set(sourceKey(card,detail),detail.open)));
   $('provider').textContent=model.provider==='local'?'LOCAL 분석':model.provider.toUpperCase()+' 분석';
   const root=$('summary');root.replaceChildren();
   const scoped=scopedPoints();
@@ -348,6 +356,7 @@ function drawPanel(){
     const chevron=el('span','card-chevron',expanded?'⌃':'⌄');chevron.setAttribute('aria-hidden','true');
     select.append(heading,chevron);card.append(select);
     if(expanded){const body=el('div','card-body readable-panel');body.id='detail-'+item.id;select.setAttribute('aria-controls',body.id);details(item,body);card.append(body);}
+    card.querySelectorAll('details').forEach(detail=>{const key=sourceKey(card,detail);if(expandedSources.has(key)&&detail.dataset.rejectionId!==state.active_rejection)detail.open=expandedSources.get(key);});
     list.append(card);
   });list.scrollTop=scroll;
 }
@@ -385,7 +394,7 @@ window.addEventListener('message',event=>{
   let typography=$('readable-text-styles');
   if(!typography){typography=el('style');typography.id='readable-text-styles';document.head.append(typography);}
   if(typography.textContent!==args.readable_css)typography.textContent=args.readable_css||'';
-  if(!initialized||model.analysis_id!==args.model.analysis_id||serverNavigation!==args.navigation){state={...args.ui,filter:'all'};initialized=true;pendingScroll=true;serverNavigation=args.navigation;}
+  if(!initialized||model.analysis_id!==args.model.analysis_id||serverNavigation!==args.navigation){expandedSources.clear();$('review-list').replaceChildren();state={...args.ui,filter:'all'};initialized=true;pendingScroll=true;serverNavigation=args.navigation;}
   model=args.model;
   if(args.page.document===state.document&&args.page.number===state.page)currentPage=args.page;
   draw();frameSize();

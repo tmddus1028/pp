@@ -6,8 +6,8 @@ from html import escape
 import streamlit as st
 
 from frontend.claim_analysis import STATUS_LABELS, display_statute
-from frontend.readable_text import observe_comparison_overflow, readable_text, text_html
-from frontend.review_model import build_review_model
+from frontend.readable_text import readable_text, text_html
+from frontend.review_model import build_review_model, relied_references
 
 
 def comparison_for_claim(model, number, scope="all"):
@@ -31,7 +31,7 @@ def comparison_for_claim(model, number, scope="all"):
     )
     references = {}
     for rejection in rejections:
-        for ref in rejection["cited_references"]:
+        for ref in relied_references(rejection):
             entry = references.setdefault(
                 ref["citation_id"],
                 {
@@ -327,7 +327,7 @@ def render_evidence_comparison(result, initial_claim=None, initial_scope="all"):
                             else ""
                         )
                         + "</span>"
-                        for ref in rejection["cited_references"]
+                        for ref in relied_references(rejection)
                     )
                     or '<span class="comparison-summary-empty">연결된 문헌 없음</span>'
                 )
@@ -352,4 +352,3 @@ def render_evidence_comparison(result, initial_claim=None, initial_scope="all"):
                 )
             if not view["rejections"]:
                 st.caption("현재 분석 결과에 연결된 지적 사유가 없습니다.")
-    observe_comparison_overflow()

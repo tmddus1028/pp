@@ -23,14 +23,20 @@ class GroundTruth(Model):
 
 
 def evaluate(result: AnalysisResult, truth: GroundTruth) -> dict:
-    predicted = {(normalize_statute(r.statute), n) for r in result.rejections for n in r.claims}
+    rejections = [r for r in result.rejections if r.action_type == "rejection"]
+    predicted = {(normalize_statute(r.statute), n) for r in rejections for n in r.claims}
     expected = {(normalize_statute(r.statute), n) for r in truth.rejections for n in r.claims}
     return {
         "provenance": truth.provenance,
         "rejected_claims": set_metrics({n for _, n in predicted}, {n for _, n in expected}),
         "statute_claim_links": set_metrics(predicted, expected),
         "citations": set_metrics(
-            {c.publication_number or c.name for r in result.rejections for c in r.cited_references},
+            {
+                c.publication_number or c.name
+                for r in rejections
+                for c in r.cited_references
+                if c.citation_role == "relied_upon"
+            },
             {c for r in truth.rejections for c in r.citations},
         ),
         "dependency_edges": set_metrics(

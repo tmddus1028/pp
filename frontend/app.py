@@ -14,7 +14,7 @@ if str(ROOT) not in sys.path:
 from frontend.claim_analysis import render_analysis  # noqa: E402
 from frontend.evidence_comparison import render_evidence_comparison  # noqa: E402
 from frontend.pdf_review import pdf_review  # noqa: E402
-from frontend.readable_text import READABLE_CSS  # noqa: E402
+from frontend.readable_text import READABLE_CSS, observe_readable_overflow  # noqa: E402
 from frontend.relationship_map import relationship_map  # noqa: E402
 
 st.set_page_config(page_title="Patent Review · PDF 검토", page_icon="▤", layout="wide")
@@ -96,6 +96,34 @@ previous_section = st.session_state.get("previous_section")
 section_changed = previous_section != section
 if section_changed:
     st.session_state.previous_section = section
+    # A sidebar click can arrive in the same rerun as the component's last choice.
+    # Consume that already-delivered value before deriving the destination's context.
+    prefix = {"PDF 검토": ("pdf", "review"), "관계 지도": ("relationships", "relationship")}.get(
+        previous_section
+    )
+    if prefix and "result" in st.session_state:
+        widget, state_key = prefix
+        pending = st.session_state.get(widget + "-" + st.session_state.result["analysis_id"])
+        ui = st.session_state.get(state_key + "_ui")
+        if (
+            isinstance(pending, dict)
+            and ui is not None
+            and pending.get("navigation") == st.session_state.get(state_key + "_navigation")
+            and pending.get("nonce") != st.session_state.get(state_key + "_event")
+        ):
+            incoming = pending.get("ui", {})
+            model = st.session_state[state_key + "_model"]
+            choices = model["items"] if state_key == "review" else model["nodes"]
+            selected = incoming.get("selected")
+            if selected is None or any(item["id"] == selected for item in choices):
+                st.session_state[state_key + "_ui"] = {
+                    **ui,
+                    **{k: incoming[k] for k in ui if k in incoming},
+                }
+                st.session_state[state_key + "_event"] = pending["nonce"]
+                if state_key == "review":
+                    item = next((i for i in choices if i["id"] == selected), {})
+                    st.session_state.selected_claim = item.get("claim_number")
 
 
 def upload_documents():
@@ -162,6 +190,8 @@ def upload_documents():
             }
             for key in [
                 "review_model_id",
+                "claim_list_id",
+                "comparison_id",
                 "review_compare_entered",
                 "selected_claim",
                 "selected_citation",
@@ -263,3 +293,5 @@ else:
                 file_name=f"patent-review-{result['analysis_id']}.json",
                 mime="application/json",
             )
+
+observe_readable_overflow()

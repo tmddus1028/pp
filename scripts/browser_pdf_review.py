@@ -174,13 +174,16 @@ with sync_playwright() as p:
             "Molecular and Cellular Endocrinology"
         )
         frame.get_by_role("combobox", name="거절 사유 필터").select_option("R1")
-        expect(frame.get_by_role("button", name="종속 영향 4", exact=True)).to_be_visible()
-        frame.get_by_role("button", name="종속 영향 4", exact=True).click()
+        expect(
+            frame.get_by_role("button", name="종속 영향 / Objection 4", exact=True)
+        ).to_be_visible()
+        frame.get_by_role("button", name="종속 영향 / Objection 4", exact=True).click()
+        expect(frame.locator(".review-card")).to_have_count(4)
+        frame.get_by_role("button", name="Claim 2 · 종속 영향", exact=True).click()
         expect(frame.locator('.annotation.dependency[data-item-id="claim-2"]').first).to_be_visible(
             timeout=15000
         )
-        expect(frame.locator(".annotation.direct_rejection")).to_have_count(0)
-        frame.get_by_role("button", name="Claim 2 · 종속 영향", exact=True).click()
+        # Point-type filters affect the list only; direct PDF annotations remain visible.
         frame.get_by_role("checkbox").first.check()
         frame.get_by_role("button", name="Claim 5 · 종속 영향", exact=True).click()
         expect(frame.get_by_role("checkbox").first).to_be_checked()

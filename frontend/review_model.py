@@ -3,6 +3,15 @@
 import re
 
 
+def relied_references(rejection):
+    """User-facing references; all roles remain in the original analysis/model."""
+    return [
+        ref
+        for ref in rejection["cited_references"]
+        if ref.get("citation_role", "relied_upon") == "relied_upon"
+    ]
+
+
 def _source(document, start, end):
     return {
         "document_id": document["document_id"],

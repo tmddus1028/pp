@@ -8,6 +8,7 @@ let model, state, navigation=-1, hovered=null, visibleEdges=[];
 const nodeById = id => model.nodes.find(n=>n.id===id);
 const itemFor = node => model.items.find(i=>i.id===node?.item_id);
 const edgeKey = edge => JSON.stringify([edge.source,edge.target,edge.relation]);
+const reliedEdge = edge => edge.relation==='cites'&&(!edge.citation_role||edge.citation_role==='relied_upon');
 const relevantRejections = node => {
   if(!node||node.kind==='office_action')return model.rejections.map(r=>r.rejection_id);
   if(node.kind==='rejection')return [node.id];
@@ -31,7 +32,7 @@ const statusLabels = {direct:'직접 지적',objected:'Objection',allowed:'허�
 statusLabels.supporting_evidence='보조 증거';
 const makeButton = (text, callback, cls) => {const n=el('button',cls,text);n.type='button';n.onclick=callback;return n;};
 const citationType = ref => ref?.type==='npl'?'NPL · 비특허 문헌':ref?.type==='patent'?'Patent · 특허 문헌':'문헌 유형 미확인';
-function emit(action){send('streamlit:setComponentValue',{value:{nonce:Date.now()+Math.random(),ui:state,action},dataType:'json'});}
+function emit(action){send('streamlit:setComponentValue',{value:{nonce:Date.now()+Math.random(),navigation,ui:state,action},dataType:'json'});}
 function selectNode(id){
   const node=nodeById(id);if(!node)return;
   state.selected=id;hovered=null;
@@ -75,10 +76,10 @@ function graphView(){
     if(n.kind==='office_action')return true;
     if(n.kind==='rejection')return rids.has(n.id);
     if(n.kind==='claim')return ['all','claim','dependency'].includes(state.filter)&&claims.has(n.id)&&allowed(n);
-    return ['all','citation'].includes(state.filter)&&state.citations&&model.edges.some(e=>e.relation==='cites'&&e.target===n.id&&rids.has(e.source));
+    return ['all','citation'].includes(state.filter)&&state.citations&&model.edges.some(e=>reliedEdge(e)&&e.target===n.id&&rids.has(e.source));
   });
   const ids=new Set(nodes.map(n=>n.id));
-  const edges=model.edges.filter(e=>ids.has(e.source)&&ids.has(e.target)&&
+  const edges=model.edges.filter(e=>ids.has(e.source)&&ids.has(e.target)&&(e.relation!=='cites'||reliedEdge(e))&&
     (e.relation!=='depends_on'||state.dependencies&&(e.source===selected?.id||e.target===selected?.id)));
   return {nodes,edges,children};
 }
@@ -140,7 +141,7 @@ function highlight(){
       const linked=hovered?(edge.source===id||edge.target===id):
         node.kind==='office_action'||
         edge.relation==='contains'&&rids.has(edge.target)||
-        edge.relation==='cites'&&rids.has(edge.source)&&(node.kind!=='citation'||edge.target===id)||
+        reliedEdge(edge)&&rids.has(edge.source)&&(node.kind!=='citation'||edge.target===id)||
         edge.relation==='directly_addresses'&&rids.has(edge.source)&&(node.kind!=='claim'||edge.target===id||visibleEdges.some(d=>d.relation==='depends_on'&&d.source===edge.target&&d.target===id))||
         edge.relation==='depends_on'&&(edge.source===id||edge.target===id);
       if(linked){keys.add(edgeKey(edge));ids.add(edge.source);ids.add(edge.target);}
@@ -161,7 +162,7 @@ function source(root,evidence,caption='Office Action'){
     const expanded=text.classList.toggle('preview')===false;
     toggle.textContent=expanded?'접기':'원문 더 보기';toggle.setAttribute('aria-expanded',String(expanded));
   },'source-toggle');
-  toggle.setAttribute('aria-expanded','false');card.append(toggle);root.append(card);
+  toggle.hidden=true;toggle.setAttribute('aria-expanded','false');card.append(toggle);root.append(card);
 }
 function drawDetail(){
   const root=$('map-detail'),node=nodeById(state.selected);root.replaceChildren();
@@ -178,7 +179,7 @@ function drawDetail(){
   }
   label(root,'연결된 거절 · 법조항');chips(root,rejections.map(r=>nodeById(r.rejection_id)));
   if(node.kind==='claim'||node.kind==='rejection'){
-    const refs=new Set(model.edges.filter(e=>e.relation==='cites'&&rids.includes(e.source)).map(e=>e.target));
+    const refs=new Set(model.edges.filter(e=>reliedEdge(e)&&rids.includes(e.source)).map(e=>e.target));
     label(root,'관련 인용문헌 · '+refs.size+'개');chips(root,[...refs].map(nodeById));
   }
   if(['citation','rejection'].includes(node.kind)){
@@ -218,6 +219,10 @@ window.addEventListener('message',event=>{
   let typography=$('readable-text-styles');
   if(!typography){typography=el('style');typography.id='readable-text-styles';document.head.append(typography);}
   if(typography.textContent!==args.readable_css)typography.textContent=args.readable_css||'';
+  if(!window.observeReadableOverflow&&args.readable_js){
+    const script=document.createElement('script');script.textContent=args.readable_js;document.head.append(script);
+    window.observeReadableOverflow(document);
+  }
   if(!model||model.analysis_id!==args.model.analysis_id||navigation!==args.navigation){state={...args.ui};navigation=args.navigation;hovered=null;}
   model=args.model;draw();frameSize();
 });

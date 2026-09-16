@@ -1,7 +1,6 @@
 // This zero-height Streamlit helper observes presentation only, never source text/state.
-(() => {
-  const doc = window.parent.document;
-  const selector = '.st-key-evidence-comparison .readable-panel:has(>.readable-toggle)';
+window.observeReadableOverflow = (doc) => {
+  const selector = '.readable-panel:has(>.readable-toggle), .readable-panel:has(>.source-toggle)';
   const observed = new Set();
   let frame = 0;
   function measure() {
@@ -13,13 +12,20 @@
     for (const panel of panels) {
       if (!observed.has(panel)) { observed.add(panel); resize.observe(panel); }
       const content = panel.querySelector('.readable-text-content');
-      const toggle = panel.querySelector(':scope > .readable-toggle');
+      const toggle = panel.querySelector(':scope > .readable-toggle, :scope > .source-toggle');
       if (!content || !content.getBoundingClientRect().width) continue;
-      const lines = Number(window.parent.getComputedStyle(panel).getPropertyValue('--readable-lines')) || 5;
-      const lineHeight = parseFloat(window.parent.getComputedStyle(content).lineHeight);
+      const lines = Number(doc.defaultView.getComputedStyle(panel).getPropertyValue('--readable-lines')) || 5;
+      const lineHeight = parseFloat(doc.defaultView.getComputedStyle(content).lineHeight);
       const overflowing = content.scrollHeight > lines * lineHeight + 1;
       toggle.hidden = !overflowing;
-      if (!overflowing) toggle.open = false;
+      if (!overflowing) {
+        if (toggle.tagName === 'DETAILS') toggle.open = false;
+        else {
+          content.parentElement.classList.add('preview');
+          toggle.setAttribute('aria-expanded', 'false');
+          if (toggle.textContent !== '원문 더 보기') toggle.textContent = '원문 더 보기';
+        }
+      }
     }
   }
   function schedule() { if (!frame) frame = requestAnimationFrame(measure); }
@@ -31,4 +37,4 @@
   window.addEventListener('unload', () => {
     resize.disconnect(); mutations.disconnect(); cancelAnimationFrame(frame);
   });
-})();
+};

@@ -5,7 +5,7 @@ from backend.ingestion.adapters import evidence_at
 from backend.schemas import CitedReference, Document, Evidence
 
 PUBLICATION = re.compile(
-    r"\b(?:USPAP|USPN|US|U\.S\.|WO)\s*(?:PG\s+PUB\s+)?(?:(?:Pat(?:ent)?\.?|Pub(?:lication)?\.?)\s*)?"
+    r"\b(?:USPAP|USPN|US|U\.S\.|WO|W0(?=\s*\d{4}\s*/\s*\d{6}\b))\s*(?:PG\s+PUB\s+)?(?:(?:Pat(?:ent)?\.?|Pub(?:lication)?\.?)\s*)?"
     r"(?:(?:No|Number)\.?\s*)?(?:\d{4}\s*/\s*\d{6,7}|\d{1,3}(?:,\d{3}){2}|\d{7,11})"
     r"(?:\s*[AB]\s*\d)?\b",
     re.I,
@@ -35,8 +35,10 @@ def normalize_publication(value: str | None) -> str | None:
     match = PUBLICATION.search(value)
     if not match:
         return None
-    country = "WO" if match[0][:2].upper() == "WO" else "US"
-    tail = re.sub(r"^(?:USPAP|USPN|US|U\.S\.|WO)", "", match[0], flags=re.I)
+    # OCR may confuse O with zero in an otherwise complete WO publication.
+    # Normalize the identifier only; raw_text and Evidence retain the source spelling.
+    country = "WO" if match[0][:2].upper() in {"WO", "W0"} else "US"
+    tail = re.sub(r"^(?:USPAP|USPN|US|U\.S\.|WO|W0)", "", match[0], flags=re.I)
     tail = re.sub(r"(?i)pg\s+pub|patent|publication|number|pat|pub|no", "", tail)
     return country + re.sub(r"[^0-9AB]", "", tail.upper())
 
