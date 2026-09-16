@@ -74,6 +74,9 @@ h2,h3{color:var(--review-navy)}
 .comparison-source.specification{border-color:#2596a6;background:#f1f8f9}
 .comparison-source.citation{border-color:#43a577;background:#f4f9f5}
 .comparison-source:focus-visible{outline:2px solid #168776;outline-offset:2px}
+.st-key-evidence-comparison .readable-toggle{margin-top:3px;padding-bottom:8px}
+.st-key-evidence-comparison .readable-toggle>summary{margin:0}
+.st-key-evidence-comparison [data-testid="stMarkdownContainer"]:has(>.readable-panel){margin-bottom:0}
 .st-key-comparison-claim:has(.comparison-source.dependency){border-top:3px solid #d6a52e!important}
 .comparison-rejection{font-size:12px;line-height:1.8}
 .comparison-empty{padding:24px 14px;background:#f4f8f9;border:1px dashed #cadde1;border-radius:7px;color:#5c7b84;font-size:13px}

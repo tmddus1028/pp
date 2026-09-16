@@ -30,6 +30,8 @@ function role(item,scope=state.scope){
 const presented=item=>Boolean(item)&&(item.kind!=='citation'||role(item)==='citation');
 const presentedAnnotation=a=>itemById(a.item_id)?.kind!=='citation'||a.type==='citation';
 function eligible(item){return presented(item)&&(state.scope==='all'||visibleScope(item))&&(state.filter==='all'||role(item)===state.filter);}
+// Rejection scope is shared by summary and list; point-type filtering applies only to the list.
+function scopedPoints(){return model.items.filter(i=>i.kind!=='rejection'&&presented(i)&&visibleScope(i));}
 function emit(){clearTimeout(timer);timer=setTimeout(()=>send('streamlit:setComponentValue',{value:{nonce:Date.now()+Math.random(),navigation:serverNavigation,ui:state},dataType:'json'}),90);}
 function button(text,callback,cls){const b=el('button',cls,text);b.type='button';b.addEventListener('click',callback);return b;}
 function jump(documentId,number){
@@ -314,16 +316,17 @@ function details(item,body){
 function drawPanel(){
   $('provider').textContent=model.provider==='local'?'LOCAL 분석':model.provider.toUpperCase()+' 분석';
   const root=$('summary');root.replaceChildren();
-  // Whole-analysis counts are independent of list filters and selected rejection.
+  const scoped=scopedPoints();
+  // Claim selection and evidence focus do not change the review scope or these counts.
   for(const [type,label] of [['direct_rejection','직접 지적'],['dependency','종속 영향 / Objection'],['allowed','허용'],['citation','인용 문헌']]){
-    const count=model.items.filter(i=>i.kind!=='rejection'&&role(i,'all')===type).length;
+    const count=scoped.filter(i=>role(i)===type).length;
     const card=button('',()=>setFilter(type),type);card.setAttribute('aria-label',label+' '+count);card.setAttribute('aria-pressed',String(state.filter===type));
     if(citationRoleHelp[type])card.title=citationRoleHelp[type];
     card.append(el('small','',label),el('strong','',String(count)));root.append(card);
   }
   $('rejection-links').replaceChildren(...model.rejections.map(r=>button(r.rejection_id+' · '+groundLabel(r),()=>selectItem('rejection-'+r.rejection_id))));
   const list=$('review-list'),scroll=list.scrollTop;list.replaceChildren();
-  const points=model.items.filter(i=>i.kind!=='rejection'&&eligible(i));
+  const points=scoped.filter(i=>state.filter==='all'||role(i)===state.filter);
   $('point-count').textContent=points.length+'개';
   if(!points.length)list.append(el('div','empty','해당 유형의 검토 포인트가 없습니다. 모든 청구항이 직접 지적되면 종속항도 빨강으로 표시됩니다. 거절 사유별 범위에서 종속 영향을 확인할 수 있습니다.'));
   points.forEach((item,index)=>{

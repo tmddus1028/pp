@@ -6,7 +6,7 @@ from html import escape
 import streamlit as st
 
 from frontend.claim_analysis import STATUS_LABELS, display_statute
-from frontend.readable_text import readable_text, text_html
+from frontend.readable_text import observe_comparison_overflow, readable_text, text_html
 from frontend.review_model import build_review_model
 
 
@@ -352,3 +352,4 @@ def render_evidence_comparison(result, initial_claim=None, initial_scope="all"):
                 )
             if not view["rejections"]:
                 st.caption("현재 분석 결과에 연결된 지적 사유가 없습니다.")
+    observe_comparison_overflow()
