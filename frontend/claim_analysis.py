@@ -6,8 +6,10 @@ from html import escape
 
 import streamlit as st
 
+from frontend.improvements import prepare_session, render_improvement
 from frontend.readable_text import readable_text
 from frontend.review_model import build_review_model, relied_references
+from frontend.terminology import checklist_label, labels, reference_kind
 
 FILTERS = ["전체", "직접 지적", "추가 검토", "허용"]
 STATUS_LABELS = {
@@ -155,32 +157,34 @@ def save_check(item_id, widget_key):
 
 
 def claim_details(row, model, result):
-    st.markdown("**Claim 원문**")
-    evidence_view(row["evidence"], "Patent")
-    st.caption("직접 종속 Claim: " + (", ".join(map(str, row["children"])) or "없음"))
-    st.markdown("**Office Action 근거**")
+    t = labels(result)
+    st.markdown(t("**Claim 원문**"))
+    evidence_view(row["evidence"], t("Patent"))
+    st.caption(t("직접 종속 Claim: ") + (", ".join(map(str, row["children"])) or "없음"))
+    st.markdown(t("**Office Action 근거**"))
     if row.get("status_evidence"):
-        evidence_view(row["status_evidence"], STATUS_LABELS.get(row["status"], "청구항 상태"))
+        evidence_view(row["status_evidence"], t(STATUS_LABELS.get(row["status"], "청구항 상태")))
     for rejection in row["rejections"]:
         rid = rejection["rejection_id"]
         relationship = (
             "직접 지적"
             if rid in row["direct"]
-            else "Objection"
+            else t("Objection")
             if rid in row["objected"]
             else "종속 영향"
         )
         statute = (
-            "Objection"
+            t("Objection")
             if rejection["action_type"] == "objection"
             else display_statute(rejection["statute"])
         )
         readable_text(f"{statute} · {relationship}")
-        evidence_view(rejection["evidence"], "Office Action")
+        evidence_view(rejection["evidence"], t("Office Action"))
     if not row["rejections"]:
-        st.caption("추출된 지적 사유가 없습니다.")
+        st.caption(t("추출된 지적 사유가 없습니다."))
     st.markdown(
-        '<span class="claim-detail-label citation">관련 citation</span>', unsafe_allow_html=True
+        f'<span class="claim-detail-label citation">{t("관련 citation")}</span>',
+        unsafe_allow_html=True,
     )
     references = {
         ref["citation_id"]: ref
@@ -189,10 +193,10 @@ def claim_details(row, model, result):
     }
     if references:
         st.caption(
-            "해당 지적 사유에 인용된 문헌입니다. 개별 Claim 구성과의 대응은 원문에서 확인하세요."
+            t("해당 지적 사유에 인용된 문헌입니다. 개별 Claim 구성과의 대응은 원문에서 확인하세요.")
         )
         for ref in references.values():
-            kind = {"patent": "Patent", "npl": "NPL"}.get(ref.get("type"), "문헌")
+            kind = reference_kind(ref, t)
             title = " · ".join(filter(None, [ref.get("name"), ref.get("publication_number"), kind]))
             with st.expander(title):
                 st.caption(
@@ -207,16 +211,16 @@ def claim_details(row, model, result):
                     readable_text(
                         ref["publication"] + (f" ({ref['year']})" if ref.get("year") else "")
                     )
-                evidence_view(ref["evidence"], "OA 인용")
+                evidence_view(ref["evidence"], t("OA 인용"))
     else:
         st.caption("연결된 인용문헌이 없습니다.")
     st.markdown(
-        '<span class="claim-detail-label specification">관련 specification</span>',
+        f'<span class="claim-detail-label specification">{t("관련 specification")}</span>',
         unsafe_allow_html=True,
     )
     support = [i for i in model["items"] if i["id"] in row["support_ids"]]
     for item in support:
-        evidence_view(item["evidence"], item["title"])
+        evidence_view(item["evidence"], t(item["title"]))
     if not support:
         st.caption("원문에서 확인된 명시적 명세서·도면 연결이 없습니다.")
     st.markdown("**체크리스트**")
@@ -230,12 +234,21 @@ def claim_details(row, model, result):
     for entry in entries:
         key = f"claim-check-{result['analysis_id']}-{row['claim_number']}-{entry['item_id']}"
         st.session_state[key] = st.session_state.claim_list_checked.get(entry["item_id"], False)
-        st.checkbox(entry["text"], key=key, on_change=save_check, args=(entry["item_id"], key))
+        st.checkbox(
+            checklist_label(entry["text"], t),
+            key=key,
+            on_change=save_check,
+            args=(entry["item_id"], key),
+        )
     if not entries:
         st.caption("연결된 체크리스트 항목이 없습니다.")
+    if row["rejection_ids"]:
+        render_improvement(result, row["claim_number"])
 
 
 def render_analysis(result):
+    t = labels(result)
+    prepare_session(result)
     key = result["analysis_id"]
     if st.session_state.get("claim_list_id") != key:
         st.session_state.claim_list_id = key
@@ -257,10 +270,10 @@ def render_analysis(result):
                 metrics,
                 [
                     "전체 청구항",
-                    "거절/지적 사유",
-                    "직접 지적 Claim",
-                    "추가 검토 Claim",
-                    "허용 Claim",
+                    t("거절/지적 사유"),
+                    t("직접 지적 Claim"),
+                    t("추가 검토 Claim"),
+                    t("허용 Claim"),
                 ],
                 [
                     len(rows),
@@ -280,8 +293,9 @@ def render_analysis(result):
             st.session_state.claim_list_filters = ("전체", st.session_state.claim_number_search)
         with first:
             chosen = st.radio(
-                "Claim 상태 필터",
+                t("Claim 상태 필터"),
                 FILTERS,
+                format_func=t,
                 horizontal=True,
                 key="claim_status_filter",
                 label_visibility="collapsed",
@@ -289,7 +303,7 @@ def render_analysis(result):
             )
         with second:
             query = st.text_input(
-                "Claim 번호 검색",
+                t("Claim 번호 검색"),
                 placeholder="예: 14",
                 max_chars=8,
                 key="claim_number_search",
@@ -299,25 +313,27 @@ def render_analysis(result):
         st.caption(f"{len(visible)} / {len(rows)}개 청구항")
         if not visible:
             st.markdown(
-                '<div class="claim-empty">조건에 맞는 Claim이 없습니다. 필터 또는 번호를 확인하세요.</div>',
+                '<div class="claim-empty">'
+                + t("조건에 맞는 Claim이 없습니다. 필터 또는 번호를 확인하세요.")
+                + "</div>",
                 unsafe_allow_html=True,
             )
         for row in visible:
             number = row["claim_number"]
             selected = st.session_state.get("selected_claim") == number
-            parents = ", ".join(f"Claim {n}" for n in row["depends_on"]) or "독립항"
+            parents = ", ".join(t(f"Claim {n}") for n in row["depends_on"]) or "독립항"
             statutes = " · ".join(map(display_statute, row["statutes"])) or "—"
             with st.container(key=f"claim-row-{number}", border=True):
                 left, right = st.columns([5, 1], vertical_alignment="center")
                 with left:
                     st.markdown(
                         f'<div class="claim-summary {row["role"]}{" selected" if selected else ""}" data-claim="{number}">'
-                        f'<div class="claim-heading"><strong>Claim {number}</strong>'
-                        f'<span class="claim-state {row["role"]}">{escape(row["label"])}</span>'
+                        f'<div class="claim-heading"><strong>{t("Claim")} {number}</strong>'
+                        f'<span class="claim-state {row["role"]}">{escape(t(row["label"]))}</span>'
                         + ('<span class="claim-current">선택됨</span>' if selected else "")
                         + f'</div><div class="claim-statutes">{escape(statutes)}</div>'
-                        f'<div class="claim-relations">상위 Claim · {escape(parents)}'
-                        f"<span>직접 종속 Claim · {len(row['children'])}개</span></div></div>",
+                        f'<div class="claim-relations">{t("상위 Claim")} · {escape(parents)}'
+                        f"<span>{t('직접 종속 Claim')} · {len(row['children'])}개</span></div></div>",
                         unsafe_allow_html=True,
                     )
                 with right:
@@ -328,5 +344,5 @@ def render_analysis(result):
                         on_click=open_claim,
                         args=(number,),
                     )
-                with st.expander(f"Claim {number} 상세 보기", expanded=False):
+                with st.expander(t(f"Claim {number} 상세 보기"), expanded=False):
                     claim_details(row, model, result)

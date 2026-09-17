@@ -1,0 +1,32 @@
+[
+  {
+    "application": "1020190000844",
+    "browser_flow": "PASS",
+    "analysis_quality": "PASS",
+    "page_errors": []
+  },
+  {
+    "application": "1020190000874",
+    "browser_flow": "PASS",
+    "analysis_quality": "UNSUPPORTED",
+    "page_errors": []
+  },
+  {
+    "application": "1020190000902",
+    "browser_flow": "PASS",
+    "analysis_quality": "PARTIAL_FAIL",
+    "page_errors": []
+  },
+  {
+    "application": "1020190000903",
+    "browser_flow": "PASS",
+    "analysis_quality": "UNSUPPORTED",
+    "page_errors": []
+  },
+  {
+    "application": "1020190000948",
+    "browser_flow": "PASS",
+    "analysis_quality": "UNSUPPORTED",
+    "page_errors": []
+  }
+]

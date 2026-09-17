@@ -4,9 +4,11 @@ from pathlib import Path
 import streamlit as st
 import streamlit.components.v1 as components
 
+from frontend.improvements import component_reviews, prepare_session, request_improvement
 from frontend.pdf_adapter import attach_coordinates, render_page, search_boxes
 from frontend.readable_text import READABLE_CSS
 from frontend.review_model import build_review_model
+from frontend.terminology import TERMINOLOGY_JS, component_terms
 
 _component = components.declare_component(
     "patent_pdf_review", path=str(Path(__file__).parent / "pdf_review_component")
@@ -17,6 +19,7 @@ def pdf_review(
     result, assets, initial_item=None, compare=False, initial_scope="all", reset_selection=False
 ):
     key = result["analysis_id"]
+    prepare_session(result)
     context_claim = st.session_state.get("selected_claim")
     if st.session_state.get("review_model_id") != key:
         with st.spinner("원문과 검토 위치를 연결하고 있습니다…"):
@@ -132,6 +135,10 @@ def pdf_review(
                 del searches[next(iter(searches))]
         page["search_boxes"] = searches[search_key]
     event = _component(
+        improvements=component_reviews(),
+        improvement_errors=st.session_state.get("improvement_errors", {}),
+        terminology_js=TERMINOLOGY_JS,
+        terminology=component_terms(result),
         readable_css=READABLE_CSS,
         model=model,
         ui=ui,
@@ -157,6 +164,15 @@ def pdf_review(
             st.session_state.selected_claim = (
                 selected_item.get("claim_number") if selected_item else None
             )
+            if (
+                event.get("action") == "improve_claim"
+                and selected_item
+                and selected_item["kind"] == "claim"
+            ):
+                rid = event.get("improvement_rejection")
+                if rid is None or rid in selected_item["rejection_ids"]:
+                    with st.spinner("관련 근거를 바탕으로 검토용 개선 방안을 준비합니다…"):
+                        request_improvement(result, selected_item["claim_number"], rid)
             if (
                 event.get("action") == "open_comparison"
                 and selected_item

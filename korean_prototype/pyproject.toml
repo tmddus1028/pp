@@ -1,0 +1,37 @@
+[project]
+name = "patent-review-korean-prototype"
+version = "0.1.0"
+description = "Independent Korean patent and opinion-notification review prototype"
+requires-python = ">=3.11"
+dependencies = [
+  "fastapi>=0.115,<1",
+  "uvicorn>=0.30,<1",
+  "pydantic>=2.9,<3",
+  "python-multipart>=0.0.20,<1",
+  "streamlit>=1.50,<2",
+  "pypdf>=6,<7",
+  "pypdfium2>=4.30,<6",
+  "pillow>=11,<13",
+  "openai>=2,<3",
+  # Verified Windows SDK dependency; 0.17.0 DLL is blocked on this workstation.
+  "jiter==0.16.0; sys_platform == 'win32'",
+  "python-dotenv>=1,<2",
+  "httpx>=0.27,<1",
+]
+
+[dependency-groups]
+dev = ["pytest>=8,<10", "pytest-cov>=6,<8", "ruff>=0.11,<1", "playwright>=1.50,<2"]
+
+[tool.uv]
+package = false
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F", "I"]

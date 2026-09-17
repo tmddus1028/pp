@@ -1,0 +1,9 @@
+.venv/
+.venv-py314/
+.env
+__pycache__/
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+artifacts/

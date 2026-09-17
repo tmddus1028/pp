@@ -1,0 +1,101 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>심사문서 조회</title>
+<link href="/commons/css/style.css" rel="stylesheet" type="text/css">
+<link href="/commons/css/jquery-ui.css" rel="stylesheet" type="text/css">
+<link href="/css/docContentPopup.css" rel="stylesheet" type="text/css">
+
+<script type="text/javascript" src="/js/jquery-1.8.2.js"></script>
+<script type="text/javascript" src="/js/common2021.js"></script>
+<script type="text/javascript" src="/js/docContentPopup.js"></script>
+<script type="text/javascript">
+	function init(docdbnum, docid, docformat, rs_doc_nm, rs_dt, numberOfPage) {
+		
+		viewDocContent(docdbnum, docid, docformat, rs_doc_nm, rs_dt, numberOfPage, 'docContentArea');
+		
+		viewDocList(docdbnum);
+	}
+	
+	
+	function viewDocList(docdbNum) {
+		
+		setDocListBiblio(docdbNum, 'docListTitleArea');	
+		setDocListContent(docdbNum, 'docListArea');
+					
+		setTimeout(resize, 1000);
+	}
+	
+	function resize() {
+		$('#docListArea').css('height', 555 - parseInt($('#docListTitleArea').css('height')));
+	}
+	
+</script>
+</head>
+<body onload="javascript:init('KR.20190000844.A','Request_for_the_Submission_of_an_Opinion_952019025682492_KR','application/pdf','의견제출통지서','2019.04.09','0');">
+<input type="hidden" id="viewTRLYN" value="">
+<div style="padding: 10px 10px 0 10px;">
+	<h1 class="stitle01">심사문서 조회</h1>
+	<div>
+		<div style="width:24.5%;float:left;margin-right:0.5%;">
+			
+			<div class="title1">패밀리 정보</div>
+			
+			<div style="height:300px;overflow:auto;">
+				<table class="tb02" style="background-color:white;" cellspacing="0">
+					<colgroup>
+						<col style="width:34%;">
+						<col style="width:33%;">
+						<col style="width:33%;">
+					</colgroup>
+					<thead>
+						<tr>
+							<th>출원</th>
+							<th>공개</th>
+							<th>등록</th>
+						</tr>
+					</thead>
+					<tbody>
+						
+							
+							
+								
+									<tr style="cursor:pointer;" onclick="javascript:viewDocList('KR.20190000844.A');">
+								
+								
+							
+							
+								<td>
+									KR.20190000844.A
+									<br>(2019.01.03)
+								</td>
+								<td>
+									
+										KR.20190025857.A
+										<br>(2019.03.12)
+									
+								</td>
+								<td>
+									
+										KR.102136729.B1
+										<br>(2020.08.13)
+									
+								</td>
+								
+								<td style="text-align:center;color:#717171;"></td>
+							</tr>
+						
+					</tbody>
+				</table>
+			</div>
+			
+			<div id="docListTitleArea"><div class="title1"><img src="/images/flag_kr.gif" alt="">&nbsp;KR.20190000844.A</div><div><table class="tb02" cellspacing="1" style="background-color:white;"><colgroup><col style="width:15%;"><col style="width:85%;"></colgroup><tbody><tr><th>발명의 명칭</th><td align="center">SYSTEM FOR ELECTRONIC COUPONS, AND METHOD PROCESSING  ELECTRONIC COUPONS</td></tr><tr><th>출원인</th><td align="center">Korea University Of Technology And Education Industry-University Cooperation Foundation</td></tr></tbody></table></div></div>
+			
+			<div id="docListArea" style="height: 428px; overflow: auto;"><div style="padding-top:7px;"><table class="tb02" style="background-color:white;" cellspacing="0"><colgroup><col style="width:23%;"><col style="width:53%;"><col style="width:24%;"></colgroup><thead><tr><th>제출일</th><th>문서</th><th>문서보기</th></tr></thead><tbody><tr class="bgc_else colorFilter"><td class="txa_c txt_gray dateFilter">2019.01.03</td><td class="txa_l">[분할출원]특허출원서</td><td class="txa_c"><a class="btn_05 txt_gray" href="javascript:viewDocContent('KR.20190000844.A','Request_for_Divisional_Application_for_Patent_112019000841434_KR','application/pdf','[분할출원]특허출원서','2019.01.03','0','docContentArea');"><span>원문</span></a></td></tr><tr class="bgc_else colorFilter"><td class="txa_c txt_gray dateFilter">2019.01.11</td><td class="txa_l">[심사청구]심사청구(우선심사신청)서</td><td class="txa_c"><a class="btn_05 txt_gray" href="javascript:viewDocContent('KR.20190000844.A','Request_for_Examination_112019003876110_KR','application/pdf','[심사청구]심사청구(우선심사신청)서','2019.01.11','0','docContentArea');"><span>원문</span></a></td></tr><tr class="bgc_else colorFilter"><td class="txa_c txt_gray dateFilter">2019.01.14</td><td class="txa_l">보정요구서</td><td class="txa_c"><a class="btn_05 txt_gray" href="javascript:viewDocContent('KR.20190000844.A','Request_for_Amendment_152019000933115_KR','application/pdf','보정요구서','2019.01.14','0','docContentArea');"><span>원문</span></a></td></tr><tr class="bgc_yellow colorFilter"><td class="txa_c txt_gray dateFilter">2019.01.15</td><td class="txa_l">[출원서등 보정]보정서</td><td class="txa_c"><a class="btn_05 txt_gray" href="javascript:viewDocContent('KR.20190000844.A','Amendment_to_Bibliographic_Information_112019004712110_KR','application/pdf','[출원서등 보정]보정서','2019.01.15','0','docContentArea');"><span>원문</span></a></td></tr><tr class="bgc_pink colorFilter"><td class="txa_c txt_gray dateFilter">2019.04.09</td><td class="txa_l">의견제출통지서</td><td class="txa_c"><a class="btn_05 txt_gray" href="javascript:viewDocContent('KR.20190000844.A','Request_for_the_Submission_of_an_Opinion_952019025682492_KR','application/pdf','의견제출통지서','2019.04.09','0','docContentArea');"><span>원문</span></a></td></tr><tr class="bgc_else colorFilter"><td class="txa_c txt_gray dateFilter">2019.06.10</td><td class="txa_l">[지정기간연장]기간연장(단축, 경과구제)신청서</td><td class="txa_c"><a class="btn_05 txt_gray" href="javascript:viewDocContent('KR.20190000844.A','Request_for_Extension_of_Designated_Period_112019058803817_KR','application/pdf','[지정기간연장]기간연장(단축, 경과구제)신청서','2019.06.10','0','docContentArea');"><span>원문</span></a></td></tr><tr class="bgc_else colorFilter"><td class="txa_c txt_gray dateFilter">2019.07.09</td><td class="txa_l">[지정기간연장]기간연장(단축, 경과구제)신청서</td><td class="txa_c"><a class="btn_05 txt_gray" href="javascript:viewDocContent('KR.20190000844.A','Request_for_Extension_of_Designated_Period_112019070312467_KR','application/pdf','[지정기간연장]기간연장(단축, 경과구제)신청서','2019.07.09','0','docContentArea');"><span>원문</span></a></td></tr><tr class="bgc_yellow colorFilter"><td class="txa_c txt_gray dateFilter">2019.08.09</td><td class="txa_l">[거절이유 등 통지에 따른 의견]의견(답변, 소명)서</td><td class="txa_c"><a class="btn_05 txt_gray" href="javascript:viewDocContent('KR.20190000844.A','Written_Opinion_112019082001937_KR','application/pdf','[거절이유 등 통지에 따른 의견]의견(답변, 소명)서','2019.08.09','0','docContentArea');"><span>원문</span></a></td></tr><tr class="bgc_yellow colorFilter"><td class="txa_c txt_gray dateFilter">2019.08.09</td><td class="txa_l">[명세서등 보정]보정서</td><td class="txa_c"><a class="btn_05 txt_gray" href="javascript:viewDocContent('KR.20190000844.A','Amendment_including_Specification_etc._112019082004907_KR','application/pdf','[명세서등 보정]보정서','2019.08.09','0','docContentArea');"><span>원문</span></a></td></tr><tr class="bgc_pink colorFilter"><td class="txa_c txt_gray dateFilter">2019.12.09</td><td class="txa_l">거절결정서</td><td class="txa_c"><a class="btn_05 txt_gray" href="javascript:viewDocContent('KR.20190000844.A','Notice_of_Final_Rejection_952019088999212_KR','application/pdf','거절결정서','2019.12.09','0','docContentArea');"><span>원문</span></a></td></tr><tr class="bgc_else colorFilter"><td class="txa_c txt_gray dateFilter">2020.01.09</td><td class="txa_l">[법정기간연장]기간연장(단축, 경과구제)신청서</td><td class="txa_c"><a class="btn_05 txt_gray" href="javascript:viewDocContent('KR.20190000844.A','Request_for_Extension_of_Statutory_Period_112020002411813_KR','application/pdf','[법정기간연장]기간연장(단축, 경과구제)신청서','2020.01.09','0','docContentArea');"><span>원문</span></a></td></tr><tr class="bgc_else colorFilter"><td class="txa_c txt_gray dateFilter">2020.01.10</td><td class="txa_l">법정기간연장승인서</td><td class="txa_c"><a class="btn_05 txt_gray" href="javascript:viewDocContent('KR.20190000844.A','Approval_of_Extension_of_Legal_Period_152020000645757_KR','application/pdf','법정기간연장승인서','2020.01.10','0','docContentArea');"><span>원문</span></a></td></tr><tr class="bgc_yellow colorFilter"><td class="txa_c txt_gray dateFilter">2020.02.10</td><td class="txa_l">[거절이유 등 통지에 따른 의견]의견(답변, 소명)서</td><td class="txa_c"><a class="btn_05 txt_gray" href="javascript:viewDocContent('KR.20190000844.A','Written_Opinion_112020013728355_KR','application/pdf','[거절이유 등 통지에 따른 의견]의견(답변, 소명)서','2020.02.10','0','docContentArea');"><span>원문</span></a></td></tr><tr class="bgc_yellow colorFilter"><td class="txa_c txt_gray dateFilter">2020.02.10</td><td class="txa_l">[명세서등 보정]보정서(재심사)</td><td class="txa_c"><a class="btn_05 txt_gray" href="javascript:viewDocContent('KR.20190000844.A','Amendment_including_Specification_etc._112020013730044_KR','application/pdf','[명세서등 보정]보정서(재심사)','2020.02.10','0','docContentArea');"><span>원문</span></a></td></tr><tr class="bgc_pink colorFilter"><td class="txa_c txt_gray dateFilter">2020.03.02</td><td class="txa_l">등록결정서</td><td class="txa_c"><a class="btn_05 txt_gray" href="javascript:viewDocContent('KR.20190000844.A','Written_Decision_on_Registration_952020015842334_KR','application/pdf','등록결정서','2020.03.02','0','docContentArea');"><span>원문</span></a></td></tr><tr class="bgc_yellow colorFilter"><td class="txa_c txt_gray dateFilter">2020.08.03</td><td class="txa_l">[명세서등 보정]보정서(심사관 직권보정)</td><td class="txa_c"><a class="btn_05 txt_gray" href="javascript:viewDocContent('KR.20190000844.A','Amendment_including_Specification_etc._112020501998592_KR','application/pdf','[명세서등 보정]보정서(심사관 직권보정)','2020.08.03','0','docContentArea');"><span>원문</span></a></td></tr></tbody></table></div><input type="hidden" id="KR.20190000844.A_new" name="new_total" value="0"></div>
+			
+		</div>
+		<!-- PDF 뷰어 높이 자동 조절 -->
+		<div id="docContentArea" style="width:75%;height:100vh;float:left;"></div>
+	</div>
+</div>
+
+<div id="mask" style="position: absolute; z-index: 9000; background-color: rgb(0, 0, 0); left: 0px; top: 0px; width: 100%; height: 100%; opacity: 0.3; display: none;"></div></body></html>

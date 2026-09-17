@@ -8,6 +8,7 @@ class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 
     llm_provider: Literal["local", "openai", "azure"] = "local"
+    improvement_provider: Literal["inherit", "local", "openai", "azure"] = "inherit"
     openai_api_key: str = Field(default="", repr=False)
     openai_model: str = ""
     azure_openai_endpoint: str = ""

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>페이지를 찾을 수 없습니다.</title>
+	<script language="javascript">
+		function goKiprisPage(){
+			window.location.href = 'https://www.kipris.or.kr/khome/main.do';
+		}
+	</script>
+	<style>
+		@charset "UTF-8"; 
+
+
+		/* web font  */
+
+		@font-face {
+		  font-family: 'NanumGothic';
+		  font-style: normal;
+		  font-weight: 400;
+		}
+
+		@font-face {
+		  font-family: 'NanumGothic';
+		  font-style: normal;
+		  font-weight: 700;
+		}
+
+		html {
+		  font-family: "NanumGothic",  "돋움", dotum, Helvetica, sans-serif;
+		  font-size: 0.813em;  /* 13px / 0.813em */
+		  -ms-text-size-adjust: 0.813em; /* 모바일 가로 세로 전환시 폰트크기 확대 방지 */
+		  -webkit-text-size-adjust: 0.813em;  
+		  line-height:1.4;
+		}
+
+		body {background: #fff;color: #272727;}
+		/* content-wrap */
+		.breadcrumb {padding: 17px 0 6px;text-align: right;font-size: 0.923em} /* 12px */
+		#.content-title {padding-bottom: 0px;line-height: 1;}
+		#h3.content-title {margin-bottom: 20px;font-weight: 700;font-size: 2.077em} /* 28px / 13px = 2.154 em */
+
+
+
+		/* 404 */
+		.container-error-wrap {height: 100%; display: flex; justify-content: center; align-items: center;}
+		.container-error {margin-top: 30px; margin-left:-50px; padding:0 0 30px 285px;background: url(https://www.kipris.or.kr/khome/images/error/bg_ki_error2.png) no-repeat 60px 0}
+		.container-error h3.content-title {margin-bottom: 10px; padding-top: 10px; font-weight: 700;font-size: 2.077em;margin-top: 0px;}
+		/* div group */
+		.btn-group {margin: 20px 0}
+		.btn-group-small,  .div-group  {margin: 10px 0}
+		.api-group {overflow: hidden;}
+		.bbs-group {overflow: hidden;} /* CR_YHY_20191204_001 변경 */
+
+
+		.btn {display: inline-block;padding: 4px 5px;font-size: 0.923em;font-weight: 700;text-align: center;-webkit-box-sizing: content-box;-moz-box-sizing: content-box;box-sizing: content-box}
+		.btn:hover {text-decoration: none}
+
+		.btn-middle {height:28px;line-height:28px;padding:0px 15px;} /* padding: 1px 15px */
+		.btn-large {height:33px;line-height:33px;padding:0 15px;}
+		.btn-xxlarge {height: 40px;line-height: 40px;padding:0 15px;}
+		.btn-wide {height:28px;line-height:28px;padding: 0px 27px}
+		.btn-blue {background: #195ba7; color: #fff;}
+		.btn-input.btn-blue {border: 0px solid #195ba7}
+		.btn-lightblue {background: #7d9cd1;color: #fff;}
+		.btn-gray {background: #f2f2f2; color: #000;}
+		.btn-gray-line {/*height: 26px;line-height: 26px;*/background:#f2f2f2;border: 1px solid #d4d4d4;}
+		.btn-gray-line.btn-middle {height: 26px;line-height: 26px;padding:0px 15px !important}
+		.btn-disabled {background: #f2f2f2; color: #b4b4b4;}
+		.btn-white-line {background: #fff;border: 1px solid #d4d4d4;font-weight: 400;line-height: 16px}
+		.btn-white-line.selected {color: #195ba7;font-weight: 700}
+		.btn-blue-hover:hover {background: #195ba7; color: #fff;}
+
+		/* a Link style */
+		a {text-decoration: none;color: #272727}
+		a:focus, button:focus {
+		  outline: thin dotted #333;
+		  outline: 5px auto -webkit-focus-ring-color;
+		  outline-offset: -2px;
+		}
+		a:hover,
+		a:active {outline: 0;text-decoration:none;}
+		a.link-blue {color: #195ba7;}
+		a.link-underline {text-decoration:underline;}
+		img {vertical-align: top}
+
+		::-webkit-input-placeholder { color: #747474; }
+		:-moz-placeholder { color: #747474; }
+		::-moz-placeholder { color: #747474; }
+		:-ms-input-placeholder { color: #747474 !important; }
+	</style>
+</head>
+<body>
+   	<div class="container container-error-wrap">
+   		<section class="container-error">
+   			<h3 class="content-title" itemprop="name">[원하시는 페이지를 찾을 수가 없습니다.]</h3>
+   			<p style="font-size: 14px;font-weight: 400;">
+				서비스 이용에 불편을 끼쳐드려 죄송합니다.<br>
+   				찾으시려는 웹페이지의 이름이 바뀌었거나 현재 사용할 수 없거나 삭제되었습니다.<br>
+   				입력하신 페이지 주소가 정확한지 다시 한번 확인해보시기 바랍니다.
+			</p>
+   			<p class="btn-group">
+   				<a href="#" class="btn btn-blue btn-wide" onclick="javascript:goKiprisPage();">KIPIRIS 홈</a>
+   			</p>
+   		</section>  
+   	</div>
+</body>
+</html>

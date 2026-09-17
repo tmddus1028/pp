@@ -93,6 +93,9 @@ def main():
         page.get_by_test_id("stSidebar").get_by_text("관계 지도", exact=True).click()
         graph = page.frame_locator('iframe[title*="patent_relationship_map"]')
         graph.locator("#claim-picker").select_option("CL1")
+        # Finish the selection acknowledgement/rerender before injecting temporary DOM text.
+        # The probe must not be overwritten by the normal model render it is testing.
+        page.wait_for_timeout(1000)
         model_before = graph.locator("#map").evaluate("() => JSON.stringify(model)")
         map_source = graph.locator("#map-detail .source-card").first
         map_toggle = map_source.locator(".source-toggle")

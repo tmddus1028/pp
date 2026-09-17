@@ -1,0 +1,1069 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html><head>
+
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+
+<title>국제특허심사공유시스템</title>
+
+<link rel="stylesheet" href="/css/jquery-ui.css">
+<link rel="stylesheet" href="/css/jquery-datepicker-custom.css">
+<link rel="stylesheet" href="/css/common2015.css">
+<link rel="stylesheet" href="/css/common2022.css">
+<style type="text/css">
+	.docListContent {
+		height:350px;overflow: auto;
+	}
+</style>
+<script src="/js/jquery-1.8.2.js"></script>
+<script src="/js/jquery-ui.js"></script>
+<script src="/js/common2021.js"></script>
+<script src="/js/docContentPopup.js"></script>
+<script src="/js/family.js"></script>
+<!-- <script src="/common/js/json2.js"></script> -->
+<!-- <script src="/common/js/common_service.js"></script> -->
+
+
+<script type="text/javascript">
+
+/**
+ * 1) 공지띄우기
+ * 2) 외부에서 들어오는 링크
+ */
+
+
+	$(document).ready(function() {
+		
+		// [SR000089931 KYJ] KIPRIS to OPD 연계 개선
+		if ('' == 'Y') {
+			openDocdb();
+			searchWithDocdbNumber();
+		}
+		
+		//패밀리 정상적으로 조회 시, 심사정보 조회
+		var result = 'success';
+		if(result == 'success') {
+			openDocLists();
+		} else if(result == 'undisclosed') {
+			$('#familyTable tbody').html('<tr><td colspan="12">해당 출원은 공개되지 않아 조회가 불가능합니다.</td></tr>');
+			$('#doclist_1').html('해당 출원은 공개되지 않아 조회가 불가능합니다.');
+		} else if(result == 'extendAppl') {
+			// [SR000099384 KYJ] 연장등록출원 건일 경우 원출원/원등록번호로 조회하도록 개선
+			$('#familyTable tbody').html('<tr><td colspan="12">연장등록출원 건은 자동 조회가 불가능합니다.</td></tr>');
+			$('#doclist_1').html('연장등록출원 건은 자동 조회가 불가능합니다.');
+			
+			var url = '/family/openExtendApplPopup.do'
+			        + '?orgnl_appl_rgst_tpcd='
+			        + '&orgnl_appl_rgstno=';
+			var otherOption = 'toolbar=no,menubar=no,scrollbars=yes,resizable=yes';
+			
+			windowOpenFunc(url, 'extendAppl', 500, 500, otherOption);
+			
+		} else if(result == 'noresult') {
+			$('#familyTable tbody').html('<tr><td colspan="12">조회 결과가 없습니다.</td></tr>');
+			$('#doclist_1').html('조회 결과가 없습니다.');
+		} else if(result == '') {
+			//파라미터가 있을 경우 조회 수행
+			if($('#docdb_number').val().trim() != '') {
+				searchWithDocdbNumber();
+			} else if($('#ori_number').val().trim() != '') {
+				searchWithOriginalNumber();
+			}
+		} else {
+			//오류
+			//alert(result);
+		}
+		
+		
+		//번호타입에 따른 검색옵션 화면 전환
+		var numberType1 = 'docdb';
+		if(numberType1 == 'original') {
+			$('#radio_ori').prop('checked', true);
+			openOriginal();
+		} else if(numberType1 == 'docdb') {
+			$('#radio_doc').prop('checked', true);
+			openDocdb();
+		}
+
+		//팝업
+		//openMainPopup();
+		setTitle();
+
+	});
+ 
+ 	function changeSample() {
+ 		var ori_country = $('#ori_country').val();
+ 		var ori_numberType = $('#ori_numberType').val();
+ 		
+ 		if(ori_country == 'KR' && ori_numberType == 'U1301') {
+ 			$('#ori_number').attr('placeholder','예) 1020110004599');
+ 		} else if(ori_country == 'KR' && ori_numberType == 'U1302') {
+ 			$('#ori_number').attr('placeholder','예) 101057307');
+ 		}
+ 		
+ 		else if(ori_country == 'CN' && ori_numberType == 'U1301') {
+ 			$('#ori_number').attr('placeholder','예) 201210060700');
+ 		} else if(ori_country == 'CN' && ori_numberType == 'U1302') {
+ 			$('#ori_number').attr('placeholder','예) 102580283');
+ 		}
+ 		
+ 		else if(ori_country == 'EP' && ori_numberType == 'U1301') {
+ 			$('#ori_number').attr('placeholder','예) 11177183.8');
+ 		} else if(ori_country == 'EP' && ori_numberType == 'U1302') {
+ 			$('#ori_number').attr('placeholder','예) 02426440');
+ 		}
+ 		
+ 		else if(ori_country == 'JP' && ori_numberType == 'U1301') {
+ 			$('#ori_number').attr('placeholder','예) 23175940');
+ 		} else if(ori_country == 'JP' && ori_numberType == 'U1302') {
+ 			$('#ori_number').attr('placeholder','예) 24001728');
+ 		}
+ 		
+ 		else if(ori_country == 'US' && ori_numberType == 'U1301') {
+ 			$('#ori_number').attr('placeholder','예) 13375170');
+ 		} else if(ori_country == 'US' && ori_numberType == 'U1302') {
+ 			$('#ori_number').attr('placeholder','예) 20120075831');
+ 		}
+ 		
+ 		else if(ori_country == 'WO' && ori_numberType == 'U1301') {
+ 			$('#ori_number').attr('placeholder','예) PCTKR2013005684');
+ 		} else if(ori_country == 'WO' && ori_numberType == 'U1302') {
+ 			$('#ori_number').attr('placeholder','예) WO2014010849');
+ 		}
+ 	}
+ 
+ 	
+	
+	
+	
+	//메인팝업
+	/* $(document).ready(function() {
+		$.ajax({
+			url: '/screen/checkMainPopup.do',
+			type: 'POST',
+			beforeSend:function(x) {
+				
+			},
+			cache:false,
+			success:function(result) {
+				if(result.result != '') {
+					var left = (screen.availWidth - 1180)/2; // 왼쪽 너비
+					var top = (screen.availHeight - 860)/2; 	 // 위쪽 너비 
+					window.open('/screen/openMainPopup.do',"popupOPD","width=1180,height=880,status=no,resizable=yes,top="+top+",left="+left+",scrollbars=no, menubar=no");
+				}
+			},
+			error:function(xhr, status, error) {
+				alert('error to open main popup');
+			}
+		});
+	}); */
+	
+	
+	/* 
+	 * Search for family information
+	 */
+	/* function getFamily_old(docdbnum, numberType, sortData, sortOrder) {
+		if (docdbnum == '') {
+			docdbnum = $('#docdb_number').val();
+		}
+		if (numberType == '') {
+			numberType = 'U1301';
+		}
+		$.ajax({
+			url: '/family.do',
+			type: 'POST',
+			data: {
+				docdbnum : docdbnum, 
+				numberType : numberType,
+				sortData : sortData,
+				sortOrder : sortOrder
+			},
+			beforeSend: function(x) {
+				mask();
+			},
+			cache: false,
+			
+			success: function(result) {
+				//alert(result);
+				//$('#cont').html(result); // 페이지 전환
+				
+				openDocLists();
+				unmask();
+				
+				saveSearchHistory();
+			},
+			error: function(xhr, status, error) {
+				alert(error);
+				unmask();
+			}
+		});
+	} */
+	
+ 	function openSubPopup(){
+//		Cookie subPopupCookie = new Cookie("subPopupCookie","Y");
+	var exdate = new Date();
+	exdate.setDate(exdate.getDate() + 1);
+	document.cookie = 'subPopupCookie=Y;path=/;expires=' + exdate.toGMTString();
+		var left = (screen.availWidth - 1180)/2; // 왼쪽 너비
+	var top = (screen.availHeight - 860)/2; 	 // 위쪽 너비
+		window.open('/screen/openMainPopup.do',"popupOPD","width=1180,height=880,status=no,resizable=yes,top="+top+",left="+left+",scrollbars=no, menubar=no");
+	}
+	
+	
+	
+	
+	
+	//심사 정보 조회
+	function openDocLists() {
+		$('.docListTitle').html('');
+		$('.docListContent').html('');
+		
+		var applnos = new Array();
+		var i = 0;
+		$('input[name="familyCheck"]:checked').each(function() {
+			applnos[i++] = $(this).val();
+		});
+		
+		$('#pageCount').val(applnos.length);
+	
+		var currentPage = Number($('#currentPage').val());
+		
+		var start = 5 * (currentPage - 1);
+		var end = start + 4;
+		
+		var k = 1;
+		for(var c = start; c <= end; c++) {
+			if(applnos[c] == null) {
+				break;
+			}
+			setDocList(applnos[c], (k++));
+		}
+		
+		// 심사정보 필터 초기화
+		$('#docListOption').val('all').prop('selected', true);
+		$("#date_start").val('');
+		$("#date_finish").val('');
+	}
+	
+	function setDocList(docdbNum, area_id) {
+		var html = '<h3>' + getFlag(docdbNum) + docdbNum.substring(0, 2) + '<span>&nbsp;' + docdbNum.substring(3) + '</span></h3>'
+			     + '<div class="btnbox">'
+			     +     '<p class="btn_l">'
+			     +         '<a href="javascript:void(0);" class="btn_05" onclick="javascript: openCountryCitationClassification(\'' + docdbNum + '\'); return false;" title="팝업">인용&amp;분류</a>'
+			     +         '<a href="javascript:void(0);" class="btn_05" onclick="javascript: openExpandDossier(\'' + docdbNum + '\', \'doclist_' + area_id + '\'); return false;" title="팝업">다운로드</a>'
+			     +         '<a href="javascript:void(0);" class="btn_05" onclick="javascript: rss(\'' + docdbNum + '\'); return false;" title="팝업">RSS</a>'
+			     +     '</p>'
+			     +     '<p class="btn_r">'
+			     +         '<a href="javascript:void(0);" class="mr3" onclick="javascript: setDocList(\'' + docdbNum + '\', \'' + area_id + '\'); return false;"><img src="/images/btn_reset.gif" alt="새로고침"></a>'
+			     +         '<a href="javascript:void(0);" onclick="javascript: openExpandDossier(\'' + docdbNum + '\', \'doclist_' + area_id + '\'); return false;" title="팝업"><img src="/images/btn_ext.gif" alt="확장"></a>'
+			     +     '</p>'
+			     + '</div>';
+		
+		$('#docListTitle' + area_id).html(html);
+		
+		$('#docListContent' + area_id).html('');
+		
+		setDocListContent(docdbNum, 'docListContent' + area_id);
+		
+	}
+	
+	//패밀리에 발명의 명칭 입력
+	function setTitle() {
+		$('input[name="familyCheck"]').each(function() {
+			//alert($(this).val().replace(/[.]/g,'_'));
+			var id = $(this).val().replace(/[.]/g,'_');
+			$.ajax({
+				url: '/kipi/getDocList2.do',
+				type: 'POST',
+				data:{
+					docdbNum : $(this).val()
+				},
+				beforeSend:function(x) {
+				},
+				cache:false,
+				success:function(result) {
+					if(result.result == 'success') {
+						$('#' + id + '_title').html(result.inventTitle);
+						$('#' + id + '_title').attr('title', result.inventTitle);
+						$('#' + id + '_applicant').html(result.applicant);
+						$('#' + id + '_applicant').attr('title', result.applicant);
+						
+					}
+				},
+				error:function(xhr, status, error) {
+					//alert('setTitle error');
+				}
+			});
+		});
+		
+	}
+	
+	//전체 인용분류
+	function openAllCitationClassification() {
+		var otherOption = 'toolbar=no,menubar=no,scrollbars=yes,resizable=no';
+		
+		windowOpenFunc('/kopd/viewAllCitationClassification.do', '', 1280, 820, otherOption);
+	}
+	
+	//popup_패밀리 RSS - URL길이 오류 수정
+	function familyRss() {
+		var docdbnum = ''; 
+		$('#familyTable input[name="applDocNumber"]').each(function(index, item) {
+			docdbnum += item.value + ';';
+		});
+		var form = $('<form action="/openPopupRSS.do" method="POST" target="popupRSS"></form>');
+		var input = $('<input type="hidden" name="docdbnum">');
+		input.val(docdbnum);
+		form.append(input);
+		$('body').append(form);
+		windowOpenFunc('/openPopupRSS.do', 'popupRSS', 400, 440);
+		form.submit();
+// 		windowOpenFunc('/openPopupRSS.do?docdbnum=' + docdbnum, 'popupRSS', 400, 440);
+		 
+	}
+	
+	//필터
+	function filterDoclist() {
+		var type = $('#docListOption').val();
+		var min = $("#date_start").datepicker('getDate');
+		var max = $("#date_finish").datepicker('getDate');
+		$('.colorFilter').each(function(){
+			var $tr = $(this);
+			$tr.removeClass('hideTR');
+			switch (type) {
+				case 'major':
+					if ($tr.hasClass('bgc_else')) {
+						$tr.addClass('hideTR');
+					}
+					break;
+					
+				case 'pink':
+					if (!$tr.hasClass('bgc_pink')) {
+						$tr.addClass('hideTR');
+					}
+					break;
+					
+				case 'yellow':
+					if (!$tr.hasClass('bgc_yellow')) {
+						$tr.addClass('hideTR');
+					}
+					break;
+					
+				case 'blue':
+					if (!$tr.hasClass('bgc_blue')) {
+						$tr.addClass('hideTR');
+					}
+					break;
+	
+				default:
+					break;
+			}
+			if(min && max ) {
+				var tempArr = $tr.find('.dateFilter').text().split('.');
+				var docDate = new Date(tempArr[0] + '/' + tempArr[1] + '/' + tempArr[2]);
+				if (min > docDate || max < docDate) {
+					$tr.addClass('hideTR');
+				}
+			}
+		});
+		
+		//var docDate = $tr.find('.dateFilter').text();
+	}
+	
+	//출원변 인용&분류
+	function openCountryCitationClassification(applno) {
+		var url = '/kopd/viewCitationClassificationByCountry.do';
+		
+		var pubAno = $('#' + applno.replace(/[.]/g,'_') + '_pubAno').val();
+		var pubBno = $('#' + applno.replace(/[.]/g,'_') + '_pubBno').val();
+		var inputCntry = applno.substring(0, 2);
+		var params = '?applno=' + applno + '&pubAno=' + pubAno + '&pubBno=' + pubBno + '&inputCntry=' + inputCntry;
+		
+		var otherOption = 'toolbar=no,menubar=no,scrollbars=yes,resizable=yes';
+		
+		windowOpenFunc(url + params, '', 950, 802, otherOption);
+	}
+	
+	//다운로드
+	function openExpandDossier(applno, viewTabName) {
+		var url = '/kipi/openDocListDetailPopup.do';
+		var params = '?docdbNum=' + applno + '&viewTabName=' + viewTabName;
+		
+		var otherOption = 'toolbar=no,menubar=no,scrollbars=yes,resizable=yes';
+		
+		windowOpenFunc(url + params, '', 1180, 860, otherOption);
+	}
+	
+	//출원별 RSS
+	function rss(applno) {
+		var otherOption = 'toolbar=no,menubar=no,scrollbars=yes,resizable=yes,location=no';
+		
+		windowOpenFunc('/rssList.do?docdbnum=' + applno, 'rssPopup', 1180, 860, otherOption);
+	}
+	
+	//심사문헌팝업
+	/* function viewDocContent(docdbNum, docid, docformat, rs_doc_nm, rs_dt, numberOfPage, viewTRLYN) {
+		var url = '/docContent/openDocContentPopup.do';
+		
+		var params = '?docdbNum=' + docdbNum
+				   + '&docid=' + docid
+				   + '&docformat=' + docformat
+				   + '&rs_doc_nm=' + rs_doc_nm
+				   + '&rs_dt=' + rs_dt
+				   + '&numberOfPage=' + numberOfPage
+				   + '&viewTRLYN=' + viewTRLYN;
+		
+		var otherOption = 'toolbar=no,menubar=no,scrollbars=yes,resizable=yes,location=no';
+		
+		windowOpenFunc(encodeURI(url + params, 'UTF-8'), docid, 1180, 860, otherOption);
+	} */
+	
+	
+	
+	
+	
+	
+	/*
+	 * Filter of doclist
+	 */
+	 
+	/* function betweenDateCheck(date) {
+		var min = $("#date_start").datepicker('getDate');
+		var max = $("#date_finish").datepicker('getDate');
+		var inputDate = new Date(date);
+			
+		if (min == null && max == null) { return true; }
+		if (min == null && inputDate <= max) { return true; }
+		if (min <= inputDate && max == null) { return true; }
+		if (min <= inputDate && inputDate <= max) { return true; }
+			
+		return false;
+	} */
+	
+	function checkAll() {
+		if($('#checkAll').is(':checked')) {
+			$('#familyTable input[name="familyCheck"]').each(function(){
+				$(this).attr('checked', 'checked');
+			});	
+		} else {
+			$('#familyTable input[name="familyCheck"]').each(function(){
+				$(this).removeAttr('checked');
+			});
+		}
+	}
+	
+	
+	function seeCookies() {
+		alert(document.cookie);
+	}
+	
+	function deleteCookies() {
+		var today = new Date();
+		document.cookie = 'searchHistory=;path=/;expires=' + today.toGMTString();
+		//document.cookie = 'closePopupToday=;path=/;expires=' + today.toGMTString(); 
+		document.cookie = 'subPopupCookie=;path=/;expires=' + today.toGMTString(); 
+	}
+	
+	function changeOrder(sortData, sortOrder) {
+		$('#sortData').val(sortData);
+		$('#sortOrder').val(sortOrder);
+		
+		document.searchForm.submit();
+	}
+	
+	
+	function openPriorityLayerpopup(applno) {
+		$('#layerPopup_tit').html(applno);
+		$('#priority_popup').removeClass('hide');
+		
+		var html = '';
+		$('input[name="' + applno + '_priority"]').each(function() {
+			var obj = $(this).val();
+			var priArr = obj.split('_');
+			var priNo = priArr[0];
+			var priDt = priArr[1];
+			html += '<tr>'
+				 +      '<td>' + priNo + '</td>'
+				 +      '<td>' + priDt + '</td>'
+				 +  '</tr>';
+				 
+			$('#priority_tbody').html(html);
+		});
+	}
+	function closePriorityLayerpopup() {
+		$('.priority_more').attr('src','/images/bul_h2.gif');
+		
+		$('#priority_popup').addClass('hide');
+	}
+	
+	//PDF 다운로드 페이지
+	function pdfDownPage() {
+		var left = (screen.availWidth - 700)/2; // 왼쪽 너비와
+		var top = (screen.availHeight - 400)/2; // 위쪽 너비를 지정해주고
+		var url = "http://10.133.103.178:8888/adobe/adobe_reader_download.html";
+		window.open(url,"","width=700,height=400,status=no,resizable=yes,top="+top+",left="+left+",scrollbars=no, menubar=no");
+	}
+	
+	//TIFF Viewer 다운로드 페이지
+	function tiffViewerDownPage() {
+		var left = (screen.availWidth - 500)/2; // 왼쪽 너비와
+		var top = (screen.availHeight - 300)/2; // 위쪽 너비를 지정해주고
+		var url = "http://10.133.103.178:8888/alternaTIFF/alternatiff_install.html";
+		window.open(url,"","width=500,height=300,status=no,resizable=yes,top="+top+",left="+left+",scrollbars=no, menubar=no");
+	}
+	
+	
+	//메뉴얼 페이지 (메뉴얼 명 설정)
+	function manualPage(manual_name) {
+		var left = (screen.availWidth - 1000)/2; // 왼쪽 너비와
+		var top = (screen.availHeight - 720)/2; // 위쪽 너비를 지정해주고
+		var url = "http://10.133.103.178:8888/user-manual/" + manual_name;
+		window.open(url,"","width=1000,height=720,status=no,resizable=yes,top="+top+",left="+left+",scrollbars=no, menubar=no");
+	}
+	
+	$(function() {
+		$('#date_start').datepicker({
+			dateFormat: 'yy/mm/dd',
+			showOn: 'both',
+			buttonImage: '/images/icon_calendar.png',
+			buttonImageOnly: true,
+			changeMonth: true,
+			changeYear: true,
+			prevText: '이전 달',
+			nextText: '다음 달',
+			monthNames: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+			monthNamesShort: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+			dayNames: ['일', '월', '화', '수', '목', '금', '토'],
+			dayNamesShort: ['일', '월', '화', '수', '목', '금', '토'],
+			dayNamesMin: ['일', '월', '화', '수', '목', '금', '토'],
+			showMonthAfterYear: true,
+			yearSuffix: '년&nbsp;'
+		});
+		
+		$("#date_finish").datepicker({
+			dateFormat: 'yy/mm/dd',
+			showOn: 'both',
+			buttonImage: '/images/icon_calendar.png',
+			buttonImageOnly: true,
+			changeMonth: true,
+			changeYear: true,
+			prevText: '이전 달',
+			nextText: '다음 달',
+			monthNames: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+			monthNamesShort: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+			dayNames: ['일', '월', '화', '수', '목', '금', '토'],
+			dayNamesShort: ['일', '월', '화', '수', '목', '금', '토'],
+			dayNamesMin: ['일', '월', '화', '수', '목', '금', '토'],
+			showMonthAfterYear: true,
+			yearSuffix: '년&nbsp;'
+		});
+	});
+	
+	function goLeft() {
+		var currentPage = Number($('#currentPage').val());
+		
+		if(currentPage == 1) {
+			alert('첫 페이지입니다.');
+			return;
+		}
+		
+		$('#currentPage').val(currentPage - 1);
+		
+		openDocLists();
+	}
+
+	function goRight() {
+		var currentPage = Number($('#currentPage').val());
+		if((currentPage) * 5 >= Number($('#pageCount').val())) {
+			alert('마지막 페이지입니다.');
+			return;
+		}
+		
+		$('#currentPage').val(currentPage + 1);
+		
+		openDocLists();
+	}
+	
+	
+</script>
+
+</head>
+
+<body>
+
+<div id="wrap">
+	<input type="hidden" id="viewTRLYN">
+	<input type="hidden" id="currentPage" value="1">
+	<input type="hidden" id="pageCount" value="1">
+	
+	<!-- 상단 검색 영역 -->
+	<div id="header2">
+		
+		<ul>
+			<li><a href="menu_intro.do">OPD소개</a></li>
+			<li><a href="menu_notice.do">공지사항</a></li>
+			<li><a href="menu_faq.do">FAQ</a></li>
+			<li><a href="menu_counsel.do">민원상담</a></li>
+		</ul>
+		
+	</div>
+	
+	
+	<div id="header">
+		<form name="searchForm" method="post" action="/family.do">
+			<input type="hidden" name="sortData" id="sortData">
+			<input type="hidden" name="sortOrder" id="sortOrder">
+			
+			<h1>
+				<a href="/index.do" title="국제특허심사공유시스템 메인으로 이동"><img src="/images/logo_sub.png" alt="opd 국제특허심사공유시스템 (ONE PORTAL DOSSIER)"></a>
+			</h1>
+			
+			
+			<dl>
+				<dt><label for="number type">번호&nbsp;</label></dt>
+				<dd>
+					<span><input type="radio" id="radio_ori" name="numberType1" value="original" onclick="javascript:openOriginal();"><label for="radio_ori"> ORIGINAL</label></span>
+					<span><input type="radio" id="radio_doc" name="numberType1" value="docdb" onclick="javascript:openDocdb();" checked="checked">                        <label for="radio_doc"> DOCDB</label></span>
+				</dd>
+			</dl>
+						
+			<!--//////////////////////////////////////////////////////////////// Original Number 입력 화면  -->
+			<span id="originalSearchArea" style="display: none;">
+				<dl>
+					<dt><label for="ori_country">국가코드&nbsp;</label></dt>
+					<dd>
+						<select id="ori_country" name="ori_country" onchange="javascript:changeSample();">
+							<option value="KR" selected="selected">KR</option>
+							<option value="CN">CN</option>
+							<option value="EP">EP</option>
+							<option value="JP">JP</option>
+							<option value="US">US</option>
+							<option value="AU">AU</option>
+							<option value="CA">CA</option>
+							<option value="GB">GB</option>
+							<option value="IL">IL</option>
+							<option value="IN">IN</option>
+							<option value="WO">WO</option>
+						</select>
+					</dd>
+					<dt><label for="ori_numberType">번호형식&nbsp;</label></dt>
+					<dd>
+						<select id="ori_numberType" name="ori_numberType" onchange="javascript:changeSample();">
+							<option value="U1301" selected="selected">출원번호</option>
+							<option value="U1302">공개/등록번호</option>
+						</select>
+					</dd>
+					<dt><label for="ori_number">출원번호&nbsp;</label></dt>
+					<dd>
+						<input type="text" id="ori_number" name="ori_number" size="20" value="" placeholder="예) 1020110004599" onkeydown="javascript:if(event.keyCode==13){searchWithOriginalNumber();}">
+					</dd>
+					<dd>
+						<a href="javascript:void(0);" onclick="javascript:searchWithOriginalNumber();"><img src="images/search_btn_search2.gif" style="" alt="검색"></a>
+					</dd>
+				</dl>
+				
+			</span>
+			<!--//////////////////////////////////////////////////////////////// Original Number -->
+			
+			
+			
+			
+			<!--//////////////////////////////////////////////////////////////// DocDB Number 입력 화면 -->
+			<span id="docdbSearchArea" style="display: block;">
+				<dl>
+					<dt><label for="docdb_numberType">번호형식&nbsp;</label></dt>
+					<dd>
+						<select id="docdb_numberType" name="docdb_numberType">
+							<option value="U1301" selected="selected">출원번호</option>
+							<option value="U1302">공개/등록번호</option>
+							<option value="U1303">우선권번호</option>
+						</select>
+					</dd>
+					
+					<dt><label for="docdb_number">출원번호&nbsp;</label></dt>
+					<dd>
+						<input type="text" id="docdb_number" name="docdb_number" value="KR.20190000844.A" placeholder="예) KR.20110004599.A" size="20" onkeydown="javascript:if(event.keyCode==13){searchWithDocdbNumber();}">
+					</dd>
+					<dd>
+						<a href="javascript:void(0);" onclick="javascript:searchWithDocdbNumber();"><img src="images/search_btn_search2.gif" style="" alt="검색"></a>
+					</dd>
+				</dl>
+				
+			</span>
+			<!--//////////////////////////////////////////////////////////////// DocDB Number -->
+			
+			
+			
+			
+			<!-- // DocDB Number -->
+			<dl>
+				<dd><a href="javascript:void(0);" class="search_history" onclick="javascript:openSearchHistory();" title="검색이력">검색이력</a></dd>
+			
+				<dd>
+					<a href="javascript:void(0);" onclick="javascript:openDocContentPopupOne();" title="단일국가 심사문서 리스트 팝업">
+						<img src="images/search_btn_opd12.gif" style="" alt="OPD">
+					</a>
+				</dd>
+			</dl>
+			<!-- </div> -->
+		</form>
+	</div>
+	
+	<!-- #cont -->
+	<div id="cont">
+		<!-- 패밀리 정보 -->
+		<section>
+			<div class="cont_tit">
+				<h2 class="title_01">
+					<span class="txt_blue">패밀리</span><a href="javascript:void(0);" onclick="javascript: openFamilyPopup();" title=""> </a>정보
+					<table class="table_wrap03" align="right">
+								<tbody>
+								    <tr onclick="openSubPopup();">
+								<td class="head">서비스 현황 <img class="question" src="/images/question-mark_24.png">
+								    	<div class="tooltip">
+										<p>
+											[신호등 색깔 안내] <br> (초록) 서비스 원활<br> (노랑) 서비스 불안정<br>
+											(빨강) 서비스 장애<br> (보라) 서비스 점검 예정<br> <br> (*신호등 클릭 시,
+											상세 서비스 현황을 팝업으로 확인할 수 있습니다.)<br>
+								    		</p>
+								    	</div>
+								    </td>
+								    	
+								    	
+								    	
+								    	
+								    	
+								    	
+								    	
+								    	
+								    	
+								    	
+								    	
+								    	
+								    	
+								    	
+								    	
+								    	
+								    	
+								    	
+								
+								
+								
+								
+								
+								
+
+    									<td style="border-right: none;">KR</td>
+								<td style="border-left: none;">
+    											
+    											
+    											
+    											
+											<div class="wrapCountry circle_green"></div>
+								    					<div class="tooltip">
+												<p>[서비스 원활]</p>
+												    </div>
+    											
+									</td>
+    									<td style="border-right: none;">JP</td>
+								<td style="border-left: none;">
+    											
+    											
+    											
+    											
+											<div class="wrapCountry circle_green"></div>
+								    					<div class="tooltip">
+												<p>[서비스 원활]</p>
+												    </div>
+    											
+									</td>
+    									<td style="border-right: none;">US</td>
+								<td style="border-left: none;">
+    											
+    											
+    											
+    											
+											<div class="wrapCountry circle_green"></div>
+								    					<div class="tooltip">
+												<p>[서비스 원활]</p>
+												    </div>
+    											
+									</td>
+    									<td style="border-right: none;">CN</td>
+								<td style="border-left: none;">
+    											
+											<div class="wrapCountry circle_yellow"></div>
+								    					<div class="tooltip">
+												<p><b>[서비스 불안정]</b><br>24. 1. 1. 00:00 ~<br>
+												</p><p>
+												    </p></div>
+    											
+    											
+    											
+    											
+									</td>
+    									<td style="border-right: none;">EP</td>
+								<td style="border-left: none;">
+    											
+											<div class="wrapCountry circle_yellow"></div>
+								    					<div class="tooltip">
+												<p><b>[서비스 불안정]</b><br>24. 1. 1. 00:00 ~<br>
+												</p><p>
+												    </p></div>
+    											
+    											
+    											
+    											
+									</td>
+								<td class="txt_wipo" style="border-right: none;">WIPO<br>CASE
+    									</td>
+								<td style="border-left: none;">
+    											
+											<div class="wrapCountry circle_yellow"></div>
+								    					<div class="tooltip">
+												<p><b>[서비스 불안정]</b><br>24. 1. 1. 00:00 ~<br>
+												</p><p>
+												    </p></div>
+    											
+    											
+    											
+    											
+									</td>
+									</tr>
+								</tbody>
+							</table>
+				</h2>
+				<div class="btn_wrap_01">
+					<a href="javascript:void(0);" class="btn_03" onclick="javascript:openDocLists();">심사정보조회</a>
+					
+					<a href="javascript:void(0);" class="btn_02" onclick="javascript: openAllCitationClassification(); return false;" title="팝업">전체 인용&amp;분류</a>
+					<a href="javascript:void(0);" class="btn_02" onclick="javascript: familyRss();" title="팝업">패밀리 RSS&nbsp;<img src="/images/social_rss_feed_icon_131224.png" width="15px" height="15px"></a>
+				</div>
+			</div>
+			
+			<div class="table_wrap01">
+				<table id="familyTable" class="tb_01">
+					<caption>패밀리 정보 : 국가, 출원(번호, 출원일), 공개(번호, 공개일), 등록(번호, 발행일), 우선권(번호, 우선일), 발명의 명칭, 출원인</caption>
+					<colgroup>
+						<col width="5%">
+						<col width="7%">
+						<col width="8%">
+						<col width="6%">
+						<col width="8%">
+						<col width="6%">
+						<col width="8%">
+						<col width="6%">
+						<col width="8%">
+						<col width="6%">
+						<col width="22%">
+						<col width="10%">
+					</colgroup>
+					<thead>
+						<tr>
+							<th rowspan="2" scope="col">체크<input type="checkbox" id="checkAll" onclick="javascript:checkAll();"></th>
+							<th rowspan="2" scope="col">
+								국가<a href="javascript:changeOrder('applno','asc')"><img src="/images/bull02.png" alt="오름차순"></a><a href="javascript:changeOrder('applno','desc')"><img src="/images/bull03.png" alt="내림차순"></a>
+							</th>
+							<th colspan="2" scope="col">출원</th>
+							<th colspan="2" scope="col">공개</th>
+							<th colspan="2" scope="col">등록</th>
+							<th colspan="2" scope="col">우선권</th>
+							<th rowspan="2" scope="col">발명의 명칭</th>
+							<th rowspan="2" scope="col">출원인</th>
+						</tr>
+						<tr>
+							<th scope="col">번호</th>					
+							<th scope="col">
+								출원일<a href="javascript:changeOrder('appl_dt','asc')"><img src="/images/bull02.png" alt="오름차순"></a><a href="javascript:changeOrder('appl_dt','desc')"><img src="/images/bull03.png" alt="내림차순"></a>
+							</th>
+							<th scope="col">번호</th>					
+							<th scope="col">
+								공개일<a href="javascript:changeOrder('opn_dt','asc')"><img src="/images/bull02.png" alt="오름차순"></a><a href="javascript:changeOrder('opn_dt','desc')"><img src="/images/bull03.png" alt="내림차순"></a>
+							</th>
+							<th scope="col">번호</th>					
+							<th scope="col">
+								발행일<a href="javascript:changeOrder('pub_dt','asc')"><img src="/images/bull02.png" alt="오름차순"></a><a href="javascript:changeOrder('pub_dt','desc')"><img src="/images/bull03.png" alt="내림차순"></a>
+							</th>
+							<th scope="col">번호</th>					
+							<th scope="col">우선일</th>
+						</tr>
+					</thead>
+					<tbody>
+						
+						
+						<tr>
+							
+							
+								
+								
+								<td><input type="checkbox" name="familyCheck" checked="checked" value="KR.20190000844.A"></td>
+								
+								
+								
+							
+							
+							
+							
+							<td class="bgc_gray">
+								KR
+								<input type="hidden" name="countryCode" value="KR">
+							</td>
+							
+							<td>
+								<input type="hidden" name="applDocNumber" value="KR.20190000844.A">
+								<input type="hidden" id="KR_20190000844_A_pubAno" name="" value="KR.20190025857.A">
+								<input type="hidden" id="KR_20190000844_A_pubBno" name="" value="KR.102136729.B1">
+								KR.20190000844.A
+							</td>
+							
+							<td>20190103</td>
+							
+							
+							
+								<td>
+									KR.20190025857.A
+									<input type="hidden" name="pubADocNumber" value="KR.20190025857.A">
+								</td>
+							
+							
+							
+							
+							<td>20190312</td>
+							
+							
+							
+								<td>
+									KR.102136729.B1
+									<input type="hidden" name="pubBDocNumber" value="KR.102136729.B1">
+								</td>
+							
+							
+							
+							
+							<td>20200813</td>
+							
+							<td>
+								-
+								
+							</td>
+							
+							<td>
+								-
+								
+							</td>
+							
+							<td class="txt_l"><span class="ellipsis invntTtl" id="KR_20190000844_A_title" title="SYSTEM FOR ELECTRONIC COUPONS, AND METHOD PROCESSING  ELECTRONIC COUPONS">SYSTEM FOR ELECTRONIC COUPONS, AND METHOD PROCESSING  ELECTRONIC COUPONS</span></td>
+							
+							<td class="txt_l"><span class="ellipsis pname" id="KR_20190000844_A_applicant" title="Korea University Of Technology And Education Industry-University Cooperation Foundation">Korea University Of Technology And Education Industry-University Cooperation Foundation</span></td>
+						</tr>
+						
+						
+						
+					</tbody>
+				</table>
+			</div>
+			
+			
+			<div id="priority_popup" class="hide">
+				<div id="layerPopup_header">
+					<h3 class="title_01"><span id="layerPopup_tit" class="txt_blue"></span> 우선권 정보</h3>
+					<input type="button" id="layerPopup_close" class="btn_05" value="닫기" onclick="javascript:closePriorityLayerpopup();">
+				</div>
+				<table class="tb_01">
+					<caption>우선권 정보 : 우선권 번호, 우선권 일자</caption>
+					<colgroup>
+						<col width="60%">
+						<col width="40%">
+					</colgroup>
+					<thead>
+						<tr>
+							<th scope="col">번호</th>
+							<th scope="col">우선일</th>
+						</tr>
+					</thead>
+					<tbody id="priority_tbody">
+					</tbody>
+				</table>
+			</div>
+		</section>
+		<!-- // 패밀리 정보 -->
+		
+		<!-- 심사 정보 -->
+		<section>
+			<div class="cont_tit">
+				<h2 class="title_01"><span class="txt_blue">심사</span> 정보</h2>
+				<div class="btn_wrap_01">
+					<img src="/images/icon_filter.png">필터
+					<select id="docListOption" onchange="javascript:filterDoclist();">
+						<option value="all" selected="selected">전체보기</option>
+						<option value="major">주요문서</option>
+						<option value="pink">주요통지서</option>
+						<option value="yellow">주요제출문서</option>
+						<option value="blue">선행기술문서</option>
+					</select>
+					<input id="date_start" style="width:100px;" autocomplete="off" class="hasDatepicker"><img class="ui-datepicker-trigger" src="/images/icon_calendar.png" alt="..." title="...">
+			       		~
+		       		<input id="date_finish" style="width:100px;" autocomplete="off" class="hasDatepicker"><img class="ui-datepicker-trigger" src="/images/icon_calendar.png" alt="..." title="...">
+		       		<a href="javascript:void(0);" onclick="javascript:filterDoclist();">
+						<img src="/images/icon_search_1.png" alter="필터검색">
+					</a>
+				</div>
+			</div>
+			
+			<div id="docListsDiv" class="dossier">
+				<div class="left_on" onclick="javascript:goLeft();">이전</div>
+				<div class="right_on" onclick="javascript:goRight();">다음</div>
+				
+				<div id="divDossier" class="dossier_wrap">
+					<ul>
+						<li id="doclist_1">
+							<div class="coun_wrap">
+								<div id="docListTitle1" class="docListTitle"><h3><img src="/images/flag_kr.gif" alt="">&nbsp;KR<span>&nbsp;20190000844.A</span></h3><div class="btnbox"><p class="btn_l"><a href="javascript:void(0);" class="btn_05" onclick="javascript: openCountryCitationClassification('KR.20190000844.A'); return false;" title="팝업">인용&amp;분류</a><a href="javascript:void(0);" class="btn_05" onclick="javascript: openExpandDossier('KR.20190000844.A', 'doclist_1'); return false;" title="팝업">다운로드</a><a href="javascript:void(0);" class="btn_05" onclick="javascript: rss('KR.20190000844.A'); return false;" title="팝업">RSS</a></p><p class="btn_r"><a href="javascript:void(0);" class="mr3" onclick="javascript: setDocList('KR.20190000844.A', '1'); return false;"><img src="/images/btn_reset.gif" alt="새로고침"></a><a href="javascript:void(0);" onclick="javascript: openExpandDossier('KR.20190000844.A', 'doclist_1'); return false;" title="팝업"><img src="/images/btn_ext.gif" alt="확장"></a></p></div></div>
+								<div id="docListContent1" class="docListContent"><div style="padding-top:7px;"><table class="tb02" style="background-color:white;" cellspacing="0"><colgroup><col style="width:23%;"><col style="width:53%;"><col style="width:24%;"></colgroup><thead><tr><th>제출일</th><th>문서</th><th>문서보기</th></tr></thead><tbody><tr class="bgc_else colorFilter"><td class="txa_c txt_gray dateFilter">2019.01.03</td><td class="txa_l">[분할출원]특허출원서</td><td class="txa_c"><a class="btn_05 txt_gray" href="javascript:viewDocContent('KR.20190000844.A','Request_for_Divisional_Application_for_Patent_112019000841434_KR','application/pdf','[분할출원]특허출원서','2019.01.03','0','docContentArea');"><span>원문</span></a></td></tr><tr class="bgc_else colorFilter"><td class="txa_c txt_gray dateFilter">2019.01.11</td><td class="txa_l">[심사청구]심사청구(우선심사신청)서</td><td class="txa_c"><a class="btn_05 txt_gray" href="javascript:viewDocContent('KR.20190000844.A','Request_for_Examination_112019003876110_KR','application/pdf','[심사청구]심사청구(우선심사신청)서','2019.01.11','0','docContentArea');"><span>원문</span></a></td></tr><tr class="bgc_else colorFilter"><td class="txa_c txt_gray dateFilter">2019.01.14</td><td class="txa_l">보정요구서</td><td class="txa_c"><a class="btn_05 txt_gray" href="javascript:viewDocContent('KR.20190000844.A','Request_for_Amendment_152019000933115_KR','application/pdf','보정요구서','2019.01.14','0','docContentArea');"><span>원문</span></a></td></tr><tr class="bgc_yellow colorFilter"><td class="txa_c txt_gray dateFilter">2019.01.15</td><td class="txa_l">[출원서등 보정]보정서</td><td class="txa_c"><a class="btn_05 txt_gray" href="javascript:viewDocContent('KR.20190000844.A','Amendment_to_Bibliographic_Information_112019004712110_KR','application/pdf','[출원서등 보정]보정서','2019.01.15','0','docContentArea');"><span>원문</span></a></td></tr><tr class="bgc_pink colorFilter"><td class="txa_c txt_gray dateFilter">2019.04.09</td><td class="txa_l">의견제출통지서</td><td class="txa_c"><a class="btn_05 txt_gray" href="javascript:viewDocContent('KR.20190000844.A','Request_for_the_Submission_of_an_Opinion_952019025682492_KR','application/pdf','의견제출통지서','2019.04.09','0','docContentArea');"><span>원문</span></a></td></tr><tr class="bgc_else colorFilter"><td class="txa_c txt_gray dateFilter">2019.06.10</td><td class="txa_l">[지정기간연장]기간연장(단축, 경과구제)신청서</td><td class="txa_c"><a class="btn_05 txt_gray" href="javascript:viewDocContent('KR.20190000844.A','Request_for_Extension_of_Designated_Period_112019058803817_KR','application/pdf','[지정기간연장]기간연장(단축, 경과구제)신청서','2019.06.10','0','docContentArea');"><span>원문</span></a></td></tr><tr class="bgc_else colorFilter"><td class="txa_c txt_gray dateFilter">2019.07.09</td><td class="txa_l">[지정기간연장]기간연장(단축, 경과구제)신청서</td><td class="txa_c"><a class="btn_05 txt_gray" href="javascript:viewDocContent('KR.20190000844.A','Request_for_Extension_of_Designated_Period_112019070312467_KR','application/pdf','[지정기간연장]기간연장(단축, 경과구제)신청서','2019.07.09','0','docContentArea');"><span>원문</span></a></td></tr><tr class="bgc_yellow colorFilter"><td class="txa_c txt_gray dateFilter">2019.08.09</td><td class="txa_l">[거절이유 등 통지에 따른 의견]의견(답변, 소명)서</td><td class="txa_c"><a class="btn_05 txt_gray" href="javascript:viewDocContent('KR.20190000844.A','Written_Opinion_112019082001937_KR','application/pdf','[거절이유 등 통지에 따른 의견]의견(답변, 소명)서','2019.08.09','0','docContentArea');"><span>원문</span></a></td></tr><tr class="bgc_yellow colorFilter"><td class="txa_c txt_gray dateFilter">2019.08.09</td><td class="txa_l">[명세서등 보정]보정서</td><td class="txa_c"><a class="btn_05 txt_gray" href="javascript:viewDocContent('KR.20190000844.A','Amendment_including_Specification_etc._112019082004907_KR','application/pdf','[명세서등 보정]보정서','2019.08.09','0','docContentArea');"><span>원문</span></a></td></tr><tr class="bgc_pink colorFilter"><td class="txa_c txt_gray dateFilter">2019.12.09</td><td class="txa_l">거절결정서</td><td class="txa_c"><a class="btn_05 txt_gray" href="javascript:viewDocContent('KR.20190000844.A','Notice_of_Final_Rejection_952019088999212_KR','application/pdf','거절결정서','2019.12.09','0','docContentArea');"><span>원문</span></a></td></tr><tr class="bgc_else colorFilter"><td class="txa_c txt_gray dateFilter">2020.01.09</td><td class="txa_l">[법정기간연장]기간연장(단축, 경과구제)신청서</td><td class="txa_c"><a class="btn_05 txt_gray" href="javascript:viewDocContent('KR.20190000844.A','Request_for_Extension_of_Statutory_Period_112020002411813_KR','application/pdf','[법정기간연장]기간연장(단축, 경과구제)신청서','2020.01.09','0','docContentArea');"><span>원문</span></a></td></tr><tr class="bgc_else colorFilter"><td class="txa_c txt_gray dateFilter">2020.01.10</td><td class="txa_l">법정기간연장승인서</td><td class="txa_c"><a class="btn_05 txt_gray" href="javascript:viewDocContent('KR.20190000844.A','Approval_of_Extension_of_Legal_Period_152020000645757_KR','application/pdf','법정기간연장승인서','2020.01.10','0','docContentArea');"><span>원문</span></a></td></tr><tr class="bgc_yellow colorFilter"><td class="txa_c txt_gray dateFilter">2020.02.10</td><td class="txa_l">[거절이유 등 통지에 따른 의견]의견(답변, 소명)서</td><td class="txa_c"><a class="btn_05 txt_gray" href="javascript:viewDocContent('KR.20190000844.A','Written_Opinion_112020013728355_KR','application/pdf','[거절이유 등 통지에 따른 의견]의견(답변, 소명)서','2020.02.10','0','docContentArea');"><span>원문</span></a></td></tr><tr class="bgc_yellow colorFilter"><td class="txa_c txt_gray dateFilter">2020.02.10</td><td class="txa_l">[명세서등 보정]보정서(재심사)</td><td class="txa_c"><a class="btn_05 txt_gray" href="javascript:viewDocContent('KR.20190000844.A','Amendment_including_Specification_etc._112020013730044_KR','application/pdf','[명세서등 보정]보정서(재심사)','2020.02.10','0','docContentArea');"><span>원문</span></a></td></tr><tr class="bgc_pink colorFilter"><td class="txa_c txt_gray dateFilter">2020.03.02</td><td class="txa_l">등록결정서</td><td class="txa_c"><a class="btn_05 txt_gray" href="javascript:viewDocContent('KR.20190000844.A','Written_Decision_on_Registration_952020015842334_KR','application/pdf','등록결정서','2020.03.02','0','docContentArea');"><span>원문</span></a></td></tr><tr class="bgc_yellow colorFilter"><td class="txa_c txt_gray dateFilter">2020.08.03</td><td class="txa_l">[명세서등 보정]보정서(심사관 직권보정)</td><td class="txa_c"><a class="btn_05 txt_gray" href="javascript:viewDocContent('KR.20190000844.A','Amendment_including_Specification_etc._112020501998592_KR','application/pdf','[명세서등 보정]보정서(심사관 직권보정)','2020.08.03','0','docContentArea');"><span>원문</span></a></td></tr></tbody></table></div><input type="hidden" id="KR.20190000844.A_new" name="new_total" value="0"></div>
+							</div>
+						</li>
+						<li id="doclist_2">
+							<div class="coun_wrap">
+								<div id="docListTitle2" class="docListTitle"></div>
+								<div id="docListContent2" class="docListContent"></div>
+							</div>
+						</li>
+						<li id="doclist_3">
+							<div class="coun_wrap">
+								<div id="docListTitle3" class="docListTitle"></div>
+								<div id="docListContent3" class="docListContent"></div>
+							</div>
+						</li>
+						<li id="doclist_4">
+							<div class="coun_wrap">
+								<div id="docListTitle4" class="docListTitle"></div>
+								<div id="docListContent4" class="docListContent"></div>
+							</div>
+						</li>
+						<li id="doclist_5">
+							<div class="coun_wrap">
+								<div id="docListTitle5" class="docListTitle"></div>
+								<div id="docListContent5" class="docListContent"></div>
+							</div>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</section>
+	</div>
+	<!-- // #cont -->
+	
+	<!-- #footer -->
+	<div id="footer">
+		<p><img src="/images/copy_logo.gif" alt="국제특허심사공유시스템"> 운영문의 <b>042-479-3645</b></p>
+		<p class="btn">
+			<a href="#" onclick="javascript:pdfDownPage();"><img src="/images/copy_pdf.gif" alt="pdf뷰어"></a>
+			<a href="http://www.alternatiff.com" target="_blank"><img src="/images/copy_tiff.gif" alt="tiff뷰어"></a>
+			<a href="/user-manual/OPDCWS_User_Manual_VER5.0.pdf" target="_blank"><img src="/images/copy_manual.gif" alt="사용자매뉴얼"></a>
+		</p>	
+	</div>
+	<!-- // #footer -->
+	
+</div>
+
+
+<div id="ui-datepicker-div" class="ui-datepicker ui-widget ui-widget-content ui-helper-clearfix ui-corner-all"></div></body></html>

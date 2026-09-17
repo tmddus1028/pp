@@ -1,0 +1,49 @@
+{
+  "application_number": "1020190000844",
+  "publication_number": "KR20190025857A",
+  "publication_date": "2019-03-12",
+  "office_action_date": "2019-04-09",
+  "retrieved_at": "2026-09-16",
+  "files": [
+    {
+      "filename": "KR20190025857A.pdf",
+      "role": "patent",
+      "source": "https://patentimages.storage.googleapis.com/72/4e/02/e5b1a3623bf8f5/KR20190025857A.pdf",
+      "source_page": "https://patents.google.com/patent/KR20190025857A/ko",
+      "sha256": "bdda212cb4da55106447be86373180b27c05cdd21c9b7b59ea71833eba984b32",
+      "pages": 17
+    },
+    {
+      "filename": "KR20150096573A.pdf",
+      "role": "reference",
+      "source": "https://patentimages.storage.googleapis.com/16/34/d3/4d3ba228b4a31c/KR20150096573A.pdf",
+      "source_page": "https://patents.google.com/patent/KR20150096573A/ko",
+      "sha256": "dfe9a050a62b15cf41dfdddb5d826163b445cc03f17634ab5214a8f35a241517",
+      "pages": 13
+    },
+    {
+      "filename": "KR20150090348A.pdf",
+      "role": "reference",
+      "source": "https://patentimages.storage.googleapis.com/ba/47/4c/d3fbd695cf455b/KR20150090348A.pdf",
+      "source_page": "https://patents.google.com/patent/KR20150090348A/ko",
+      "sha256": "e11d5cf1aa5583ee943d1acb6b970aeb1a22efeba8999e3a21518bb70fb50b88",
+      "pages": 19
+    },
+    {
+      "filename": "KR20150093093A.pdf",
+      "role": "reference",
+      "source": "https://patentimages.storage.googleapis.com/fa/52/24/7e55d03fdc3521/KR20150093093A.pdf",
+      "source_page": "https://patents.google.com/patent/KR20150093093A/ko",
+      "sha256": "6a172101b1af500dbb502270010b14fe325237b23920cfeb8a5bfdfb18597ea4",
+      "pages": 25
+    },
+    {
+      "filename": "office_action_20190409.xml",
+      "role": "office_action",
+      "source": "user-provided KIPRIS sample XML",
+      "sha256": "8e55d09eb2d64683758ddc2dd82913c9cc979e261e8755102cd521669e332803",
+      "format": "xml"
+    }
+  ],
+  "version_verification": "Public A claim preamble + 7 components match OA recitation after formatting normalization. Official KIPRIS history matches OA dispatch number. Original prosecution files not fully obtained."
+}

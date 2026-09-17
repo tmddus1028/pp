@@ -1,0 +1,42 @@
+[
+  {
+    "application": "1020190000844",
+    "pages": 6,
+    "encrypted": false,
+    "text_chars": 7655,
+    "application_in_pdf": true,
+    "contains_office_action_title": true
+  },
+  {
+    "application": "1020190000874",
+    "pages": 5,
+    "encrypted": false,
+    "text_chars": 6067,
+    "application_in_pdf": true,
+    "contains_office_action_title": true
+  },
+  {
+    "application": "1020190000902",
+    "pages": 3,
+    "encrypted": false,
+    "text_chars": 3307,
+    "application_in_pdf": true,
+    "contains_office_action_title": true
+  },
+  {
+    "application": "1020190000903",
+    "pages": 4,
+    "encrypted": false,
+    "text_chars": 5023,
+    "application_in_pdf": true,
+    "contains_office_action_title": true
+  },
+  {
+    "application": "1020190000948",
+    "pages": 5,
+    "encrypted": false,
+    "text_chars": 6336,
+    "application_in_pdf": true,
+    "contains_office_action_title": true
+  }
+]

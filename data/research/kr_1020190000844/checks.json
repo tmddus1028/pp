@@ -1,0 +1,40 @@
+{
+  "application_number": "1020190000844",
+  "office_action_date": "2019-04-09",
+  "title": "전자쿠폰 시스템 및 전자쿠폰 처리 방법",
+  "publication_pdf_pages": 17,
+  "application_number_present_on_pdf_cover": true,
+  "claim_page": 3,
+  "examination_claims": "[심사결과] □ 심사 대상 청구항 :\n                제1항",
+  "statute_present_in_oa": true,
+  "relied_publications_from_oa": [
+    "10-2015-0096573",
+    "10-2015-0090348",
+    "10-2015-0093093"
+  ],
+  "source_hashes_verified": true,
+  "all_8_claim_components_match_after_format_normalization": true,
+  "compatibility": {
+    "xml_upload": {
+      "error": "PDF, TXT, JSON 파일만 지원합니다."
+    },
+    "pdf_ingestion": {
+      "pages": 17,
+      "text_chars": 19969,
+      "ocr_used": false,
+      "claim_phrase_preserved": true
+    },
+    "claim_parser": {
+      "error": "청구항을 찾지 못했습니다. Claims 제목과 '1. ...' 형식의 청구항 원문을 입력하세요."
+    },
+    "oa_text_probe": {
+      "rejections": 0,
+      "warnings": [
+        "로컬 규칙 모드: 표준 거절/지적 문장만 추출합니다. 문맥 해석과 누락 여부는 원문 확인이 필요합니다.",
+        "명시적인 거절/지적을 추출하지 못했습니다. 거절이 없다는 뜻은 아닙니다."
+      ]
+    }
+  },
+  "azure_inference_tested": false,
+  "production_code_changed": false
+}

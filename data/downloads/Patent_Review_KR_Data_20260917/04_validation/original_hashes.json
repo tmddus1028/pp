@@ -1,0 +1,102 @@
+[
+  {
+    "file": "kipris_oa_sample.zip",
+    "bytes": 411210,
+    "sha256": "67c9f4e6272d29114f418ab3914c5d34c5d0e1d119866dae69bd5f76ac276b56"
+  },
+  {
+    "file": "kipris_patent_oa_2015.zip",
+    "bytes": 857034,
+    "sha256": "607c2d82324dc1d44f74a1b18502a896a3be4204dcf3d3afec27448e700b4383"
+  },
+  {
+    "file": "official_samples\\1020190000844_952019025682492\\1020190000844_952019025682492.pdf",
+    "bytes": 84809,
+    "sha256": "04dec6f95d6a6a64ab6e7e000e60878db67eed7e28a35430271d2160868838af"
+  },
+  {
+    "file": "official_samples\\1020190000844_952019025682492\\1020190000844_952019025682492.xml",
+    "bytes": 23456,
+    "sha256": "8e55d09eb2d64683758ddc2dd82913c9cc979e261e8755102cd521669e332803"
+  },
+  {
+    "file": "official_samples\\1020190000874_952019023937404\\1020190000874_952019023937404.pdf",
+    "bytes": 77191,
+    "sha256": "0f756c8bb7c0e434f3c7ff903486f78d17616f465302333e23a4253296bfe92b"
+  },
+  {
+    "file": "official_samples\\1020190000874_952019023937404\\1020190000874_952019023937404.xml",
+    "bytes": 19034,
+    "sha256": "c5f7385d19b3b21ae48a6a08c5afc94c16688f4f031b761c884b61227f57e4d2"
+  },
+  {
+    "file": "official_samples\\1020190000902_952019021826308\\1020190000902_952019021826308.pdf",
+    "bytes": 62560,
+    "sha256": "547c41112a507ea1d7357b45b4be8ed7a61aeceebe7bf7e22e0df2c61182c7dd"
+  },
+  {
+    "file": "official_samples\\1020190000902_952019021826308\\1020190000902_952019021826308.xml",
+    "bytes": 12991,
+    "sha256": "225d4e411c717b7ad33780a4729fe98f1af39dc437cba11fef2725d4342ba042"
+  },
+  {
+    "file": "official_samples\\1020190000903_952019013815712\\1020190000903_952019013815712.pdf",
+    "bytes": 90031,
+    "sha256": "b65796279f4fa293f138b36e50b4726a7605e670c57a3e9110ae9f1816a30007"
+  },
+  {
+    "file": "official_samples\\1020190000903_952019013815712\\1020190000903_952019013815712.xml",
+    "bytes": 17380,
+    "sha256": "ca6a119d69986078e487906ef926bf231c8d217d833f1d6a154e7b0f0450412f"
+  },
+  {
+    "file": "official_samples\\1020190000948_952019003450110\\1020190000948_952019003450110.pdf",
+    "bytes": 103971,
+    "sha256": "e9e885d3005ca429e66e4ea8065125842f73b11395a1b6407182bf769e8caaa5"
+  },
+  {
+    "file": "official_samples\\1020190000948_952019003450110\\1020190000948_952019003450110.xml",
+    "bytes": 19058,
+    "sha256": "84d20fb4ac430f41aa945ffad2fc44a1df9c2a026556bb497d7d903296607003"
+  },
+  {
+    "file": "publications\\KR20150090348A.pdf",
+    "bytes": 355984,
+    "sha256": "e11d5cf1aa5583ee943d1acb6b970aeb1a22efeba8999e3a21518bb70fb50b88"
+  },
+  {
+    "file": "publications\\KR20150093093A.pdf",
+    "bytes": 393979,
+    "sha256": "6a172101b1af500dbb502270010b14fe325237b23920cfeb8a5bfdfb18597ea4"
+  },
+  {
+    "file": "publications\\KR20150096573A.pdf",
+    "bytes": 341044,
+    "sha256": "dfe9a050a62b15cf41dfdddb5d826163b445cc03f17634ab5214a8f35a241517"
+  },
+  {
+    "file": "publications\\KR20190003855A.pdf",
+    "bytes": 882085,
+    "sha256": "850d9451200c9802a6ef45b218afaa0e7f0ea9341e7dab02d07e299624e3823f"
+  },
+  {
+    "file": "publications\\KR20190004821A.pdf",
+    "bytes": 963518,
+    "sha256": "1336032499ec8fa0815040ac5b1e9525dc39a4454420e424e960b2afe74d71d6"
+  },
+  {
+    "file": "publications\\KR20190005244A.pdf",
+    "bytes": 512335,
+    "sha256": "8f77d152c646a988a38d5f052c7cef845cec56c85d2930c45ce00ae8a16c4f3b"
+  },
+  {
+    "file": "publications\\KR20190019097A.pdf",
+    "bytes": 417133,
+    "sha256": "8161f2624430361799f8881086f4df5ee1d990fee49bf1a3a1f0bfbc836b0304"
+  },
+  {
+    "file": "publications\\KR20190025857A.pdf",
+    "bytes": 1263686,
+    "sha256": "bdda212cb4da55106447be86373180b27c05cdd21c9b7b59ea71833eba984b32"
+  }
+]

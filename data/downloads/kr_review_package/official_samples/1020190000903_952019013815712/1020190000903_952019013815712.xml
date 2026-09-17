@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<krpat:PatentOpinionSubmission xmlns:tmk="http://www.wipo.int/standards/XMLSchema/ST96/Trademark" xmlns:com="http://www.wipo.int/standards/XMLSchema/ST96/Common" xmlns:krpat="urn:kr:gov:doc:kipo:patent" xmlns:pat="http://www.wipo.int/standards/XMLSchema/ST96/Patent" xmlns:tbl="http://www.oasis-open.org/tables/exchange/1.0" xmlns:krcom="urn:kr:gov:doc:kipo:common" xmlns:m="http://www.w3.org/1998/Math/MathML" com:st96Version="V2_0" com:ipoVersion="V1_0" com:creationDate="2019-03-04">
+    <krcom:SendInformation>
+        <krcom:SendIdentifier>952019013815712</krcom:SendIdentifier>
+        <krcom:SendDate>2019-02-25</krcom:SendDate>
+        <com:PeriodLimitationEndDate>2019-04-25</com:PeriodLimitationEndDate>
+    </krcom:SendInformation>
+    <krcom:DocumentIdentification>
+        <com:IPOfficeCode>KR</com:IPOfficeCode>
+        <krcom:OfficeName>특허청</krcom:OfficeName>
+        <com:DocumentName>의견제출통지서</com:DocumentName>
+        <com:CommentText>YOUR INVENTION PARTNER</com:CommentText>
+        <com:DocumentDate>2019-02-25</com:DocumentDate>
+    </krcom:DocumentIdentification>
+    <krpat:BibliographicData>
+        <pat:ApplicationIdentification>
+            <com:IPOfficeCode>KR</com:IPOfficeCode>
+            <com:ApplicationNumber>
+                <com:ApplicationNumberText>1020190000903</com:ApplicationNumberText>
+            </com:ApplicationNumber>
+            <pat:FilingDate>2019-01-03</pat:FilingDate>
+        </pat:ApplicationIdentification>
+        <pat:InventionTitleBag>
+            <pat:InventionTitle>바이오폴리머를 이용한 프로바이오틱스 분말조성물 및 이의 제조방법</pat:InventionTitle>
+        </pat:InventionTitleBag>
+        <pat:PartyBag>
+            <pat:ApplicantBag>
+                <pat:Applicant com:sequenceNumber="1">
+                    <com:PartyIdentifier>120070509242</com:PartyIdentifier>
+                    <com:Contact>
+                        <com:Name>
+                            <com:EntityName>서울대학교산학협력단 </com:EntityName>
+                        </com:Name>
+                        <com:PostalAddressBag>
+                            <com:PostalAddress>
+<com:PostalAddressText>개인정보보호를 위해 비공개합니다.</com:PostalAddressText>
+                            </com:PostalAddress>
+                        </com:PostalAddressBag>
+                    </com:Contact>
+                    <pat:ApplicantCategory>Applicant</pat:ApplicantCategory>
+                </pat:Applicant>
+            </pat:ApplicantBag>
+            <pat:InventorBag>
+                <pat:Inventor com:sequenceNumber="1">
+                    <com:Contact>
+                        <com:Name>
+                            <com:EntityName>정동화</com:EntityName>
+                        </com:Name>
+                        <com:PostalAddressBag>
+                            <com:PostalAddress>
+<com:PostalAddressText>개인정보보호를 위해 비공개합니다.</com:PostalAddressText>
+                            </com:PostalAddress>
+                        </com:PostalAddressBag>
+                    </com:Contact>
+                </pat:Inventor>
+                <pat:Inventor com:sequenceNumber="2">
+                    <com:Contact>
+                        <com:Name>
+                            <com:EntityName>김무중</com:EntityName>
+                        </com:Name>
+                        <com:PostalAddressBag>
+                            <com:PostalAddress>
+<com:PostalAddressText>개인정보보호를 위해 비공개합니다.</com:PostalAddressText>
+                            </com:PostalAddress>
+                        </com:PostalAddressBag>
+                    </com:Contact>
+                </pat:Inventor>
+                <pat:Inventor com:sequenceNumber="3">
+                    <com:Contact>
+                        <com:Name>
+                            <com:EntityName>김해</com:EntityName>
+                        </com:Name>
+                        <com:PostalAddressBag>
+                            <com:PostalAddress>
+<com:PostalAddressText>개인정보보호를 위해 비공개합니다.</com:PostalAddressText>
+                            </com:PostalAddress>
+                        </com:PostalAddressBag>
+                    </com:Contact>
+                </pat:Inventor>
+            </pat:InventorBag>
+            <pat:RegisteredPractitionerBag>
+                <pat:RegisteredPractitioner com:sequenceNumber="1">
+                    <pat:RegisteredPractitionerCategory>Agent</pat:RegisteredPractitionerCategory>
+                    <com:Contact>
+                        <com:Name>
+                            <com:EntityName>신진만</com:EntityName>
+                        </com:Name>
+                        <com:PostalAddressBag>
+                            <com:PostalAddress>
+<com:PostalAddressText>개인정보보호를 위해 비공개합니다.</com:PostalAddressText>
+                            </com:PostalAddress>
+                        </com:PostalAddressBag>
+                    </com:Contact>
+                </pat:RegisteredPractitioner>
+            </pat:RegisteredPractitionerBag>
+        </pat:PartyBag>
+    </krpat:BibliographicData>
+    <krpat:ExaminationData>
+        <krpat:ExaminationResult>
+            <krpat:ExaminationClaims>
+                <com:Heading>[심사결과] □ 심사 대상 청구항 :</com:Heading>
+                <krcom:P>제1항</krcom:P>
+            </krpat:ExaminationClaims>
+            <krpat:ExaminationLawArticle>
+                <com:Heading>□ 이 출원의 거절이유가 있는 부분과 관련 법조항</com:Heading>
+                <krcom:P><krcom:Table><krcom:IPOASISTable com:tableNumber="1"><krcom:TableGroup tbl:cols="3"><krcom:TableBody><krcom:Row><krcom:Entry>순번</krcom:Entry><krcom:Entry>거절이유가 있는 부분</krcom:Entry><krcom:Entry>관련 법조항</krcom:Entry></krcom:Row><krcom:Row><krcom:Entry>1</krcom:Entry><krcom:Entry>청구항 전항</krcom:Entry><krcom:Entry>특허법 제42조제4항제2호</krcom:Entry></krcom:Row><krcom:Row><krcom:Entry>2</krcom:Entry><krcom:Entry>청구항 전항</krcom:Entry><krcom:Entry>특허법 제29조제2항 </krcom:Entry></krcom:Row></krcom:TableBody></krcom:TableGroup></krcom:IPOASISTable></krcom:Table></krcom:P>
+            </krpat:ExaminationLawArticle>
+        </krpat:ExaminationResult>
+        <krpat:ExaminerBag>
+            <krpat:AssistantExaminer com:sequenceNumber="1">
+                <com:OfficialTitleText>특허심사1국 농림수산식품심사과</com:OfficialTitleText>
+                <com:Name>
+                    <com:PersonName>
+                        <com:PersonFullName>김영림</com:PersonFullName>
+                    </com:PersonName>
+                </com:Name>
+            </krpat:AssistantExaminer>
+        </krpat:ExaminerBag>
+    </krpat:ExaminationData>
+    <krpat:RejectionTitle>
+        <krcom:P>1. 이 출원에 대한 심사결과 다음과 같은 거절이유가 있어 특허법 제63조에 따라 이를 통지하오니 의견이 있거나 보정이 필요할 경우에는 상기 제출기일(2019.04.25.)까지 의견(답변, 소명)서[특허법시행규칙 별지 제24호서식] 또는/및 보정서[특허법시행규칙 별지 제9호서식]를 제출하여 주시기 바랍니다.
+
+2. 상기 제출기일(2019.04.25.)을 연장하려는 경우에는 지정기간연장신청을 통해 그 제출기일을 4개월까지 연장할 수 있습니다. 이 경우 연장신청은 1개월 단위로 해야 하며, 필요 시 4개월을 초과하지 않는 범위에서 2개월 이상을 일괄하여 연장신청할 수 있습니다. 불가피한 사유의 발생(하단의 안내참조)으로 4개월을 초과하여 지정기간을 연장받고자 하는 때에는 그 사유를 기재한 소명서를 추가로 첨부해서 연장신청을 해야 합니다.</krcom:P>
+    </krpat:RejectionTitle>
+    <krpat:RejectionContent>
+        <com:Heading>[구체적인 거절이유]</com:Heading>
+    </krpat:RejectionContent>
+    <krpat:RejectionLawDetail>
+        <krcom:P>1. 이 출원은 청구범위의 청구항 전항(청구항 1)의 기재가 아래에 지적한 바와 같이 불비하여 특허법 제42조제4항제2호에 따른 요건을 충족하지 못하므로 특허를 받을 수 없습니다.</krcom:P>
+        <krcom:P>- 아 래 -
+
+ 청구항 1항은 ‘탈지분유를 증류수에 10중량% 이하로 첨가하여 조성한 재구성탈지유’를 기재하고 있습니다. 재구성탈지유는 배지의 필수성분인데 재구성탈지유를 구성하는 탈지분유의 첨가량을 ‘이하’와 같이 하한이 불명확한 표현으로 기재하여, 재구성탈지유의 구성이 불명확합니다. 
+
+ 따라서 상기 청구항에 기재된 발명이 명확하지 않습니다.
+
+</krcom:P>
+        <krcom:P>2. 이 출원의 청구범위의 청구항 전항(청구항 1)에 기재된 발명은 아래와 같이 그 출원 전에 이 발명이 속하는 기술분야에서 통상의 지식을 가진 사람(이하 ‘통상의 기술자’라 함)이 쉽게 발명할 수 있는 것이므로 특허법 제29조제2항에 따라 특허를 받을 수 없습니다.</krcom:P>
+        <krcom:P>- 아 래 -
+
+ 가. 선행문헌
+ (1) 인용발명 1 : 일본 공개특허공보 특개2002-017337호(2002.01.22. 공개)에 게재된 ‘분무건조에 의한 균체 건조물’에 관한 발명
+ (2) 인용발명 2 : 일본 공개특허공보 특개평10-057031호(1998.03.03. 공개)에 게재된 ‘식용 미생물 조성물의 분무 건조법’에 관한 발명
+
+ 나. 출원발명의 진보성 여부
+ (1) 목적의 대비
+ 출원발명과 인용발명 1 및 2는 유산균 배양물을 이용한 프로바이오틱스 분말의 제조방법을 제공하는 점에서 목적에 공통점이 있습니다. 
+
+ (2) 구성 및 효과의 대비
+ (가) 청구항 제1항
+ 청구항 1 발명은 (1) 탈지분유를 증류수에 10중량% 이하로 첨가하여 조성한 재구성탈지유에 포도당과 효모추출물을 첨가한 배지에서 유산균을 배양하여 발효 배양액을 얻는 단계; (2) 상기 단계 (1)에서 얻어진 발효 배양액에 총고형분 함량이 20~50%(w/v)가 되도록 탈지분유 또는 감자전분을 첨가하여 단계 (1)에서 발효과정 중 생성된 점착성 물질을 제거하는 단계; 및 (3) 상기 점착성 물질이 제거된 배양액을 분무건조하여 마이크로캡슐화하는 단계를 포함하는 프로바이오틱스 분말의 제조방법을 특징으로 하고 있습니다. 
+
+ 한편, 인용발명 1에는 유산균 균체 건조물을 제조하기 위해 포도당, 효모엑기스, 펩톤 등을 포함한 배양배지에 유산균체를 배양하고, 보호제인 탈지분유, 부형제 혹은 정전기 방지제, 감자 미세쇄부를 함께 첨가하여 분무건조한다고 기재되어 있어(식별번호 [0007]-[0009], [0013]-[0016], [0023]-[0025] 참조), 청구항 1 발명의 일부 구성이 인용발명 1과 실질적으로 동일합니다.
+
+ 다만, 청구항 1 발명은 재구성탈지유를 첨가하고, 점착성 제거 물질의 고형분 함량을 한정하고 있지만, 인용발명 1은 재구성탈지유를 사용하지 않고, 첨작성 물질 제거 효과 및 그 함량을 구체적으로 예시하고 있지 않다는 점에서 차이가 있으나, 인용발명 2에는 유산균 배양물을 직접 분무건조 시 10%의 재구성 탈지분유를 사용한다고 기재되어 있고(식별번호 [0040] 참조), 점착성 제거 효과는 인용발명 1에서 사용된 부형제, 탈지분유, 감자 미세쇄부에도 이미 내재되어 있어 실질적으로 동일한 효과가 도출될 수 있는 것이므로, 출원발명의 프로바이오틱스 분말의 제조방법은 통상의 기술자가 인용발명 1의 유산균 분말 제조방법에 인용발명 2의 재구성 탈지분유 구성을 결합하고, 반복 실험을 통해 최적의 조성물 중량비를 단순 선택하여 쉽게 도출할 수 있으므로 구성에 어려움이 없고, 이로 인한 효과 역시 인용발명 1 및 2를 단순히 결합한 이상의 특별한 효과가 있다고 볼 수 없습니다.
+
+
+ 따라서 청구항 1 발명은 통상의 기술자가 인용발명 1 및 2를 단순 결합하여 쉽게 발명할 수 있습니다.</krcom:P>
+    </krpat:RejectionLawDetail>
+    <krpat:AttachmentContent>
+        <com:Heading>[첨 부]</com:Heading>
+        <krcom:P>첨부1 일본 공개특허공보 특개2002-017337호(2002.01.22.) 1부.
+첨부2 일본 공개특허공보 특개평10-057031호(1998.03.03.) 1부. 끝.</krcom:P>
+    </krpat:AttachmentContent>
+    <krpat:GuidanceContent>
+        <com:Heading> 안내 </com:Heading>
+        <krcom:P>1. 특허법 제47조제2항에 따라 특허출원서에 최초로 첨부된 명세서 또는 도면에 기재된 사항의 범위 안에서 명세서 또는 도면을 보정할 수 있음을 알려드립니다.
+
+2. 출원일이 2013년 7월 1일 이후인 출원에 대해서는, 하나의 의견제출통지에 따른 지정기간 내에 보정서를 2회 이상 제출한 경우에는, 마지막 보정 이외의 모든 보정은 취하간주되오니 주의하시기 바랍니다.
+
+3. 보정료 납부안내
+ o 명세서 또는 도면을 보정하기 위하여 명세서등 보정서를 전자문서로 제출할 경우 매건 4,000원, 서면으로 제출할 경우 매건 14,000원의 보정료를 납부하여야 합니다.
+ o 보정료는 접수번호를 부여받아 이를 납부자번호로 "특허료등의 징수규칙" 별지 제1호서식에 기재하여, 접수번호를 부여받은 날의 다음 날까지 납부하여야 합니다. 다만, 납부일이 공휴일(토요휴무일을 포함한다)에 해당하는 경우에는 그날 이후의 첫 번째 근무일까지 납부하여야 합니다.
+ o 보정료는 국고수납은행(대부분의 시중은행)에 납부하거나, 인터넷지로(www.giro.or.kr)로 납부할 수 있습니다. 다만, 보정서를 우편으로 제출하는 경우에는 보정료에 상응하는 통상환을 동봉하여 제출하시면 특허청에서 납부해드립니다.
+
+4. 지정기간연장 안내 : 연장가능기간(4개월)을 초과하여 지정기간을 연장하고자 소명서를 첨부하여 지정기간연장신청서를 제출한 경우 심사관은 아래의 사유에 해당되는지를 판단하여 지정기간연장의 승인 여부 및 연장할 수 있는 기간을 정하여 통지합니다.
+ 【4개월을 초과하여 지정기간연장을 할 수 있는 사유】
+ ① 기간만료 전 1개월 이내에 최초로 대리인을 선임하거나 선임된 대리인 모두를 해임ㆍ변경한 경우
+ ② 기간만료 전 1개월 이내에 출원인변경신고서를 제출한 경우
+ ③ 기간만료 전 2개월 이내에 외국특허청의 심사결과를 받은 경우로서 동 심사결과를 보정서에 반영하고자 하는 경우(이 경우 신청서 제출 시 해당 심사결과 사본 및 그 기초가 된 청구범위 사본도 같이 제출해야 함)
+ ④ 의견제출통지서의 송달이 1개월 이상 지연된 경우(1개월 추가 연장 가능)
+ ⑤ 원출원 또는 분할출원이 심판이나 소송에 계류 중인 경우
+ ⑥ 거절이유와 관련된 시험 및 결과측정에 기간이 더 필요한 경우
+ ⑦ 기타 불가피하게 기간연장이 필요하다고 인정되는 경우
+ 단, 제3자가 심사청구한 때에는 ①~⑤의 경우라도 불승인
+
+5. 온라인 영상면담 및 보정안 리뷰(심층면담) 서비스 안내
+ o 심사관에게 방문면담을 신청할 경우 특허청(대전)에서 출원발명에 관한 상담 서비스를 받을 수 있고, 영상면담을 신청할 경우에는 특허청(대전) 방문 없이도 상담이 가능합니다(영상면담 장소: 특허청 서울사무소와 강원, 경남, 경북, 광주, 부산, 울산, 인천, 전남지역지식재산센터).
+ o 보정안 리뷰를 신청할 경우 심층면담을 통해 거절이유 해소 여부 등 보정안에 대한 보다 체계적인 사전검토 서비스를 받을 수 있습니다(특허로(www.patent.go.kr) - 출원신청 메뉴).
+
+6. 출원인의 명세서 작성 및 보정에 이해를 돕고자 아래 사이트에서 명세서작성사례 및 기술분야별 보정매뉴얼 등을 제공하고 있습니다. 인터넷 접속이 어려울 경우, 담당 심사관에게 연락주시면 명세서작성사례 등을 우편으로 송부해드리겠습니다.
+ o 특허로(www.patent.go.kr)-명세서작성관련 유용한 Tip
+
+※「특허로」고객센터에서 알림서비스를 신청하시면 담당 심사관 지정 알림, 마감기한 알림 등 각종 민원처리 사항을 이메일과 휴대폰(SMS)로 받아 보실 수 있습니다.
+
+※ 이 통지서의 내용에 대해 문의사항이 있으시면 특허청 ☎ 042-481-8395(담당심사관 김영림)로, 서식 또는 절차에 대하여는 특허고객상담센터 ☎1544-8080로 문의하시기 바랍니다.
+
+※ 우 35208 대전광역시 서구 청사로 189, 4동 (둔산동, 정부대전청사)</krcom:P>
+    </krpat:GuidanceContent>
+</krpat:PatentOpinionSubmission>

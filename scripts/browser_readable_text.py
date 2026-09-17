@@ -103,7 +103,8 @@ with sync_playwright() as p:
     row = page.locator(".st-key-claim-row-7")
     row.locator("summary").filter(has_text="Claim 7 상세 보기").click()
     expect(row.locator(".claim-evidence").first).to_be_visible()
-    for toggle in row.locator('[data-testid="stExpander"] summary').all():
+    # Streamlit accordions only: a fully visible source deliberately hides its own toggle.
+    for toggle in row.locator('[data-testid="stExpander"] > details > summary').all():
         if not toggle.evaluate("n=>n.closest('details').open"):
             toggle.click()
     inspect(page, row, ".claim-evidence.readable-text", "Claim Analysis sources", results)

@@ -1,0 +1,13 @@
+{
+  "application": "1020190000874",
+  "publication": "KR20190003855A",
+  "patent_file": "publications\\KR20190003855A.pdf",
+  "oa_xml": "official_samples\\1020190000874_952019023937404\\1020190000874_952019023937404.xml",
+  "oa_pdf": "official_samples\\1020190000874_952019023937404\\1020190000874_952019023937404.pdf",
+  "patent_pages": 16,
+  "oa_pdf_pages": 5,
+  "version_status": "same application verified; historical claim version not fully verified",
+  "http_status": 422,
+  "status": "UNSUPPORTED",
+  "error": "하나의 거절이유 본문에 여러 청구항 범위 또는 법조항이 연결됩니다. 인용발명 관계를 정확히 나눌 수 없어 이 XML 구조는 아직 지원하지 않습니다."
+}

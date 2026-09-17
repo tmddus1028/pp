@@ -1,0 +1,2440 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>KR20150090348A - 제휴사 서버와 서비스 제공 장치와 단말, 그를 포함하는 전자 지갑 시스템, 그 제어 방법 및 컴퓨터 프로그램이 기록된 기록매체 
+        - Google Patents</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
+    <meta name="referrer" content="origin-when-crossorigin">
+    <link rel="canonical" href="https://patents.google.com/patent/KR20150090348A/ko">
+    <meta name="description" content="
+     본 발명은 제휴사 서버와 서비스 제공 장치와 단말, 그를 포함하는 전자 지갑 시스템, 그 제어 방법 및 컴퓨터 프로그램이 기록된 기록매체를 개시한다. 즉, 본 발명은 비제휴사에서 제공한 쿠폰을 쿠폰 서버에 미리 등록한 후, 해당 쿠폰을 요청하는 단말에 서비스 제공 장치를 통해 해당 쿠폰을 발급처리하고, 단말에서 해당 쿠폰 사용 시 제휴사 서버와의 연동을 통해 해당 쿠폰에 대한 사용 처리를 수행함으로써, 비제휴사 쿠폰 제공을 통한 쿠폰의 다양성에 의해 사용자의 편의성 및 관리 효율성을 향상시키고 쿠폰 연동 분야를 확대할 수 있다. 
+     
+         
+     
+   
+   ">
+    <meta name="DC.type" content="patent">
+    <meta name="DC.title" content="제휴사 서버와 서비스 제공 장치와 단말, 그를 포함하는 전자 지갑 시스템, 그 제어 방법 및 컴퓨터 프로그램이 기록된 기록매체 
+       ">
+    <meta name="DC.date" content="2014-01-28" scheme="dateSubmitted">
+    <meta name="DC.description" content="
+     본 발명은 제휴사 서버와 서비스 제공 장치와 단말, 그를 포함하는 전자 지갑 시스템, 그 제어 방법 및 컴퓨터 프로그램이 기록된 기록매체를 개시한다. 즉, 본 발명은 비제휴사에서 제공한 쿠폰을 쿠폰 서버에 미리 등록한 후, 해당 쿠폰을 요청하는 단말에 서비스 제공 장치를 통해 해당 쿠폰을 발급처리하고, 단말에서 해당 쿠폰 사용 시 제휴사 서버와의 연동을 통해 해당 쿠폰에 대한 사용 처리를 수행함으로써, 비제휴사 쿠폰 제공을 통한 쿠폰의 다양성에 의해 사용자의 편의성 및 관리 효율성을 향상시키고 쿠폰 연동 분야를 확대할 수 있다. 
+     
+         
+     
+   
+   ">
+    <meta name="citation_patent_application_number" content="KR:1020140010384A">
+    <meta name="citation_pdf_url" content="https://patentimages.storage.googleapis.com/ba/47/4c/d3fbd695cf455b/KR20150090348A.pdf">
+    <meta name="citation_patent_publication_number" content="KR:20150090348:A">
+    <meta name="DC.date" content="2015-08-06">
+    <meta name="DC.contributor" content="이종수" scheme="inventor">
+    <meta name="DC.contributor" content="에스케이플래닛 주식회사" scheme="assignee">
+    <meta name="DC.relation" content="JP:2009075839:A" scheme="references">
+    <meta name="DC.relation" content="KR:20110080133:A" scheme="references">
+    <meta name="DC.relation" content="KR:101238224:B1" scheme="references">
+    <meta name="DC.relation" content="KR:20130102793:A" scheme="references">
+    <meta name="citation_reference" content="한국공개특허 제10-2011-0127912호 [명칭: 모바일 상품권 제휴형 기프트카드 제공방법 및 그 시스템]" scheme="references">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,400italic,500,500italic,700">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Product+Sans">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700">
+
+    <style>
+      
+      #gb { top: 15px; left: auto; right: 0; width: auto; min-width: 135px !important; }   
+      body { transition: none; }
+    </style>
+    <script></script>
+
+    <script>
+      window.version = 'patent-search.search_20260819_RC00';
+
+      function sendFeedback() {
+        userfeedback.api.startFeedback({
+          'productId': '713680',
+          'bucket': 'patent-search-web',
+          'productVersion': window.version,
+        });
+      }
+
+      window.experiments = {};
+      window.experiments.patentCountries = "ae,ag,al,am,ao,ap,ar,at,au,aw,az,ba,bb,bd,be,bf,bg,bh,bj,bn,bo,br,bw,bx,by,bz,ca,cf,cg,ch,ci,cl,cm,cn,co,cr,cs,cu,cy,cz,dd,de,dj,dk,dm,do,dz,ea,ec,ee,eg,em,ep,es,fi,fr,ga,gb,gc,gd,ge,gh,gm,gn,gq,gr,gt,gw,hk,hn,hr,hu,ib,id,ie,il,in,ir,is,it,jo,jp,ke,kg,kh,km,kn,kp,kr,kw,kz,la,lc,li,lk,lr,ls,lt,lu,lv,ly,ma,mc,md,me,mg,mk,ml,mn,mo,mr,mt,mw,mx,my,mz,na,ne,ng,ni,nl,no,nz,oa,om,pa,pe,pg,ph,pl,pt,py,qa,ro,rs,ru,rw,sa,sc,sd,se,sg,si,sk,sl,sm,sn,st,su,sv,sy,sz,td,tg,th,tj,tm,tn,tr,tt,tw,tz,ua,ug,us,uy,uz,vc,ve,vn,wo,yu,za,zm,zw";
+      
+      
+      window.experiments.keywordWizard = true;
+      
+      
+      
+      window.experiments.definitions = true;
+      window.experiments.plogs = true;
+
+      window.Polymer = {
+        dom: 'shady',
+        lazyRegister: true,
+      };
+    </script>
+
+    <script src="//www.gstatic.com/patent-search/frontend/patent-search.search_20260819_RC00/scs/compiled_dir/webcomponentsjs/webcomponents-lite.min.js"></script>
+    <link rel="import" href="//www.gstatic.com/patent-search/frontend/patent-search.search_20260819_RC00/scs/compiled_dir/search-app-vulcanized.html">
+  </head>
+  <body unresolved>
+    
+    
+    <script></script>
+    <script src="//www.gstatic.com/patent-search/frontend/patent-search.search_20260819_RC00/scs/compiled_dir/search-app-vulcanized.js"></script>
+    <search-app>
+      
+      
+
+      <article class="result" itemscope itemtype="http://schema.org/ScholarlyArticle">
+  <h1 itemprop="pageTitle">KR20150090348A - 제휴사 서버와 서비스 제공 장치와 단말, 그를 포함하는 전자 지갑 시스템, 그 제어 방법 및 컴퓨터 프로그램이 기록된 기록매체 
+        - Google Patents</h1>
+  <span itemprop="title">제휴사 서버와 서비스 제공 장치와 단말, 그를 포함하는 전자 지갑 시스템, 그 제어 방법 및 컴퓨터 프로그램이 기록된 기록매체 
+       </span>
+
+  <meta itemprop="type" content="patent">
+  <a href="https://patentimages.storage.googleapis.com/ba/47/4c/d3fbd695cf455b/KR20150090348A.pdf" itemprop="pdfLink">Download PDF</a>
+  <h2>Info</h2>
+
+  <dl>
+    <dt>Publication number</dt>
+    <dd itemprop="publicationNumber">KR20150090348A</dd>
+    <meta itemprop="numberWithoutCodes" content="20150090348">
+    <meta itemprop="kindCode" content="A">
+    <meta itemprop="publicationDescription" content="Official gazette of the unexamined patents">
+    <span>KR20150090348A</span>
+    <span>KR1020140010384A</span>
+    <span>KR20140010384A</span>
+    <span>KR20150090348A</span>
+    <span>KR 20150090348 A</span>
+    <span>KR20150090348 A</span>
+    <span>KR 20150090348A</span>
+    <span>KR 1020140010384 A</span>
+    <span>KR1020140010384 A</span>
+    <span>KR 1020140010384A</span>
+    <span>KR 20140010384 A</span>
+    <span>KR20140010384 A</span>
+    <span>KR 20140010384A</span>
+    <span>KR 20150090348 A</span>
+    <span>KR20150090348 A</span>
+    <span>KR 20150090348A</span>
+
+    <dt>Authority</dt>
+    <dd itemprop="countryCode">KR</dd>
+    <dd itemprop="countryName">South Korea</dd>
+
+    <dt>Prior art keywords</dt>
+    <dd itemprop="priorArtKeywords" repeat>coupon</dd>
+    <dd itemprop="priorArtKeywords" repeat>terminal</dd>
+    <dd itemprop="priorArtKeywords" repeat>information</dd>
+    <dd itemprop="priorArtKeywords" repeat>server</dd>
+    <dd itemprop="priorArtKeywords" repeat>service providing</dd>
+
+    <dt>Prior art date</dt>
+    <dd><time itemprop="priorArtDate" datetime="2014-01-28">2014-01-28</time></dd>
+
+    <dt>Legal status (The legal status is an assumption and is not a legal conclusion. Google has not performed a legal analysis and makes no representation as to the accuracy of the status listed.)</dt>
+    <dd itemprop="legalStatusIfi" itemscope>
+      <span itemprop="status">Granted</span>
+    </dd>
+  </dl>
+
+  <dt>Application number</dt>
+  <dd itemprop="applicationNumber">KR1020140010384A</dd>
+
+  <dt>Other languages</dt>
+  <dd itemprop="otherLanguages" itemscope repeat>
+    <a href="/patent/KR20150090348A/en">
+      <span itemprop="name">English</span> (<span itemprop="code">en</span>)
+    </a>
+  </dd>
+
+  <dt>Other versions</dt>
+  <dd itemprop="directAssociations" itemscope repeat>
+    <a href="/patent/KR102235736B1/ko">
+      <span itemprop="publicationNumber">KR102235736B1</span>
+      (<span itemprop="primaryLanguage">ko</span>
+    </a>
+  </dd>
+
+  <dt>Inventor</dt>
+  <dd itemprop="inventor" repeat>이종수</dd>
+
+  
+
+  <dt>Original Assignee</dt>
+  <dd itemprop="assigneeOriginal" repeat>에스케이플래닛 주식회사</dd>
+
+  <dt>Priority date (The priority date is an assumption and is not a legal conclusion. Google has not performed a legal analysis and makes no representation as to the accuracy of the date listed.)</dt>
+  <dd><time itemprop="priorityDate" datetime="2014-01-28">2014-01-28</time></dd>
+
+  <dt>Filing date</dt>
+  <dd><time itemprop="filingDate" datetime="2014-01-28">2014-01-28</time></dd>
+
+  <dt>Publication date</dt>
+  <dd><time itemprop="publicationDate" datetime="2015-08-06">2015-08-06</time></dd>
+
+  
+  <dd itemprop="events" itemscope repeat>
+    <time itemprop="date" datetime="2014-01-28">2014-01-28</time>
+    <span itemprop="title">Application filed by 에스케이플래닛 주식회사</span>
+    <span itemprop="type">filed</span>
+    <span itemprop="critical" content="true" bool>Critical</span>
+    
+    
+    
+    <span itemprop="assigneeSearch">에스케이플래닛 주식회사</span>
+  </dd>
+  <dd itemprop="events" itemscope repeat>
+    <time itemprop="date" datetime="2014-01-28">2014-01-28</time>
+    <span itemprop="title">Priority to KR1020140010384A</span>
+    <span itemprop="type">priority</span>
+    <span itemprop="critical" content="true" bool>Critical</span>
+    
+    
+    <span itemprop="documentId">patent/KR102235736B1/ko</span>
+    
+  </dd>
+  <dd itemprop="events" itemscope repeat>
+    <time itemprop="date" datetime="2014-12-05">2014-12-05</time>
+    <span itemprop="title">Priority to US14/899,054</span>
+    <span itemprop="type">priority</span>
+    
+    
+    
+    <span itemprop="documentId">patent/US20160358202A1/en</span>
+    
+  </dd>
+  <dd itemprop="events" itemscope repeat>
+    <time itemprop="date" datetime="2014-12-05">2014-12-05</time>
+    <span itemprop="title">Priority to CN201480061540.9A</span>
+    <span itemprop="type">priority</span>
+    
+    
+    
+    <span itemprop="documentId">patent/CN105706134A/zh</span>
+    
+  </dd>
+  <dd itemprop="events" itemscope repeat>
+    <time itemprop="date" datetime="2014-12-05">2014-12-05</time>
+    <span itemprop="title">Priority to PCT/KR2014/011884</span>
+    <span itemprop="type">priority</span>
+    
+    
+    
+    <span itemprop="documentId">patent/WO2015115729A1/ko</span>
+    
+  </dd>
+  <dd itemprop="events" itemscope repeat>
+    <time itemprop="date" datetime="2015-08-06">2015-08-06</time>
+    <span itemprop="title">Publication of KR20150090348A</span>
+    <span itemprop="type">publication</span>
+    <span itemprop="critical" content="true" bool>Critical</span>
+    
+    
+    <span itemprop="documentId">patent/KR20150090348A/ko</span>
+    
+  </dd>
+  <dd itemprop="events" itemscope repeat>
+    <time itemprop="date" datetime="2021-04-02">2021-04-02</time>
+    <span itemprop="title">Application granted</span>
+    <span itemprop="type">granted</span>
+    <span itemprop="critical" content="true" bool>Critical</span>
+    
+    
+    
+    
+  </dd>
+  <dd itemprop="events" itemscope repeat>
+    <time itemprop="date" datetime="2021-04-02">2021-04-02</time>
+    <span itemprop="title">Publication of KR102235736B1</span>
+    <span itemprop="type">publication</span>
+    <span itemprop="critical" content="true" bool>Critical</span>
+    
+    
+    <span itemprop="documentId">patent/KR102235736B1/ko</span>
+    
+  </dd>
+  <dd itemprop="events" itemscope repeat>
+    <time itemprop="date">Status</time>
+    <span itemprop="title">Active</span>
+    <span itemprop="type">legal-status</span>
+    <span itemprop="critical" content="true" bool>Critical</span>
+    <span itemprop="current" content="true" bool>Current</span>
+    
+    
+    
+  </dd>
+  <dd itemprop="events" itemscope repeat>
+    <time itemprop="date" datetime="2034-01-28">2034-01-28</time>
+    <span itemprop="title">Anticipated expiration</span>
+    <span itemprop="type">legal-status</span>
+    <span itemprop="critical" content="true" bool>Critical</span>
+    
+    
+    
+    
+  </dd>
+
+  <h2>Links</h2>
+  <ul>
+    
+
+    <li itemprop="links" itemscope repeat>
+        <meta itemprop="id" content="espacenetLink">
+        <a href="https://worldwide.espacenet.com/publicationDetails/biblio?CC=KR&amp;NR=20150090348A&amp;KC=A&amp;FT=D" itemprop="url" target="_blank"><span itemprop="text">Espacenet</span></a>
+      </li>
+      
+
+    
+
+    <li itemprop="links" itemscope repeat>
+      <meta itemprop="id" content="globalDossierLink">
+      <a href="https://globaldossier.uspto.gov/result/application/KR/20140010384/1" itemprop="url" target="_blank"><span itemprop="text">Global Dossier</span></a>
+    </li>
+
+    
+
+      
+
+      
+
+      
+      <li itemprop="links" itemscope repeat>
+        <meta itemprop="id" content="stackexchangeLink">
+        <a href="https://patents.stackexchange.com/questions/tagged/KR20150090348A" itemprop="url"><span itemprop="text">Discuss</span></a>
+      </li>
+  </ul>
+
+  
+
+  <section>
+    <h2>Images</h2>
+    <ul>
+      <li itemprop="images" itemscope repeat>
+        <img itemprop="thumbnail" src="https://patentimages.storage.googleapis.com/e7/b5/e6/8a3aefbaa37b8c/pat00001.png">
+        <meta itemprop="full" content="https://patentimages.storage.googleapis.com/3c/43/4d/e495bfaba710fc/pat00001.png">
+        <ul>
+          <li itemprop="callouts" itemscope repeat>
+            <meta itemprop="figurePage" content="0">
+            <meta itemprop="id" content="10">
+            <meta itemprop="label" content="electronic wallet system">
+            <span itemprop="bounds" itemscope>
+              <meta itemprop="left" content="262">
+              <meta itemprop="top" content="72">
+              <meta itemprop="right" content="320">
+              <meta itemprop="bottom" content="110">
+            </span>
+          </li>
+          <li itemprop="callouts" itemscope repeat>
+            <meta itemprop="figurePage" content="0">
+            <meta itemprop="id" content="11">
+            <meta itemprop="label" content="terminal">
+            <span itemprop="bounds" itemscope>
+              <meta itemprop="left" content="215">
+              <meta itemprop="top" content="470">
+              <meta itemprop="right" content="263">
+              <meta itemprop="bottom" content="503">
+            </span>
+          </li>
+          <li itemprop="callouts" itemscope repeat>
+            <meta itemprop="figurePage" content="0">
+            <meta itemprop="id" content="12">
+            <meta itemprop="label" content="web server">
+            <span itemprop="bounds" itemscope>
+              <meta itemprop="left" content="1045">
+              <meta itemprop="top" content="504">
+              <meta itemprop="right" content="1103">
+              <meta itemprop="bottom" content="542">
+            </span>
+          </li>
+          <li itemprop="callouts" itemscope repeat>
+            <meta itemprop="figurePage" content="0">
+            <meta itemprop="id" content="13">
+            <meta itemprop="label" content="WAS">
+            <span itemprop="bounds" itemscope>
+              <meta itemprop="left" content="841">
+              <meta itemprop="top" content="80">
+              <meta itemprop="right" content="895">
+              <meta itemprop="bottom" content="117">
+            </span>
+          </li>
+          <li itemprop="callouts" itemscope repeat>
+            <meta itemprop="figurePage" content="0">
+            <meta itemprop="id" content="14">
+            <meta itemprop="label" content="service providing apparatus">
+            <span itemprop="bounds" itemscope>
+              <meta itemprop="left" content="1047">
+              <meta itemprop="top" content="898">
+              <meta itemprop="right" content="1101">
+              <meta itemprop="bottom" content="932">
+            </span>
+          </li>
+          <li itemprop="callouts" itemscope repeat>
+            <meta itemprop="figurePage" content="0">
+            <meta itemprop="id" content="15">
+            <meta itemprop="label" content="affiliate server">
+            <span itemprop="bounds" itemscope>
+              <meta itemprop="left" content="1462">
+              <meta itemprop="top" content="1309">
+              <meta itemprop="right" content="1520">
+              <meta itemprop="bottom" content="1345">
+            </span>
+          </li>
+          <li itemprop="callouts" itemscope repeat>
+            <meta itemprop="figurePage" content="0">
+            <meta itemprop="id" content="16">
+            <meta itemprop="label" content="DB server">
+            <span itemprop="bounds" itemscope>
+              <meta itemprop="left" content="1463">
+              <meta itemprop="top" content="101">
+              <meta itemprop="right" content="1518">
+              <meta itemprop="bottom" content="138">
+            </span>
+          </li>
+        </ul>
+      </li>
+      <li itemprop="images" itemscope repeat>
+        <img itemprop="thumbnail" src="https://patentimages.storage.googleapis.com/f3/51/43/d69eb5fd7d35d4/pat00002.png">
+        <meta itemprop="full" content="https://patentimages.storage.googleapis.com/f6/40/c6/ce90dfdfbbf857/pat00002.png">
+        <ul>
+          <li itemprop="callouts" itemscope repeat>
+            <meta itemprop="figurePage" content="1">
+            <meta itemprop="id" content="100">
+            <meta itemprop="label" content="electronic wallet system">
+            <span itemprop="bounds" itemscope>
+              <meta itemprop="left" content="440">
+              <meta itemprop="top" content="14">
+              <meta itemprop="right" content="510">
+              <meta itemprop="bottom" content="47">
+            </span>
+          </li>
+          <li itemprop="callouts" itemscope repeat>
+            <meta itemprop="figurePage" content="1">
+            <meta itemprop="id" content="110">
+            <meta itemprop="label" content="affiliate server">
+            <span itemprop="bounds" itemscope>
+              <meta itemprop="left" content="175">
+              <meta itemprop="top" content="126">
+              <meta itemprop="right" content="246">
+              <meta itemprop="bottom" content="156">
+            </span>
+          </li>
+          <li itemprop="callouts" itemscope repeat>
+            <meta itemprop="figurePage" content="1">
+            <meta itemprop="id" content="120">
+            <meta itemprop="label" content="coupon server">
+            <span itemprop="bounds" itemscope>
+              <meta itemprop="left" content="723">
+              <meta itemprop="top" content="126">
+              <meta itemprop="right" content="794">
+              <meta itemprop="bottom" content="157">
+            </span>
+          </li>
+          <li itemprop="callouts" itemscope repeat>
+            <meta itemprop="figurePage" content="1">
+            <meta itemprop="id" content="130">
+            <meta itemprop="label" content="service providing apparatus">
+            <span itemprop="bounds" itemscope>
+              <meta itemprop="left" content="1269">
+              <meta itemprop="top" content="125">
+              <meta itemprop="right" content="1340">
+              <meta itemprop="bottom" content="156">
+            </span>
+          </li>
+          <li itemprop="callouts" itemscope repeat>
+            <meta itemprop="figurePage" content="1">
+            <meta itemprop="id" content="140">
+            <meta itemprop="label" content="terminal">
+            <span itemprop="bounds" itemscope>
+              <meta itemprop="left" content="1115">
+              <meta itemprop="top" content="1268">
+              <meta itemprop="right" content="1183">
+              <meta itemprop="bottom" content="1299">
+            </span>
+          </li>
+          <li itemprop="callouts" itemscope repeat>
+            <meta itemprop="figurePage" content="1">
+            <meta itemprop="id" content="150">
+            <meta itemprop="label" content="POS terminal">
+            <span itemprop="bounds" itemscope>
+              <meta itemprop="left" content="239">
+              <meta itemprop="top" content="1267">
+              <meta itemprop="right" content="309">
+              <meta itemprop="bottom" content="1301">
+            </span>
+          </li>
+        </ul>
+      </li>
+      <li itemprop="images" itemscope repeat>
+        <img itemprop="thumbnail" src="https://patentimages.storage.googleapis.com/a0/c6/51/a667386f7b3453/pat00003.png">
+        <meta itemprop="full" content="https://patentimages.storage.googleapis.com/f6/77/fa/b3811c83b75a16/pat00003.png">
+        <ul>
+          <li itemprop="callouts" itemscope repeat>
+            <meta itemprop="figurePage" content="2">
+            <meta itemprop="id" content="110">
+            <meta itemprop="label" content="affiliate server">
+            <span itemprop="bounds" itemscope>
+              <meta itemprop="left" content="507">
+              <meta itemprop="top" content="23">
+              <meta itemprop="right" content="577">
+              <meta itemprop="bottom" content="54">
+            </span>
+          </li>
+          <li itemprop="callouts" itemscope repeat>
+            <meta itemprop="figurePage" content="2">
+            <meta itemprop="id" content="111">
+            <meta itemprop="label" content="communication unit">
+            <span itemprop="bounds" itemscope>
+              <meta itemprop="left" content="212">
+              <meta itemprop="top" content="207">
+              <meta itemprop="right" content="285">
+              <meta itemprop="bottom" content="236">
+            </span>
+          </li>
+          <li itemprop="callouts" itemscope repeat>
+            <meta itemprop="figurePage" content="2">
+            <meta itemprop="id" content="112">
+            <meta itemprop="label" content="storage unit">
+            <span itemprop="bounds" itemscope>
+              <meta itemprop="left" content="770">
+              <meta itemprop="top" content="202">
+              <meta itemprop="right" content="839">
+              <meta itemprop="bottom" content="231">
+            </span>
+          </li>
+          <li itemprop="callouts" itemscope repeat>
+            <meta itemprop="figurePage" content="2">
+            <meta itemprop="id" content="113">
+            <meta itemprop="label" content="display unit">
+            <span itemprop="bounds" itemscope>
+              <meta itemprop="left" content="235">
+              <meta itemprop="top" content="561">
+              <meta itemprop="right" content="305">
+              <meta itemprop="bottom" content="594">
+            </span>
+          </li>
+          <li itemprop="callouts" itemscope repeat>
+            <meta itemprop="figurePage" content="2">
+            <meta itemprop="id" content="114">
+            <meta itemprop="label" content="control unit">
+            <span itemprop="bounds" itemscope>
+              <meta itemprop="left" content="774">
+              <meta itemprop="top" content="562">
+              <meta itemprop="right" content="843">
+              <meta itemprop="bottom" content="596">
+            </span>
+          </li>
+        </ul>
+      </li>
+      <li itemprop="images" itemscope repeat>
+        <img itemprop="thumbnail" src="https://patentimages.storage.googleapis.com/d1/71/02/99f031eb970a7d/pat00004.png">
+        <meta itemprop="full" content="https://patentimages.storage.googleapis.com/bf/9e/9d/55167ff64e00c8/pat00004.png">
+        <ul>
+          <li itemprop="callouts" itemscope repeat>
+            <meta itemprop="figurePage" content="3">
+            <meta itemprop="id" content="120">
+            <meta itemprop="label" content="coupon server">
+            <span itemprop="bounds" itemscope>
+              <meta itemprop="left" content="509">
+              <meta itemprop="top" content="28">
+              <meta itemprop="right" content="580">
+              <meta itemprop="bottom" content="59">
+            </span>
+          </li>
+          <li itemprop="callouts" itemscope repeat>
+            <meta itemprop="figurePage" content="3">
+            <meta itemprop="id" content="121">
+            <meta itemprop="label" content="first communication unit">
+            <span itemprop="bounds" itemscope>
+              <meta itemprop="left" content="215">
+              <meta itemprop="top" content="209">
+              <meta itemprop="right" content="286">
+              <meta itemprop="bottom" content="240">
+            </span>
+          </li>
+          <li itemprop="callouts" itemscope repeat>
+            <meta itemprop="figurePage" content="3">
+            <meta itemprop="id" content="122">
+            <meta itemprop="label" content="first storage unit">
+            <span itemprop="bounds" itemscope>
+              <meta itemprop="left" content="772">
+              <meta itemprop="top" content="206">
+              <meta itemprop="right" content="843">
+              <meta itemprop="bottom" content="237">
+            </span>
+          </li>
+          <li itemprop="callouts" itemscope repeat>
+            <meta itemprop="figurePage" content="3">
+            <meta itemprop="id" content="123">
+            <meta itemprop="label" content="first display unit">
+            <span itemprop="bounds" itemscope>
+              <meta itemprop="left" content="237">
+              <meta itemprop="top" content="567">
+              <meta itemprop="right" content="309">
+              <meta itemprop="bottom" content="597">
+            </span>
+          </li>
+          <li itemprop="callouts" itemscope repeat>
+            <meta itemprop="figurePage" content="3">
+            <meta itemprop="id" content="124">
+            <meta itemprop="label" content="first control unit">
+            <span itemprop="bounds" itemscope>
+              <meta itemprop="left" content="775">
+              <meta itemprop="top" content="567">
+              <meta itemprop="right" content="845">
+              <meta itemprop="bottom" content="598">
+            </span>
+          </li>
+        </ul>
+      </li>
+      <li itemprop="images" itemscope repeat>
+        <img itemprop="thumbnail" src="https://patentimages.storage.googleapis.com/4c/3d/8c/619cc33b359081/pat00005.png">
+        <meta itemprop="full" content="https://patentimages.storage.googleapis.com/38/3d/76/a697a9b03fc8fb/pat00005.png">
+        <ul>
+          <li itemprop="callouts" itemscope repeat>
+            <meta itemprop="figurePage" content="4">
+            <meta itemprop="id" content="130">
+            <meta itemprop="label" content="service providing apparatus">
+            <span itemprop="bounds" itemscope>
+              <meta itemprop="left" content="504">
+              <meta itemprop="top" content="13">
+              <meta itemprop="right" content="576">
+              <meta itemprop="bottom" content="49">
+            </span>
+          </li>
+          <li itemprop="callouts" itemscope repeat>
+            <meta itemprop="figurePage" content="4">
+            <meta itemprop="id" content="131">
+            <meta itemprop="label" content="second communication unit">
+            <span itemprop="bounds" itemscope>
+              <meta itemprop="left" content="211">
+              <meta itemprop="top" content="196">
+              <meta itemprop="right" content="283">
+              <meta itemprop="bottom" content="229">
+            </span>
+          </li>
+          <li itemprop="callouts" itemscope repeat>
+            <meta itemprop="figurePage" content="4">
+            <meta itemprop="id" content="132">
+            <meta itemprop="label" content="second storage unit">
+            <span itemprop="bounds" itemscope>
+              <meta itemprop="left" content="768">
+              <meta itemprop="top" content="191">
+              <meta itemprop="right" content="837">
+              <meta itemprop="bottom" content="226">
+            </span>
+          </li>
+          <li itemprop="callouts" itemscope repeat>
+            <meta itemprop="figurePage" content="4">
+            <meta itemprop="id" content="133">
+            <meta itemprop="label" content="second display unit">
+            <span itemprop="bounds" itemscope>
+              <meta itemprop="left" content="232">
+              <meta itemprop="top" content="554">
+              <meta itemprop="right" content="302">
+              <meta itemprop="bottom" content="585">
+            </span>
+          </li>
+          <li itemprop="callouts" itemscope repeat>
+            <meta itemprop="figurePage" content="4">
+            <meta itemprop="id" content="134">
+            <meta itemprop="label" content="second control unit">
+            <span itemprop="bounds" itemscope>
+              <meta itemprop="left" content="771">
+              <meta itemprop="top" content="554">
+              <meta itemprop="right" content="842">
+              <meta itemprop="bottom" content="589">
+            </span>
+          </li>
+        </ul>
+      </li>
+      <li itemprop="images" itemscope repeat>
+        <img itemprop="thumbnail" src="https://patentimages.storage.googleapis.com/38/e3/40/d0a44a55eed273/pat00006.png">
+        <meta itemprop="full" content="https://patentimages.storage.googleapis.com/aa/e1/e9/b006f65736b049/pat00006.png">
+        <ul>
+          <li itemprop="callouts" itemscope repeat>
+            <meta itemprop="figurePage" content="5">
+            <meta itemprop="id" content="140">
+            <meta itemprop="label" content="terminal">
+            <span itemprop="bounds" itemscope>
+              <meta itemprop="left" content="505">
+              <meta itemprop="top" content="24">
+              <meta itemprop="right" content="576">
+              <meta itemprop="bottom" content="54">
+            </span>
+          </li>
+          <li itemprop="callouts" itemscope repeat>
+            <meta itemprop="figurePage" content="5">
+            <meta itemprop="id" content="141">
+            <meta itemprop="label" content="third communication unit">
+            <span itemprop="bounds" itemscope>
+              <meta itemprop="left" content="211">
+              <meta itemprop="top" content="207">
+              <meta itemprop="right" content="280">
+              <meta itemprop="bottom" content="238">
+            </span>
+          </li>
+          <li itemprop="callouts" itemscope repeat>
+            <meta itemprop="figurePage" content="5">
+            <meta itemprop="id" content="142">
+            <meta itemprop="label" content="third storage unit">
+            <span itemprop="bounds" itemscope>
+              <meta itemprop="left" content="769">
+              <meta itemprop="top" content="203">
+              <meta itemprop="right" content="837">
+              <meta itemprop="bottom" content="234">
+            </span>
+          </li>
+          <li itemprop="callouts" itemscope repeat>
+            <meta itemprop="figurePage" content="5">
+            <meta itemprop="id" content="143">
+            <meta itemprop="label" content="third display unit">
+            <span itemprop="bounds" itemscope>
+              <meta itemprop="left" content="233">
+              <meta itemprop="top" content="564">
+              <meta itemprop="right" content="303">
+              <meta itemprop="bottom" content="595">
+            </span>
+          </li>
+          <li itemprop="callouts" itemscope repeat>
+            <meta itemprop="figurePage" content="5">
+            <meta itemprop="id" content="144">
+            <meta itemprop="label" content="third control unit">
+            <span itemprop="bounds" itemscope>
+              <meta itemprop="left" content="772">
+              <meta itemprop="top" content="565">
+              <meta itemprop="right" content="843">
+              <meta itemprop="bottom" content="599">
+            </span>
+          </li>
+        </ul>
+      </li>
+      <li itemprop="images" itemscope repeat>
+        <img itemprop="thumbnail" src="https://patentimages.storage.googleapis.com/c5/fb/65/955ad0369941fe/pat00007.png">
+        <meta itemprop="full" content="https://patentimages.storage.googleapis.com/1f/5a/b8/d3aef82f78cb16/pat00007.png">
+        <ul>
+        </ul>
+      </li>
+      <li itemprop="images" itemscope repeat>
+        <img itemprop="thumbnail" src="https://patentimages.storage.googleapis.com/3c/b7/58/8f7bcf2ae596ac/pat00008.png">
+        <meta itemprop="full" content="https://patentimages.storage.googleapis.com/c8/dc/32/57f2bad89ed017/pat00008.png">
+        <ul>
+        </ul>
+      </li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Classifications</h2>
+    <ul>
+      <li>
+        <ul itemprop="classifications" itemscope repeat>
+          <li itemprop="classifications" itemscope repeat>
+            <span itemprop="Code">G</span>&mdash;<span itemprop="Description">PHYSICS</span>
+            <meta itemprop="IsCPC" content="true">
+          </li>
+          <li itemprop="classifications" itemscope repeat>
+            <span itemprop="Code">G06</span>&mdash;<span itemprop="Description">COMPUTING OR CALCULATING; COUNTING</span>
+            <meta itemprop="IsCPC" content="true">
+          </li>
+          <li itemprop="classifications" itemscope repeat>
+            <span itemprop="Code">G06Q</span>&mdash;<span itemprop="Description">INFORMATION AND COMMUNICATION TECHNOLOGY [ICT] SPECIALLY ADAPTED FOR ADMINISTRATIVE, COMMERCIAL, FINANCIAL, MANAGERIAL OR SUPERVISORY PURPOSES; SYSTEMS OR METHODS SPECIALLY ADAPTED FOR ADMINISTRATIVE, COMMERCIAL, FINANCIAL, MANAGERIAL OR SUPERVISORY PURPOSES, NOT OTHERWISE PROVIDED FOR</span>
+            <meta itemprop="IsCPC" content="true">
+          </li>
+          <li itemprop="classifications" itemscope repeat>
+            <span itemprop="Code">G06Q20/00</span>&mdash;<span itemprop="Description">Payment architectures, schemes or protocols</span>
+            <meta itemprop="IsCPC" content="true">
+          </li>
+          <li itemprop="classifications" itemscope repeat>
+            <span itemprop="Code">G06Q20/22</span>&mdash;<span itemprop="Description">Payment schemes or models</span>
+            <meta itemprop="IsCPC" content="true">
+          </li>
+          <li itemprop="classifications" itemscope repeat>
+            <span itemprop="Code">G06Q20/28</span>&mdash;<span itemprop="Description">Pre-payment schemes, e.g. &#34;pay before&#34;</span>
+            <meta itemprop="Leaf" content="true"><meta itemprop="IsCPC" content="true">
+          </li>
+        </ul>
+      </li>
+      <li>
+        <ul itemprop="classifications" itemscope repeat>
+          <li itemprop="classifications" itemscope repeat>
+            <span itemprop="Code">G</span>&mdash;<span itemprop="Description">PHYSICS</span>
+            <meta itemprop="IsCPC" content="true">
+          </li>
+          <li itemprop="classifications" itemscope repeat>
+            <span itemprop="Code">G06</span>&mdash;<span itemprop="Description">COMPUTING OR CALCULATING; COUNTING</span>
+            <meta itemprop="IsCPC" content="true">
+          </li>
+          <li itemprop="classifications" itemscope repeat>
+            <span itemprop="Code">G06Q</span>&mdash;<span itemprop="Description">INFORMATION AND COMMUNICATION TECHNOLOGY [ICT] SPECIALLY ADAPTED FOR ADMINISTRATIVE, COMMERCIAL, FINANCIAL, MANAGERIAL OR SUPERVISORY PURPOSES; SYSTEMS OR METHODS SPECIALLY ADAPTED FOR ADMINISTRATIVE, COMMERCIAL, FINANCIAL, MANAGERIAL OR SUPERVISORY PURPOSES, NOT OTHERWISE PROVIDED FOR</span>
+            <meta itemprop="IsCPC" content="true">
+          </li>
+          <li itemprop="classifications" itemscope repeat>
+            <span itemprop="Code">G06Q30/00</span>&mdash;<span itemprop="Description">Commerce</span>
+            <meta itemprop="IsCPC" content="true">
+          </li>
+          <li itemprop="classifications" itemscope repeat>
+            <span itemprop="Code">G06Q30/02</span>&mdash;<span itemprop="Description">Marketing; Price estimation or determination; Fundraising</span>
+            <meta itemprop="Leaf" content="true"><meta itemprop="IsCPC" content="true">
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </section>
+
+  
+
+  
+
+  
+
+  <section>
+    <h2>Landscapes</h2>
+    <ul>
+      <li itemprop="landscapes" itemscope repeat>
+        <span itemprop="name">Business, Economics &amp; Management</span>
+        (<span itemprop="type">AREA</span>)
+      </li>
+      <li itemprop="landscapes" itemscope repeat>
+        <span itemprop="name">Engineering &amp; Computer Science</span>
+        (<span itemprop="type">AREA</span>)
+      </li>
+      <li itemprop="landscapes" itemscope repeat>
+        <span itemprop="name">Strategic Management</span>
+        (<span itemprop="type">AREA</span>)
+      </li>
+      <li itemprop="landscapes" itemscope repeat>
+        <span itemprop="name">Accounting &amp; Taxation</span>
+        (<span itemprop="type">AREA</span>)
+      </li>
+      <li itemprop="landscapes" itemscope repeat>
+        <span itemprop="name">Management, Administration, Business Operations System, And Electronic Commerce</span>
+        (<span itemprop="type">AREA</span>)
+      </li>
+      <li itemprop="landscapes" itemscope repeat>
+        <span itemprop="name">Physics &amp; Mathematics</span>
+        (<span itemprop="type">AREA</span>)
+      </li>
+      <li itemprop="landscapes" itemscope repeat>
+        <span itemprop="name">General Business, Economics &amp; Management</span>
+        (<span itemprop="type">AREA</span>)
+      </li>
+      <li itemprop="landscapes" itemscope repeat>
+        <span itemprop="name">General Physics &amp; Mathematics</span>
+        (<span itemprop="type">AREA</span>)
+      </li>
+      <li itemprop="landscapes" itemscope repeat>
+        <span itemprop="name">Development Economics</span>
+        (<span itemprop="type">AREA</span>)
+      </li>
+      <li itemprop="landscapes" itemscope repeat>
+        <span itemprop="name">Theoretical Computer Science</span>
+        (<span itemprop="type">AREA</span>)
+      </li>
+      <li itemprop="landscapes" itemscope repeat>
+        <span itemprop="name">Finance</span>
+        (<span itemprop="type">AREA</span>)
+      </li>
+      <li itemprop="landscapes" itemscope repeat>
+        <span itemprop="name">Cash Registers Or Receiving Machines</span>
+        (<span itemprop="type">AREA</span>)
+      </li>
+      <li itemprop="landscapes" itemscope repeat>
+        <span itemprop="name">Entrepreneurship &amp; Innovation</span>
+        (<span itemprop="type">AREA</span>)
+      </li>
+      <li itemprop="landscapes" itemscope repeat>
+        <span itemprop="name">Game Theory and Decision Science</span>
+        (<span itemprop="type">AREA</span>)
+      </li>
+      <li itemprop="landscapes" itemscope repeat>
+        <span itemprop="name">Economics</span>
+        (<span itemprop="type">AREA</span>)
+      </li>
+      <li itemprop="landscapes" itemscope repeat>
+        <span itemprop="name">Marketing</span>
+        (<span itemprop="type">AREA</span>)
+      </li>
+    </ul>
+  </section>
+
+
+  <section itemprop="abstract" itemscope>
+    <h2>Abstract</h2>
+    
+    <div itemprop="content" html><abstract mxw-id="PA159714564" lang="KO" load-source="patent-office">
+    <div num="0001a" class="abstract">본 발명은 제휴사 서버와 서비스 제공 장치와 단말, 그를 포함하는 전자 지갑 시스템, 그 제어 방법 및 컴퓨터 프로그램이 기록된 기록매체를 개시한다. 즉, 본 발명은 비제휴사에서 제공한 쿠폰을 쿠폰 서버에 미리 등록한 후, 해당 쿠폰을 요청하는 단말에 서비스 제공 장치를 통해 해당 쿠폰을 발급처리하고, 단말에서 해당 쿠폰 사용 시 제휴사 서버와의 연동을 통해 해당 쿠폰에 대한 사용 처리를 수행함으로써, 비제휴사 쿠폰 제공을 통한 쿠폰의 다양성에 의해 사용자의 편의성 및 관리 효율성을 향상시키고 쿠폰 연동 분야를 확대할 수 있다.</div>
+    <div num="0002a" class="abstract">
+      <figref num="1"> </figref>
+    </div>
+  </abstract>
+  </div>
+  </section>
+
+  <section itemprop="description" itemscope>
+    <h2>Description</h2>
+    
+    <div itemprop="content" html><div mxw-id="PDES93531190" lang="KO" load-source="patent-office" class="description">
+    <invention-title lang="KO">제휴사 서버와 서비스 제공 장치와 단말, 그를 포함하는 전자 지갑 시스템, 그 제어 방법 및 컴퓨터 프로그램이 기록된 기록매체{Affiliated store server, service providing device and terminal, electronic wallet system comprising the same, control method thereof and computer readable medium having computer program recorded therefor}</invention-title>
+    <technical-field>
+      <div num="0001" class="description-paragraph">본 발명은 제휴사 서버와 서비스 제공 장치와 단말, 그를 포함하는 전자 지갑 시스템, 그 제어 방법 및 컴퓨터 프로그램이 기록된 기록매체에 관한 것으로, 특히 비제휴사에서 제공한 쿠폰을 쿠폰 서버에 미리 등록한 후, 해당 쿠폰을 요청하는 단말에 서비스 제공 장치를 통해 해당 쿠폰을 발급처리하고, 단말에서 해당 쿠폰 사용 시 제휴사 서버와의 연동을 통해 해당 쿠폰에 대한 사용 처리를 수행하는 제휴사 서버와 서비스 제공 장치와 단말, 그를 포함하는 전자 지갑 시스템, 그 제어 방법 및 컴퓨터 프로그램이 기록된 기록매체에 관한 것이다.</div>
+    </technical-field>
+    <background-art>
+      <div num="0002" class="description-paragraph">전자 지갑 시스템은 USIM 카드 등이 구비된 사용자 단말을 통해 신용카드, 교통카드, 멤버십 카드, 쿠폰 등을 관리하고, 사용자 단말과 제휴 단말 간을 통해 결제 기능을 제공하는 시스템이다.</div>
+      <div num="0003" class="description-paragraph">이러한 전자 지갑 시스템은 연동되지 않은 제휴사의 경우 해당 연동되지 않은 제휴사에서 전자 지갑 시스템에 가입된 고객 단말에 쿠폰을 발급할 수 없어 사용 시 불편함 및 전자 지갑 앱을 관리하는 서비스 제공 장치 및 제휴사 서버의 홍보 효과를 저해한다.</div>
+    </background-art>
+    <div>
+      <div>
+        <div num="0004" class="description-paragraph">
+          <patcit>
+            <text>한국공개특허 제10-2011-0127912호 [명칭: 모바일 상품권 제휴형 기프트카드 제공방법 및 그 시스템]</text>
+          </patcit>
+        </div>
+      </div>
+    </div>
+    <summary-of-invention>
+      <tech-problem>
+        <div num="0005" class="description-paragraph">본 발명의 목적은 비제휴사에서 제공한 쿠폰을 쿠폰 서버에 미리 등록한 후, 해당 쿠폰을 요청하는 단말에 서비스 제공 장치를 통해 해당 쿠폰을 발급 처리하는 제휴사 서버와 서비스 제공 장치와 단말, 그를 포함하는 전자 지갑 시스템, 그 제어 방법 및 컴퓨터 프로그램이 기록된 기록매체를 제공하는 데 있다.</div>
+        <div num="0006" class="description-paragraph">본 발명의 다른 목적은 비제휴사에서 발급한 쿠폰을 저장한 단말에서 해당 쿠폰 사용 시, 제휴사 서버와의 연동을 통해 해당 쿠폰에 대한 사용 처리를 수행하는 제휴사 서버와 서비스 제공 장치와 단말, 그를 포함하는 전자 지갑 시스템, 그 제어 방법 및 컴퓨터 프로그램이 기록된 기록매체를 제공하는 데 있다.</div>
+      </tech-problem>
+      <tech-solution>
+        <div num="0007" class="description-paragraph">본 발명의 실시예에 따른 제휴사 서버는 단말에 저장된 쿠폰 사용 시, POS 단말로부터 전송되는 POS 단말을 통해 인식된 쿠폰의 쿠폰 번호, 단말의 식별 정보 및 POS 단말의 고유 정보를 수신하는 통신부; 복수의 쿠폰, 쿠폰에 각각 대응하는 쿠폰 정보 및 쿠폰 정보에 연동된 단말의 식별 정보를 미리 저장하는 저장부; 및 미리 저장된 복수의 쿠폰에 대응되는 쿠폰 정보 및 단말의 식별 정보 중에서, 수신된 쿠폰 번호에 대응되는 쿠폰을 사용 처리하고, 사용 처리된 쿠폰의 쿠폰 처리 내역 정보를 생성하고, 생성된 쿠폰 처리 내역 정보를 서비스 제공 장치에 전송하도록 통신부를 제어하는 제어부를 포함할 수 있다.</div>
+        <div num="0008" class="description-paragraph">본 발명과 관련된 일 예로서 수신된 쿠폰 번호에 대응되는 쿠폰은 쿠폰 서버 또는 서비스 제공 장치와 연동되지 않은 비제휴사에서 쿠폰 서버에 등록한 쿠폰일 수 있다.</div>
+        <div num="0009" class="description-paragraph">본 발명과 관련된 일 예로서 쿠폰 처리 내역 정보는 결제 정보, 사용 처리된 쿠폰 번호에 대응되는 쿠폰 고유 정보, 단말의 식별 정보 및 POS 단말의 고유 정보를 포함할 수 있다.</div>
+        <div num="0010" class="description-paragraph">본 발명의 실시예에 따른 쿠폰 서버는 쿠폰 서버 또는 서비스 제공 장치와 연동되지 않은 비제휴사에서 쿠폰 서버에 등록한 쿠폰 사용 시, 서비스 제공 장치를 경유하여 제휴사 서버로부터 전송되는 쿠폰 처리 내역 정보를 수신하는 통신부; 복수의 쿠폰, 쿠폰에 각각 대응하는 쿠폰 정보 및 쿠폰 정보에 연동된 단말의 식별 정보를 미리 저장하는 저장부; 및 미리 저장된 복수의 쿠폰 정보와 단말의 식별 정보 중에서, 수신된 쿠폰 처리 내역 정보에 포함된 단말의 식별 정보를 확인하고, 확인된 단말의 식별 정보에 대응되는 쿠폰 번호와 쿠폰을 사용 처리하고, 서비스 제공 장치와 단말과의 연동을 통해 사용 처리된 쿠폰에 대한 사용 처리 동기화 기능을 수행하는 제어부를 포함할 수 있다.</div>
+        <div num="0011" class="description-paragraph">본 발명과 관련된 일 예로서 쿠폰은 쿠폰 서버에 미리 등록된 발급 가능한 쿠폰에 대응되는 쿠폰 번호 중에서 선택된 쿠폰 번호를 포함할 수 있다.</div>
+        <div num="0012" class="description-paragraph">본 발명의 실시예에 따른 제휴사 서버의 제어 방법은 단말에 저장된 쿠폰 사용 시, 통신부를 통해 POS 단말로부터 전송되는 POS 단말을 통해 인식된 쿠폰의 쿠폰 번호, 단말의 식별 정보 및 POS 단말의 고유 정보를 수신하는 단계; 제어부를 통해, 미리 저장된 복수의 쿠폰에 대응되는 쿠폰 정보 및 단말의 식별 정보 중에서, 수신된 쿠폰 번호에 대응되는 쿠폰을 사용 처리하는 단계; 제어부를 통해 사용 처리된 쿠폰의 쿠폰 처리 내역 정보를 생성하는 단계; 및 통신부를 통해 생성된 쿠폰 처리 내역 정보를 서비스 제공 장치에 전송하는 단계를 포함할 수 있다.</div>
+        <div num="0013" class="description-paragraph">본 발명의 실시예에 따른 쿠폰 서버의 제어 방법은 쿠폰 서버 또는 서비스 제공 장치와 연동되지 않은 비제휴사에서 쿠폰 서버에 등록한 쿠폰 사용 시, 통신부를 통해 서비스 제공 장치를 경유하여 제휴사 서버로부터 전송되는 쿠폰 처리 내역 정보를 수신하는 단계; 제어부를 통해, 미리 저장된 복수의 쿠폰 정보와 단말의 식별 정보 중에서, 수신된 쿠폰 처리 내역 정보에 포함된 단말의 식별 정보를 확인하는 단계; 제어부를 통해 확인된 단말의 식별 정보에 대응되는 쿠폰 번호와 쿠폰을 사용 처리하는 단계; 및 서비스 제공 장치와 단말과의 연동을 통해 사용 처리된 쿠폰에 대한 사용 처리 동기화 기능을 수행하는 단계를 포함할 수 있다.</div>
+        <div num="0014" class="description-paragraph">본 발명의 실시예에 따른 컴퓨터 프로그램이 기록된 기록매체에는 상술한 실시예에 따른 제어 방법을 수행하는 컴퓨터 프로그램이 저장될 수 있다.</div>
+        <div num="0015" class="description-paragraph">본 발명의 실시예에 따른 전자 지갑 시스템은 쿠폰 서버 또는 서비스 제공 장치와 연동되지 않은 비제휴사에서 쿠폰 서버에 등록한 쿠폰 사용 시, 단말에 저장된 쿠폰을 인식하고, 인식된 쿠폰의 쿠폰 번호, 단말의 식별 정보 및 POS 단말의 고유 정보를 전송하는 POS 단말; 미리 저장된 복수의 쿠폰에 대응되는 쿠폰 정보 및 단말의 식별 정보 중에서, 수신된 쿠폰 번호에 대응되는 쿠폰을 사용 처리하고, 사용 처리된 쿠폰의 쿠폰 처리 내역 정보를 생성하고, 생성된 쿠폰 처리 내역 정보를 서비스 제공 장치에 전송하는 제휴사 서버; 제휴사 서버로부터 전송되는 쿠폰 처리 내역 정보를 쿠폰 서버에 전달하는 서비스 제공 장치; 및 수신된 쿠폰 처리 내역 정보에 포함된 단말의 식별 정보에 대응하여 미리 저장된 쿠폰 번호와 쿠폰을 사용 처리하는 쿠폰 서버를 포함할 수 있다.</div>
+      </tech-solution>
+      <advantageous-effects>
+        <div num="0016" class="description-paragraph">본 발명은 비제휴사에서 제공한 쿠폰을 쿠폰 서버에 미리 등록한 후, 해당 쿠폰을 요청하는 단말에 서비스 제공 장치를 통해 해당 쿠폰을 발급처리하고, 단말에서 해당 쿠폰 사용 시 제휴사 서버와의 연동을 통해 해당 쿠폰에 대한 사용 처리를 수행함으로써, 비제휴사 쿠폰 제공을 통한 쿠폰의 다양성에 의해 사용자의 편의성 및 관리 효율성을 향상시키는 효과가 있다.</div>
+        <div num="0017" class="description-paragraph">또한, 본 발명은 비제휴사에서 발급한 쿠폰을 저장한 단말에서 해당 쿠폰 사용 시, 제휴사 서버와의 연동을 통해 해당 쿠폰에 대한 사용 처리를 수행함으로써, 제휴사뿐만 아니라 비제휴사와 쿠폰 연동 분야를 확대하는 효과가 있다.</div>
+      </advantageous-effects>
+    </summary-of-invention>
+    <description-of-drawings>
+      <div num="0018" class="description-paragraph">도 1은 본 발명의 실시예에 따른 전자 지갑 시스템의 구성을 나타낸 블록도이다.<br/>
+도 2는 본 발명의 실시예에 따른 전자 지갑 시스템의 구성을 나타낸 블록도이다.<br/>
+도 3은 본 발명의 실시예에 따른 제휴사 서버의 구성을 나타낸 블록도이다.<br/>
+도 4는 본 발명의 실시예에 따른 쿠폰 서버의 구성을 나타낸 블록도이다.<br/>
+도 5는<b> </b>본 발명의 실시예에 따른 서비스 제공 장치의 구성을 나타낸 블록도이다.<br/>
+도 6은 본 발명의 실시예에 따른 단말의 구성을 나타낸 블록도이다.<br/>
+도 7은<b> </b>본 발명의 전자 지갑 시스템의 제 1 실시예에 따른 통신 과정을 보인 신호 흐름도이다.<br/>
+도 8은<b> </b>본 발명의 전자 지갑 시스템의 제 2 실시예에 따른 통신 과정을 보인 신호 흐름도이다.</div>
+    </description-of-drawings>
+    <description-of-embodiments>
+      <div num="0019" class="description-paragraph">본 발명에서 사용되는 기술적 용어는 단지 특정한 실시예를 설명하기 위해 사용된 것으로, 본 발명을 한정하려는 의도가 아님을 유의해야 한다. 또한, 본 발명에서 사용되는 기술적 용어는 본 발명에서 특별히 다른 의미로 정의되지 않는 한 본 발명이 속하는 기술 분야에서 통상의 지식을 가진 자에 의해 일반적으로 이해되는 의미로 해석되어야 하며, 과도하게 포괄적인 의미로 해석되거나 과도하게 축소된 의미로 해석되지 않아야 한다. 또한, 본 발명에서 사용되는 기술적인 용어가 본 발명의 사상을 정확하게 표현하지 못하는 잘못된 기술적 용어일 때에는 당업자가 올바르게 이해할 수 있는 기술적 용어로 대체되어 이해되어야 할 것이다. 또한, 본 발명에서 사용되는 일반적인 용어는 사전에 정의되어 있는 바에 따라 또는 전후 문맥상에 따라 해석되어야 하며, 과도하게 축소된 의미로 해석되지 않아야 한다.</div>
+      <div num="0020" class="description-paragraph">또한, 본 발명에서 사용되는 단수의 표현은 문맥상 명백하게 다르게 뜻하지 않는 한 복수의 표현을 포함한다. 본 발명에서 &#34;구성된다&#34; 또는 &#34;포함한다&#34; 등의 용어는 발명에 기재된 여러 구성 요소들 또는 여러 단계를 반드시 모두 포함하는 것으로 해석되지 않아야 하며, 그 중 일부 구성 요소들 또는 일부 단계들은 포함되지 않을 수도 있고 또는 추가적인 구성 요소 또는 단계들을 더 포함할 수 있는 것으로 해석되어야 한다.</div>
+      <div num="0021" class="description-paragraph">또한, 본 발명에서 사용되는 제 1, 제 2 등과 같이 서수를 포함하는 용어는 구성 요소들을 설명하는데 사용될 수 있지만 구성 요소들은 용어들에 의해 한정되어서는 안 된다. 용어들은 하나의 구성 요소를 다른 구성 요소로부터 구별하는 목적으로만 사용된다. 예를 들어, 본 발명의 권리 범위를 벗어나지 않으면서 제 1 구성 요소는 제 2 구성 요소로 명명될 수 있고, 유사하게 제 2 구성 요소도 제 1 구성 요소로 명명될 수 있다.</div>
+      <div num="0022" class="description-paragraph">이하, 첨부된 도면을 참조하여 본 발명에 따른 바람직한 실시예를 상세히 설명하되, 도면 부호에 관계없이 동일하거나 유사한 구성 요소는 동일한 참조 번호를 부여하고 이에 대한 중복되는 설명은 생략하기로 한다.</div>
+      <div num="0023" class="description-paragraph">또한, 본 발명을 설명함에 있어서 관련된 공지 기술에 대한 구체적인 설명이 본 발명의 요지를 흐릴 수 있다고 판단되는 경우 그 상세한 설명을 생략한다. 또한, 첨부된 도면은 본 발명의 사상을 쉽게 이해할 수 있도록 하기 위한 것일 뿐, 첨부된 도면에 의해 본 발명의 사상이 제한되는 것으로 해석되어서는 아니 됨을 유의해야 한다.</div>
+      <div num="0024" class="description-paragraph">도 1은 본 발명의 실시예에 따른 전자지갑 시스템(10)의 구성을 나타낸 블록도이다.</div>
+      <div num="0025" class="description-paragraph">도 1에 도시된 바와 같이, 전자지갑 시스템(10)은 단말(11), 웹서버(Web Server, 12), WAS(Web Application Server, 13), 서비스 제공 장치(14), 제휴사 서버(15), DB서버(Database Server, 16)로 구성된다. </div>
+      <div num="0026" class="description-paragraph">도 1에 도시된 전자지갑 시스템(10)의 구성 요소 모두가 필수 구성 요소인 것은 아니며, 도 1에 도시된 구성 요소보다 많은 구성 요소에 의해 전자지갑 시스템(10)이 구현될 수도 있고, 그보다 적은 구성 요소에 의해서도 전자지갑 시스템(10)이 구현될 수도 있다.</div>
+      <div num="0027" class="description-paragraph">단말(또는 사용자 장치)(11)은 MDN(Mobile Directory Number), 모바일 IP, 모바일 MAC, Sim카드 고유정보, 시리얼번호와 같은 고유의 식별정보를 통해 식별되며, 유무선 통신망을 통해 웹서버(12)와 통신한다. 이때, 단말(11)은 웹서버(12)로부터 결제관련 카드 정보, 쿠폰 관련 정보, 상품권 관련 정보 등을 수신 및 저장하며, 특정 앱 실행 또는 특정 메뉴 선택 시 해당 정보를 표시한다. 이때, 결제관련 카드 정보는 카드에 대한 이미지 또는 동영상, 제휴사 이름, 카드 이름, 카드번호, 유효기간, 혜택, 연회비, 해당 카드와 연동하는 바코드 정보/QR 코드 정보/NFC 태그 정보/스마트 태그 정보 등을 포함할 수 있다. 또한, 쿠폰 관련 정보는 제휴사 이름, 쿠폰 이름, 쿠폰 번호, 혜택, 사용처, 사용기간, 사용방법 등을 포함할 수 있고, 상품권 관련 정보는 제휴사 이름, 상품권 이름, 상품권 번호, 금액, 사용처, 사용 기간, 사용 방법 등을 포함할 수 있다.</div>
+      <div num="0028" class="description-paragraph">또한, 단말(11)은 사용자에 의해 선택된 특정 결제관련 카드, 쿠폰, 티켓, 상품권 등과 관련된 정보를 웹서버(12)를 통해 서비스 제공 장치(14)로부터 수신한다.</div>
+      <div num="0029" class="description-paragraph">웹서버(12)는 단말(11)로부터 전송되는 식별정보에 기초하여 해당 단말(11)과 관련되어 DB서버(16)에 저장된 정보를 WAS(13)를 통해 확인하고 이를 단말(11)에 제공한다.</div>
+      <div num="0030" class="description-paragraph">또한, 웹서버(12)는 단말(11)로부터 결제관련 카드, 쿠폰, 티켓, 상품권 등에 대한 발급 요청이 전송되면, 해당 요청을 서비스 제공 장치(14)에 전달하여, 서비스 제공 장치(14)가 제휴사 서버로부터 관련 정보를 제공받은 후, 단말(11)에 제공(또는 발급)하도록 한다.</div>
+      <div num="0031" class="description-paragraph">이와 같이, 웹서버(12)는 단말(11)의 요청에 응답하여, WAS(13)를 통해 DB서버(16)에 저장된 정보를 획득하여 제공하거나, 서비스 제공 장치(14)를 통해 제휴사 서버(15)로부터 전달된 정보를 단말(11)에 제공한다.</div>
+      <div num="0032" class="description-paragraph">WAS(Web Application Server)(또는 웹 애플리케이션 서버)(13)는 웹서버(12)로부터 전송된 단말(11)의 식별정보에 기초하여 DB서버(16)에 저장된 정보를 웹서버(12)를 통해 단말(11)에 제공하며, 나아가, 웹서버(12)의 기능을 분산 처리하는 역할을 수행한다. </div>
+      <div num="0033" class="description-paragraph">서비스 제공 장치(14)는 웹서버(12)로부터 전송된 단말(11)의 식별정보에 기초하여 단말(11)의 요청에 따른 정보를 단말(11)에 제공하거나, 필요시 해당 정보를 제휴사 서버(15)로부터 전송받은 후 이를 단말(11)에 제공한다.</div>
+      <div num="0034" class="description-paragraph">일예로, 단말(11)로부터 결제관련 카드, 쿠폰, 티켓, 상품권 등에 대한 발급 요청을 웹서버(12)를 통해 수신하는 경우, 서비스 제공 장치(14)는 해당 요청에 응답하여 관련 정보를 제휴사 서버(15)로부터 전송받은 후 단말(11)에 전송한다.</div>
+      <div num="0035" class="description-paragraph">즉, 웹서버(12)는 단말(11)로부터 특정 결제관련 카드에 대한 발급 요청을 수신하면, 해당 발급 요청을 단말의 식별정보와 함께 서비스 제공 장치(14)에 전송한다. 이후, 서비스 제공 장치(14)는 전송된 해당 결제관련 카드에 대한 발급 요청 정보에 응답하여 식별정보에 대응되는 단말(11)에 해당 결제관련 카드를 발급(또는 전송)한다. 이때, 서비스 제공 장치(14)는 결제관련 카드를 제휴사 서버(15)로부터 전달받아 단말(11)에 제공(또는 전송)할 수 있다.</div>
+      <div num="0036" class="description-paragraph">제휴사 서버(또는 제휴사 서비스 장치)(15)는 서비스 제공 장치(14)와 유무선 통신망으로 연결되며, 서비스 제공 장치(14)로부터 제휴사 서버(15)와 관련된 카드의 발급 요청이 전달되면, 해당 요청에 응답하여 관련된 결제관련 카드를 서비스 제공 장치(14)를 통해 단말(11)에 발급한다.</div>
+      <div num="0037" class="description-paragraph">DB서버(데이터베이스 서버)(16)는 WAS(13)와 유무선 통신망을 통해 연결되며, 단말(11)의 식별정보에 대응되는 정보(예를 들어 결제관련 카드 발급 정보, 결제관련 카드 사용 정보, 바코드/QR 코드/NFC 태그/스마트 태그의 발급 정보, 바코드/QR 코드/NFC 태그/스마트 태그의 사용 정보, 포인트 적립/사용 정보, 쿠폰 발급/사용 정보 등 포함)를 저장한다.</div>
+      <div num="0038" class="description-paragraph">또한, DB서버(16)는 특정 단말(11)의 식별정보를 포함하는 웹서버(12)의 요청에 응답하여 식별정보에 대응되는 단말(11)에 대한 정보를 WAS(13)를 통해 웹서버(12)에 전송한다.</div>
+      <div num="0039" class="description-paragraph">또한, 전자지갑 시스템(10)은 서비스 제공 장치(14) 내지 제휴사 서버(15)와 통신하는 쿠폰 서버(미도시)를 더 포함할 수 있다.</div>
+      <div num="0040" class="description-paragraph">단말(11)로부터 쿠폰 발급 요청이 있는 경우, 웹서버(12)는 해당 요청을 단말(11)로부터 전송받은 후 서비스 제공 장치(14)에 전송하며, 서비스 제공 장치(14)는 전송받은 요청에 대응되는 쿠폰을 쿠폰 서버(또는 쿠폰 서비스 장치)로부터 제공받은 후 단말(11)에 직접 발급하거나 웹서버(12)를 통해 단말(11)에 발급한다. 이때, 쿠폰 서버는 해당 쿠폰을 제휴사 서버(15)로부터 제공(또는 발급)받을 수 있다. </div>
+      <div num="0041" class="description-paragraph">또한, 쿠폰 서버는 웹서버(12)의 쿠폰 발급 요청에 응답하여, 쿠폰 발급 요청에 대응되는 해당 쿠폰을 생성하고(또는 제휴사 서버(15)로부터 제공되는 해당 쿠폰을 제공받고), 쿠폰 발급 요청에 포함된 식별정보에 대응되는 단말(11)에 해당 쿠폰을 발급할 수도 있다.</div>
+      <div num="0042" class="description-paragraph">도 2는 본 발명의 실시예에 따른 전자 지갑 시스템(100)의 구성을 나타낸 블록도이다.</div>
+      <div num="0043" class="description-paragraph">도 2에 도시된 바와 같이, 전자 지갑 시스템(100)은 제휴사 서버(110), 쿠폰 서버(120), 서비스 제공 장치(130), 단말(140) 및 POS 단말(150)로 구성된다. 도 2에 도시된 전자 지갑 시스템(100)의 구성 요소 모두가 필수 구성 요소인 것은 아니며, 도 2에 도시된 구성 요소보다 많은 구성 요소에 의해 전자 지갑 시스템(100)이 구현될 수도 있고, 그보다 적은 구성 요소에 의해서도 전자 지갑 시스템(100)이 구현될 수도 있다.</div>
+      <div num="0044" class="description-paragraph">단말(140)에 저장된 비제휴사에서 발급된 쿠폰이 사용되면, POS 단말(150)은 해당 쿠폰을 인식하고, 인식된 쿠폰의 쿠폰 번호, 단말(140)의 식별 정보 및 POS 단말(150)의 고유 정보를 통신망을 통해 제휴사 서버(110)에 전송한다. 이후, 제휴사 서버(110)는 해당 쿠폰 번호에 대응되는 쿠폰을 사용 처리하고, 사용 처리에 따른 쿠폰 처리 내역 정보를 생성하고, 생성된 쿠폰 처리 내역 정보를 통신망을 이용하여 서비스 제공 장치(130)를 통해 쿠폰 서버(120)에 전송한다. 이후, 쿠폰 서버(120)는 해당 쿠폰 처리 내역 정보에 포함된 단말(140)의 식별 정보에 대응하여 미리 저장된 쿠폰 번호와 쿠폰을 사용 처리한다. 이후, 쿠폰 서버(120)와 서비스 제공 장치(130)와 단말(140)에 저장되어 있는 해당 쿠폰에 대한 사용 처리를 동기화한다.</div>
+      <div num="0045" class="description-paragraph">도 3에 도시된 바와 같이, 제휴사 서버(110)는 통신부(111), 저장부(112), 표시부(113) 및 제어부(114)로 구성된다. 도 3에 도시된 제휴사 서버(110)의 구성 요소 모두가 필수 구성 요소인 것은 아니며, 도 3에 도시된 구성 요소보다 많은 구성 요소에 의해 제휴사 서버(110)가 구현될 수도 있고, 그보다 적은 구성 요소에 의해서도 제휴사 서버(110)가 구현될 수도 있다.</div>
+      <div num="0046" class="description-paragraph">통신부(111)는 유/무선 통신망을 통해 내부의 구성 요소 또는 외부의 적어도 하나의 단말과 통신한다. 이때, 외부의 단말은 쿠폰 서버(120), 서비스 제공 장치(130), 단말(140), POS 단말(150) 등을 포함할 수 있다.</div>
+      <div num="0047" class="description-paragraph">또한, 통신부(111)는 제어부(114)의 제어에 의해 생성된 쿠폰을 단말(140)에 직접 발급(또는 전송)하거나, 쿠폰 서버(120)와 서비스 제공 장치(130)에 전송한다.</div>
+      <div num="0048" class="description-paragraph">또한, 단말(140)에 발급된 쿠폰이 POS 단말(150)을 통해 사용되면, 통신부(111)는 POS 단말(150)로부터 전송되는 쿠폰의 쿠폰 번호, 수신된 단말(140)의 식별 정보, POS 단말(150)의 고유 정보 등을 수신한다.</div>
+      <div num="0049" class="description-paragraph">또한, 통신부(111)는 제어부(114)의 제어에 의해 생성된 쿠폰 처리 내역 정보를 서비스 제공 장치(130)에 전송한다.</div>
+      <div num="0050" class="description-paragraph">저장부(112)는 사용자 인터페이스(User Interface: UI), 그래픽 사용자 인터페이스(Graphic User Interface: GUI) 등을 저장한다.</div>
+      <div num="0051" class="description-paragraph">또한, 저장부(112)는 제휴사 서버(110)가 동작하는데 필요한 데이터와 프로그램 등을 저장한다.</div>
+      <div num="0052" class="description-paragraph">또한, 저장부(112)는 제어부(114)의 제어에 의해 생성된 쿠폰을 저장한다.</div>
+      <div num="0053" class="description-paragraph">표시부(113)는 제어부(114)의 제어에 의해 저장부(112)에 저장된 사용자 인터페이스, 그래픽 사용자 인터페이스를 이용하여 메뉴 화면 등과 같은 콘텐츠를 표시할 수 있다. 여기서, 표시부(113)에 표시되는 콘텐츠는 텍스트 또는 이미지 데이터(각종 정보 데이터 포함)와 아이콘, 리스트 메뉴, 콤보 박스 등의 데이터를 포함하는 메뉴 화면 등을 포함한다. 또한, 표시부(113)는 터치 스크린 일 수 있다.</div>
+      <div num="0054" class="description-paragraph">제어부(114)는 제휴사 서버(110)의 전반적인 제어 기능을 실행한다.</div>
+      <div num="0055" class="description-paragraph">또한, 제휴사 서버(110)가 쿠폰 서버(120) 또는 서비스 제공 장치(130)와 연동하는 제휴사와 관련된 경우, 제어부(114)는 쿠폰을 생성하고, 생성된 쿠폰을 단말(140)에 직접 발급하거나, 쿠폰 서버(120)와 서비스 제공 장치(130)를 통해 단말(140)에 발급한다.</div>
+      <div num="0056" class="description-paragraph">또한, 제휴사 서버(110)가 쿠폰 서버(120) 또는 서비스 제공 장치(130)와 연동되지(또는 등록되지) 않은 비제휴사와 관련된 경우, 해당 제어부(114)는 쿠폰을 생성하고, 생성된 쿠폰을 통신부(111)를 통해 쿠폰 서버(120)에 등록한다.</div>
+      <div num="0057" class="description-paragraph">또한, 제어부(114)는 쿠폰 서버(120) 또는 단말(140)에 발급되는 쿠폰 종류별 쿠폰 수를 카운트한다.</div>
+      <div num="0058" class="description-paragraph">또한, 제어부(114)는 통신부(111)를 통해 수신된 쿠폰의 쿠폰 번호를 근거로 해당 쿠폰을 사용 처리한다.</div>
+      <div num="0059" class="description-paragraph">즉, 단말(140)에 발급된 쿠폰이 POS 단말(150)을 통해 사용되면, 제어부(114)는 수신된 쿠폰 번호에 대응되는 해당 쿠폰에 대한 결제 기능 수행을 통해 해당 쿠폰을 사용 처리한다.</div>
+      <div num="0060" class="description-paragraph">또한, 제어부(114)는 사용 처리된 쿠폰의 쿠폰 처리 내역 정보를 생성한다. 여기서, 쿠폰 처리 내역 정보는 결제 정보(예를 들어 결제 금액 등 포함), 쿠폰 번호에 대응되는 쿠폰 고유 정보(예를 들어 쿠폰 ID), 단말(140)의 식별정보, POS 단말(150)의 고유 정보 등을 포함한다.</div>
+      <div num="0061" class="description-paragraph">또한, 제어부(114)는 생성된 쿠폰 처리 내역 정보를 통신부(111)를 통해 서비스 제공 장치(130)에 전송한다.</div>
+      <div num="0062" class="description-paragraph">도 4에 도시된 바와 같이, 쿠폰 서버(120)는 제 1 통신부(121), 제 1 저장부(122), 제 1 표시부(123) 및 제 1 제어부(124)로 구성된다. 도 4에 도시된 쿠폰 서버(120)의 구성 요소 모두가 필수 구성 요소인 것은 아니며, 도 4에 도시된 구성 요소보다 많은 구성 요소에 의해 쿠폰 서버(120)가 구현될 수도 있고, 그보다 적은 구성 요소에 의해서도 쿠폰 서버(120)가 구현될 수도 있다.</div>
+      <div num="0063" class="description-paragraph">제 1 통신부(121)는 유/무선 통신망을 통해 내부의 구성 요소 또는 외부의 적어도 하나의 단말과 통신한다. 이때, 외부의 단말은 제휴사 서버(110), 서비스 제공 장치(130) 등을 포함할 수 있다.</div>
+      <div num="0064" class="description-paragraph">또한, 제 1 통신부(121)는 제휴사 서버(110)로부터 전송(또는 발급)되는 쿠폰을 수신한다. 여기서, 해당 쿠폰은 쿠폰 서버(120) 또는 서비스 제공 장치(130)와 연동되는 제휴사이거나 연동되지 않은 비제휴사와 관련된 쿠폰일 수 있다.</div>
+      <div num="0065" class="description-paragraph">또한, 제 1 통신부(121)는 서비스 제공 장치(130)로부터 전송되는 특정 쿠폰에 대한 정보(예를 들어 쿠폰 고유 정보), 단말(140)의 식별 정보 등을 포함하는 쿠폰 발급 요청 신호를 수신한다.</div>
+      <div num="0066" class="description-paragraph">제 1 저장부(122)는 사용자 인터페이스(UI), 그래픽 사용자 인터페이스(GUI) 등을 저장한다.</div>
+      <div num="0067" class="description-paragraph">또한, 제 1 저장부(122)는 쿠폰 서버(120)가 동작하는데 필요한 데이터와 프로그램 등을 저장한다.</div>
+      <div num="0068" class="description-paragraph">또한, 제 1 저장부(122)는 제 1 제어부(124)의 제어에 의해 제휴사 서버(110)로부터 발급된 쿠폰을 저장한다.</div>
+      <div num="0069" class="description-paragraph">제 1 표시부(123)는 제 1 제어부(124)의 제어에 의해 제 1 저장부(122)에 저장된 사용자 인터페이스, 그래픽 사용자 인터페이스를 이용하여 메뉴 화면 등과 같은 콘텐츠를 표시할 수 있다. 여기서, 제 1 표시부(123)에 표시되는 콘텐츠는 텍스트 또는 이미지 데이터(각종 정보 데이터 포함)와 아이콘, 리스트 메뉴, 콤보 박스 등의 데이터를 포함하는 메뉴 화면 등을 포함한다. 또한, 제 1 표시부(123)는 터치 스크린 일 수 있다.</div>
+      <div num="0070" class="description-paragraph">제 1 제어부(124)는 쿠폰 서버(120)의 전반적인 제어 기능을 실행한다.</div>
+      <div num="0071" class="description-paragraph">또한, 제 1 제어부(124)는 제 1 통신부(121)를 통해 수신된 쿠폰을 제 1 저장부(122)에 저장한다. 여기서, 수신된 쿠폰이 비제휴사에서 발급한 쿠폰인 경우, 제 1 제어부(124)는 해당 쿠폰의 발급 매수를 설정하고, 설정된 정보(예를 들어 발급 매수, 발급 매수에 각각 대응하는 쿠폰 번호 등 포함)를 제 1 저장부(122)에 저장한다.</div>
+      <div num="0072" class="description-paragraph">또한, 제 1 제어부(124)는 제 1 저장부(122)에 미리 등록된(또는 저장된) 복수의 쿠폰과 해당 쿠폰에 각각 대응되는 쿠폰 고유 정보 중에서, 제 1 통신부(121)를 통해 수신된 쿠폰 고유 정보에 대응되는 해당 쿠폰을 확인한다. 이때, 쿠폰 고유 정보에 대응되는 해당 쿠폰은 쿠폰 서버(120) 또는 서비스 제공 장치(130)와 연동되지 않은 비제휴사에서 쿠폰 서버(120)에 등록한 쿠폰일 수 있다.</div>
+      <div num="0073" class="description-paragraph">또한, 확인된 쿠폰에 대응되어 발급 가능한 쿠폰이 남아 있는 경우, 제 1 제어부(124)는 발급 가능한 쿠폰에 대응되는 고유 쿠폰 번호 중에서 어느 하나의 쿠폰 번호를 확인(또는 선택)한다.</div>
+      <div num="0074" class="description-paragraph">또한, 제 1 제어부(124)는 확인된 쿠폰 번호에 대응되는 해당 쿠폰을 제 1 통신부(121)를 통해 서비스 제공 장치(130)에 발급(또는 전송)한다.</div>
+      <div num="0075" class="description-paragraph">또한, 제 1 제어부(124)는 확인된 쿠폰에 대응되는 쿠폰 번호와 제 1 통신부(121)를 통해 수신된 쿠폰 발급 요청 신호에 포함된 단말(140)의 식별 정보를 매칭하고, 매칭된 해당 쿠폰에 대응되는 쿠폰 번호와 단말(140)의 식별 정보를 제 1 저장부(122)에 저장한다.</div>
+      <div num="0076" class="description-paragraph">또한, 제 1 제어부(124)는 제 1 통신부(121)를 통해 수신되는 서비스 제공 장치(130)로부터 전송된 쿠폰 처리 내역 정보를 제 1 저장부(122)에 저장한다. 여기서, 쿠폰 처리 내역 정보는 결제 정보(예를 들어 결제 금액 등 포함), 쿠폰 번호에 대응되는 쿠폰 고유 정보(예를 들어 쿠폰 ID), 단말(140)의 식별정보, POS 단말(150)의 고유 정보(예를 들어 POS 단말(150)의 ID) 등을 포함한다.</div>
+      <div num="0077" class="description-paragraph">또한, 제 1 제어부(124)는 수신된 쿠폰 처리 내역 정보를 근거로 해당 쿠폰이 사용된 것으로 처리한다.</div>
+      <div num="0078" class="description-paragraph">즉, 제 1 제어부(124)는 제 1 저장부(122)에 미리 저장된 복수의 쿠폰에 대응되는 쿠폰 번호와 단말의 식별 정보 중에서, 수신된 쿠폰 처리 내역 정보에 포함된 단말(140)의 식별 정보를 확인하고, 확인된 단말(140)의 식별 정보에 대응되는 쿠폰 번호와 해당 쿠폰을 사용된 것으로 처리한다.</div>
+      <div num="0079" class="description-paragraph">또한, 제 1 제어부(124)는 제 1 통신부(121)를 통해 서비스 제공 장치(130)와 단말(140)과 연동하여, 각각의 쿠폰 서버(120)와 서비스 제공 장치(130)와 단말(140)에 저장되어 있는 해당 쿠폰에 대응되는 쿠폰 번호에 대한 사용 처리를 동기화한다.</div>
+      <div num="0080" class="description-paragraph">도 5에 도시된 바와 같이, 서비스 제공 장치(130)는 제 2 통신부(131), 제 2 저장부(132), 제 2 표시부(133) 및 제 2 제어부(134)로 구성된다. 도 5에 도시된 서비스 제공 장치(130)의 구성 요소 모두가 필수 구성 요소인 것은 아니며, 도 5에 도시된 구성 요소보다 많은 구성 요소에 의해 서비스 제공 장치(130)가 구현될 수도 있고, 그보다 적은 구성 요소에 의해서도 서비스 제공 장치(130)가 구현될 수도 있다.</div>
+      <div num="0081" class="description-paragraph">제 2 통신부(131)는 유/무선 통신망을 통해 내부의 구성 요소 또는 외부의 적어도 하나의 단말과 통신한다. 이때, 외부의 단말은 제휴사 서버(110), 쿠폰 서버(120), 단말(140) 등을 포함할 수 있다.</div>
+      <div num="0082" class="description-paragraph">또한, 제 2 통신부(131)는 단말(140)로부터 전송되는 쿠폰 발급 요청 신호를 수신한다. 여기서, 쿠폰 발급 요청 신호는 쿠폰 정보, 단말(140)의 식별정보 등을 포함한다. 이때, 쿠폰 정보는 제휴사 이름, 쿠폰 종류, 쿠폰 이름, 혜택, 사용처, 사용 기간, 사용 방법 등의 정보를 포함한다. 또한, 단말(140)의 식별정보는 단말(140)의 MDN, 모바일 IP, 모바일 MAC, Sim카드 고유정보, 시리얼번호 등을 포함한다.</div>
+      <div num="0083" class="description-paragraph">또한, 특정 쿠폰에 대한 사용이 완료될 때, 제 2 통신부(131)는 제휴사 서버(110)로부터 전송되는 쿠폰 처리 내역 정보를 수신한다. 여기서, 쿠폰 처리 내역 정보는 결제 정보(예를 들어 결제 금액 등 포함), 쿠폰 번호에 대응되는 쿠폰 고유 정보(예를 들어 쿠폰 ID), 단말(140)의 식별정보, POS 단말(150)의 고유 정보 등을 포함한다.</div>
+      <div num="0084" class="description-paragraph">제 2 저장부(132)는 사용자 인터페이스(UI), 그래픽 사용자 인터페이스(GUI) 등을 저장한다.</div>
+      <div num="0085" class="description-paragraph">또한, 제 2 저장부(132)는 서비스 제공 장치(130)가 동작하는데 필요한 데이터와 프로그램 등을 저장한다.</div>
+      <div num="0086" class="description-paragraph">또한, 제 2 저장부(132)는 제 2 제어부(134)의 제어에 의해 쿠폰 서버(120)로부터 발급되는 쿠폰을 저장한다.</div>
+      <div num="0087" class="description-paragraph">제 2 표시부(133)는 제 2 제어부(134)의 제어에 의해 제 2 저장부(132)에 저장된 사용자 인터페이스, 그래픽 사용자 인터페이스를 이용하여 메뉴 화면 등과 같은 콘텐츠를 표시할 수 있다. 여기서, 제 2 표시부(133)에 표시되는 콘텐츠는 텍스트 또는 이미지 데이터(각종 정보 데이터 포함)와 아이콘, 리스트 메뉴, 콤보 박스 등의 데이터를 포함하는 메뉴 화면 등을 포함한다. 또한, 제 2 표시부(133)는 터치 스크린 일 수 있다.</div>
+      <div num="0088" class="description-paragraph">제 2 제어부(134)는 서비스 제공 장치(130)의 전반적인 제어 기능을 실행한다.</div>
+      <div num="0089" class="description-paragraph">또한, 제 2 제어부(134)는 제 2 통신부(131)를 통해 수신된 단말(140)로부터 전송되는 쿠폰 발급 요청 신호를 쿠폰 서버(120)에 전송하여 쿠폰 발급 요청 신호에 포함된 쿠폰 정보에 대응되는 해당 쿠폰의 발급을 요청한다.</div>
+      <div num="0090" class="description-paragraph">또한, 제 2 제어부(134)는 쿠폰 발급 요청에 응답하여 쿠폰 서버(120)로부터 발급되는 쿠폰 번호가 포함된 쿠폰을 제 2 통신부(131)를 통해 수신하고, 수신된 쿠폰을 제 2 통신부(131)를 통해 해당 단말(140)에 전송(또는 발급)한다. 이때, 제 2 제어부(134)는 단말(140)에 발급되는 쿠폰 종류별 쿠폰 수를 카운트한다.</div>
+      <div num="0091" class="description-paragraph">또한, 제 2 제어부(134)는 수신된 쿠폰에 포함된 쿠폰 번호를 해당 쿠폰 고유 정보와 단말(140)의 식별 정보에 매칭하고, 매칭된 정보(예를 들어 매칭된 쿠폰 번호와 쿠폰의 고유 정보와 단말(140)의 식별 정보)를 제 2 저장부(132)에 저장한다.</div>
+      <div num="0092" class="description-paragraph">또한, 제 2 제어부(134)는 제 2 통신부(131)를 통해 수신된 쿠폰 처리 내역 정보를 쿠폰 서버(120)에 전송하여 쿠폰 처리 내역 정보에 포함된 단말(140)의 식별 정보에 대응되는 해당 단말(140)이 사용 처리된 쿠폰 번호에 대응되는 해당 쿠폰을 사용했음을 쿠폰 서버(120)에 알린다.</div>
+      <div num="0093" class="description-paragraph">도 6에 도시된 바와 같이, 단말(140)은 제 3 통신부(141), 제 3 저장부(142), 제 3 표시부(143) 및 제 3 제어부(144)로 구성된다. 도 6에 도시된 단말(140)의 구성 요소 모두가 필수 구성 요소인 것은 아니며, 도 6에 도시된 구성 요소보다 많은 구성 요소에 의해 단말(140)이 구현될 수도 있고, 그보다 적은 구성 요소에 의해서도 단말(140)이 구현될 수도 있다.</div>
+      <div num="0094" class="description-paragraph">제 3 통신부(141)는 유/무선 통신망을 통해 내부의 구성 요소 또는 외부의 적어도 하나의 단말과 통신한다. 이때, 외부의 단말은 서비스 제공 장치(130), POS 단말(150) 등을 포함할 수 있다.</div>
+      <div num="0095" class="description-paragraph">또한, 제 3 통신부(141)는 제 3 제어부(144)의 제어에 의해 쿠폰 발급 요청 신호를 서비스 제공 장치(130)에 전송한다.</div>
+      <div num="0096" class="description-paragraph">제 3 저장부(142)는 사용자 인터페이스(UI), 그래픽 사용자 인터페이스(GUI) 등을 저장한다.</div>
+      <div num="0097" class="description-paragraph">또한, 제 3 저장부(142)는 단말(140)이 동작하는데 필요한 데이터와 프로그램 등을 저장한다.</div>
+      <div num="0098" class="description-paragraph">또한, 제 3 저장부(142)는 제 3 제어부(144)의 제어에 의해 쿠폰 서버(120)와 서비스 제공 장치(130)를 통해 발급되는 쿠폰을 저장(또는 등록)한다.</div>
+      <div num="0099" class="description-paragraph">제 3 표시부(143)는 제 3 제어부(144)의 제어에 의해 제 3 저장부(142)에 저장된 사용자 인터페이스, 그래픽 사용자 인터페이스를 이용하여 메뉴 화면 등과 같은 콘텐츠를 표시할 수 있다. 여기서, 제 3 표시부(143)에 표시되는 콘텐츠는 텍스트 또는 이미지 데이터(각종 정보 데이터 포함)와 아이콘, 리스트 메뉴, 콤보 박스 등의 데이터를 포함하는 메뉴 화면 등을 포함한다. 또한, 제 3 표시부(143)는 터치 스크린 일 수 있다.</div>
+      <div num="0100" class="description-paragraph">제 3 제어부(144)는 단말(140)의 전반적인 제어 기능을 실행한다.</div>
+      <div num="0101" class="description-paragraph">또한, 제 3 저장부(142)에 미리 설치된 전자지갑 앱(Electronic Wallet 또는 Digital wallet)과 같은 특정 앱이 실행되면, 제 3 제어부(144)는 특정 앱에 대응되는 특정앱 실행 결과 화면을 제 3 표시부(143)에 표시한다. 여기서, 특정 앱 실행 결과 화면은 내지갑 메뉴, 추가 메뉴, 이벤트/소식 메뉴, 더보기 메뉴 등을 포함한다. 이때, 더보기 메뉴는 활동 포인트 메뉴, 가계부 메뉴, 포인트통합조회 메뉴, SNS(Social Network Service) 관련 메뉴 등을 포함한다. 이때, 내지갑 메뉴는 특정 앱을 통해 단말(140)에 설치되거나 등록된 결제관련 카드, 쿠폰, 티켓, 상품권 등의 정보를 저장하는 메뉴이다. 또한, 추가 메뉴는 특정 앱을 통해 결제관련 카드, 쿠폰, 티켓, 기타 분류 항목 등을 새로 발급받기 위한 메뉴이다. 또한, 이벤트/소식 메뉴는 서비스 제공 장치 등으로부터 전송되는 이벤트 또는 공지 사항 정보 등을 확인하기 위한 메뉴이다. 또한, 활동 포인트 메뉴는 복수의 미리 설정된 앱과 연동한 활동 포인트 및 관련된 활동 포인트를 사용할 수 있는 복수의 앱 또는 관련 업체 정보를 제공하는 메뉴이다. 또한, 가계부 메뉴는 내지갑 메뉴의 멤버십 항목에 등록된 카드의 사용 내역, 포인트 사용 내역 등의 정보를 가계부 형태로 제공하는 메뉴(또는 가계부 전용 앱)이다. 또한, 포인트통합조회 메뉴는 내지갑 메뉴의 멤버십 항목에 등록된 카드의 포인트 정보를 나타내는 메뉴이다. 또한, SNS 관련 메뉴는 특정 앱과 연동하는 페이스북 사이트 관련 메뉴이다.</div>
+      <div num="0102" class="description-paragraph">또한, 특정 앱이 실행될 때, 제 3 제어부(144)는 단말(140)의 MDN, 모바일 IP, 모바일 MAC, Sim카드 고유정보, 시리얼번호와 같은 고유의 식별정보를 통해 식별되며, 유무선 통신망을 통해 서비스 제공 장치(130)와 통신한다. 이때, 제 3 제어부(144)는 백그라운드 상태로 단말(140)의 식별 정보를 서비스 제공 장치(130)에 전송하고, 서비스 제공 장치(130)는 식별 정보를 근거로 단말(140)을 식별하며 단말(140)과 통신한다.</div>
+      <div num="0103" class="description-paragraph">또한, 제 3 표시부(143)에 표시되는 특정 앱 실행 결과 화면 중에서 특정 쿠폰이 선택되면, 제 3 제어부(144)는 선택된 해당 쿠폰의 발급을 요청하기 위한 쿠폰 발급 요청 신호를 생성한다. 여기서, 쿠폰 발급 요청 신호는 쿠폰 정보, 단말(140)의 식별정보 등을 포함한다. 이때, 쿠폰 정보는 제휴사 이름, 쿠폰 종류, 쿠폰 이름, 혜택, 사용처, 사용 기간, 사용 방법 등의 정보를 포함한다. 또한, 단말(140)의 식별정보는 단말(140)의 MDN, 모바일 IP, 모바일 MAC, Sim카드 고유정보, 시리얼번호 등을 포함한다.</div>
+      <div num="0104" class="description-paragraph">또한, 제 3 제어부(144)는 생성된 쿠폰 발급 요청 신호를 제 3 통신부(141)를 통해 서비스 제공 장치(130)에 전송한다.</div>
+      <div num="0105" class="description-paragraph">또한, 제 3 제어부(144)는 전송된 쿠폰 발급 요청 신호에 응답하여 서비스 제공 장치(130)로부터 발급되는 해당 쿠폰을 제 3 통신부(141)를 통해 수신하고, 수신된 쿠폰을 제 3 저장부(142)에 저장(또는 등록)한다. 이때, 제 3 제어부(144)는 해당 쿠폰에 대한 쿠폰 번호를 함께 제 3 저장부(142)에 저장한다.</div>
+      <div num="0106" class="description-paragraph">또한, 제 3 표시부(143)에 표시되는 특정 앱 실행 결과 화면 중에서 제 3 저장부(142)에 등록된(또는 저장된) 특정 쿠폰을 사용하고자 하는 경우, 해당 특정 쿠폰이 POS 단말(150)을 통해 인식 처리된다. 여기서, 쿠폰은 바코드 형태, QR 코드 형태, 스마트 태그 형태, NFC 태그 형태 등일 수 있다. </div>
+      <div num="0107" class="description-paragraph">또한, 제 3 제어부(144)는 쿠폰 서버(120)와 서비스 제공 장치(130)와의 연동을 통해, 해당 특정 쿠폰에 대한 사용 처리를 동기화한다.</div>
+      <div num="0108" class="description-paragraph">즉, 제 3 제어부(144)는 해당 특정 쿠폰을 사용 처리하여, 제 3 저장부(142)에 등록된 해당 특정 쿠폰을 삭제 처리한다.</div>
+      <div num="0109" class="description-paragraph">단말(140)에 저장된 쿠폰 사용 시, POS 단말(Point Of Sale Terminal)(150)은 POS 단말(150)에 포함된 리더기(미도시)를 통해 단말(140)에 저장된 쿠폰을 인식한다. 여기서, 쿠폰은 바코드 형태, QR 코드 형태, 스마트 태그 형태, NFC 태그 형태 등일 수 있다. 또한, 해당 쿠폰은 쿠폰 서버(120) 또는 서비스 제공 장치(130)와 연동되지 않은 비제휴사에서 쿠폰 서버(120)에 등록한 쿠폰으로서, 비제휴사에서 해당 쿠폰을 쿠폰 서버(120)에 등록하면, 쿠폰 서버(120)에서는 해당 쿠폰의 발급 매수를 설정한 후 설정된 정보(예를 들어 발급 매수, 발급 매수에 대응하는 쿠폰 번호 등 포함)를 저장한 후, 단말(140)의 발급 요청에 의해 해당 단말(140)에 발급된 쿠폰일 수 있다. 또한, 리더기는 서로 다른 형태(예를 들어 바코드 형태, QR 코드 형태, 스마트 태그 형태, NFC 태그 형태 등 포함)의 쿠폰을 인식하기 위한 바코드 리더기, QR 코드 리더기, 스마트 태그 리더기, NFC 리더기 등일 수 있다. 이때, 단말(140)에 저장된 쿠폰을 인식할 때, POS 단말(150)은 백그라운드 상태로 단말(140)과 유무선 통신망을 통해 통신 가능하다. 또한, POS 단말(150)은 단말(140)로부터 전송되는 단말(140)의 식별 정보를 수신한다. 여기서, 식별 정보는 단말(140)의 MDN, 모바일 IP, 모바일 MAC, Sim카드 고유정보, 시리얼번호 등을 포함한다.</div>
+      <div num="0110" class="description-paragraph">또한, POS 단말(150)은 인식된 쿠폰의 쿠폰 번호, 수신된 단말(140)의 식별 정보, POS 단말(150)의 고유 정보 등을 제휴사 서버(110)에 전송한다. 여기서, 제휴사 서버(110)는 해당 쿠폰을 발급한 비제휴사의 서버일 수 있다.</div>
+      <div num="0111" class="description-paragraph">이와 같이, 비제휴사에서 제공한 쿠폰을 쿠폰 서버에 미리 등록한 후, 해당 쿠폰을 요청하는 단말에 서비스 제공 장치를 통해 해당 쿠폰을 발급처리하고, 단말에서 해당 쿠폰 사용 시 제휴사 서버와의 연동을 통해 해당 쿠폰에 대한 사용 처리를 수행할 수 있다.</div>
+      <div num="0112" class="description-paragraph">또한, 이와 같이, 비제휴사에서 발급한 쿠폰을 저장한 단말에서 해당 쿠폰 사용 시, 제휴사 서버와의 연동을 통해 해당 쿠폰에 대한 사용 처리를 수행할 수 있다.</div>
+      <div num="0113" class="description-paragraph">이하에서는 본 발명에 따른 전자 지갑 시스템의 제어 방법을 도 1 내지 도 8을 참조하여 상세히 설명한다.</div>
+      <div num="0114" class="description-paragraph">도 7은<b> </b>본 발명의 전자 지갑 시스템의 제 1 실시예에 따른 통신 과정을 보인 신호 흐름도이다.</div>
+      <div num="0115" class="description-paragraph">먼저, 단말(140)은 서비스 제공 장치(130)에 쿠폰 발급 요청 신호를 전송한다. 여기서, 쿠폰 발급 요청 신호는 쿠폰 정보, 단말(140)의 식별정보 등을 포함한다. 이때, 쿠폰 정보는 제휴사 이름, 쿠폰 종류, 쿠폰 이름, 혜택, 사용처, 사용 기간, 사용 방법 등의 정보를 포함한다. 또한, 단말(140)의 식별정보는 단말(140)의 MDN, 모바일 IP, 모바일 MAC, Sim카드 고유정보, 시리얼번호 등을 포함한다.</div>
+      <div num="0116" class="description-paragraph">일 예로, 단말(140)에 설치된 전자지갑 앱과 같은 특정 앱이 실행되면, 단말(140)은 실행 결과 화면을 표시한다. 여기서, 특정 앱 실행 결과 화면은 내지갑 메뉴, 추가 메뉴, 이벤트/소식 메뉴, 더보기 메뉴 등을 포함한다. 이후, 표시되는 실행 결과 화면 중에서 특정 쿠폰이 선택되면, 단말(140)은 선택된 특정 쿠폰에 대한 정보, 단말(140)의 식별 정보 등을 포함하는 쿠폰 발급 요청 신호를 생성하고, 생성된 쿠폰 발급 요청 신호를 서비스 제공 장치(130)에 전송하여 해당 특정 쿠폰의 발급을 요청한다(S710).</div>
+      <div num="0117" class="description-paragraph">이후, 서비스 제공 장치(130)는 단말(140)로부터 전송되는 쿠폰 발급 요청 신호를 수신한다.</div>
+      <div num="0118" class="description-paragraph">또한, 서비스 제공 장치(130)는 수신된 쿠폰 발급 요청 신호에 포함된 쿠폰 정보에 대응되는 쿠폰 고유 정보(예를 들어 쿠폰 ID)와 단말(140)의 식별정보를 쿠폰 서버(120)에 전송하여 해당 쿠폰의 발급을 요청한다.</div>
+      <div num="0119" class="description-paragraph">일 예로, 서비스 제공 장치(130)는 특정 쿠폰에 대한 정보, 단말(140)의 식별 정보 등을 포함하는 쿠폰 발급 요청 신호를 수신한다. 이후, 서비스 제공 장치(130)는 특정 쿠폰에 대응되는 쿠폰 ID(예를 들어 김치 쿠폰에 대응되는 &#39;K&#39;)와 단말(140)의 식별 정보를 쿠폰 서버(120)에 전송하여 해당 김치 쿠폰의 발급을 요청한다(S720).</div>
+      <div num="0120" class="description-paragraph">이후, 쿠폰 서버(120)는 서비스 제공 장치(130)로부터 전송되는 쿠폰 고유 정보와 단말(140)의 식별 정보를 수신한다.</div>
+      <div num="0121" class="description-paragraph">또한, 쿠폰 서버(120)는 미리 등록된 복수의 쿠폰과 해당 쿠폰에 대응되는 쿠폰 고유 정보 중에서, 수신된 쿠폰 고유 정보에 대응되는 해당 쿠폰을 확인한다. 여기서, 쿠폰 고유 정보에 대응되는 해당 쿠폰은 쿠폰 서버(120) 또는 서비스 제공 장치(130)와 연동되지(또는 등록되지) 않은 비제휴사에서 쿠폰 서버(120)에 등록한 쿠폰으로서, 비제휴사에서 해당 쿠폰을 쿠폰 서버(120)에 등록하면, 쿠폰 서버(120)에서는 해당 쿠폰의 발급 매수를 설정한 후 설정된 정보(예를 들어 발급 매수, 발급 매수에 대응하는 쿠폰 번호 등 포함)를 저장한다. 이때, 해당 쿠폰에 대해서 발급 가능한 쿠폰 매수가 남아 있을 때, 쿠폰 서버(120)는 발급 가능한 쿠폰에 대응되는 고유 쿠폰 번호 중에서 어느 하나의 쿠폰 번호를 확인(또는 선택)한다.</div>
+      <div num="0122" class="description-paragraph">일 예로, 쿠폰 서버(120)는 비제휴사에서 쿠폰 서버(120)에 등록한 쿠폰 중에서 수신된 쿠폰 고유 정보에 대응되는 해당 김치 쿠폰을 확인한다. 이후, 확인된 김치 쿠폰에 대응되는 복수의 발급 가능한(또는 사용 가능한) 쿠폰 번호 중에서 어느 하나의 쿠폰 번호(예를 들어 쿠폰 번호=1)를 확인한다(S730).</div>
+      <div num="0123" class="description-paragraph">이후, 쿠폰 서버(120)는 확인된 쿠폰 번호에 대응되는 해당 쿠폰을 서비스 제공 장치(130)에 발급(또는 전송)한다.</div>
+      <div num="0124" class="description-paragraph">또한, 쿠폰 서버(120)는 확인된 해당 쿠폰에 대응되는 쿠폰 번호와 단말(140)의 식별 정보를 매칭하고, 매칭된 해당 쿠폰에 대응되는 쿠폰 번호와 단말(140)의 식별 정보를 저장한다.</div>
+      <div num="0125" class="description-paragraph">일 예로, 쿠폰 서버(120)는 쿠폰 번호(예를 들어 쿠폰 번호=1)에 대응되는 해당 김치 쿠폰을 서비스 제공 장치(130)에 발급한다(S740).</div>
+      <div num="0126" class="description-paragraph">이후, 서비스 제공 장치(130)는 쿠폰 서버(120)로부터 발급되는 쿠폰 번호를 포함하는 쿠폰을 수신한다.</div>
+      <div num="0127" class="description-paragraph">또한, 서비스 제공 장치(130)는 수신된 쿠폰을 단말(140)에 전송하여 해당 쿠폰을 단말(140)에 발급한다.</div>
+      <div num="0128" class="description-paragraph">또한, 서비스 제공 장치(130)는 수신된 쿠폰에 포함된 쿠폰 번호를 해당 쿠폰 고유 정보와 단말(140)의 식별 정보에 매칭하고, 매칭된 정보를 저장한다.</div>
+      <div num="0129" class="description-paragraph">일 예로, 서비스 제공 장치(130)는 쿠폰 서버(120)로부터 전송되는 쿠폰 번호를 포함하는 김치 쿠폰을 단말(140)에 전송하여 해당 김치 쿠폰을 단말(140)에 발급한다. 또한, 서비스 제공 장치(130)는 수신된 쿠폰 번호와 해당 김치 쿠폰의 고유 정보와 해당 단말(140)의 식별 정보를 매칭하고, 매칭된 쿠폰 번호와 김치 쿠폰의 고유 정보와 단말(140)의 식별 정보를 저장한다(S750).</div>
+      <div num="0130" class="description-paragraph">이후, 단말(140)은 전송된 쿠폰 발급 요청 신호에 응답하여 서비스 제공 장치(130)로부터 발급되는 해당 쿠폰을 등록(또는 저장)한다. 이때, 단말(140)은 해당 쿠폰에 대한 쿠폰 번호를 함께 등록한다.</div>
+      <div num="0131" class="description-paragraph">일 예로, 단말(140)은 서비스 제공 장치(130)로부터 발급되는 고유 쿠폰 번호를 포함하는 김치 쿠폰을 등록한다(S760).</div>
+      <div num="0132" class="description-paragraph">도 8은<b> </b>본 발명의 전자 지갑 시스템의 제 2 실시예에 따른 통신 과정을 보인 신호 흐름도이다.</div>
+      <div num="0133" class="description-paragraph">먼저, 단말(140)에 저장된 쿠폰 사용 시, POS 단말(150)은 POS 단말(150)에 포함된 리더기(미도시)를 통해 단말(140)에 저장된 쿠폰을 인식한다. 여기서, 쿠폰은 바코드 형태, QR 코드 형태, 스마트 태그 형태, NFC 태그 형태 등일 수 있다. 또한, 해당 쿠폰은 쿠폰 서버(120) 또는 서비스 제공 장치(130)와 연동되지 않은 비제휴사에서 쿠폰 서버(120)에 등록한 쿠폰으로서, 비제휴사에서 해당 쿠폰을 쿠폰 서버(120)에 등록하면, 쿠폰 서버(120)에서는 해당 쿠폰의 발급 매수를 설정한 후 설정된 정보(예를 들어 발급 매수, 발급 매수에 대응하는 쿠폰 번호 등 포함)를 저장한 후, 단말(140)의 발급 요청에 의해 해당 단말(140)에 발급된 쿠폰일 수 있다. 또한, 리더기는 서로 다른 형태(예를 들어 바코드 형태, QR 코드 형태, 스마트 태그 형태, NFC 태그 형태 등 포함)의 쿠폰을 인식하기 위한 바코드 리더기, QR 코드 리더기, 스마트 태그 리더기, NFC 리더기 등일 수 있다. 이때, 단말(140)에 저장된 쿠폰이 POS 단말(150)에 의해 인식될 때, POS 단말(150)은 백그라운드 상태로 단말(140)과 유무선 통신망을 통해 통신 가능하다. 또한, 단말(140)은 단말(140)의 식별 정보를 POS 단말(150)에 전송한다. 여기서, 식별 정보는 단말(140)의 MDN, 모바일 IP, 모바일 MAC, Sim카드 고유정보, 시리얼번호 등을 포함한다.</div>
+      <div num="0134" class="description-paragraph">일 예로, POS 단말(150)은 리더기를 통해 단말(140)에 저장된 비제휴사에서 등록한 바코드 형태의 김치 쿠폰을 인식한다. 또한, POS 단말(150)은 백그라운드 상태로 단말(140)과 통신하며, 단말(140)의 식별 정보를 확인한다(S810).</div>
+      <div num="0135" class="description-paragraph">이후, POS 단말(150)은 인식된 쿠폰의 쿠폰 번호, 수신된 단말(140)의 식별 정보, POS 단말(150)의 고유 정보 등을 제휴사 서버(110)에 전송한다. 여기서, 제휴사 서버(110)는 해당 쿠폰을 발급한 비제휴사의 서버일 수 있다.</div>
+      <div num="0136" class="description-paragraph">일 예로, POS 단말(150)은 인식된 김치 쿠폰의 쿠폰 번호(예를 들어 쿠폰 번호=1), 단말(140)의 식별 정보, POS 단말(150)의 고유 정보 등을 해당 김치 쿠폰을 발급한 비제휴사인 제휴사 서버(110)에 전송한다(S820).</div>
+      <div num="0137" class="description-paragraph">이후, 제휴사 서버(110)는 POS 단말(150)로부터 전송되는 인식된 쿠폰의 쿠폰 번호, 수신된 단말(140)의 식별 정보, POS 단말(150)의 고유 정보 등을 수신한다.</div>
+      <div num="0138" class="description-paragraph">또한, 제휴사 서버(110)는 수신된 쿠폰의 쿠폰 번호를 근거로 해당 쿠폰을 사용 처리한다.</div>
+      <div num="0139" class="description-paragraph">즉, 제휴사 서버(110)는 수신된 쿠폰 번호에 대응되는 해당 쿠폰에 대한 결제 기능 수행을 통해 해당 쿠폰을 사용 처리한다.</div>
+      <div num="0140" class="description-paragraph">일 예로, 제휴사 서버(110)는 미리 저장된 복수의 김치 쿠폰에 대응되는 쿠폰 번호와 단말(140)의 식별 정보 중에서, 해당 김치 쿠폰의 쿠폰 번호(예를 들어 쿠폰 번호=1) 및 단말(140)의 식별 정보를 확인하고, 확인된 해당 쿠폰 번호(예를 들어 쿠폰 번호=1)에 대응되는 김치 쿠폰(또는 해당 쿠폰 번호)를 사용 처리한다(S830).</div>
+      <div num="0141" class="description-paragraph">이후, 제휴사 서버(110)는 사용 처리된 쿠폰의 쿠폰 처리 내역 정보를 생성한다. 여기서, 쿠폰 처리 내역 정보는 결제 정보(예를 들어 결제 금액 등 포함), 쿠폰 번호에 대응되는 쿠폰 고유 정보(예를 들어 쿠폰 ID), 단말(140)의 식별정보, POS 단말(150)의 고유 정보 등을 포함한다.</div>
+      <div num="0142" class="description-paragraph">또한, 제휴사 서버(110)는 생성된 쿠폰 처리 내역 정보를 서비스 제공 장치(130)에 전송한다.</div>
+      <div num="0143" class="description-paragraph">일 예로, 제휴사 서버(110)는 사용 처리된 김치 쿠폰의 결제 정보, 쿠폰 번호(예를 들어 쿠폰 번호=1)에 대응되는 쿠폰 고유 정보(예를 들어 김치 쿠폰에 대응되는 &#39;K&#39;), 단말(140)의 식별정보, POS 단말(150)의 고유 정보 등을 포함하는 쿠폰 처리 내역 정보를 생성하고, 생성된 쿠폰 처리 내역 정보를 서비스 제공 장치(130)에 전송한다(S840).</div>
+      <div num="0144" class="description-paragraph">이후, 서비스 제공 장치(130)는 제휴사 서버(110)로부터 전송되는 쿠폰 처리 내역 정보를 수신한다.</div>
+      <div num="0145" class="description-paragraph">또한, 서비스 제공 장치(130)는 수신된 쿠폰 처리 내역 정보를 쿠폰 서버(120)에 전송하여 쿠폰 처리 내역 정보에 포함된 단말(140)의 식별 정보에 대응되는 해당 단말(140)이 사용 처리된 쿠폰 번호에 대응되는 해당 쿠폰을 사용했음을 쿠폰 서버(120)에 알린다(S850).</div>
+      <div num="0146" class="description-paragraph">이후, 쿠폰 서버(120)는 서비스 제공 장치(130)로부터 전송되는 쿠폰 처리 내역 정보를 수신한다.</div>
+      <div num="0147" class="description-paragraph">또한, 쿠폰 서버(120)는 수신된 쿠폰 처리 내역 정보를 근거로 해당 쿠폰이 사용된 것으로 처리한다.</div>
+      <div num="0148" class="description-paragraph">즉, 쿠폰 서버(120)는 미리 저장된 복수의 쿠폰에 대응되는 쿠폰 번호와 단말의 식별 정보 중에서 수신된 쿠폰 처리 내역 정보에 포함된 단말(140)의 식별 정보를 확인하고, 확인된 단말(140)의 식별 정보에 대응되는 쿠폰 번호와 해당 쿠폰을 사용된 것으로 처리한다.</div>
+      <div num="0149" class="description-paragraph">일 예로, 쿠폰 서버(120)는 미리 저장된 복수의 쿠폰에 대응되는 쿠폰 번호와 단말의 식별 정보 중에서 수신된 쿠폰 처리 내역 정보에 포함된 단말(140)의 식별 정보를 확인하고, 확인된 단말(140)의 식별 정보에 대응되는 김치 쿠폰과 해당 김치 쿠폰의 쿠폰 번호(예를 들어 쿠폰 번호=1)를 사용된 것으로 처리한다.</div>
+      <div num="0150" class="description-paragraph">또한, 쿠폰 서버(120)는 서비스 제공 장치(130)와 단말(140)과의 연동을 통해, 각각의 쿠폰 서버(120)와 서비스 제공 장치(130)와 단말(140)에 저장되어 있는 해당 쿠폰에 대응되는 쿠폰 번호에 대한 사용 처리를 동기화한다(S860).</div>
+      <div num="0151" class="description-paragraph">본 발명의 실시예에 따른 제휴사 서버와 쿠폰 서버의 제어 방법은 컴퓨터 프로그램으로 작성 가능하며, 컴퓨터 프로그램을 구성하는 코드들 및 코드 세그먼트들은 당해 분야의 컴퓨터 프로그래머에 의하여 용이하게 추론될 수 있다. 또한, 해당 컴퓨터 프로그램은 컴퓨터가 읽을 수 있는 정보저장매체(computer readable media)에 저장되고, 컴퓨터나 본 발명의 실시예에 따른 제휴사 서버, 쿠폰 서버, 서비스 제공 장치, 단말, POS 단말 등에 의하여 읽혀지고 실행됨으로써 제휴사 서버와 쿠폰 서버의 제어 방법을 구현할 수 있다. </div>
+      <div num="0152" class="description-paragraph">정보저장매체는 자기 기록매체, 광 기록매체 및 캐리어 웨이브 매체를 포함한다. 본 발명의 실시예에 따른 제휴사 서버와 쿠폰 서버의 제어 방법을 구현하는 컴퓨터 프로그램은 제휴사 서버, 쿠폰 서버, 서비스 제공 장치, 단말, POS 단말 등의 내장 메모리에 저장 및 설치될 수 있다. 또는, 본 발명의 실시예에 따른 제휴사 서버와 쿠폰 서버의 제어 방법을 구현하는 컴퓨터 프로그램을 저장 및 설치한 스마트 카드 등의 외장 메모리가 인터페이스를 통해 제휴사 서버, 쿠폰 서버, 서비스 제공 장치, 단말, POS 단말 등에 장착될 수도 있다.</div>
+      <div num="0153" class="description-paragraph">본 발명의 실시예는 앞서 설명된 바와 같이, 비제휴사에서 제공한 쿠폰을 쿠폰 서버에 미리 등록한 후, 해당 쿠폰을 요청하는 단말에 서비스 제공 장치를 통해 해당 쿠폰을 발급처리하고, 단말에서 해당 쿠폰 사용 시 제휴사 서버와의 연동을 통해 해당 쿠폰에 대한 사용 처리를 수행하여, 비제휴사 쿠폰 제공을 통한 쿠폰의 다양성에 의해 사용자의 편의성 및 관리 효율성을 향상시킬 수 있다.</div>
+      <div num="0154" class="description-paragraph">또한, 본 발명의 실시예는 앞서 설명된 바와 같이, 비제휴사에서 발급한 쿠폰을 저장한 단말에서 해당 쿠폰 사용 시, 제휴사 서버와의 연동을 통해 해당 쿠폰에 대한 사용 처리를 수행하여, 제휴사뿐만 아니라 비제휴사와 쿠폰 연동 분야를 확대할 수 있다.</div>
+      <div num="0155" class="description-paragraph">전술된 내용은 본 발명이 속하는 기술 분야에서 통상의 지식을 가진 자라면 본 발명의 본질적인 특성에서 벗어나지 않는 범위에서 수정 및 변형이 가능할 것이다. 따라서, 본 발명에 개시된 실시예들은 본 발명의 기술 사상을 한정하기 위한 것이 아니라 설명하기 위한 것이고, 이러한 실시예에 의하여 본 발명의 기술 사상의 범위가 한정되는 것은 아니다. 본 발명의 보호 범위는 아래의 청구범위에 의하여 해석되어야 하며, 그와 동등한 범위 내에 있는 모든 기술 사상은 본 발명의 권리범위에 포함되는 것으로 해석되어야 할 것이다.</div>
+    </description-of-embodiments>
+    <industrial-applicability>
+      <div num="0156" class="description-paragraph">본 발명은 비제휴사에서 제공한 쿠폰을 쿠폰 서버에 미리 등록한 후, 해당 쿠폰을 요청하는 단말에 서비스 제공 장치를 통해 해당 쿠폰을 발급처리하고, 단말에서 해당 쿠폰 사용 시 제휴사 서버와의 연동을 통해 해당 쿠폰에 대한 사용 처리를 수행함으로써 비제휴사 쿠폰 제공을 통한 쿠폰의 다양성에 의해 사용자의 편의성 및 관리 효율성을 향상시키고 쿠폰 연동 분야를 확대하는 것으로, 전자상거래 분야, 마케팅 분야, 금융분야 등에서 광범위하게 이용될 수 있다.</div>
+    </industrial-applicability>
+    <reference-signs-list>
+      <div num="0157" class="description-paragraph">10, 100: 전자 지갑 시스템
+
+11, 140: 단말<br/>
+12: 웹서버
+
+
+
+
+13: WAS<br/>
+14, 130: 서비스 제공 장치
+
+15, 110: 제휴사 서버<br/>
+16: DB서버
+
+
+
+
+120: 쿠폰 서버<br/>
+150: POS 단말
+
+
+
+111: 통신부<br/>
+112: 저장부
+
+
+
+
+113: 표시부<br/>
+114: 제어부
+
+
+
+
+121: 제 1 통신부<br/>
+122: 제 1 저장부
+
+
+
+123: 제 1 표시부<br/>
+124: 제 1 제어부
+
+
+
+131: 제 2 통신부<br/>
+132: 제 2 저장부
+
+
+
+133: 제 2 표시부<br/>
+134: 제 2 제어부
+
+
+
+141: 제 3 통신부<br/>
+142: 제 3 저장부
+
+
+
+143: 제 3 표시부<br/>
+144: 제 3 제어부</div>
+    </reference-signs-list>
+  </div>
+  </div>
+  </section>
+
+  <section itemprop="claims" itemscope>
+    <h2>Claims (<span itemprop="count">9</span>)</h2>
+    
+    <div itemprop="content" html><ol mxw-id="PCLM85499302" lang="KO" load-source="patent-office" class="claims">
+    <li class="claim"> <div num="1" class="claim">
+      <div class="claim-text">단말에 저장된 쿠폰 사용 시, POS 단말로부터 전송되는 상기 POS 단말을 통해 인식된 쿠폰의 쿠폰 번호, 상기 단말의 식별 정보 및 상기 POS 단말의 고유 정보를 수신하는 통신부;<br/>복수의 쿠폰, 상기 쿠폰에 각각 대응하는 쿠폰 정보 및 상기 쿠폰 정보에 연동된 단말의 식별 정보를 미리 저장하는 저장부; 및<br/>상기 미리 저장된 복수의 쿠폰에 대응되는 쿠폰 정보 및 단말의 식별 정보 중에서, 상기 수신된 쿠폰 번호에 대응되는 쿠폰을 사용 처리하고, 상기 사용 처리된 쿠폰의 쿠폰 처리 내역 정보를 생성하고, 상기 생성된 쿠폰 처리 내역 정보를 서비스 제공 장치에 전송하도록 상기 통신부를 제어하는 제어부를 포함하는 제휴사 서버.</div>
+    </div>
+    </li> <li class="claim-dependent"> <div num="2" class="claim">
+      <div class="claim-text">제 1항에 있어서,<br/>상기 수신된 쿠폰 번호에 대응되는 쿠폰은 쿠폰 서버 또는 상기 서비스 제공 장치와 연동되지 않은 비제휴사에서 상기 쿠폰 서버에 등록한 쿠폰인 것을 특징으로 하는 제휴사 서버.</div>
+    </div>
+    </li> <li class="claim-dependent"> <div num="3" class="claim">
+      <div class="claim-text">제 1항에 있어서,<br/>상기 쿠폰 처리 내역 정보는 결제 정보, 상기 사용 처리된 쿠폰 번호에 대응되는 쿠폰 고유 정보, 상기 단말의 식별 정보 및 상기 POS 단말의 고유 정보를 포함하는 것을 특징으로 하는 제휴사 서버.</div>
+    </div>
+    </li> <li class="claim"> <div num="4" class="claim">
+      <div class="claim-text">쿠폰 서버 또는 서비스 제공 장치와 연동되지 않은 비제휴사에서 상기 쿠폰 서버에 등록한 쿠폰 사용 시, 서비스 제공 장치를 경유하여 제휴사 서버로부터 전송되는 쿠폰 처리 내역 정보를 수신하는 통신부;<br/>복수의 쿠폰, 상기 쿠폰에 각각 대응하는 쿠폰 정보 및 상기 쿠폰 정보에 연동된 단말의 식별 정보를 미리 저장하는 저장부; 및<br/>상기 미리 저장된 복수의 쿠폰 정보와 단말의 식별 정보 중에서, 상기 수신된 쿠폰 처리 내역 정보에 포함된 단말의 식별 정보를 확인하고, 상기 확인된 단말의 식별 정보에 대응되는 쿠폰 번호와 쿠폰을 사용 처리하고, 상기 서비스 제공 장치와 상기 단말과의 연동을 통해 상기 사용 처리된 쿠폰에 대한 사용 처리 동기화 기능을 수행하는 제어부를 포함하는 쿠폰 서버.</div>
+    </div>
+    </li> <li class="claim-dependent"> <div num="5" class="claim">
+      <div class="claim-text">제 4항에 있어서,<br/>상기 쿠폰은 상기 쿠폰 서버에 미리 등록된 발급 가능한 상기 쿠폰에 대응되는 쿠폰 번호 중에서 선택된 상기 쿠폰 번호를 포함하는 것을 특징으로 하는 쿠폰 서버.</div>
+    </div>
+    </li> <li class="claim"> <div num="6" class="claim">
+      <div class="claim-text">단말에 저장된 쿠폰 사용 시, 통신부를 통해 POS 단말로부터 전송되는 상기 POS 단말을 통해 인식된 쿠폰의 쿠폰 번호, 상기 단말의 식별 정보 및 상기 POS 단말의 고유 정보를 수신하는 단계;<br/>제어부를 통해, 미리 저장된 복수의 쿠폰에 대응되는 쿠폰 정보 및 단말의 식별 정보 중에서, 상기 수신된 쿠폰 번호에 대응되는 쿠폰을 사용 처리하는 단계;<br/>상기 제어부를 통해 상기 사용 처리된 쿠폰의 쿠폰 처리 내역 정보를 생성하는 단계; 및<br/>상기 통신부를 통해 상기 생성된 쿠폰 처리 내역 정보를 서비스 제공 장치에 전송하는 단계를 포함하는 제휴사 서버의 제어 방법.</div>
+    </div>
+    </li> <li class="claim"> <div num="7" class="claim">
+      <div class="claim-text">쿠폰 서버 또는 서비스 제공 장치와 연동되지 않은 비제휴사에서 상기 쿠폰 서버에 등록한 쿠폰 사용 시, 통신부를 통해 서비스 제공 장치를 경유하여 제휴사 서버로부터 전송되는 쿠폰 처리 내역 정보를 수신하는 단계;<br/>제어부를 통해, 미리 저장된 복수의 쿠폰 정보와 단말의 식별 정보 중에서, 상기 수신된 쿠폰 처리 내역 정보에 포함된 단말의 식별 정보를 확인하는 단계;<br/>상기 제어부를 통해 상기 확인된 단말의 식별 정보에 대응되는 쿠폰 번호와 쿠폰을 사용 처리하는 단계; 및<br/>상기 서비스 제공 장치와 상기 단말과의 연동을 통해 상기 사용 처리된 쿠폰에 대한 사용 처리 동기화 기능을 수행하는 단계를 포함하는 쿠폰 서버의 제어 방법.</div>
+    </div>
+    </li> <li class="claim-dependent"> <div num="8" class="claim">
+      <div class="claim-text">제 6항 또는 제 7항 중 어느 한 항에 따른 제어 방법을 수행하는 컴퓨터 프로그램이 기록된 기록매체.</div>
+    </div>
+    </li> <li class="claim"> <div num="9" class="claim">
+      <div class="claim-text">쿠폰 서버 또는 서비스 제공 장치와 연동되지 않은 비제휴사에서 상기 쿠폰 서버에 등록한 쿠폰 사용 시, 단말에 저장된 상기 쿠폰을 인식하고, 상기 인식된 쿠폰의 쿠폰 번호, 상기 단말의 식별 정보 및 상기 POS 단말의 고유 정보를 전송하는 POS 단말;<br/>미리 저장된 복수의 쿠폰에 대응되는 쿠폰 정보 및 단말의 식별 정보 중에서, 상기 수신된 쿠폰 번호에 대응되는 쿠폰을 사용 처리하고, 상기 사용 처리된 쿠폰의 쿠폰 처리 내역 정보를 생성하고, 상기 생성된 쿠폰 처리 내역 정보를 상기 서비스 제공 장치에 전송하는 제휴사 서버;<br/>상기 제휴사 서버로부터 전송되는 상기 쿠폰 처리 내역 정보를 상기 쿠폰 서버에 전달하는 서비스 제공 장치; 및<br/>상기 수신된 쿠폰 처리 내역 정보에 포함된 단말의 식별 정보에 대응하여 미리 저장된 쿠폰 번호와 쿠폰을 사용 처리하는 상기 쿠폰 서버를 포함하는 전자 지갑 시스템.</div>
+    </div>
+  </li> </ol>
+  </div>
+  </section>
+
+  <section itemprop="application" itemscope>
+
+    <section itemprop="metadata" itemscope>
+      <span itemprop="applicationNumber">KR1020140010384A</span>
+      <span itemprop="priorityDate">2014-01-28</span>
+      <span itemprop="filingDate">2014-01-28</span>
+      <span itemprop="title">제휴사 서버와 서비스 제공 장치와 단말, 그를 포함하는 전자 지갑 시스템, 그 제어 방법 및 컴퓨터 프로그램이 기록된 기록매체 
+       </span>
+      <span itemprop="ifiStatus">Active</span>
+      
+      <a href="/patent/KR102235736B1/ko">
+        <span itemprop="representativePublication">KR102235736B1</span>
+        (<span itemprop="primaryLanguage">ko</span>)
+      </a>
+    </section>
+
+    <h2>Priority Applications (4)</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Application Number</th>
+          <th>Priority Date</th>
+          <th>Filing Date</th>
+          <th>Title</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr itemprop="priorityApps" itemscope repeat>
+          <td>
+            <span itemprop="applicationNumber">KR1020140010384A</span>
+            
+            <a href="/patent/KR102235736B1/ko">
+              <span itemprop="representativePublication">KR102235736B1</span>
+                (<span itemprop="primaryLanguage">ko</span>)
+            </a>
+          </td>
+          <td itemprop="priorityDate">2014-01-28</td>
+          <td itemprop="filingDate">2014-01-28</td>
+          <td itemprop="title">제휴사 서버와 서비스 제공 장치와 단말, 그를 포함하는 전자 지갑 시스템, 그 제어 방법 및 컴퓨터 프로그램이 기록된 기록매체 
+       </td>
+        </tr>
+        <tr itemprop="priorityApps" itemscope repeat>
+          <td>
+            <span itemprop="applicationNumber">US14/899,054</span>
+            
+            <a href="/patent/US20160358202A1/en">
+              <span itemprop="representativePublication">US20160358202A1</span>
+                (<span itemprop="primaryLanguage">en</span>)
+            </a>
+          </td>
+          <td itemprop="priorityDate">2014-01-28</td>
+          <td itemprop="filingDate">2014-12-05</td>
+          <td itemprop="title">Affiliated company server, service providing device and terminal, electronic wallet system comprising the same, control method thereof and non-transitory computer readable storage medium having computer program recorded thereon 
+       </td>
+        </tr>
+        <tr itemprop="priorityApps" itemscope repeat>
+          <td>
+            <span itemprop="applicationNumber">CN201480061540.9A</span>
+            
+            <a href="/patent/CN105706134A/zh">
+              <span itemprop="representativePublication">CN105706134A</span>
+                (<span itemprop="primaryLanguage">zh</span>)
+            </a>
+          </td>
+          <td itemprop="priorityDate">2014-01-28</td>
+          <td itemprop="filingDate">2014-12-05</td>
+          <td itemprop="title">联营店铺服务器、服务提供装置和终端、包括联营店铺服务器、服务提供装置和终端的电子钱包系统、其控制方法以及记录有计算机程序的记录介质 
+       </td>
+        </tr>
+        <tr itemprop="priorityApps" itemscope repeat>
+          <td>
+            <span itemprop="applicationNumber">PCT/KR2014/011884</span>
+            
+            <a href="/patent/WO2015115729A1/ko">
+              <span itemprop="representativePublication">WO2015115729A1</span>
+                (<span itemprop="primaryLanguage">ko</span>)
+            </a>
+          </td>
+          <td itemprop="priorityDate">2014-01-28</td>
+          <td itemprop="filingDate">2014-12-05</td>
+          <td itemprop="title">제휴사 서버와 서비스 제공 장치와 단말, 그를 포함하는 전자 지갑 시스템, 그 제어 방법 및 컴퓨터 프로그램이 기록된 기록매체 
+       </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>Applications Claiming Priority (1)</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Application Number</th>
+          <th>Priority Date</th>
+          <th>Filing Date</th>
+          <th>Title</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr itemprop="appsClaimingPriority" itemscope repeat>
+          <td>
+            <span itemprop="applicationNumber">KR1020140010384A</span>
+            <a href="/patent/KR102235736B1/ko">
+              <span itemprop="representativePublication">KR102235736B1</span>
+                (<span itemprop="primaryLanguage">ko</span>)
+            </a>
+          </td>
+          <td itemprop="priorityDate">2014-01-28</td>
+          <td itemprop="filingDate">2014-01-28</td>
+          <td itemprop="title">제휴사 서버와 서비스 제공 장치와 단말, 그를 포함하는 전자 지갑 시스템, 그 제어 방법 및 컴퓨터 프로그램이 기록된 기록매체 
+       </td>
+        </tr>
+      </tbody>
+    </table>
+
+    
+
+    
+
+    <h2>Publications (2)</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Publication Number</th>
+          <th>Publication Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr itemprop="pubs" itemscope repeat>
+          <td>
+            <span itemprop="publicationNumber">KR20150090348A</span>
+            
+            <span itemprop="thisPatent">true</span>
+            <a href="/patent/KR20150090348A/ko">
+              KR20150090348A
+              (<span itemprop="primaryLanguage">ko</span>)
+            </a>
+          </td>
+          <td itemprop="publicationDate">2015-08-06</td>
+        </tr>
+        <tr itemprop="pubs" itemscope repeat>
+          <td>
+            <span itemprop="publicationNumber">KR102235736B1</span>
+            
+            <a href="/patent/KR102235736B1/ko">
+              KR102235736B1
+              (<span itemprop="primaryLanguage">ko</span>)
+            </a>
+          </td>
+          <td itemprop="publicationDate">2021-04-02</td>
+        </tr>
+      </tbody>
+    </table>
+
+  </section>
+
+  <section itemprop="family" itemscope>
+    <h1>Family</h1>
+    <h2>ID=53885076</h2>
+
+    <h2>Family Applications (1)</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Application Number</th>
+          <th>Title</th>
+          <th>Priority Date</th>
+          <th>Filing Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr itemprop="applications" itemscope repeat>
+          <td>
+            <span itemprop="applicationNumber">KR1020140010384A</span>
+            <span itemprop="ifiStatus">Active</span>
+            
+            <a href="/patent/KR102235736B1/ko">
+              <span itemprop="representativePublication">KR102235736B1</span>
+                (<span itemprop="primaryLanguage">ko</span>)
+            </a>
+          </td>
+          <td itemprop="priorityDate">2014-01-28</td>
+          <td itemprop="filingDate">2014-01-28</td>
+          <td itemprop="title">제휴사 서버와 서비스 제공 장치와 단말, 그를 포함하는 전자 지갑 시스템, 그 제어 방법 및 컴퓨터 프로그램이 기록된 기록매체 
+       </td>
+        </tr>
+      </tbody>
+    </table>
+
+    
+
+    
+
+    <h2>Country Status (1)</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Country</th>
+          <th>Link</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr itemprop="countryStatus" itemscope repeat>
+          <td>
+            <span itemprop="countryCode">KR</span>
+            (<span itemprop="num">1</span>)
+            <meta itemprop="thisCountry" content="true">
+          </td>
+          <td>
+            <a href="/patent/KR102235736B1/ko">
+              <span itemprop="representativePublication">KR102235736B1</span>
+              (<span itemprop="primaryLanguage">ko</span>)
+            </a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>Cited By (2)</h2>
+    <table>
+      <caption>* Cited by examiner, † Cited by third party</caption>
+      <thead>
+        <tr>
+          <th>Publication number</th>
+          <th>Priority date</th>
+          <th>Publication date</th>
+          <th>Assignee</th>
+          <th>Title</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr itemprop="forwardReferencesOrig" itemscope repeat>
+          <td>
+            <a href="/patent/JP2018535463A/ja">
+              <span itemprop="publicationNumber">JP2018535463A</span>
+              (<span itemprop="primaryLanguage">ja</span>)
+            </a>
+            <span itemprop="examinerCited">*</span>
+            
+          </td>
+          <td itemprop="priorityDate">2015-08-25</td>
+          <td itemprop="publicationDate">2018-11-29</td>
+          <td><span itemprop="assigneeOriginal">ファンプルワークス インコーポレイテッド</span></td>
+          <td itemprop="title">複数のデジタルコンテンツを一括登録する方法、サーバ及びシステム 
+       </td>
+        </tr>
+        <tr itemprop="forwardReferencesOrig" itemscope repeat>
+          <td>
+            <a href="/patent/KR20190025857A/ko">
+              <span itemprop="publicationNumber">KR20190025857A</span>
+              (<span itemprop="primaryLanguage">ko</span>)
+            </a>
+            <span itemprop="examinerCited">*</span>
+            
+          </td>
+          <td itemprop="priorityDate">2019-01-03</td>
+          <td itemprop="publicationDate">2019-03-12</td>
+          <td><span itemprop="assigneeOriginal">한국기술교육대학교 산학협력단</span></td>
+          <td itemprop="title">전자쿠폰 시스템 및 전자쿠폰 처리 방법 
+       </td>
+        </tr>
+      </tbody>
+    </table>
+
+    
+
+    <h2>Citations (4)</h2>
+    <table>
+      <caption>* Cited by examiner, † Cited by third party</caption>
+      <thead>
+        <tr>
+          <th>Publication number</th>
+          <th>Priority date</th>
+          <th>Publication date</th>
+          <th>Assignee</th>
+          <th>Title</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr itemprop="backwardReferencesOrig" itemscope repeat>
+          <td>
+            <a href="/patent/JP2009075839A/ja">
+              <span itemprop="publicationNumber">JP2009075839A</span>
+              (<span itemprop="primaryLanguage">ja</span>)
+            </a>
+            <span itemprop="examinerCited">*</span>
+            
+          </td>
+          <td itemprop="priorityDate">2007-09-20</td>
+          <td itemprop="publicationDate">2009-04-09</td>
+          <td>
+            <span itemprop="assigneeOriginal">Mizuho Information &amp; Research Institute Inc</span>
+          </td>
+          <td itemprop="title">クーポン管理システム、クーポン管理方法及びクーポン管理プログラム 
+       </td>
+        </tr>
+        <tr itemprop="backwardReferencesOrig" itemscope repeat>
+          <td>
+            <a href="/patent/KR20110080133A/ko">
+              <span itemprop="publicationNumber">KR20110080133A</span>
+              (<span itemprop="primaryLanguage">ko</span>)
+            </a>
+            <span itemprop="examinerCited">*</span>
+            
+          </td>
+          <td itemprop="priorityDate">2011-05-26</td>
+          <td itemprop="publicationDate">2011-07-12</td>
+          <td>
+            <span itemprop="assigneeOriginal">문성현</span>
+          </td>
+          <td itemprop="title">스마트폰과 같은 모바일 단말기를 이용한 모바일쿠폰 실시간 인증 결제방법 및 장치 
+       </td>
+        </tr>
+        <tr itemprop="backwardReferencesOrig" itemscope repeat>
+          <td>
+            <a href="/patent/KR101238224B1/ko">
+              <span itemprop="publicationNumber">KR101238224B1</span>
+              (<span itemprop="primaryLanguage">ko</span>)
+            </a>
+            <span itemprop="examinerCited">*</span>
+            
+          </td>
+          <td itemprop="priorityDate">2011-09-09</td>
+          <td itemprop="publicationDate">2013-03-04</td>
+          <td>
+            <span itemprop="assigneeOriginal">황대석</span>
+          </td>
+          <td itemprop="title">이동통신단말기를 이용한 쿠폰 통합 관리방법 및 그 시스템 
+       </td>
+        </tr>
+        <tr itemprop="backwardReferencesOrig" itemscope repeat>
+          <td>
+            <a href="/patent/KR20130102793A/ko">
+              <span itemprop="publicationNumber">KR20130102793A</span>
+              (<span itemprop="primaryLanguage">ko</span>)
+            </a>
+            <span itemprop="examinerCited">*</span>
+            
+          </td>
+          <td itemprop="priorityDate">2012-03-08</td>
+          <td itemprop="publicationDate">2013-09-23</td>
+          <td>
+            <span itemprop="assigneeOriginal">주식회사 트라이패스</span>
+          </td>
+          <td itemprop="title">모바일 쿠폰 서비스 제공 서버, 제공 방법 및 그 방법을 위한 기록매체 
+       </td>
+        </tr>
+      </tbody>
+    </table>
+
+    
+
+    <ul>
+      <li itemprop="applicationsByYear" itemscope repeat>
+        <span itemprop="year">2014</span>
+        <ul>
+          <li itemprop="application" itemscope repeat>
+            <span itemprop="filingDate">2014-01-28</span>
+            <span itemprop="countryCode">KR</span>
+            <span itemprop="applicationNumber">KR1020140010384A</span>
+            <a href="/patent/KR102235736B1/ko"><span itemprop="documentId">patent/KR102235736B1/ko</span></a>
+            <span itemprop="legalStatusCat">active</span>
+            <span itemprop="legalStatus">Active</span>
+            <span itemprop="thisApp" content="true" bool></span>
+          </li>
+        </ul>
+      </li>
+    </ul>
+
+    </section>
+
+  <section>
+    <h2>Patent Citations (4)</h2>
+    <table>
+      <caption>* Cited by examiner, † Cited by third party</caption>
+      <thead>
+        <tr>
+          <th>Publication number</th>
+          <th>Priority date</th>
+          <th>Publication date</th>
+          <th>Assignee</th>
+          <th>Title</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr itemprop="backwardReferences" itemscope repeat>
+          <td>
+            <a href="/patent/JP2009075839A/ja">
+              <span itemprop="publicationNumber">JP2009075839A</span>
+              (<span itemprop="primaryLanguage">ja</span>)
+            </a>
+            <span itemprop="examinerCited">*</span>
+            
+          </td>
+          <td itemprop="priorityDate">2007-09-20</td>
+          <td itemprop="publicationDate">2009-04-09</td>
+          <td><span itemprop="assigneeOriginal">Mizuho Information &amp; Research Institute Inc</span></td>
+          <td itemprop="title">クーポン管理システム、クーポン管理方法及びクーポン管理プログラム 
+       </td>
+        </tr>
+        <tr itemprop="backwardReferences" itemscope repeat>
+          <td>
+            <a href="/patent/KR20110080133A/ko">
+              <span itemprop="publicationNumber">KR20110080133A</span>
+              (<span itemprop="primaryLanguage">ko</span>)
+            </a>
+            <span itemprop="examinerCited">*</span>
+            
+          </td>
+          <td itemprop="priorityDate">2011-05-26</td>
+          <td itemprop="publicationDate">2011-07-12</td>
+          <td><span itemprop="assigneeOriginal">문성현</span></td>
+          <td itemprop="title">스마트폰과 같은 모바일 단말기를 이용한 모바일쿠폰 실시간 인증 결제방법 및 장치 
+       </td>
+        </tr>
+        <tr itemprop="backwardReferences" itemscope repeat>
+          <td>
+            <a href="/patent/KR101238224B1/ko">
+              <span itemprop="publicationNumber">KR101238224B1</span>
+              (<span itemprop="primaryLanguage">ko</span>)
+            </a>
+            <span itemprop="examinerCited">*</span>
+            
+          </td>
+          <td itemprop="priorityDate">2011-09-09</td>
+          <td itemprop="publicationDate">2013-03-04</td>
+          <td><span itemprop="assigneeOriginal">황대석</span></td>
+          <td itemprop="title">이동통신단말기를 이용한 쿠폰 통합 관리방법 및 그 시스템 
+       </td>
+        </tr>
+        <tr itemprop="backwardReferences" itemscope repeat>
+          <td>
+            <a href="/patent/KR20130102793A/ko">
+              <span itemprop="publicationNumber">KR20130102793A</span>
+              (<span itemprop="primaryLanguage">ko</span>)
+            </a>
+            <span itemprop="examinerCited">*</span>
+            
+          </td>
+          <td itemprop="priorityDate">2012-03-08</td>
+          <td itemprop="publicationDate">2013-09-23</td>
+          <td><span itemprop="assigneeOriginal">주식회사 트라이패스</span></td>
+          <td itemprop="title">모바일 쿠폰 서비스 제공 서버, 제공 방법 및 그 방법을 위한 기록매체 
+       </td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <h2>Non-Patent Citations (1)</h2>
+    <table>
+      <caption>* Cited by examiner, † Cited by third party</caption>
+      <thead>
+        <tr>
+          <th>Title</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr itemprop="detailedNonPatentLiterature" itemscope repeat>
+          <td>
+            <span itemprop="title">한국공개특허 제10-2011-0127912호 [명칭: 모바일 상품권 제휴형 기프트카드 제공방법 및 그 시스템]</span>
+            
+            
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <h2>Cited By (2)</h2>
+  <table>
+    <caption>* Cited by examiner, † Cited by third party</caption>
+    <thead>
+      <tr>
+        <th>Publication number</th>
+        <th>Priority date</th>
+        <th>Publication date</th>
+        <th>Assignee</th>
+        <th>Title</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr itemprop="forwardReferences" itemscope repeat>
+        <td>
+          <a href="/patent/JP2018535463A/ja">
+            <span itemprop="publicationNumber">JP2018535463A</span>
+            (<span itemprop="primaryLanguage">ja</span>)
+          </a>
+          <span itemprop="examinerCited">*</span>
+          
+        </td>
+        <td itemprop="priorityDate">2015-08-25</td>
+        <td itemprop="publicationDate">2018-11-29</td>
+        <td><span itemprop="assigneeOriginal">ファンプルワークス インコーポレイテッド</span></td>
+        <td itemprop="title">複数のデジタルコンテンツを一括登録する方法、サーバ及びシステム 
+       </td>
+      </tr>
+      <tr itemprop="forwardReferences" itemscope repeat>
+        <td>
+          <a href="/patent/KR20190025857A/ko">
+            <span itemprop="publicationNumber">KR20190025857A</span>
+            (<span itemprop="primaryLanguage">ko</span>)
+          </a>
+          <span itemprop="examinerCited">*</span>
+          
+        </td>
+        <td itemprop="priorityDate">2019-01-03</td>
+        <td itemprop="publicationDate">2019-03-12</td>
+        <td><span itemprop="assigneeOriginal">한국기술교육대학교 산학협력단</span></td>
+        <td itemprop="title">전자쿠폰 시스템 및 전자쿠폰 처리 방법 
+       </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <section>
+    <h2>Also Published As</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Publication number</th>
+          <th>Publication date</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr itemprop="docdbFamily" itemscope repeat>
+          <td>
+            <a href="/patent/KR102235736B1/ko">
+              <span itemprop="publicationNumber">KR102235736B1</span>
+              (<span itemprop="primaryLanguage">ko</span>)
+            </a>
+          </td>
+          <td itemprop="publicationDate">2021-04-02</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <h2>Similar Documents</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Publication</th>
+          <th>Publication Date</th>
+          <th>Title</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr itemprop="similarDocuments" itemscope repeat>
+          <td>
+            <meta itemprop="isPatent" content="true">
+              <a href="/patent/KR102049999B1/ko">
+                <span itemprop="publicationNumber">KR102049999B1</span>
+                (<span itemprop="primaryLanguage">ko</span>)
+              </a>
+            
+            
+          </td>
+          <td>
+            <time itemprop="publicationDate" datetime="2019-11-28">2019-11-28</time>
+            
+            
+          </td>
+          <td itemprop="title">쇼핑 서비스를 제공하는 사용자 단말 장치, 이를 포함하는 쇼핑 시스템 및 그 서비스 방법 
+       </td>
+        </tr>
+        <tr itemprop="similarDocuments" itemscope repeat>
+          <td>
+            <meta itemprop="isPatent" content="true">
+              <a href="/patent/KR20120039371A/ko">
+                <span itemprop="publicationNumber">KR20120039371A</span>
+                (<span itemprop="primaryLanguage">ko</span>)
+              </a>
+            
+            
+          </td>
+          <td>
+            <time itemprop="publicationDate" datetime="2012-04-25">2012-04-25</time>
+            
+            
+          </td>
+          <td itemprop="title">근거리 무선 통신을 통한 통합 결제 방법 및 이를 이용하는 이동 단말기 
+       </td>
+        </tr>
+        <tr itemprop="similarDocuments" itemscope repeat>
+          <td>
+            <meta itemprop="isPatent" content="true">
+              <a href="/patent/KR20160145962A/ko">
+                <span itemprop="publicationNumber">KR20160145962A</span>
+                (<span itemprop="primaryLanguage">ko</span>)
+              </a>
+            
+            
+          </td>
+          <td>
+            <time itemprop="publicationDate" datetime="2016-12-21">2016-12-21</time>
+            
+            
+          </td>
+          <td itemprop="title">역방향 nfc 결제를 위한 사용자 장치, nfc 결제 단말기, 그를 포함하는 역방향 nfc 결제 시스템, 그의 제어 방법 및 컴퓨터 프로그램이 기록된 기록매체 
+       </td>
+        </tr>
+        <tr itemprop="similarDocuments" itemscope repeat>
+          <td>
+            <meta itemprop="isPatent" content="true">
+              <a href="/patent/CN107251582A/zh">
+                <span itemprop="publicationNumber">CN107251582A</span>
+                (<span itemprop="primaryLanguage">zh</span>)
+              </a>
+            
+            
+          </td>
+          <td>
+            <time itemprop="publicationDate" datetime="2017-10-13">2017-10-13</time>
+            
+            
+          </td>
+          <td itemprop="title">移动装置和读取器之间的非接触式数据交换 
+       </td>
+        </tr>
+        <tr itemprop="similarDocuments" itemscope repeat>
+          <td>
+            <meta itemprop="isPatent" content="true">
+              <a href="/patent/KR20150019956A/ko">
+                <span itemprop="publicationNumber">KR20150019956A</span>
+                (<span itemprop="primaryLanguage">ko</span>)
+              </a>
+            
+            
+          </td>
+          <td>
+            <time itemprop="publicationDate" datetime="2015-02-25">2015-02-25</time>
+            
+            
+          </td>
+          <td itemprop="title">카드 약관 동의 및 발급을 제공하는 단말과 서비스 장치, 그를 포함하는 전자 지갑 시스템, 그 제어 방법 및 컴퓨터 프로그램이 기록된 기록매체 
+       </td>
+        </tr>
+        <tr itemprop="similarDocuments" itemscope repeat>
+          <td>
+            <meta itemprop="isPatent" content="true">
+              <a href="/patent/CN105745680A/zh">
+                <span itemprop="publicationNumber">CN105745680A</span>
+                (<span itemprop="primaryLanguage">zh</span>)
+              </a>
+            
+            
+          </td>
+          <td>
+            <time itemprop="publicationDate" datetime="2016-07-06">2016-07-06</time>
+            
+            
+          </td>
+          <td itemprop="title">终端、服务提供装置和优惠券服务器、具有终端、服务提供装置和优惠券服务器的电子钱包系统、其控制方法、以及记录有计算机程序的非暂态计算机可读存储介质 
+       </td>
+        </tr>
+        <tr itemprop="similarDocuments" itemscope repeat>
+          <td>
+            <meta itemprop="isPatent" content="true">
+              <a href="/patent/KR102163749B1/ko">
+                <span itemprop="publicationNumber">KR102163749B1</span>
+                (<span itemprop="primaryLanguage">ko</span>)
+              </a>
+            
+            
+          </td>
+          <td>
+            <time itemprop="publicationDate" datetime="2020-10-08">2020-10-08</time>
+            
+            
+          </td>
+          <td itemprop="title">쿠폰을 제공하는 단말과 쿠폰 서버, 그를 포함하는 전자 지갑 시스템, 그 제어 방법 및 컴퓨터 프로그램이 기록된 기록매체 
+       </td>
+        </tr>
+        <tr itemprop="similarDocuments" itemscope repeat>
+          <td>
+            <meta itemprop="isPatent" content="true">
+              <a href="/patent/KR102232795B1/ko">
+                <span itemprop="publicationNumber">KR102232795B1</span>
+                (<span itemprop="primaryLanguage">ko</span>)
+              </a>
+            
+            
+          </td>
+          <td>
+            <time itemprop="publicationDate" datetime="2021-03-26">2021-03-26</time>
+            
+            
+          </td>
+          <td itemprop="title">단말과 서비스 제공 장치, 그를 포함하는 전자 지갑 시스템, 그 제어 방법 및 컴퓨터 프로그램이 기록된 기록매체 
+       </td>
+        </tr>
+        <tr itemprop="similarDocuments" itemscope repeat>
+          <td>
+            <meta itemprop="isPatent" content="true">
+              <a href="/patent/KR102235736B1/ko">
+                <span itemprop="publicationNumber">KR102235736B1</span>
+                (<span itemprop="primaryLanguage">ko</span>)
+              </a>
+            
+            
+          </td>
+          <td>
+            <time itemprop="publicationDate" datetime="2021-04-02">2021-04-02</time>
+            
+            
+          </td>
+          <td itemprop="title">제휴사 서버와 서비스 제공 장치와 단말, 그를 포함하는 전자 지갑 시스템, 그 제어 방법 및 컴퓨터 프로그램이 기록된 기록매체 
+       </td>
+        </tr>
+        <tr itemprop="similarDocuments" itemscope repeat>
+          <td>
+            <meta itemprop="isPatent" content="true">
+              <a href="/patent/KR20160083830A/ko">
+                <span itemprop="publicationNumber">KR20160083830A</span>
+                (<span itemprop="primaryLanguage">ko</span>)
+              </a>
+            
+            
+          </td>
+          <td>
+            <time itemprop="publicationDate" datetime="2016-07-12">2016-07-12</time>
+            
+            
+          </td>
+          <td itemprop="title">스마트멀티카드의 결제 및 적립 서비스 방법 및 스마트멀티카드용 어플리케이션 
+       </td>
+        </tr>
+        <tr itemprop="similarDocuments" itemscope repeat>
+          <td>
+            <meta itemprop="isPatent" content="true">
+              <a href="/patent/KR102354802B1/ko">
+                <span itemprop="publicationNumber">KR102354802B1</span>
+                (<span itemprop="primaryLanguage">ko</span>)
+              </a>
+            
+            
+          </td>
+          <td>
+            <time itemprop="publicationDate" datetime="2022-01-24">2022-01-24</time>
+            
+            
+          </td>
+          <td itemprop="title">단말과 서비스 제공 장치, 그를 포함하는 전자 지갑 시스템, 그 제어 방법 및 컴퓨터 프로그램이 기록된 기록매체 
+       </td>
+        </tr>
+        <tr itemprop="similarDocuments" itemscope repeat>
+          <td>
+            <meta itemprop="isPatent" content="true">
+              <a href="/patent/KR102245050B1/ko">
+                <span itemprop="publicationNumber">KR102245050B1</span>
+                (<span itemprop="primaryLanguage">ko</span>)
+              </a>
+            
+            
+          </td>
+          <td>
+            <time itemprop="publicationDate" datetime="2021-04-28">2021-04-28</time>
+            
+            
+          </td>
+          <td itemprop="title">단말과 서비스 제공 장치, 그를 포함하는 전자 지갑 시스템, 그 제어 방법 및 컴퓨터 프로그램이 기록된 기록매체 
+       </td>
+        </tr>
+        <tr itemprop="similarDocuments" itemscope repeat>
+          <td>
+            <meta itemprop="isPatent" content="true">
+              <a href="/patent/KR20150101600A/ko">
+                <span itemprop="publicationNumber">KR20150101600A</span>
+                (<span itemprop="primaryLanguage">ko</span>)
+              </a>
+            
+            
+          </td>
+          <td>
+            <time itemprop="publicationDate" datetime="2015-09-04">2015-09-04</time>
+            
+            
+          </td>
+          <td itemprop="title">단말과 서비스 제공 장치, 그를 포함하는 전자 지갑 시스템, 그 제어 방법 및 컴퓨터 프로그램이 기록된 기록매체 
+     </td>
+        </tr>
+        <tr itemprop="similarDocuments" itemscope repeat>
+          <td>
+            <meta itemprop="isPatent" content="true">
+              <a href="/patent/KR102312352B1/ko">
+                <span itemprop="publicationNumber">KR102312352B1</span>
+                (<span itemprop="primaryLanguage">ko</span>)
+              </a>
+            
+            
+          </td>
+          <td>
+            <time itemprop="publicationDate" datetime="2021-10-15">2021-10-15</time>
+            
+            
+          </td>
+          <td itemprop="title">단말과 pos 단말, 그를 포함하는 전자 지갑 시스템, 그 제어 방법 및 컴퓨터 프로그램이 기록된 기록매체 
+       </td>
+        </tr>
+        <tr itemprop="similarDocuments" itemscope repeat>
+          <td>
+            <meta itemprop="isPatent" content="true">
+              <a href="/patent/KR20150101337A/ko">
+                <span itemprop="publicationNumber">KR20150101337A</span>
+                (<span itemprop="primaryLanguage">ko</span>)
+              </a>
+            
+            
+          </td>
+          <td>
+            <time itemprop="publicationDate" datetime="2015-09-03">2015-09-03</time>
+            
+            
+          </td>
+          <td itemprop="title">단말과 서비스 제공 장치, 그를 포함하는 전자 지갑 시스템, 그 제어 방법 및 컴퓨터 프로그램이 기록된 기록매체 
+     </td>
+        </tr>
+        <tr itemprop="similarDocuments" itemscope repeat>
+          <td>
+            <meta itemprop="isPatent" content="true">
+              <a href="/patent/KR102163747B1/ko">
+                <span itemprop="publicationNumber">KR102163747B1</span>
+                (<span itemprop="primaryLanguage">ko</span>)
+              </a>
+            
+            
+          </td>
+          <td>
+            <time itemprop="publicationDate" datetime="2020-10-08">2020-10-08</time>
+            
+            
+          </td>
+          <td itemprop="title">쿠폰 전송을 위한 단말과 서비스 제공 장치, 그를 포함하는 쿠폰 전송 시스템, 그 제어 방법 및 컴퓨터 프로그램이 기록된 기록매체 
+       </td>
+        </tr>
+        <tr itemprop="similarDocuments" itemscope repeat>
+          <td>
+            <meta itemprop="isPatent" content="true">
+              <a href="/patent/KR20150094889A/ko">
+                <span itemprop="publicationNumber">KR20150094889A</span>
+                (<span itemprop="primaryLanguage">ko</span>)
+              </a>
+            
+            
+          </td>
+          <td>
+            <time itemprop="publicationDate" datetime="2015-08-20">2015-08-20</time>
+            
+            
+          </td>
+          <td itemprop="title">단말과 서비스 제공 장치, 그를 포함하는 전자 지갑 시스템, 그 제어 방법 및 컴퓨터 프로그램이 기록된 기록매체 
+     </td>
+        </tr>
+        <tr itemprop="similarDocuments" itemscope repeat>
+          <td>
+            <meta itemprop="isPatent" content="true">
+              <a href="/patent/KR20150044618A/ko">
+                <span itemprop="publicationNumber">KR20150044618A</span>
+                (<span itemprop="primaryLanguage">ko</span>)
+              </a>
+            
+            
+          </td>
+          <td>
+            <time itemprop="publicationDate" datetime="2015-04-27">2015-04-27</time>
+            
+            
+          </td>
+          <td itemprop="title">사용자 장치와 서비스 제공 장치, 그를 포함하는 전자 지갑 시스템, 그 제어 방법 및 컴퓨터 프로그램이 기록된 기록매체 
+     </td>
+        </tr>
+        <tr itemprop="similarDocuments" itemscope repeat>
+          <td>
+            <meta itemprop="isPatent" content="true">
+              <a href="/patent/KR102198211B1/ko">
+                <span itemprop="publicationNumber">KR102198211B1</span>
+                (<span itemprop="primaryLanguage">ko</span>)
+              </a>
+            
+            
+          </td>
+          <td>
+            <time itemprop="publicationDate" datetime="2021-01-04">2021-01-04</time>
+            
+            
+          </td>
+          <td itemprop="title">단말, 그를 포함하는 전자 지갑 시스템, 그 제어 방법 및 컴퓨터 프로그램이 기록된 기록매체 
+       </td>
+        </tr>
+        <tr itemprop="similarDocuments" itemscope repeat>
+          <td>
+            <meta itemprop="isPatent" content="true">
+              <a href="/patent/KR102399319B1/ko">
+                <span itemprop="publicationNumber">KR102399319B1</span>
+                (<span itemprop="primaryLanguage">ko</span>)
+              </a>
+            
+            
+          </td>
+          <td>
+            <time itemprop="publicationDate" datetime="2022-05-19">2022-05-19</time>
+            
+            
+          </td>
+          <td itemprop="title">단말과 서비스 제공 장치와 쿠폰 서버. 그를 포함하는 전자 지갑 시스템, 그 제어 방법 및 컴퓨터 프로그램이 기록된 기록매체 
+       </td>
+        </tr>
+        <tr itemprop="similarDocuments" itemscope repeat>
+          <td>
+            <meta itemprop="isPatent" content="true">
+              <a href="/patent/KR102258065B1/ko">
+                <span itemprop="publicationNumber">KR102258065B1</span>
+                (<span itemprop="primaryLanguage">ko</span>)
+              </a>
+            
+            
+          </td>
+          <td>
+            <time itemprop="publicationDate" datetime="2021-05-28">2021-05-28</time>
+            
+            
+          </td>
+          <td itemprop="title">단말과 제휴사 서버, 그를 포함하는 전자 지갑 시스템, 그 제어 방법 및 컴퓨터 프로그램이 기록된 기록매체 
+       </td>
+        </tr>
+        <tr itemprop="similarDocuments" itemscope repeat>
+          <td>
+            <meta itemprop="isPatent" content="true">
+              <a href="/patent/KR20150101003A/ko">
+                <span itemprop="publicationNumber">KR20150101003A</span>
+                (<span itemprop="primaryLanguage">ko</span>)
+              </a>
+            
+            
+          </td>
+          <td>
+            <time itemprop="publicationDate" datetime="2015-09-03">2015-09-03</time>
+            
+            
+          </td>
+          <td itemprop="title">단말과 서비스 제공 장치, 그를 포함하는 전자 지갑 시스템, 그 제어 방법 및 컴퓨터 프로그램이 기록된 기록매체 
+     </td>
+        </tr>
+        <tr itemprop="similarDocuments" itemscope repeat>
+          <td>
+            <meta itemprop="isPatent" content="true">
+              <a href="/patent/KR102110274B1/ko">
+                <span itemprop="publicationNumber">KR102110274B1</span>
+                (<span itemprop="primaryLanguage">ko</span>)
+              </a>
+            
+            
+          </td>
+          <td>
+            <time itemprop="publicationDate" datetime="2020-05-13">2020-05-13</time>
+            
+            
+          </td>
+          <td itemprop="title">단말과 서비스 제공 장치, 그를 포함하는 전자 지갑 시스템, 그 제어 방법 및 컴퓨터 프로그램이 기록된 기록매체 
+       </td>
+        </tr>
+        <tr itemprop="similarDocuments" itemscope repeat>
+          <td>
+            <meta itemprop="isPatent" content="true">
+              <a href="/patent/KR102243961B1/ko">
+                <span itemprop="publicationNumber">KR102243961B1</span>
+                (<span itemprop="primaryLanguage">ko</span>)
+              </a>
+            
+            
+          </td>
+          <td>
+            <time itemprop="publicationDate" datetime="2021-04-23">2021-04-23</time>
+            
+            
+          </td>
+          <td itemprop="title">단말과 서비스 제공 장치와 서드 파티 서버, 그를 포함하는 전자 지갑 시스템, 그 제어 방법 및 컴퓨터 프로그램이 기록된 기록매체 
+       </td>
+        </tr>
+        <tr itemprop="similarDocuments" itemscope repeat>
+          <td>
+            <meta itemprop="isPatent" content="true">
+              <a href="/patent/KR102111620B1/ko">
+                <span itemprop="publicationNumber">KR102111620B1</span>
+                (<span itemprop="primaryLanguage">ko</span>)
+              </a>
+            
+            
+          </td>
+          <td>
+            <time itemprop="publicationDate" datetime="2020-05-15">2020-05-15</time>
+            
+            
+          </td>
+          <td itemprop="title">단말 및 그 제어 방법 
+       </td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <h2>Legal Events</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Code</th>
+          <th>Title</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr itemprop="legalEvents" itemscope repeat>
+          <td><time itemprop="date" datetime="2014-01-28">2014-01-28</time></td>
+          <td itemprop="code">PA0109</td>
+          <td itemprop="title">Patent application</td>
+          <td>
+            <p itemprop="attributes" itemscope repeat>
+              <strong itemprop="label">Patent event code</strong>:
+              <span itemprop="value">PA01091R01D</span>
+            </p>
+            <p itemprop="attributes" itemscope repeat>
+              <strong itemprop="label">Comment text</strong>:
+              <span itemprop="value">Patent Application</span>
+            </p>
+            <p itemprop="attributes" itemscope repeat>
+              <strong itemprop="label">Patent event date</strong>:
+              <span itemprop="value">20140128</span>
+            </p>
+          </td>
+        </tr>
+        <tr itemprop="legalEvents" itemscope repeat>
+          <td><time itemprop="date" datetime="2015-08-06">2015-08-06</time></td>
+          <td itemprop="code">PG1501</td>
+          <td itemprop="title">Laying open of application</td>
+          <td>
+          </td>
+        </tr>
+        <tr itemprop="legalEvents" itemscope repeat>
+          <td><time itemprop="date" datetime="2019-01-25">2019-01-25</time></td>
+          <td itemprop="code">A201</td>
+          <td itemprop="title">Request for examination</td>
+          <td>
+          </td>
+        </tr>
+        <tr itemprop="legalEvents" itemscope repeat>
+          <td><time itemprop="date" datetime="2019-01-25">2019-01-25</time></td>
+          <td itemprop="code">PA0201</td>
+          <td itemprop="title">Request for examination</td>
+          <td>
+            <p itemprop="attributes" itemscope repeat>
+              <strong itemprop="label">Patent event code</strong>:
+              <span itemprop="value">PA02012R01D</span>
+            </p>
+            <p itemprop="attributes" itemscope repeat>
+              <strong itemprop="label">Patent event date</strong>:
+              <span itemprop="value">20190125</span>
+            </p>
+            <p itemprop="attributes" itemscope repeat>
+              <strong itemprop="label">Comment text</strong>:
+              <span itemprop="value">Request for Examination of Application</span>
+            </p>
+            <p itemprop="attributes" itemscope repeat>
+              <strong itemprop="label">Patent event code</strong>:
+              <span itemprop="value">PA02011R01I</span>
+            </p>
+            <p itemprop="attributes" itemscope repeat>
+              <strong itemprop="label">Patent event date</strong>:
+              <span itemprop="value">20140128</span>
+            </p>
+            <p itemprop="attributes" itemscope repeat>
+              <strong itemprop="label">Comment text</strong>:
+              <span itemprop="value">Patent Application</span>
+            </p>
+          </td>
+        </tr>
+        <tr itemprop="legalEvents" itemscope repeat>
+          <td><time itemprop="date" datetime="2020-06-18">2020-06-18</time></td>
+          <td itemprop="code">E902</td>
+          <td itemprop="title">Notification of reason for refusal</td>
+          <td>
+          </td>
+        </tr>
+        <tr itemprop="legalEvents" itemscope repeat>
+          <td><time itemprop="date" datetime="2020-06-18">2020-06-18</time></td>
+          <td itemprop="code">PE0902</td>
+          <td itemprop="title">Notice of grounds for rejection</td>
+          <td>
+            <p itemprop="attributes" itemscope repeat>
+              <strong itemprop="label">Comment text</strong>:
+              <span itemprop="value">Notification of reason for refusal</span>
+            </p>
+            <p itemprop="attributes" itemscope repeat>
+              <strong itemprop="label">Patent event date</strong>:
+              <span itemprop="value">20200618</span>
+            </p>
+            <p itemprop="attributes" itemscope repeat>
+              <strong itemprop="label">Patent event code</strong>:
+              <span itemprop="value">PE09021S01D</span>
+            </p>
+          </td>
+        </tr>
+        <tr itemprop="legalEvents" itemscope repeat>
+          <td><time itemprop="date" datetime="2020-12-28">2020-12-28</time></td>
+          <td itemprop="code">E701</td>
+          <td itemprop="title">Decision to grant or registration of patent right</td>
+          <td>
+          </td>
+        </tr>
+        <tr itemprop="legalEvents" itemscope repeat>
+          <td><time itemprop="date" datetime="2020-12-28">2020-12-28</time></td>
+          <td itemprop="code">PE0701</td>
+          <td itemprop="title">Decision of registration</td>
+          <td>
+            <p itemprop="attributes" itemscope repeat>
+              <strong itemprop="label">Patent event code</strong>:
+              <span itemprop="value">PE07011S01D</span>
+            </p>
+            <p itemprop="attributes" itemscope repeat>
+              <strong itemprop="label">Comment text</strong>:
+              <span itemprop="value">Decision to Grant Registration</span>
+            </p>
+            <p itemprop="attributes" itemscope repeat>
+              <strong itemprop="label">Patent event date</strong>:
+              <span itemprop="value">20201228</span>
+            </p>
+          </td>
+        </tr>
+        <tr itemprop="legalEvents" itemscope repeat>
+          <td><time itemprop="date" datetime="2021-03-29">2021-03-29</time></td>
+          <td itemprop="code">GRNT</td>
+          <td itemprop="title">Written decision to grant</td>
+          <td>
+          </td>
+        </tr>
+        <tr itemprop="legalEvents" itemscope repeat>
+          <td><time itemprop="date" datetime="2021-03-29">2021-03-29</time></td>
+          <td itemprop="code">PR0701</td>
+          <td itemprop="title">Registration of establishment</td>
+          <td>
+            <p itemprop="attributes" itemscope repeat>
+              <strong itemprop="label">Comment text</strong>:
+              <span itemprop="value">Registration of Establishment</span>
+            </p>
+            <p itemprop="attributes" itemscope repeat>
+              <strong itemprop="label">Patent event date</strong>:
+              <span itemprop="value">20210329</span>
+            </p>
+            <p itemprop="attributes" itemscope repeat>
+              <strong itemprop="label">Patent event code</strong>:
+              <span itemprop="value">PR07011E01D</span>
+            </p>
+          </td>
+        </tr>
+        <tr itemprop="legalEvents" itemscope repeat>
+          <td><time itemprop="date" datetime="2021-03-29">2021-03-29</time></td>
+          <td itemprop="code">PR1002</td>
+          <td itemprop="title">Payment of registration fee</td>
+          <td>
+            <p itemprop="attributes" itemscope repeat>
+              <strong itemprop="label">Payment date</strong>:
+              <span itemprop="value">20210330</span>
+            </p>
+            <p itemprop="attributes" itemscope repeat>
+              <strong itemprop="label">End annual number</strong>:
+              <span itemprop="value">3</span>
+            </p>
+            <p itemprop="attributes" itemscope repeat>
+              <strong itemprop="label">Start annual number</strong>:
+              <span itemprop="value">1</span>
+            </p>
+          </td>
+        </tr>
+        <tr itemprop="legalEvents" itemscope repeat>
+          <td><time itemprop="date" datetime="2021-04-02">2021-04-02</time></td>
+          <td itemprop="code">PG1601</td>
+          <td itemprop="title">Publication of registration</td>
+          <td>
+          </td>
+        </tr>
+        <tr itemprop="legalEvents" itemscope repeat>
+          <td><time itemprop="date" datetime="2023-12-11">2023-12-11</time></td>
+          <td itemprop="code">PR1001</td>
+          <td itemprop="title">Payment of annual fee</td>
+          <td>
+            <p itemprop="attributes" itemscope repeat>
+              <strong itemprop="label">Payment date</strong>:
+              <span itemprop="value">20231211</span>
+            </p>
+            <p itemprop="attributes" itemscope repeat>
+              <strong itemprop="label">Start annual number</strong>:
+              <span itemprop="value">4</span>
+            </p>
+            <p itemprop="attributes" itemscope repeat>
+              <strong itemprop="label">End annual number</strong>:
+              <span itemprop="value">4</span>
+            </p>
+          </td>
+        </tr>
+        <tr itemprop="legalEvents" itemscope repeat>
+          <td><time itemprop="date" datetime="2024-11-27">2024-11-27</time></td>
+          <td itemprop="code">PR1001</td>
+          <td itemprop="title">Payment of annual fee</td>
+          <td>
+            <p itemprop="attributes" itemscope repeat>
+              <strong itemprop="label">Payment date</strong>:
+              <span itemprop="value">20241127</span>
+            </p>
+            <p itemprop="attributes" itemscope repeat>
+              <strong itemprop="label">Start annual number</strong>:
+              <span itemprop="value">5</span>
+            </p>
+            <p itemprop="attributes" itemscope repeat>
+              <strong itemprop="label">End annual number</strong>:
+              <span itemprop="value">5</span>
+            </p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+</article>
+
+    </search-app>
+    
+    <script></script>
+    <script type="text/javascript" src="//www.gstatic.com/feedback/api.js"></script>
+    <script type="text/javascript" src="//www.gstatic.com/feedback/js/help/prod/service/lazy.min.js"></script>
+    <script type="text/javascript">
+      if (window.help && window.help.service) {
+        helpApi = window.help.service.Lazy.create(0, {apiKey: 'AIzaSyDTEI_0tLX4varJ7bwK8aT-eOI5qr3BmyI', locale: 'en-US'});
+        window.requestedSurveys = new Set();
+        window.requestSurvey = function(triggerId) {
+          if (window.requestedSurveys.has(triggerId)) {
+            return;
+          }
+          window.requestedSurveys.add(triggerId);
+          helpApi.requestSurvey({
+            triggerId: triggerId,
+            enableTestingMode: false,
+            callback: (requestSurveyCallbackParam) => {
+              if (!requestSurveyCallbackParam.surveyData) {
+                return;
+              }
+              helpApi.presentSurvey({
+                productData: {
+                  productVersion: window.version,
+                  customData: {
+                    "experiments": "",
+                  },
+                },
+                surveyData: requestSurveyCallbackParam.surveyData,
+                colorScheme: 1,
+                customZIndex: 10000,
+              });
+            }
+          });
+        };
+
+        window.requestSurvey('YXTwAsvoW0kedxbuTdH0RArc9VhT');
+      }
+    </script>
+    <script src="/sw/null_loader.js"></script>
+  </body>
+</html>

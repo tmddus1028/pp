@@ -4,7 +4,7 @@
 <link rel="stylesheet" href="review.css"></head>
 <body>
 <main id="workspace" aria-label="PDF 검토 작업 공간">
-  <section class="viewer" aria-label="PDF Viewer">
+  <section class="viewer" aria-label="PDF Viewer" data-terminology-attrs="aria-label">
     <div class="toolbar">
       <span class="file-icon" aria-hidden="true">▤</span><select id="document" aria-label="검토 문서"></select>
       <div class="page-controls"><button id="prev" aria-label="이전 페이지">‹</button><input id="page-number" type="number" min="1" aria-label="현재 페이지"><span id="page-total"></span><button id="next" aria-label="다음 페이지">›</button></div>
@@ -23,13 +23,13 @@
     <footer class="legend">
       <div class="relationship-summary"><div id="relationship-mini" aria-label="현재 선택 관계 요약"></div><button id="open-map">전체 관계 지도 보기</button></div>
       <div class="legend-colors"><span><i class="dot red"></i>직접 지적</span><span><i class="dot yellow"></i>종속 영향</span><span><i class="dot green"></i>인용 문헌</span><span><i class="dot teal"></i>관련 설명/근거</span></div>
-      <div id="legend-filters"><button data-filter="direct_rejection">직접 지적만</button><button data-filter="dependency">종속 영향만</button><button data-filter="citation">citation만</button><button data-filter="all">전체 보기</button></div>
+      <div id="legend-filters"><button data-filter="direct_rejection">직접 지적만</button><button data-filter="dependency">종속 영향만</button><button data-filter="citation" data-terminology>citation만</button><button data-filter="all">전체 보기</button></div>
     </footer>
   </section>
-  <aside class="review-panel" aria-label="Review Panel">
-    <header class="review-header"><div><span class="eyebrow">DOCUMENT REVIEW</span><h2>검토 요약</h2></div><span id="provider" class="provider"></span></header>
+  <aside class="review-panel" aria-label="Review Panel" data-terminology-attrs="aria-label">
+    <header class="review-header"><div><span class="eyebrow" data-terminology>DOCUMENT REVIEW</span><h2>검토 요약</h2></div><span id="provider" class="provider"></span></header>
     <div id="summary" class="summary"></div>
-    <div class="scope-row"><label for="scope">검토 범위</label><select id="scope" aria-label="거절 사유 필터"></select></div>
+    <div class="scope-row"><label for="scope">검토 범위</label><select id="scope" aria-label="거절 사유 필터" data-terminology-attrs="aria-label"></select></div>
     <div id="rejection-links" class="rejection-links"></div>
     <div class="points-title"><h3>검토 포인트</h3><span id="point-count"></span></div>
     <div id="point-filters" class="point-filters" role="group" aria-label="검토 포인트 필터"><button data-filter="all">전체</button><button data-filter="direct_rejection">직접 지적</button><button data-filter="dependency">종속 영향</button><button data-filter="citation">인용 문헌</button></div>

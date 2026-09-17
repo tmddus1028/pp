@@ -8,6 +8,7 @@ import streamlit as st
 from frontend.claim_analysis import STATUS_LABELS, display_statute
 from frontend.readable_text import readable_text, text_html
 from frontend.review_model import build_review_model, relied_references
+from frontend.terminology import labels, reference_kind
 
 
 def comparison_for_claim(model, number, scope="all"):
@@ -100,6 +101,7 @@ def heading(title, kicker):
 
 
 def render_evidence_comparison(result, initial_claim=None, initial_scope="all"):
+    t = labels(result)
     key = result["analysis_id"]
     if st.session_state.get("comparison_id") != key:
         st.session_state.comparison_id = key
@@ -122,14 +124,14 @@ def render_evidence_comparison(result, initial_claim=None, initial_scope="all"):
     st.session_state.setdefault("comparison_scope", previous_scope)
 
     with st.container(key="evidence-comparison"):
-        st.caption("선택한 청구항의 원문, 심사관 지적, 명세서 근거, 선행기술을 비교합니다.")
+        st.caption(t("선택한 청구항의 원문, 심사관 지적, 명세서 근거, 선행기술을 비교합니다."))
         with st.container(key="comparison-selectors"):
             left, right = st.columns([1, 2])
             with left:
                 number = st.selectbox(
-                    "비교할 Claim",
+                    t("비교할 Claim"),
                     sorted(claims),
-                    format_func=lambda n: f"Claim {n}",
+                    format_func=lambda n: t(f"Claim {n}"),
                     key="comparison_claim",
                     on_change=change_claim,
                 )
@@ -142,7 +144,7 @@ def render_evidence_comparison(result, initial_claim=None, initial_scope="all"):
                 st.session_state.comparison_scope = "all"
             with right:
                 scope = st.selectbox(
-                    "비교할 지적 사유",
+                    t("비교할 지적 사유"),
                     ["all", *related],
                     key="comparison_scope",
                     format_func=lambda rid: (
@@ -157,11 +159,11 @@ def render_evidence_comparison(result, initial_claim=None, initial_scope="all"):
         st.session_state.comparison_selection = (number, scope)
         st.session_state.selected_claim = number
         statutes = " · ".join(map(display_statute, view["statutes"])) or "연결된 법조항 없음"
-        parents = ", ".join(f"Claim {n}" for n in claim["depends_on"]) or "독립항"
-        children = ", ".join(f"Claim {n}" for n in claim["children"]) or "없음"
+        parents = ", ".join(t(f"Claim {n}") for n in claim["depends_on"]) or "독립항"
+        children = ", ".join(t(f"Claim {n}") for n in claim["children"]) or "없음"
         st.markdown(
-            f'<div class="comparison-overview"><strong>Claim {number}</strong>'
-            f'<span class="claim-state {view["role"]}">{escape(view["status"])}</span>'
+            f'<div class="comparison-overview"><strong>{t("Claim")} {number}</strong>'
+            f'<span class="claim-state {view["role"]}">{escape(t(view["status"]))}</span>'
             f"<span>{escape(statutes)}</span><span>명세서 연결 <b>{len(view['support'])}</b>개</span>"
             f"<span>인용문헌 <b>{len(view['citations'])}</b>개</span></div>",
             unsafe_allow_html=True,
@@ -171,7 +173,7 @@ def render_evidence_comparison(result, initial_claim=None, initial_scope="all"):
             focuses.append(
                 (
                     "112",
-                    "Claim ↔ 명세서 ↔ Office Action",
+                    t("Claim ↔ 명세서 ↔ Office Action"),
                     "지적된 청구항 표현과 명세서 기재를 대조하세요.",
                 )
             )
@@ -179,7 +181,7 @@ def render_evidence_comparison(result, initial_claim=None, initial_scope="all"):
             focuses.append(
                 (
                     "103",
-                    "Claim ↔ Office Action ↔ 선행기술",
+                    t("Claim ↔ Office Action ↔ 선행기술"),
                     "심사관이 어떤 인용문헌을 근거로 지적했는지 확인하세요.",
                 )
             )
@@ -196,11 +198,13 @@ def render_evidence_comparison(result, initial_claim=None, initial_scope="all"):
         with st.container(key="comparison-grid"):
             top_left, top_right = st.columns(2, gap="medium")
             with top_left, st.container(key="comparison-claim", border=True):
-                heading("청구항 원문", "01 / CLAIM")
-                st.markdown(f"**Claim {number} · {'종속항' if claim['depends_on'] else '독립항'}**")
-                source(claim["evidence"], "Claim", view["role"])
-                st.caption(f"상위 Claim: {parents}")
-                st.caption(f"직접 종속 Claim: {children}")
+                heading("청구항 원문", t("01 / CLAIM"))
+                st.markdown(
+                    f"**{t('Claim')} {number} · {'종속항' if claim['depends_on'] else '독립항'}**"
+                )
+                source(claim["evidence"], t("Claim"), view["role"])
+                st.caption(t("상위 Claim: ") + parents)
+                st.caption(t("직접 종속 Claim: ") + children)
                 st.button(
                     "PDF에서 보기",
                     key="comparison-claim-pdf",
@@ -208,7 +212,7 @@ def render_evidence_comparison(result, initial_claim=None, initial_scope="all"):
                     args=(claim["id"], scope),
                 )
             with top_right, st.container(key="comparison-oa", border=True):
-                heading("심사관 지적", "02 / OFFICE ACTION")
+                heading(t("심사관 지적"), t("02 / OFFICE ACTION"))
                 for rejection in view["rejections"]:
                     rid = rejection["rejection_id"]
                     direct = rid in claim["direct"]
@@ -219,30 +223,32 @@ def render_evidence_comparison(result, initial_claim=None, initial_scope="all"):
                         f'<span class="claim-state {role}">{"직접 지적" if direct else "종속 영향 · 직접 지적 아님"}</span></div>',
                         unsafe_allow_html=True,
                     )
-                    source(rejection["evidence"], f"{rid} · Office Action", role, preview=True)
+                    source(rejection["evidence"], rid + t(" · Office Action"), role, preview=True)
                     st.button(
-                        "Office Action에서 보기",
+                        t("Office Action에서 보기"),
                         key=f"comparison-oa-{rid}",
                         on_click=pdf_link,
                         args=(f"rejection-{rid}", rid),
                     )
                 if not view["rejections"]:
-                    st.caption("이 Claim에 연결된 심사관 지적이 없습니다.")
+                    st.caption(t("이 Claim에 연결된 심사관 지적이 없습니다."))
             bottom_left, bottom_right = st.columns(2, gap="medium")
             with bottom_left, st.container(key="comparison-specification", border=True):
-                heading("명세서 근거", "03 / SPECIFICATION")
+                heading("명세서 근거", t("03 / SPECIFICATION"))
                 if view["support"]:
                     st.caption(
-                        "해당 지적 사유에서 명시적으로 언급한 위치입니다. 법적 뒷받침 여부를 자동 판정한 결과는 아닙니다."
+                        t(
+                            "해당 지적 사유에서 명시적으로 언급한 위치입니다. 법적 뒷받침 여부를 자동 판정한 결과는 아닙니다."
+                        )
                     )
                 for item in view["support"]:
-                    readable_text(item["title"])
+                    readable_text(t(item["title"]))
                     st.caption(
                         "연결 이유: "
                         + ", ".join(item["rejection_ids"])
-                        + "의 Office Action 원문이 이 위치를 명시적으로 언급합니다."
+                        + t("의 Office Action 원문이 이 위치를 명시적으로 언급합니다.")
                     )
-                    source(item["evidence"], item["title"], "specification")
+                    source(item["evidence"], t(item["title"]), "specification")
                     st.button(
                         "명세서 PDF에서 보기",
                         key="comparison-spec-" + item["id"],
@@ -256,16 +262,16 @@ def render_evidence_comparison(result, initial_claim=None, initial_scope="all"):
                     )
                     st.caption("명세서 전체는 PDF 검토에서 확인할 수 있습니다.")
             with bottom_right, st.container(key="comparison-citations", border=True):
-                heading("인용 선행기술", "04 / CITED REFERENCES")
+                heading("인용 선행기술", t("04 / CITED REFERENCES"))
                 if view["citations"]:
                     st.caption(
-                        "같은 지적 사유에 인용된 문헌입니다. 문헌별 Claim 구성 대응을 자동 판정하지 않습니다."
+                        t(
+                            "같은 지적 사유에 인용된 문헌입니다. 문헌별 Claim 구성 대응을 자동 판정하지 않습니다."
+                        )
                     )
                 for entry in view["citations"]:
                     ref = entry["reference"]
-                    kind = {"patent": "Patent", "npl": "NPL"}.get(
-                        ref.get("type"), "문헌 유형 미확인"
-                    )
+                    kind = reference_kind(ref, t, unknown="문헌 유형 미확인")
                     publication = ref.get("publication_number") or " · ".join(
                         str(v) for v in (ref.get("publication"), ref.get("year")) if v
                     )
@@ -282,25 +288,30 @@ def render_evidence_comparison(result, initial_claim=None, initial_scope="all"):
                             }.get(ref.get("citation_role", "relied_upon"))
                         )
                         readable_text("이름: " + (ref.get("name") or "기록 없음"))
-                        readable_text("type: " + ref.get("type", "unknown"))
                         readable_text(
-                            "Publication number: " + (ref.get("publication_number") or "기록 없음")
+                            "문헌 유형: " + kind
+                            if t("Claim") == "청구항"
+                            else "type: " + ref.get("type", "unknown")
                         )
                         readable_text(
-                            "Publication / journal: " + (ref.get("publication") or "기록 없음")
+                            t("Publication number: ")
+                            + (ref.get("publication_number") or "기록 없음")
                         )
                         readable_text(
-                            "Year: " + (str(ref["year"]) if ref.get("year") else "기록 없음")
+                            t("Publication / journal: ") + (ref.get("publication") or "기록 없음")
                         )
-                        st.caption("사용된 지적 사유: " + ", ".join(entry["rejection_ids"]))
+                        readable_text(
+                            t("Year: ") + (str(ref["year"]) if ref.get("year") else "기록 없음")
+                        )
+                        st.caption(t("사용된 지적 사유: ") + ", ".join(entry["rejection_ids"]))
                         st.caption(
-                            "같은 지적 사유에 포함된 Claim: "
+                            t("같은 지적 사유에 포함된 Claim: ")
                             + ", ".join(map(str, entry["claim_numbers"]))
                         )
                         for occurrence in entry["occurrences"]:
                             source(
                                 occurrence["evidence"],
-                                occurrence["rejection_id"] + " · OA 인용",
+                                occurrence["rejection_id"] + t(" · OA 인용"),
                                 "citation",
                             )
                         st.button(
@@ -313,7 +324,9 @@ def render_evidence_comparison(result, initial_claim=None, initial_scope="all"):
                     st.caption("선택한 비교 범위에 연결된 인용문헌이 없습니다.")
         with st.container(key="comparison-summary", border=True):
             st.markdown("**비교 요약**")
-            st.caption(f"Claim {number} · {view['status']} · 상위 {parents} · 직접 종속 {children}")
+            st.caption(
+                f"{t('Claim')} {number} · {t(view['status'])} · 상위 {parents} · 직접 종속 {children}"
+            )
             for rejection in view["rejections"]:
                 claim_chips = "".join(
                     f'<span class="comparison-summary-chip">{n}</span>' for n in rejection["claims"]
@@ -336,14 +349,14 @@ def render_evidence_comparison(result, initial_claim=None, initial_scope="all"):
                     f'data-rejection="{escape(rejection["rejection_id"])}">'
                     f"<h4>{escape(rejection['rejection_id'])} · "
                     f"{escape(display_statute(rejection['statute']))}</h4>"
-                    '<div class="comparison-summary-label">대상 Claim</div>'
+                    f'<div class="comparison-summary-label">{t("대상 Claim")}</div>'
                     f'<div class="comparison-summary-claims">{claim_chips}</div>'
                     '<div class="comparison-summary-label">연결 문헌</div>'
                     f'<div class="comparison-summary-references">{references}</div>'
-                    '<div class="comparison-summary-label">Office Action 요약</div>'
+                    f'<div class="comparison-summary-label">{t("Office Action 요약")}</div>'
                     + text_html(rejection["reason_summary"], "comparison-summary-text preview")
                     + '<details class="comparison-summary-original"><summary>원문 더 보기</summary>'
-                    '<div class="comparison-summary-label">Office Action 원문 · p. '
+                    f'<div class="comparison-summary-label">{t("Office Action 원문")} · p. '
                     + ", ".join(map(str, rejection["evidence"]["page_numbers"]))
                     + "</div>"
                     + text_html(rejection["evidence"]["text"], "comparison-summary-text")
@@ -351,4 +364,4 @@ def render_evidence_comparison(result, initial_claim=None, initial_scope="all"):
                     unsafe_allow_html=True,
                 )
             if not view["rejections"]:
-                st.caption("현재 분석 결과에 연결된 지적 사유가 없습니다.")
+                st.caption(t("현재 분석 결과에 연결된 지적 사유가 없습니다."))

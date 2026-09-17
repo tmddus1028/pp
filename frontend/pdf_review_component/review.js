@@ -1,15 +1,18 @@
 'use strict';
+const t = value => window.PatentTerminology?.text(value) ?? value;
 const $ = id => document.getElementById(id);
 const send = (type, extra={}) => window.parent.postMessage({isStreamlitMessage:true,type,...extra},'*');
 const el = (tag,cls,text) => {const node=document.createElement(tag);if(cls)node.className=cls;if(tag==='p')node.classList.add('readable-text');if(text!==undefined)node.textContent=text;return node;};
-const labels={direct_rejection:'직접 지적',dependency:'종속 영향',citation:'인용 문헌',specification:'관련 설명',rejection:'거절 사유',unaddressed:'추출된 지적 없음',allowed:'허용',withdrawn:'심사 대상 제외',canceled:'취소됨',pending:'계류 중'};
-const groundLabel=r=>r.action_type==='objection'?'Objection':r.statute;
+const labels={direct_rejection:'직접 지적',dependency:'종속 영향',citation:'인용 문헌',specification:'관련 설명',rejection:t('거절 사유'),unaddressed:'추출된 지적 없음',allowed:t('허용'),withdrawn:'심사 대상 제외',canceled:t('취소됨'),pending:t('계류 중')};
+const groundLabel=r=>r.action_type==='objection'?t('Objection'):r.statute;
 const citationRoleLabels={relied_upon:'거절 근거'};
 const citationRoleHelp={citation:'심사관이 실제 거절 논리에 사용한 선행기술'};
-const itemLabel=item=>item.kind==='claim'&&item.status==='objected'&&!item.direct.length?'Objection · 추가 검토':labels[role(item)];
+const itemLabel=item=>item.kind==='claim'&&item.status==='objected'&&!item.direct.length?t('Objection · 추가 검토'):t(labels[role(item)]);
 let model, state, currentPage, initialized=false, searchHits=[], searchIndex=-1, timer, pendingScroll=false, pendingSearch=false, serverNavigation=-1;
+let improvements={}, improvementErrors={};
 const expandedSources = new Map();
 const sourceKey = (card, detail) => card.dataset.reviewId+'|'+detail.querySelector('summary')?.textContent;
+const itemTitle = item => item.kind==='claim'||item.kind==='specification' ? t(item.title) : item.title;
 const itemById = id => model.items.find(item=>item.id===id);
 const docById = id => model.documents.find(doc=>doc.id===id);
 const visibleScope = item => state.scope==='all'||item.rejection_ids.includes(state.scope);
@@ -77,13 +80,13 @@ function annotations(){
 }
 function drawToolbar(){
   const doc=docById(state.document);
-  $('document').replaceChildren(...model.documents.map(d=>{const o=el('option','',(d.kind==='patent'?'Patent · ':'Office Action · ')+d.filename);o.value=d.id;return o;}));
+  $('document').replaceChildren(...model.documents.map(d=>{const o=el('option','',(d.kind==='patent'?t('Patent · '):t('Office Action · '))+d.filename);o.value=d.id;return o;}));
   $('document').value=state.document;$('page-number').value=state.page;$('page-number').max=doc.pages.length;$('page-total').textContent='/ '+doc.pages.length;
   $('prev').disabled=state.page<=1;$('next').disabled=state.page>=doc.pages.length;
   $('search').value=state.search||'';
   const download=$('download');download.hidden=!doc.pdf_download;
   if(doc.pdf_download){download.href='data:application/pdf;base64,'+doc.pdf_download;download.download=doc.filename;}
-  $('scope').replaceChildren(el('option','','전체 거절 사유'));
+  $('scope').replaceChildren(el('option','',t('전체 거절 사유')));
   $('scope').firstChild.value='all';
   for(const rejection of model.rejections){const option=el('option','',rejection.rejection_id+' · '+groundLabel(rejection));option.value=rejection.rejection_id;$('scope').append(option);}
   $('scope').value=state.scope;
@@ -92,11 +95,11 @@ function drawToolbar(){
   $('fit-page').setAttribute('aria-pressed',String(state.fit==='page'));
   const current=itemById(state.selected),mini=$('relationship-mini');mini.replaceChildren();
   if(presented(current)){
-    mini.append(el('strong','',current.title));
+    mini.append(el('strong','',itemTitle(current)));
     if(current.kind==='claim'){
-      const parents=current.depends_on.map(n=>'Claim '+n).join(', ')||'독립항';
-      const children=current.children.map(n=>'Claim '+n).join(', ')||'직접 종속항 없음';
-      mini.append(el('span','',parents+' → '+current.title+' → '+children));
+      const parents=current.depends_on.map(n=>t('Claim ')+n).join(', ')||'독립항';
+      const children=current.children.map(n=>t('Claim ')+n).join(', ')||'직접 종속항 없음';
+      mini.append(el('span','',parents+' → '+itemTitle(current)+' → '+children));
     }else mini.append(el('span','',current.rejection_ids.join(' · ')));
   }
 }
@@ -116,7 +119,7 @@ function drawPage(){
   $('loading').hidden=ready;$('paper').style.visibility=ready?'visible':'hidden';
   if(!ready){$('page-status').textContent='원본 페이지를 불러오는 중…';return;}
   const doc=docById(state.document), ann=annotations();
-  let status=doc.kind==='patent'?'Patent 원문':'Office Action 원문';
+  let status=doc.kind==='patent'?t('Patent 원문'):t('Office Action 원문');
   status+=' · p. '+state.page;
   if(doc.ocr_pages.includes(state.page))status+=' · OCR 위치';
   if(searchHits.length&&state.search)status+=' · 검색 '+(searchIndex+1)+' / '+searchHits.length;
@@ -147,8 +150,8 @@ function drawOverlays(ann){
       const node=button('',()=>selectItem(item.id,true),'annotation '+type+(region?' region':'')+(selected?' selected pulse':' dimmed'));
       node.dataset.annotation=a.id;node.dataset.itemId=item.id;
       node.dataset.box=JSON.stringify(box);
-      node.setAttribute('aria-label',item.title+' '+labels[type]+' · p. '+a.page+' · 구간 '+(index+1));
-      node.title=item.title+' · '+labels[type];
+      node.setAttribute('aria-label',itemTitle(item)+' '+t(labels[type])+' · p. '+a.page+' · 구간 '+(index+1));
+      node.title=itemTitle(item)+' · '+t(labels[type]);
       const padding=region?3:1;
       Object.assign(node.style,{left:`calc(${box[0]*100}% - ${padding}px)`,top:`calc(${box[1]*100}% - ${padding}px)`,width:`calc(${(box[2]-box[0])*100}% + ${padding*2}px)`,height:`calc(${(box[3]-box[1])*100}% + ${padding*2}px)`});
       if(item.kind==='claim'){
@@ -230,7 +233,7 @@ function details(item,body){
     if(active&&active.evidence.document_id===state.document&&active.evidence.page_numbers.includes(state.page)){
       const current=el('div','current-evidence');current.dataset.rejectionId=active.rejection_id;
       current.append(el('h4','','현재 보고 있는 근거'),el('strong','',active.rejection_id+' · '+groundLabel(active)));
-      current.append(el('div','source-caption','Office Action p. '+state.page));
+      current.append(el('div','source-caption',t('Office Action p. ')+state.page));
       const actions=el('div','chips');
       actions.append(button('청구항 원문 보기',()=>selectItem(item.id)));
       for(const rid of rids.filter(r=>r!==active.rejection_id))actions.append(button(rid+' 근거 보기',()=>selectItem('rejection-'+rid)));
@@ -238,26 +241,26 @@ function details(item,body){
     }
     body.append(el('h4','','분석 설명'));
     if(item.status_evidence){
-      body.append(el('p','',itemLabel(item)+(item.conditional_allowance?' · 독립항으로 재작성하는 조건의 허용 가능성 언급':'')));
-      const statusDetail=el('details');statusDetail.append(el('summary','','Office Action 청구항 상태 근거'));evidenceSection(statusDetail,item.status_evidence,'상태 원문');body.append(statusDetail);
+      body.append(el('p','',itemLabel(item)+(item.conditional_allowance?t(' · 독립항으로 재작성하는 조건의 허용 가능성 언급'):'')));
+      const statusDetail=el('details');statusDetail.append(el('summary','',t('Office Action 청구항 상태 근거')));evidenceSection(statusDetail,item.status_evidence,'상태 원문');body.append(statusDetail);
     }
-    if(role(item)==='dependency'&&item.status!=='objected')body.append(el('p','',item.title+'은 Claim '+item.depends_on.join(', ')+'에 종속됩니다. 선택한 거절 사유의 상위 청구항과 함께 검토할 대상으로 연결되었습니다.'));
-    else if(!rids.length&&!item.status_evidence)body.append(el('p','','이 청구항에 연결된 명시적 지적을 추출하지 못했습니다. 허용 여부를 뜻하지 않습니다.'));
+    if(role(item)==='dependency'&&item.status!=='objected')body.append(el('p','',itemTitle(item)+t('은 Claim ')+item.depends_on.join(', ')+t('에 종속됩니다. 선택한 거절 사유의 상위 청구항과 함께 검토할 대상으로 연결되었습니다.')));
+    else if(!rids.length&&!item.status_evidence)body.append(el('p','',t('이 청구항에 연결된 명시적 지적을 추출하지 못했습니다. 허용 여부를 뜻하지 않습니다.')));
     for(const rid of rids){const r=model.rejections.find(r=>r.rejection_id===rid);body.append(el('p','',r.reason_summary));}
-    const own=el('details');own.append(el('summary','','Claim 원문'));evidenceSection(own,item.evidence,'Patent');body.append(own);
+    const own=el('details');own.append(el('summary','',t('Claim 원문')));evidenceSection(own,item.evidence,t('Patent'));body.append(own);
     body.append(el('h4','','종속 관계'));
     if(!item.depends_on.length)body.append(el('p','','독립항'));
-    else chips(body,item.depends_on.map(n=>['상위 Claim '+n,'claim-'+n]));
-    if(item.children.length)chips(body,item.children.map(n=>['종속 Claim '+n,'claim-'+n]));
+    else chips(body,item.depends_on.map(n=>[t('상위 Claim ')+n,'claim-'+n]));
+    if(item.children.length)chips(body,item.children.map(n=>[t('종속 Claim ')+n,'claim-'+n]));
   }else if(item.kind==='citation'){
     const ref=item.reference;
     if(ref.title)body.append(el('p','',ref.title));
     if(ref.doi)body.append(el('p','','DOI: '+ref.doi));
-    body.append(el('h4','',ref.type==='npl'?'NPL · 비특허 문헌':ref.type==='patent'?'Patent · 특허 문헌':'문헌 유형 미확인'));
+    body.append(el('h4','',ref.type==='npl'?t('NPL · 비특허 문헌'):ref.type==='patent'?t('Patent · 특허 문헌'):'문헌 유형 미확인'));
     body.append(el('p','',ref.publication_number||[ref.publication,ref.year].filter(Boolean).join(' · ')||'원문에 표시된 문헌'));
-    body.append(el('p','','심사관이 인용한 문헌의 Office Action 내 위치입니다.'));
+    body.append(el('p','',t('심사관이 인용한 문헌의 Office Action 내 위치입니다.')));
     const firstOccurrence=(item.occurrences||[]).find(e=>e.role==='relied_upon'&&rids.includes(e.rejection_id));
-    evidenceSection(body,firstOccurrence?.evidence||item.evidence,'Office Action 인용 원문');
+    evidenceSection(body,firstOccurrence?.evidence||item.evidence,t('Office Action 인용 원문'));
     for(const occurrence of item.occurrences||[]){
       if(occurrence.role!=='relied_upon'||state.scope!=='all'&&occurrence.rejection_id!==state.scope)continue;
       const entry=el('details','citation-occurrence');
@@ -275,29 +278,29 @@ function details(item,body){
     body.append(el('h4','','연결된 거절 · 법조항'));
     chips(body,rids.map(rid=>[rid+' · '+model.rejections.find(r=>r.rejection_id===rid).statute,'rejection-'+rid]));
     const numbers=[...new Set(model.rejections.filter(r=>rids.includes(r.rejection_id)).flatMap(r=>r.claims))].sort((a,b)=>a-b);
-    body.append(el('h4','','관련 Claim · 같은 거절에 연결된 청구항'));
-    chips(body,numbers.map(n=>['Claim '+n,'claim-'+n]));
-    body.append(el('p','notice','거절 사유 단위의 연결이며, 문헌별로 각 Claim 구성을 개시한다는 판단을 새로 생성하지 않습니다.'));
+    body.append(el('h4','',t('관련 Claim · 같은 거절에 연결된 청구항')));
+    chips(body,numbers.map(n=>[t('Claim ')+n,'claim-'+n]));
+    body.append(el('p','notice',t('거절 사유 단위의 연결이며, 문헌별로 각 Claim 구성을 개시한다는 판단을 새로 생성하지 않습니다.')));
   }else if(item.kind==='specification'){
-    body.append(el('p','','Office Action이 명시적으로 언급한 원문 위치입니다. 이 연결 자체가 명세서의 뒷받침 여부를 판단하지는 않습니다.'));
-    evidenceSection(body,item.evidence,'Patent');
-  }else {body.append(el('p','',item.text));evidenceSection(body,item.evidence,'Office Action');}
+    body.append(el('p','',t('Office Action이 명시적으로 언급한 원문 위치입니다. 이 연결 자체가 명세서의 뒷받침 여부를 판단하지는 않습니다.')));
+    evidenceSection(body,item.evidence,t('Patent'));
+  }else {body.append(el('p','',item.text));evidenceSection(body,item.evidence,t('Office Action'));}
   for(const rid of rids){
     const rejection=model.rejections.find(r=>r.rejection_id===rid);
     const detail=el('details');detail.dataset.rejectionId=rid;
     detail.open=item.kind==='claim'&&(state.active_rejection?state.active_rejection===rid:rids.length===1);
-    detail.append(el('summary','',rid+' · '+groundLabel(rejection)+' · Office Action 원문 근거'));
+    detail.append(el('summary','',rid+' · '+groundLabel(rejection)+t(' · Office Action 원문 근거')));
     evidenceSection(detail,rejection.evidence,'심사관 원문');
-    detail.append(button('OA p. '+rejection.evidence.page_numbers[0]+'에서 보기',()=>selectItem('rejection-'+rid)));
-    if(item.kind==='rejection')chips(detail,rejection.claims.map(n=>['Claim '+n,'claim-'+n]));
+    detail.append(button(t('OA p. ')+rejection.evidence.page_numbers[0]+'에서 보기',()=>selectItem('rejection-'+rid)));
+    if(item.kind==='rejection')chips(detail,rejection.claims.map(n=>[t('Claim ')+n,'claim-'+n]));
     body.append(detail);
   }
   const references=[...new Map(model.rejections.filter(r=>rids.includes(r.rejection_id)).flatMap(r=>r.cited_references).filter(ref=>(ref.citation_role||'relied_upon')==='relied_upon').map(ref=>[ref.citation_id,ref])).values()];
   if(references.length&&item.kind!=='citation'){body.append(el('h4','','관련 인용문헌 · '+references.length+'개'));chips(body,references.map(ref=>[ref.name||ref.publication_number,'citation-'+ref.citation_id]));}
   if(item.kind==='claim'){
-    body.append(el('h4','','관련 specification / drawing'));
+    body.append(el('h4','',t('관련 specification / drawing')));
     const links=(item.support_ids||[]).map(itemById).filter(i=>visibleScope(i));
-    if(links.length)chips(body,links.map(i=>[i.title,i.id]));
+    if(links.length)chips(body,links.map(i=>[itemTitle(i),i.id]));
     else body.append(el('p','notice','원문에서 확인된 명시적 명세서·도면 연결이 없습니다.'));
   }
   const checklist=model.impacts.filter(i=>rids.includes(i.rejection_id)).flatMap(i=>i.review_items||[]);
@@ -306,7 +309,7 @@ function details(item,body){
     for(const entry of checklist){
       const row=el('label','check-item'),input=el('input');input.type='checkbox';input.checked=Boolean(state.checked[entry.item_id]);
       input.addEventListener('change',()=>{state.checked[entry.item_id]=input.checked;emit();});
-      row.append(input,el('span','',entry.text));body.append(row);
+      row.append(input,el('span','',window.PatentTerminology.checklist(entry.text)));body.append(row);
     }
   }
   const anchors=model.annotations.filter(a=>a.item_id===item.id&&a.document_id===state.document);
@@ -317,6 +320,21 @@ function details(item,body){
       clearTimeout(timer);
       send('streamlit:setComponentValue',{value:{nonce:Date.now()+Math.random(),navigation:serverNavigation,ui:state,action:'open_comparison'},dataType:'json'});
     },'claim-pdf-link'));
+    if(item.rejection_ids.length){
+      const rid=state.scope!=='all'?state.scope:(item.rejection_ids.includes(state.active_rejection)?state.active_rejection:null);
+      const key=item.claim_number+':'+(rid||'all');
+      const generate=button('개선 방안 보기',()=>{
+        if(improvements[key]){body.querySelector('.improvement-detail').open=true;return;}
+        generate.disabled=true;clearTimeout(timer);
+        send('streamlit:setComponentValue',{value:{nonce:Date.now()+Math.random(),navigation:serverNavigation,ui:state,action:'improve_claim',improvement_rejection:rid},dataType:'json'});
+      },'claim-pdf-link');
+      body.append(generate);
+      if(improvementErrors[key])body.append(el('p','notice',improvementErrors[key]));
+      if(improvements[key]){
+        const detail=el('details','improvement-detail');detail.open=true;detail.append(el('summary','','개선 방안'));
+        const content=el('div','readable-panel');content.innerHTML=improvements[key];detail.append(content);body.append(detail);
+      }
+    }
   }
 }
 function drawPanel(){
@@ -326,28 +344,28 @@ function drawPanel(){
   const root=$('summary');root.replaceChildren();
   const scoped=scopedPoints();
   // Claim selection and evidence focus do not change the review scope or these counts.
-  for(const [type,label] of [['direct_rejection','직접 지적'],['dependency','종속 영향 / Objection'],['allowed','허용'],['citation','인용 문헌']]){
+  for(const [type,label] of [['direct_rejection','직접 지적'],['dependency',t('종속 영향 / Objection')],['allowed',t('허용')],['citation','인용 문헌']]){
     const count=scoped.filter(i=>role(i)===type).length;
-    const card=button('',()=>setFilter(type),type);card.setAttribute('aria-label',label+' '+count);card.setAttribute('aria-pressed',String(state.filter===type));
+    const card=button('',()=>setFilter(type),type);card.setAttribute('aria-label',t(label)+' '+count);card.setAttribute('aria-pressed',String(state.filter===type));
     if(citationRoleHelp[type])card.title=citationRoleHelp[type];
-    card.append(el('small','',label),el('strong','',String(count)));root.append(card);
+    card.append(el('small','',t(label)),el('strong','',String(count)));root.append(card);
   }
   $('rejection-links').replaceChildren(...model.rejections.map(r=>button(r.rejection_id+' · '+groundLabel(r),()=>selectItem('rejection-'+r.rejection_id))));
   const list=$('review-list'),scroll=list.scrollTop;list.replaceChildren();
   const points=scoped.filter(i=>state.filter==='all'||role(i)===state.filter);
   $('point-count').textContent=points.length+'개';
-  if(!points.length)list.append(el('div','empty','해당 유형의 검토 포인트가 없습니다. 모든 청구항이 직접 지적되면 종속항도 빨강으로 표시됩니다. 거절 사유별 범위에서 종속 영향을 확인할 수 있습니다.'));
+  if(!points.length)list.append(el('div','empty',t('해당 유형의 검토 포인트가 없습니다. 모든 청구항이 직접 지적되면 종속항도 빨강으로 표시됩니다. 거절 사유별 범위에서 종속 영향을 확인할 수 있습니다.')));
   points.forEach((item,index)=>{
     const active=item.id===state.selected,expanded=item.id===state.expanded,type=role(item),card=el('article','review-card'+(active?' active':'')+(expanded?' expanded':''));card.dataset.reviewId=item.id;
-    const select=button('',()=>toggleCard(item.id),'card-select');select.setAttribute('aria-label',item.title+' · '+itemLabel(item));select.setAttribute('aria-expanded',String(expanded));
+    const select=button('',()=>toggleCard(item.id),'card-select');select.setAttribute('aria-label',itemTitle(item)+' · '+itemLabel(item));select.setAttribute('aria-expanded',String(expanded));
     select.append(el('span','card-index',String(item.claim_number??index+1)));
-    const heading=el('div','readable-panel'),title=el('div','card-title readable-text',item.title);
+    const heading=el('div','readable-panel'),title=el('div','card-title readable-text',itemTitle(item));
     const badgeText=item.kind==='citation'?'거절 근거':itemLabel(item);
     const roleBadge=el('span','badge '+type+(item.kind==='citation'?' citation-role-badge':''),badgeText);
     if(item.kind==='citation')roleBadge.title=citationRoleHelp.citation;
     title.append(roleBadge);heading.append(title);
     const statutes=item.rejection_ids.filter(r=>state.scope==='all'||state.scope===r).map(r=>groundLabel(model.rejections.find(rej=>rej.rejection_id===r)));
-    heading.append(el('div','card-meta',[...new Set(statutes)].join(' · ')||(item.kind==='citation'?'Office Action 기록':'Patent 원문')));
+    heading.append(el('div','card-meta',[...new Set(statutes)].join(' · ')||(item.kind==='citation'?t('Office Action 기록'):t('Patent 원문'))));
     if(item.kind==='citation'){
       const badges=el('div','citation-rejection-badges');
       item.rejection_ids.filter(rid=>!item.occurrences||item.occurrences.some(e=>e.rejection_id===rid&&e.role==='relied_upon')).forEach(rid=>{const badge=el('span','badge',rid);badge.dataset.rejectionId=rid;badges.append(badge);});
@@ -391,6 +409,9 @@ window.addEventListener('resize',frameSize);
 window.addEventListener('message',event=>{
   if(event.source!==window.parent||event.data.type!=='streamlit:render')return;
   const args=event.data.args;
+  improvements=args.improvements||{};improvementErrors=args.improvement_errors||{};
+  if(!window.PatentTerminology){const script=document.createElement('script');script.textContent=args.terminology_js;document.head.append(script);}
+  window.PatentTerminology.configure(args.terminology);
   let typography=$('readable-text-styles');
   if(!typography){typography=el('style');typography.id='readable-text-styles';document.head.append(typography);}
   if(typography.textContent!==args.readable_css)typography.textContent=args.readable_css||'';

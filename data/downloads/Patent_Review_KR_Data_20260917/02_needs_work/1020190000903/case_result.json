@@ -1,0 +1,13 @@
+{
+  "application": "1020190000903",
+  "publication": "KR20190019097A",
+  "patent_file": "publications\\KR20190019097A.pdf",
+  "oa_xml": "official_samples\\1020190000903_952019013815712\\1020190000903_952019013815712.xml",
+  "oa_pdf": "official_samples\\1020190000903_952019013815712\\1020190000903_952019013815712.pdf",
+  "patent_pages": 12,
+  "oa_pdf_pages": 4,
+  "version_status": "same application verified; historical claim version not fully verified",
+  "http_status": 422,
+  "status": "UNSUPPORTED",
+  "error": "지원하는 형식의 명시적 거절이유를 찾지 못했습니다. 거절 없음으로 처리하지 않습니다."
+}

@@ -1,0 +1,299 @@
+{
+  "files": [
+    {
+      "file": "01_verified/1020190000844/KR20190025857A.pdf",
+      "role": "patent",
+      "bytes": 1263686,
+      "sha256": "bdda212cb4da55106447be86373180b27c05cdd21c9b7b59ea71833eba984b32"
+    },
+    {
+      "file": "01_verified/1020190000844/1020190000844_952019025682492.xml",
+      "role": "office_action_xml",
+      "bytes": 23456,
+      "sha256": "8e55d09eb2d64683758ddc2dd82913c9cc979e261e8755102cd521669e332803"
+    },
+    {
+      "file": "01_verified/1020190000844/1020190000844_952019025682492.pdf",
+      "role": "office_action_pdf",
+      "bytes": 84809,
+      "sha256": "04dec6f95d6a6a64ab6e7e000e60878db67eed7e28a35430271d2160868838af"
+    },
+    {
+      "file": "02_needs_work/1020190000874/KR20190003855A.pdf",
+      "role": "patent",
+      "bytes": 882085,
+      "sha256": "850d9451200c9802a6ef45b218afaa0e7f0ea9341e7dab02d07e299624e3823f"
+    },
+    {
+      "file": "02_needs_work/1020190000874/1020190000874_952019023937404.xml",
+      "role": "office_action_xml",
+      "bytes": 19034,
+      "sha256": "c5f7385d19b3b21ae48a6a08c5afc94c16688f4f031b761c884b61227f57e4d2"
+    },
+    {
+      "file": "02_needs_work/1020190000874/1020190000874_952019023937404.pdf",
+      "role": "office_action_pdf",
+      "bytes": 77191,
+      "sha256": "0f756c8bb7c0e434f3c7ff903486f78d17616f465302333e23a4253296bfe92b"
+    },
+    {
+      "file": "02_needs_work/1020190000902/KR20190004821A.pdf",
+      "role": "patent",
+      "bytes": 963518,
+      "sha256": "1336032499ec8fa0815040ac5b1e9525dc39a4454420e424e960b2afe74d71d6"
+    },
+    {
+      "file": "02_needs_work/1020190000902/1020190000902_952019021826308.xml",
+      "role": "office_action_xml",
+      "bytes": 12991,
+      "sha256": "225d4e411c717b7ad33780a4729fe98f1af39dc437cba11fef2725d4342ba042"
+    },
+    {
+      "file": "02_needs_work/1020190000902/1020190000902_952019021826308.pdf",
+      "role": "office_action_pdf",
+      "bytes": 62560,
+      "sha256": "547c41112a507ea1d7357b45b4be8ed7a61aeceebe7bf7e22e0df2c61182c7dd"
+    },
+    {
+      "file": "02_needs_work/1020190000903/KR20190019097A.pdf",
+      "role": "patent",
+      "bytes": 417133,
+      "sha256": "8161f2624430361799f8881086f4df5ee1d990fee49bf1a3a1f0bfbc836b0304"
+    },
+    {
+      "file": "02_needs_work/1020190000903/1020190000903_952019013815712.xml",
+      "role": "office_action_xml",
+      "bytes": 17380,
+      "sha256": "ca6a119d69986078e487906ef926bf231c8d217d833f1d6a154e7b0f0450412f"
+    },
+    {
+      "file": "02_needs_work/1020190000903/1020190000903_952019013815712.pdf",
+      "role": "office_action_pdf",
+      "bytes": 90031,
+      "sha256": "b65796279f4fa293f138b36e50b4726a7605e670c57a3e9110ae9f1816a30007"
+    },
+    {
+      "file": "02_needs_work/1020190000948/KR20190005244A.pdf",
+      "role": "patent",
+      "bytes": 512335,
+      "sha256": "8f77d152c646a988a38d5f052c7cef845cec56c85d2930c45ce00ae8a16c4f3b"
+    },
+    {
+      "file": "02_needs_work/1020190000948/1020190000948_952019003450110.xml",
+      "role": "office_action_xml",
+      "bytes": 19058,
+      "sha256": "84d20fb4ac430f41aa945ffad2fc44a1df9c2a026556bb497d7d903296607003"
+    },
+    {
+      "file": "02_needs_work/1020190000948/1020190000948_952019003450110.pdf",
+      "role": "office_action_pdf",
+      "bytes": 103971,
+      "sha256": "e9e885d3005ca429e66e4ea8065125842f73b11395a1b6407182bf769e8caaa5"
+    },
+    {
+      "file": "01_verified/1020190000844/references/KR20150090348A.pdf",
+      "role": "reference",
+      "bytes": 355984,
+      "sha256": "e11d5cf1aa5583ee943d1acb6b970aeb1a22efeba8999e3a21518bb70fb50b88"
+    },
+    {
+      "file": "01_verified/1020190000844/references/KR20150093093A.pdf",
+      "role": "reference",
+      "bytes": 393979,
+      "sha256": "6a172101b1af500dbb502270010b14fe325237b23920cfeb8a5bfdfb18597ea4"
+    },
+    {
+      "file": "01_verified/1020190000844/references/KR20150096573A.pdf",
+      "role": "reference",
+      "bytes": 341044,
+      "sha256": "dfe9a050a62b15cf41dfdddb5d826163b445cc03f17634ab5214a8f35a241517"
+    },
+    {
+      "file": "01_verified/1020190000844/claim_oa_comparison.json",
+      "role": "version_evidence",
+      "bytes": 5428,
+      "sha256": "31eea83a4abf502804cbc2395e97143d2c2c959efbd5f3208f5bf206034b940d"
+    },
+    {
+      "file": "03_official_archives/kipris_oa_sample.zip",
+      "role": "official_sample_archive",
+      "bytes": 411210,
+      "sha256": "67c9f4e6272d29114f418ab3914c5d34c5d0e1d119866dae69bd5f76ac276b56"
+    },
+    {
+      "file": "03_official_archives/kipris_patent_oa_2015.zip",
+      "role": "official_sample_archive",
+      "bytes": 857034,
+      "sha256": "607c2d82324dc1d44f74a1b18502a896a3be4204dcf3d3afec27448e700b4383"
+    },
+    {
+      "file": "04_validation/1020190000844_api.json",
+      "role": "validation",
+      "bytes": 247491,
+      "sha256": "5c0e7d6bd7a537fb01ec5c95a386f5df97f0b5abc6385095b33d294d55608e2c"
+    },
+    {
+      "file": "04_validation/1020190000844_claims.png",
+      "role": "validation",
+      "bytes": 55512,
+      "sha256": "52d504f6a91b0338e9dfdb6a7e493030fbb09937e06ed710fa743dcef11c24bd"
+    },
+    {
+      "file": "04_validation/1020190000844_comparison.png",
+      "role": "validation",
+      "bytes": 159869,
+      "sha256": "c12131d528676b357f6c84439580e7519209b61ea0081a0c9e3bf79f28798bb1"
+    },
+    {
+      "file": "04_validation/1020190000844_graph.png",
+      "role": "validation",
+      "bytes": 71185,
+      "sha256": "265c13d3ab424a5bbdce67529d67f070f16d00d4d3266f9c432e615c1eabb67e"
+    },
+    {
+      "file": "04_validation/1020190000844_oa.png",
+      "role": "validation",
+      "bytes": 186201,
+      "sha256": "b8c5dd983d00e62bf8462c46c576d5aff5166ddb27a838cd1a273bd0b53dac39"
+    },
+    {
+      "file": "04_validation/1020190000844_oa_pdf_text.txt",
+      "role": "validation",
+      "bytes": 17462,
+      "sha256": "0ba6f916b286502c9c9e3d6c81f1e92592daf19826678fd72a72c8942ec5dbc3"
+    },
+    {
+      "file": "04_validation/1020190000874_api.json",
+      "role": "validation",
+      "bytes": 216,
+      "sha256": "4504874de227b47b82dacbe8ab29cc38aebff408ed9f55681b3f73dead9068c0"
+    },
+    {
+      "file": "04_validation/1020190000874_error.png",
+      "role": "validation",
+      "bytes": 97431,
+      "sha256": "425bbb265605f157c687da9afc1b136ce91f0e39504da79bbab3d5b22fd6fa6f"
+    },
+    {
+      "file": "04_validation/1020190000874_oa_pdf_text.txt",
+      "role": "validation",
+      "bytes": 13405,
+      "sha256": "50b5fc1bb4a4139bb58972326fd1acef324ba9a221791b9b4be3d61e8fb669ec"
+    },
+    {
+      "file": "04_validation/1020190000902_api.json",
+      "role": "validation",
+      "bytes": 185086,
+      "sha256": "813687d1ea9a0a641f418c7ecf15d38a111a219b6938688f1aace98e95d30db5"
+    },
+    {
+      "file": "04_validation/1020190000902_claims.png",
+      "role": "validation",
+      "bytes": 89890,
+      "sha256": "3c4474b339b88877cca403fb86b979c31eb6a8e2de3509f10a7c3e21ea99e450"
+    },
+    {
+      "file": "04_validation/1020190000902_comparison.png",
+      "role": "validation",
+      "bytes": 150779,
+      "sha256": "081689e33dd287ed7ba730e811ee0c7468e68b4e10c805f302b3144cf2e543f8"
+    },
+    {
+      "file": "04_validation/1020190000902_graph.png",
+      "role": "validation",
+      "bytes": 64054,
+      "sha256": "634ad09397d5647099662f6f76e8c0e350ca33f4e18c32764d1e390b0d7fcd55"
+    },
+    {
+      "file": "04_validation/1020190000902_oa.png",
+      "role": "validation",
+      "bytes": 187282,
+      "sha256": "5186549e92af59c6d53fb4782074cafd10a3c2d3d35be8312cef0b16507da3e5"
+    },
+    {
+      "file": "04_validation/1020190000902_oa_pdf_text.txt",
+      "role": "validation",
+      "bytes": 7447,
+      "sha256": "5e252472db37eaa096eab128ffb53176532f51aff54d5865abb9b6bb50456658"
+    },
+    {
+      "file": "04_validation/1020190000903_api.json",
+      "role": "validation",
+      "bytes": 139,
+      "sha256": "b24c19df91a49a473f683c016e991d3d251bc1a65e329320eaa2ecb7c40e88c8"
+    },
+    {
+      "file": "04_validation/1020190000903_error.png",
+      "role": "validation",
+      "bytes": 92700,
+      "sha256": "340e917ca88c7738d7c3e5c5399392d97467cf023e3793385297a465221f5ac6"
+    },
+    {
+      "file": "04_validation/1020190000903_oa_pdf_text.txt",
+      "role": "validation",
+      "bytes": 11175,
+      "sha256": "6ae6dfd92f2dba665ce94567e2f513c42448138bec43f7f8343b044f40a9783f"
+    },
+    {
+      "file": "04_validation/1020190000948_api.json",
+      "role": "validation",
+      "bytes": 216,
+      "sha256": "4504874de227b47b82dacbe8ab29cc38aebff408ed9f55681b3f73dead9068c0"
+    },
+    {
+      "file": "04_validation/1020190000948_error.png",
+      "role": "validation",
+      "bytes": 97097,
+      "sha256": "43f44807590ceaa2f197e0bd5c6817971402fb2d2374b9526e56845cc1cb421e"
+    },
+    {
+      "file": "04_validation/1020190000948_oa_pdf_text.txt",
+      "role": "validation",
+      "bytes": 13247,
+      "sha256": "fb3bc17c9d6077e021d21f9f22f99789102357bc8d4eaad411ba413e74253958"
+    },
+    {
+      "file": "04_validation/browser_checks.json",
+      "role": "validation",
+      "bytes": 697,
+      "sha256": "c1853001c63ff69f3733ef29e5d8f447420ba76ab0c8da7903f7c7382a723332"
+    },
+    {
+      "file": "04_validation/oa_only_2015.json",
+      "role": "validation",
+      "bytes": 45991,
+      "sha256": "304c60068211a35db68343a77becc258ce53b457ccf621df2d9ac0fb5278e7dd"
+    },
+    {
+      "file": "04_validation/oa_pdf_checks.json",
+      "role": "validation",
+      "bytes": 953,
+      "sha256": "5d82140f0e3c686a2d5c44efc260f5b9ed127028ddeace352e8e50079fcbe658"
+    },
+    {
+      "file": "04_validation/original_hashes.json",
+      "role": "validation",
+      "bytes": 3756,
+      "sha256": "3a32a07d572115190c17a732039bd7d849dcfd3101266b643c4511efcc776408"
+    },
+    {
+      "file": "04_validation/paired_cases.json",
+      "role": "validation",
+      "bytes": 4463,
+      "sha256": "278d608f58233107d912cd631292f884884bed8812118a4721978bfca8f6755b"
+    },
+    {
+      "file": "README.md",
+      "role": "instructions",
+      "bytes": 6118,
+      "sha256": "720c5d162a12e902891928a23c3afec0c57e3f734bc8a659646ed731bac4045c"
+    }
+  ],
+  "paired_case_statuses": {
+    "1020190000844": "PASS",
+    "1020190000874": "UNSUPPORTED",
+    "1020190000902": "PARTIAL_FAIL",
+    "1020190000903": "UNSUPPORTED",
+    "1020190000948": "UNSUPPORTED"
+  }
+}

@@ -1,0 +1,1329 @@
+
+
+<button type="button" class="btn-expand" onclick="searchDrag.expandDetail()"><span class="blind">상세보기 크기 확장</span></button>
+<div class="head">
+	<div class="head-top">
+		<div class="utils">
+			<ul class="list">
+				<!-- <li><a href="#" onclick="openVisualize('{{applno}}')" class="btn-util btn-visualize" title="새 창, 시각화 통계" data-lang-id="title.visualize" data-lang-type="title"><span data-lang-id="title.visualize">PatViz/PatLens/PatSight</span></a></li> -->
+				<li><a href="#" onclick="openWindow('detail', {applno:'{{applno}}', right:'kpat'}); return false;" class="btn-util btn-window" title="새 창, 상세정보" data-lang-id="title.opdetail" data-lang-type="title"><span data-lang-id="srlt.txt35">새창열기</span></a></li>
+				<li><a href="#" onclick="sendErrorReport('{{applno}}')" class="btn-util btn-report" title="새 창, 오류신고" data-lang-id="title.repoerr" data-lang-type="title"><span data-lang-id="srlt.txt36">오류신고</span></a></li>
+				<li class="type-pc"><a href="#" onclick="printDetail(); return false;" class="btn-util btn-print" title="새 창, 상세정보 인쇄" data-lang-id="title.detailprint" data-lang-type="title"><span data-lang-id="srlt.txt37">인쇄하기</span></a></li>
+			</ul>
+		</div>
+	</div>
+	<div class="head-title">
+		<h2 class="title">{{invnt_ttl}}</h2>
+		<p class="eng">{{invnt_ttl_eng}}</p>
+	</div>
+	<div class="head-bottom">
+		<ul class="detail-tab-head" data-tab-head="detailTab">
+			<li><button type="button" class="btn-tab active" data-tab-id="detail01" data-tab="detailTab" data-visible-group="deu01" data-visible-control="deu0101" onclick="searchCommonModule.offVisibleGroup('deu02'); recordServiceStats('KPAT', 'BIBLO', 'BIB');" data-lang-id="dtvw.patent.dtl">상세정보</button></li>
+			{{#isSimilar}}
+			<li><button type="button" class="btn-tab visualize_btn" id="visualize_btn" data-lang-id="title.visualize" onclick="openVisualize('{{applno}}')">특허뷰</button></li>
+			{{/isSimilar}}
+			{{#iif unexCaseNo '0' '!='}}
+			<li><button type="button" class="btn-tab" data-tab-id="detail02" data-tab="detailTab" data-visible-group="deu02" data-visible-control="deu0201" onclick="goFullTextKpat({{toReplaceAll applno '[-]' ''}}, 'P'); checkInfoBox('detail02');" data-lang-id="dtvw.patent.uft">공개전문</button></li>
+			{{/iif}}
+			
+			{{#iif exCaseNo '0' '!='}}
+			<li><button type="button" class="btn-tab" data-tab-id="detail03" data-tab="detailTab" data-visible-group="deu02" data-visible-control="deu0202" onclick="goFullTextKpat({{toReplaceAll applno '[-]' ''}}, 'R'); checkInfoBox('detail03');" data-lang-id="dtvw.patent.pft">공고전문</button></li>
+			{{/iif}}
+
+			{{#iif correctionFg 'Y' '=='}}
+			<li><button type="button" class="btn-tab" data-tab-id="detail04" data-tab="detailTab" onclick="searchCommonModule.offVisibleGroup('deu01'); searchCommonModule.offVisibleGroup('deu02'); initFulltextKpat();" data-lang-id="dtvw.patent.etc">기타공고</button></li>
+			{{/iif}}
+			
+			{{#iif extFg 'Y' '=='}}
+			<li><button type="button" class="btn-tab" data-tab-id="detail05" data-tab="detailTab" onclick="searchCommonModule.offVisibleGroup('deu01'); searchCommonModule.offVisibleGroup('deu02'); initFulltextKpat();" data-lang-id="dtvw.patent.etc">기타공고</button></li>
+			{{/iif}}
+			
+			{{#iif rgstInfoFg 'Y' '=='}}
+			<li><button type="button" class="btn-tab" data-tab-id="detail07" data-tab="detailTab" onclick="searchCommonModule.offVisibleGroup('deu01'); searchCommonModule.offVisibleGroup('deu02'); goRgstInfo('{{rgstno}}', this);" data-lang-id="dtvw.patent.rd">등록사항</button></li>
+			{{/iif}}
+			
+			{{#iif trl_fg 'Y' '=='}}
+			<li><button type="button" class="btn-tab JUDGdetailTab" data-tab-id="detail08" data-tab="detailTab" onclick="searchCommonModule.offVisibleGroup('deu01'); searchCommonModule.offVisibleGroup('deu02'); recordServiceStats('KPAT', 'BIBLO', 'JUDG');" data-lang-id="dtvw.patent.jdgmnt">심판사항</button></li>
+			{{/iif}}
+			
+			<li><button type="button" class="btn-tab" data-tab-id="detail09" data-tab="detailTab" onclick="searchCommonModule.offVisibleGroup('deu01'); searchCommonModule.offVisibleGroup('deu02'); openDetail('kpat', '{{toReplaceAll applno '[-]' ''}}', 'HAENGJEONG'); return false;" data-lang-id="dtvw.patent.admnstrtv">통합행정정보</button></li>
+			
+			{{#if microlist}}
+			<li><button type="button" class="btn-tab" data-tab-id="detail10" data-tab="detailTab" onclick="searchCommonModule.offVisibleGroup('deu01'); searchCommonModule.offVisibleGroup('deu02'); recordServiceStats('KPAT', 'ETC', 'MICRO');">미생물 기탁ㆍ분양정보</button></li>
+			{{/if}}
+		</ul>
+		<ul class="utils">
+			<li class="active" data-visible-group="deu01" data-visible-target="deu0101"><button type="button" class="btn outline btn-util btn-doi" data-level="primary" data-size="xs" onclick="copyUrl('KPAT','{{toReplaceAll applno '[-]' ''}}')" title="DOI 복사"><span data-lang-id="dtvw.patent.cdoi">DOI 복사</span></button></li>
+			<li class="active" data-visible-group="deu01" data-visible-target="deu0101">
+				<button type="button" class="btn outline btn-util btn-qr" data-level="primary" data-size="xs" data-dropbox-btn="qrcode"><span data-lang-id="dtvw.patent.qrcd">QR코드</span></button>
+				<div class="drop-qr-box" data-dropbox="qrcode">
+					<a href="/kpat/qrCode.do?method=downloadQrCode&amp;applno={{toReplaceAll applno '[-]' ''}}" class="qr-box" title="QR코드 다운로드" data-lang-id="title.qrdown" data-lang-type="title">
+						<img src="/kpat/qrCode.do?method=qrCodeImg&applno={{toReplaceAll applno '[-]' ''}}" alt="출원번호 {{applno}} 건의 상세정보 URL QR코드" />
+					</a>
+					<a href="/kpat/qrCode.do?method=downloadQrCode&amp;applno={{toReplaceAll applno '[-]' ''}}" class="btn-down" data-lang-id="dtvw.patent.qrdw" onclick="recordServiceStats('KPAT', 'OPSVC', 'QRDN');">다운로드</a>
+					<button type="button" class="btn-close active" data-dropbox-btn="qrcode" title="접기" data-lang-id="title.collapse" data-lang-type="title"><span class="blind">닫기</span></button>
+				</div>
+			</li>
+			{{#iif 'Y' unexaminedFullTextFg}}
+				<li data-visible-group="deu02" data-visible-target="deu0201"><button type="button" class="btn outline btn-util i-translate" data-level="primary" data-size="xs" onclick="openWindow('translate', {applno:'{{applno}},A', right:'kpat'}); return false;" title="새 창, 자동기계번역"><span data-lang-id="dtvw.abpat.mt">자동기계번역</span></button></li>
+			{{/iif}}
+			{{#chkProvideRefusalKPAT unexaminedFullTextFg rgst_stcd Lst_dspsl_desc}}
+			<li data-visible-group="deu02" data-visible-target="deu0201" role="region">
+				<button type="button" class="btn outline btn-util i-information" data-level="primary" data-size="xs" onclick="doProvideRefusal('init', '{{refuseInfoTpcd applno}}', '{{applno}}')">
+					<span data-lang-id="dtvw.reject.tit1">거절정보제공</span>
+				</button>
+			</li>
+			{{/chkProvideRefusalKPAT}}
+			{{#iif 'Y' examinedFullTextFg}}
+				<li data-visible-group="deu02" data-visible-target="deu0202"><button type="button" class="btn outline btn-util i-translate" data-level="primary" data-size="xs" onclick="openWindow('translate', {applno:'{{applno}},B1', right:'kpat'}); return false;" title="새 창, 자동기계번역"><span data-lang-id="dtvw.abpat.mt">자동기계번역</span></button></li>
+			{{/iif}}
+		</ul>
+		<div class="extra-utils">
+			<div class="extra-item" data-visible-group="deu01" data-visible-target="deu0102">
+				<!-- 표준화 공보, 원본 공보 :S -->
+				<div class="report-control-area">
+					<div class="controls">
+						<input type="hidden" id="pub_reg" value="" />
+						<input type="hidden" id="unexCaseNo" value="{{unexCaseNo}}" />
+						<input type="hidden" id="exCaseNo" value="{{exCaseNo}}" />
+						<div class="f-check" data-size="sm">
+							<input type="radio" id="report0101" name="report01" onclick="goOrgFullText({{toReplaceAll applno '[-]' ''}});" checked>
+							<label for="report0101" data-lang-id="dtvw.patent.ob">원본공보</label>
+						</div>
+						<div class="f-check" data-size="sm">
+							<input type="radio" id="report0102" name="report01" onclick="goRefactory({{toReplaceAll applno '[-]' ''}});">
+							<label for="report0102" data-lang-id="dtvw.patent.sb">표준화공보</label>
+						</div>
+						
+					</div>
+					<button type="button" class="btn" id="fulltextInfo" onclick="modal.open('#fulltextInfoModal', this);" data-size="xs" data-lang-id="dtvw.patent.gob">원본공보 제공 관련 안내</button>
+				</div>
+				<!-- 표준화 공보, 원본 공보 :E -->
+			</div>
+		</div>
+	</div>
+</div>
+<div class="body">
+	<!-- 상세정보 내용 :S -->
+	<div class="detail-tab-body prevent-scroll scrollbar-custom" data-tab-body="detailTab">
+		<div class="tab-con active" data-tab-id="detail01" data-tab-con="detailTab">
+			<h3 class="blind" data-lang-id="dtvw.patent.dtl">상세정보</h3>
+
+			<div class="tab-section-01">
+				<div class="title-box" data-size="lg">
+					<h4 class="title bul" data-s-type="dot" data-lang-id="dtvw.patent.dtls">서지정보</h4>
+				</div>
+				<div class="tab-section-02">
+					<table class="table table-vert left" data-s-line="inside">
+						<caption>서지정보</caption>
+						<colgroup>
+							<col width="30%">
+							<col>
+						</colgroup>
+						<tbody>
+							<tr>
+								<th scope="row">IPC</th>
+								<td>
+									{{#if ipclist}}
+									<ul class="list-wide">
+										{{#each ipclist}}
+											<li>
+												<a href="javascript:void(0);" onclick="openCodeSupport(this, 'IPC', 'explain', '{{toReplaceAll clss_cd '\s' ''}}')" class="btn-link" title="'{{clss_cd}}' 정보조회">{{clss_cd}}{{#if ver_dt}}({{ver_dt}}){{/if}}</a>
+											</li>
+										{{/each}}
+									</ul>
+									{{/if}}
+								</td>
+							</tr>
+							<tr>
+								<th scope="row">CPC</th>
+								<td>
+									{{#if cpclist}}
+									<ul class="list-wide">
+										{{#each cpclist}}
+											<li>
+												<a href="javascript:void(0);" onclick="openCodeSupport(this, 'CPC', 'explain', '{{toReplaceAll cpc_cd '\s' ''}}')" class="btn-link" title="'{{cpc_cd}}' 정보조회">{{cpc_cd}}{{#if ver_dt}}{{ver_dt}}{{/if}}</a>
+											</li>
+										{{/each}}
+									</ul>
+									{{/if}}
+								</td>
+							</tr>
+							<tr>
+								{{#chkApplnoIntnl applno}}
+								<th scope="row" data-lang-id="dtvw.patent.anf">출원번호(일자)(국제)</th>
+								<td>{{toReplaceAll applno '[-]' ''}}
+								({{intnlB.intnl_appl_dt}})</td>
+								{{else}}
+								<th scope="row" data-lang-id="dtvw.patent.an">출원번호(일자)</th>
+								<td>{{toReplaceAll applno '[-]' ''}}
+								({{toDateFormat appl_dt}})</td>
+								{{/chkApplnoIntnl}}
+
+							</tr>
+							<tr>
+								<th scope="row" data-lang-id="dtvw.patent.ap">출원인</th>
+								<td>
+								{{#each applicantlist}}
+									{{nm_kor_long}}
+								{{/each}}
+								</td>
+							</tr>
+							{{#if trns_sbmt_dt}}
+							<tr>
+								<th scope="row" data-lang-id="dtvw.patent.tsd">번역문제출일자</th>
+								<td>{{trns_sbmt_dt}}</td>
+							</tr>
+							{{/if}}
+							<tr>
+								<th scope="row" data-lang-id="dtvw.patent.rn">등록번호(일자)</th>
+								<td>{{rgstno}}
+								{{#iif '^(?!.* ).*$' rgst_dt}}
+									({{toDateFormat rgst_dt}})
+								{{/iif}}
+								</td>
+							</tr>
+							<tr>
+								<th scope="row" data-lang-id="dtvw.patent.opn">공개번호(일자)</th>
+								<td>{{opnno}}
+									{{#iif '^(?!.* ).*$' opn_dt}}
+										({{toDateFormat opn_dt}})
+										{{#iif UnexCaseNo '0' '!='}}
+											{{#iif UnexCaseNo '3' '=='}}
+												<a href="#none" onclick="downloadTiff({applno : '{{toReplaceAll applno '[-]' ''}}', pub_reg : 'P'}); return false;" class="btn-download-pdf" data-lang-id="dtvw.patent.fdd" title="공개전문 다운로드">전문다운</a>
+											{{else}}
+												<a href="#none" onclick="GoDownFullText({applno : '{{toReplaceAll applno '[-]' ''}}', pub_reg : 'P'}); return false;" class="btn-download-pdf" data-lang-id="dtvw.patent.fdd" title="공개전문 다운로드">전문다운</a>
+											{{/iif}}
+										{{/iif}}
+									{{/iif}}
+								</td>
+							</tr>
+							<tr>
+								<th scope="row" data-lang-id="dtvw.patent.pn">공고번호(일자)</th>
+								<td>
+									{{pubno}}
+									{{#iif '^(?!.* ).*$' pub_dt}}
+										({{toDateFormat pub_dt}})
+										{{#iif exCaseNo '0' '!='}}
+											{{#iif exCaseNo '3' '=='}}
+												<a href="#none" onclick="downloadTiff({applno : '{{toReplaceAll applno '[-]' ''}}', pub_reg : 'R'}); return false;" class="btn-download-pdf" data-lang-id="dtvw.patent.fdd" title="공고전문 다운로드">전문다운</a>
+											{{else}}
+												<a href="#none" onclick="GoDownFullText({applno : '{{toReplaceAll applno '[-]' ''}}', pub_reg : 'R'}); return false;" class="btn-download-pdf" data-lang-id="dtvw.patent.fdd" title="공고전문 다운로드">전문다운</a>
+											{{/iif}}
+										{{/iif}}
+									{{/iif}}
+								</td>
+							</tr>
+							<tr>
+								<th scope="row" data-lang-id="dtvw.patent.fn">국제출원번호(일자)</th>
+								<td>
+								{{#if intnlB.intnl_applno}}
+									<a href="#" onclick="openWindow('intnl',{docNum :'{{intnlB.intnl_applno}}'}); return false;" class="btn-blank" title="새 창" data-lang-id="title.newwin" data-lang-type="title">
+									{{intnlB.intnl_applno}}
+									{{#if intnlB.intnl_appl_dt}}
+										({{intnlB.intnl_appl_dt}})
+									{{/if}}
+									</a>
+								{{/if}}
+								</td>
+							</tr>
+							<tr>
+								<th scope="row" data-lang-id="dtvw.patent.fon">국제공개번호(일자)</th>
+								<td>
+								{{#if intnlB.intnl_opnno}}
+									<a href="#" onclick="openWindow('intnl',{docNum :'{{intnlB.intnl_opnno}}'}); return false;" class="btn-blank" title="새 창" data-lang-id="title.newwin" data-lang-type="title">
+									{{intnlB.intnl_opnno}}
+									{{#if intnlB.intnl_opn_dt}}
+										({{intnlB.intnl_opn_dt}})
+									{{/if}}
+									</a>
+								{{/if}}
+								</td>
+							</tr>
+							<tr>
+								<th scope="row" data-lang-id="dtvw.patent.priority">우선권정보</th>
+								<td>
+								{{#each prioritylist}}
+									{{prorg_appl_cntry}} | {{prorg_applno}} | {{prorg_appl_dt}}<br>
+								{{/each}}
+								</td>
+							</tr>
+							<tr>
+								<th scope="row" data-lang-id="dtvw.patent.ls">법적상태</th>
+								<td><span class="badge">{{rgst_stcd}}</span></td>
+							</tr>
+							<tr>
+								<th scope="row" data-lang-id="dtvw.patent.es">심사진행상태</th>
+								<td>{{lst_dspsl_desc}}</td>
+							</tr>
+							<tr>
+								<th scope="row" data-lang-id="dtvw.patent.tio">심판사항</th>
+								<td>{{Trl_fg}}</td>
+							</tr>
+							<tr>
+								<th scope="row" data-lang-id="dtvw.patent.knd">구분</th>
+								<td>{{retro_tpcd}}</td>
+							</tr>
+							<tr>
+								{{#chkApplnoIntnl applno}}
+								<th scope="row" data-lang-id="dtvw.patent.roanf">원출원번호(일자)(국제)</th>
+								<td>
+								{{toFormatNum org_ap_rgstno}}
+								{{#iif org_ap_rgst_dt ' ' '!='}}
+									({{org_ap_rgst_dt}})
+								{{/iif}}
+								</td>
+								{{else}}
+								<th scope="row" data-lang-id="dtvw.patent.roan">원출원번호(일자)</th>
+								<td>
+								{{toFormatNum org_ap_rgstno}}
+								{{#iif org_ap_rgst_dt ' ' '!='}}
+									({{org_ap_rgst_dt}})
+								{{/iif}}
+								</td>
+								{{/chkApplnoIntnl}}
+							</tr>
+							<tr>
+								<th scope="row" data-lang-id="dtvw.patent.ran">관련 출원번호</th>
+								<td>
+									{{#each familylist}}
+										{{#iif tb_kp10Fg 'Y' '=='}}
+											<a href="#" onclick="openWindow('detail', {applno:'{{reff_applno}}', right:'kpat'}); return false;" class="btn-blank" title="새 창, 상세정보" data-lang-id="title.opdetail" data-lang-type="title">{{reff_applno}}</a>
+										{{else}}
+											{{reff_applno}}
+										{{/iif}}
+									{{/each}}
+								</td>
+							</tr>
+							<!-- <tr>
+								<th scope="row" data-lang-id="dtvw.patent.tth">기술이전 희망</th>
+								<td>{{{toHopeFg tech_trans_hope_fg lcns_aprv_hope_fg tech_ld_hope_fg}}}</td>
+							</tr> -->
+							<tr>
+								<th scope="row" data-lang-id="dtvw.patent.red">심사청구여부(일자)</th>
+								<td>{{exmn_dmnd_dt}}</td>
+							</tr>
+							<tr>
+								<th scope="row" data-lang-id="dtvw.patent.nec">심사청구항수</th>
+								<td>{{bs_itm_cnt}}</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+
+				<div class="tab-section-02">
+					<div id="kpa_all" style="display:none;">
+				    	<div style="display:flex; gap:8px;">
+					    	{{#iif abstmap null '!='}}
+					        
+					        <div id="KPA_title" class="title-box" onclick="showContent('kpa')">
+					            <h5 class="title-round tit-summary btn-abs active-abs">KPA</h5>
+					        </div>
+					        {{/iif}}
+					        
+					        <div class="title-box" onclick="showContent('summary')">
+					            <h5 class="title-round tit-summary btn-abs" data-lang-id="dtvw.patent.abs">요약</h5>
+					        </div>
+				        </div>
+				        {{#iif abstmap null '!='}}
+				        	<div id="kpa-content" style="display:block;">
+				        {{#filterAbstMap abstmap}}
+				            {{#each abstmap}}
+				            <p class="txt">
+				                {{value}}
+				            </p>
+				            {{/each}}
+				        {{/filterAbstMap}}
+				   	 		</div>
+					   	 	<div id="summary-content" style="display:none;">
+						        <p class="txt">
+						            {{{abstractText}}}
+						        </p>
+					    	</div>
+				   	 	{{/iif}}
+				   	 </div>
+				   	 <div id="sum_all" style="display:block;"> 
+					   	<div class="title-box">
+							<h5 class="title-round tit-summary" data-lang-id="dtvw.patent.abs">요약</h5>
+						</div>
+				        <p class="txt">
+				            {{{abstractText}}}
+				        </p>
+				    </div>
+				</div>
+			</div>
+			<div class="tab-section-01">
+				<div class="title-box" data-size="lg">
+					<h4 class="title bul" data-s-type="dot" data-lang-id="dtvw.patent.bi">인명정보</h4>
+				</div>
+
+				<div class="tab-section-02">
+					<div class="title-box" data-size="md">
+						<h5 class="title color-main" data-lang-id="dtvw.patent.ap">출원인</h5>
+					</div>
+					<table class="table table-hrzn" data-s-line="inside">
+						<caption>출원인</caption>
+						<colgroup>
+							<col width="10%">
+							<col width="30%">
+							<col>
+						</colgroup>
+						<thead>
+							<tr>
+								<th scope="col" data-lang-id="dtvw.patent.no">번호</th>
+								<th scope="col" data-lang-id="dtvw.patent.name">이름(번호)</th>
+								<th scope="col" data-lang-id="dtvw.patent.addrss">주소</th>
+							</tr>
+						</thead>
+						<tbody>
+						{{#if applicantlist}}
+							{{#each applicantlist}}
+							<tr>
+								<td><em class="th" data-lang-id="dtvw.patent.no">번호</em>{{oneIncrementIndex @index}}</td>
+								<td>
+									<em class="th" data-lang-id="dtvw.patent.name">이름(번호)</em>
+									{{nm_kor_long}}<br>
+									({{apagt_cd}})
+									<ul class="dropbox-list">
+									{{#if rrn}}
+										<li>
+											<div class="dropbox-select left">
+												<button type="button" class="btn-dropbox" data-dropbox-btn="{{rrn}}applicant" data-lang-id="dtvw.patent.cno">법인번호</button>
+												<div class="dropbox-con" data-dropbox="{{rrn}}applicant">
+													<p class="txt">{{rrn}}</p>
+												</div>
+											</div>
+										</li>
+									{{/if}}
+									{{#if brgno}}
+										<li>
+											<div class="dropbox-select left">
+												<button type="button" class="btn-dropbox" data-dropbox-btn="{{brgno}}applicant" data-lang-id="dtvw.patent.brn">사업자번호</button>
+												<div class="dropbox-con" data-dropbox="{{brgno}}applicant">
+													<p class="txt">{{brgno}}</p>
+												</div>
+											</div>
+										</li>
+									{{/if}}
+									</ul>
+								</td>
+								<td><em class="th" data-lang-id="dtvw.patent.addrss">주소</em>{{apagt_addr}}</td>
+							</tr>
+							{{/each}}
+						{{else}}
+							<tr>
+								<td colspan="4" data-lang-id="dtvw.patent.empt">데이터가 존재하지 않습니다.</td>
+							<tr>
+						{{/if}}	
+						</tbody>
+					</table>
+				</div>
+				<div class="tab-section-02">
+					<div class="title-box" data-size="md">
+						<h5 class="title color-main" data-lang-id="dtvw.patent.in">발명자</h5>
+					</div>
+					<table class="table table-hrzn" data-s-line="inside">
+						<caption>발명자</caption>
+						<colgroup>
+							<col width="10%">
+							<col width="30%">
+							<col>
+						</colgroup>
+						<thead>
+							<tr>
+								<th scope="col" data-lang-id="dtvw.patent.no">번호</th>
+								<th scope="col" data-lang-id="dtvw.patent.name">이름(번호)</th>
+								<th scope="col" data-lang-id="dtvw.patent.addrss">주소</th>
+							</tr>
+						</thead>
+						<tbody>
+						{{#if inventorlist}}
+							{{#each inventorlist}}
+							<tr>
+								<td><em class="th" data-lang-id="dtvw.patent.no">번호</em>{{oneIncrementIndex @index}}</td>
+								<td><em class="th" data-lang-id="dtvw.patent.name">이름(번호)</em>{{inv_name}}</td>
+								<td><em class="th" data-lang-id="dtvw.patent.addrss">주소</em>{{inv_addr}}</td>
+							</tr>
+							{{/each}}
+						{{else}}
+							<tr>
+								<td colspan="4" data-lang-id="dtvw.patent.empt">데이터가 존재하지 않습니다.</td>
+							<tr>
+						{{/if}}	
+						</tbody>
+					</table>
+				</div>
+				<div class="tab-section-02">
+					<div class="title-box" data-size="md">
+						<h5 class="title color-main" data-lang-id="dtvw.patent.ag">대리인</h5>
+					</div>
+					<table class="table table-hrzn" data-s-line="inside">
+						<caption>대리인</caption>
+						<colgroup>
+							<col width="10%">
+							<col width="30%">
+							<col>
+						</colgroup>
+						<thead>
+							<tr>
+								<th scope="col" data-lang-id="dtvw.patent.no">번호</th>
+								<th scope="col" data-lang-id="dtvw.patent.name">이름(번호)</th>
+								<th scope="col" data-lang-id="dtvw.patent.addrss">주소</th>
+							</tr>
+						</thead>
+						<tbody>
+						{{#if agentlist}}
+							{{#each agentlist}}
+							<tr>
+								<td><em class="th" data-lang-id="dtvw.patent.no">번호</em>{{oneIncrementIndex @index}}</td>
+								<td>
+									<em class="th" data-lang-id="dtvw.patent.name">이름(번호)</em>
+									{{nm_kor_long}}<br>
+									({{apagt_cd}})
+								</td>
+								<td><em class="th" data-lang-id="dtvw.patent.addrss">주소</em>{{apagt_addr}}</td>
+							</tr>
+							{{/each}}
+						{{else}}
+							<tr>
+								<td colspan="4" data-lang-id="dtvw.patent.empt">데이터가 존재하지 않습니다.</td>
+							<tr>
+						{{/if}}	
+						</tbody>
+					</table>
+				</div>
+				<div class="tab-section-02">
+					<div class="title-box" data-size="md">
+						<h5 class="title color-main" data-lang-id="dtvw.patent.trh">최종권리자</h5>
+					</div>
+					<table class="table table-hrzn" data-s-line="inside">
+						<caption>최종권리자</caption>
+						<colgroup>
+							<col width="10%">
+							<col width="30%">
+							<col>
+						</colgroup>
+						<thead>
+							<tr>
+								<th scope="col" data-lang-id="dtvw.patent.no">번호</th>
+								<th scope="col" data-lang-id="dtvw.patent.name">이름</th>
+								<th scope="col" data-lang-id="dtvw.patent.addrss">주소</th>
+							</tr>
+						</thead>
+						<tbody>
+						{{#if patenteelist}}
+							{{#each patenteelist}}
+							<tr>
+								<td><em class="th" data-lang-id="dtvw.patent.no">번호</em>{{oneIncrementIndex @index}}</td>
+								<td>
+									<em class="th" data-lang-id="dtvw.patent.name">이름</em>
+									{{nm_kor_long}}<br>
+									<ul class="dropbox-list">
+									{{#if rrn}}
+										<li>
+											<div class="dropbox-select left">
+												<button type="button" class="btn-dropbox" data-dropbox-btn="{{rrn}}patentee" data-lang-id="dtvw.patent.cno">법인번호</button>
+												<div class="dropbox-con" data-dropbox="{{rrn}}patentee">
+													<p class="txt">{{rrn}}</p>
+												</div>
+											</div>
+										</li>
+									{{/if}}
+									{{#if rrn}}
+										<li>
+											<div class="dropbox-select left">
+												<button type="button" class="btn-dropbox" data-dropbox-btn="{{brgno}}patentee" data-lang-id="dtvw.patent.brn">사업자번호</button>
+												<div class="dropbox-con" data-dropbox="{{brgno}}patentee">
+													<p class="txt">{{brgno}}</p>
+												</div>
+											</div>
+										</li>
+									{{/if}}
+									</ul>
+								</td>
+								<td><em class="th" data-lang-id="dtvw.patent.addrss">주소</em>{{patentee_addr}}</td>
+							</tr>
+							{{/each}}
+							{{else}}
+							<tr>
+								<td colspan="4" data-lang-id="dtvw.patent.empt">데이터가 존재하지 않습니다.</td>
+							</tr>
+						{{/if}}
+						</tbody>
+					</table>
+				</div>
+				<div class="tab-section-02">
+					<div class="title-box" data-size="md">
+						<h5 class="title color-main" data-lang-id="dtvw.patent.iiar">등록 이후 발명자 정보</h5>
+					</div>
+					<table class="table table-hrzn" data-s-line="inside">
+						<caption>발명자</caption>
+						<colgroup>
+							<col width="10%">
+							<col width="30%">
+							<col>
+						</colgroup>
+						<thead>
+							<tr>
+								<th scope="col" data-lang-id="dtvw.patent.no">번호</th>
+								<th scope="col" data-lang-id="dtvw.patent.name">이름(번호)</th>
+								<th scope="col" data-lang-id="dtvw.patent.addrss">주소</th>
+							</tr>
+						</thead>
+						<tbody>
+						{{#if rginList}}
+							{{#each rginList}}
+							<tr>
+								<td><em class="th" data-lang-id="dtvw.patent.no">번호</em>{{oneIncrementIndex @index}}</td>
+								<td>
+									<em class="th" data-lang-id="dtvw.patent.name">이름(번호)</em>
+									{{name}}<br>
+									{{#if code}}{{#iif code '' '=='}}{{else}}({{code}}){{/iif}}{{/if}}
+								</td>
+								<td><em class="th" data-lang-id="dtvw.patent.addrss">주소</em>{{addr}}</td>
+							</tr>
+							{{/each}}
+						{{else}}
+							<tr>
+								<td colspan="3" data-lang-id="dtvw.patent.empt">데이터가 존재하지 않습니다.</td>
+							</tr>
+						{{/if}}
+						</tbody>
+					</table>
+					<div class="title-box" data-size="md">
+						<h5 class="title color-main" data-lang-id="dtvw.patent.aiar">등록 이후 대리인 정보</h5>
+					</div>
+					<table class="table table-hrzn" data-s-line="inside">
+						<caption>대리인</caption>
+						<colgroup>
+							<col width="10%">
+							<col width="30%">
+							<col>
+						</colgroup>
+						<thead>
+							<tr>
+								<th scope="col" data-lang-id="dtvw.patent.no">번호</th>
+								<th scope="col" data-lang-id="dtvw.patent.name">이름(번호)</th>
+								<th scope="col" data-lang-id="dtvw.patent.addrss">주소</th>
+							</tr>
+						</thead>
+						<tbody>
+						{{#if rgagList}}
+							{{#each rgagList}}
+							<tr>
+								<td><em class="th" data-lang-id="dtvw.patent.no">번호</em>{{oneIncrementIndex @index}}</td>
+								<td>
+									<em class="th" data-lang-id="dtvw.patent.name">이름(번호)</em>
+									{{name}}<br>
+									{{#iif code '' '=='}}{{else}}({{code}}){{/iif}}
+								</td>
+								<td><em class="th" data-lang-id="dtvw.patent.addrss">주소</em>{{addr}}</td>
+							</tr>
+							{{/each}}
+						{{else}}
+							<tr>
+								<td colspan="3" data-lang-id="dtvw.patent.empt">데이터가 존재하지 않습니다.</td>
+							</tr>
+						{{/if}}
+						</tbody>
+					</table>
+				</div>
+			</div>
+
+
+			<div class="tab-section-01">
+				<div class="title-box" data-size="lg">
+					<h4 class="title bul" data-s-type="dot" data-lang-id="dtvw.patent.ds">지정국</h4>
+				</div>
+				
+				<table class="table table-hrzn" data-s-line="inside">
+					<caption>지정국</caption>
+					<colgroup>
+						<col width="30%">
+						<col>
+					</colgroup>
+					<thead>
+						<tr>
+							<th scope="col" data-lang-id="dtvw.patent.knd">구분</th>
+							<th scope="col" data-lang-id="dtvw.patent.cntr2">국가명</th>
+						</tr>
+					</thead>
+					<tbody>
+					{{#if dsgnlist}}
+						{{#each dsgnlist}}
+						<tr>
+							<td><em class="th" data-lang-id="dtvw.patent.knd">구분</em>{{dsgn_grp}}</td>
+							<td><em class="th" data-lang-id="dtvw.patent.cntr2">국가명</em>{{dsgn_nation}}</td>
+						</tr>
+						{{/each}}
+					{{else}}
+						<tr>
+							<td colspan="2" data-lang-id="dtvw.patent.empt">데이터가 존재하지 않습니다.</td>
+						</tr>
+					{{/if}}
+					</tbody>
+				</table>
+			</div>
+
+			<!-- data-tooltip-trigger="test" data-lang-type="tooltip" data-lang-id2="dtvw.patent.tooltip2" 
+			data-tooltip="심사관이 '의견제출통지서'에 첨부한 인용문헌을 바탕으로 제공됩니다." 
+			data-tooltip-title="심사관이 '의견제출통지서'에 첨부한 인용문헌을 바탕으로 제공됩니다."-->
+				
+			<div class="tab-section-01">
+				<div class="title-box" data-size="lg">
+					<h4 class="title bul" data-s-type="dot" data-lang-id="dtvw.patent.cttn">인용/피인용</h4>
+					<button style="background: url(../images/common/i_help.svg) no-repeat center center;width: 19.5px;height: 19.5px;margin: 3.75px;" 						
+						data-tooltip-id="citation">
+    				</button>
+				</div>
+				
+				<div class="tab-section-02">
+					<div class="title-box" data-size="md">
+						<h5 class="title color-main" data-lang-id="dtvw.patent.fcttn">인용</h5>
+					</div>
+
+					<table class="table table-hrzn" data-s-line="inside">
+						<caption>인용</caption>
+						<colgroup>
+							<col width="16%">
+							<col width="25%">
+							<col width="16%">
+							<col>
+							<col width="16%">
+						</colgroup>
+						<thead>
+							<tr>
+								<th scope="col" data-lang-id="dtvw.patent.cntr3">국가</th>
+								<th scope="col" data-lang-id="dtvw.patent.pun">공보번호</th>
+								<th scope="col" data-lang-id="dtvw.patent.pud">공보일자</th>
+								<th scope="col" data-lang-id="dtvw.patent.ttl">발명의 명칭</th>
+								<th scope="col">IPC</th>
+							</tr>
+						</thead>
+						<tbody>
+						{{#if quotationlist}}
+							{{#each quotationlist}}
+							<tr>
+								<td><em class="th" data-lang-id="dtvw.patent.cntr3">국가</em>{{cntry_nm}}</td>
+								<td><em class="th" data-lang-id="dtvw.patent.pun">공보번호</em>
+								{{#isNull std_applno}}
+									{{ltrtno}} {{ctltr_cd}}
+								{{else}}
+									{{#iif cntry_cd 'KR' '=='}}
+										<a href="#" onclick="openWindow('detail', {applno:'{{std_applno}}', right:'{{toRight cntry_cd}}'}); return false;" class="btn-blank btn-window" title="새 창, 상세정보">								
+											{{ltrtno}} {{ctltr_cd}}
+										</a>
+									{{else}}
+										<a href="#" onclick="openWindow('detail', {applno:'{{cntry_cd}},{{std_applno}}', right:'{{toRight cntry_cd}}'}); return false;" class="btn-blank btn-window" title="새 창, 상세정보">								
+											{{ltrtno}} {{ctltr_cd}}
+										</a>
+									{{/iif}}
+								{{/isNull}}	
+								</td>
+								<td><em class="th" data-lang-id="dtvw.patent.pud">공보일자</em>{{#isNull pub_dt}}-{{else}}{{pub_dt}}{{/isNull}}</td>
+								<td><em class="th" data-lang-id="dtvw.patent.ttl">발명의 명칭</em>{{#isNull ttl}}-{{else}}{{ttl}}{{/isNull}}</td>
+								<td><em class="th">IPC</em>{{#isNull ipc}}-{{else}}{{ipc}}{{/isNull}}</td>
+							</tr>
+							{{/each}}
+						{{else}}
+							<tr>
+								<td colspan="5" data-lang-id="dtvw.patent.empt">데이터가 존재하지 않습니다.</td>
+							</tr>
+						{{/if}}
+						</tbody>
+					</table>
+				</div>
+
+				<div class="tab-section-02">
+					<div class="title-box" data-size="md">
+						<h5 class="title color-main quoted" data-lang-id="dtvw.patent.bcttn">피인용</h5>
+					</div>
+
+					<table class="table table-hrzn" data-s-line="inside">
+						<caption>피인용</caption>
+						<colgroup>
+							<col width="25%">
+							<col width="16%">
+							<col>
+							<col width="16%">
+						</colgroup>
+						<thead>
+							<tr>
+								<th scope="col" data-lang-id="dtvw.patent.an">출원번호</th>
+								<th scope="col" data-lang-id="dtvw.patent.ad">출원일자</th>
+								<th scope="col" data-lang-id="dtvw.patent.ttl">발명의 명칭</th>
+								<th scope="col">IPC</th>
+							</tr>
+						</thead>
+						<tbody>
+						{{#if quotedlist}}
+							{{#each quotedlist}}
+							<tr>
+								<td><em class="th" data-lang-id="dtvw.patent.an">출원번호</em>
+									<a href="#" onclick="openWindow('detail', {applno:'{{ltrtno}}', right:'{{toRight cntry_cd}}'}); return false;" class="btn-blank btn-window" title="새 창, 상세정보" data-lang-id="title.opdetail" data-lang-type="title">								
+										{{ltrtno}}
+									</a>
+									<!-- <a href="#" onclick="openWindow('detail', {applno:'{{toFormatKeyV2 ltrtno}}', right:'{{toRight cntry_cd}}'}); return false;" class="btn-blank btn-window" title="새 창, 상세정보" data-lang-id="title.opdetail" data-lang-type="title">								
+										{{ltrtno}}
+									</a> -->
+								</td>
+								<td><em class="th" data-lang-id="dtvw.patent.ad">출원일자</em>{{appl_dt}}</td>
+								<td><em class="th" data-lang-id="dtvw.patent.ttl">발명의 명칭</em>{{ttl}}</td>
+								<td><em class="th">IPC</em>{{ipc}}</td>
+							</tr>
+							{{/each}}
+						{{else}}
+							<tr>
+								<td colspan="4" data-lang-id="dtvw.patent.empt">데이터가 존재하지 않습니다.</td>
+							</tr>
+						{{/if}}
+						</tbody>
+					</table>
+				</div>
+			</div>
+			
+			<div class="tab-section-01">
+				<div class="title-box" data-size="lg">
+					<h4 class="title bul" data-s-type="dot" data-lang-id="dtvw.patent.clm">청구항</h4>
+				</div>
+				<table class="table table-hrzn" data-s-line="inside">
+					<caption>청구항</caption>
+					<colgroup>
+						<col width="8%">
+						<col>
+					</colgroup>
+					<thead>
+						<tr>
+							<th scope="col" data-lang-id="dtvw.patent.no">번호</th>
+							<th scope="col" data-lang-id="dtvw.patent.clm">청구항</th>
+						</tr>
+					</thead>
+					<tbody>
+						{{#if claimlist}}
+							{{#each claimlist}}
+							<tr>
+								<td><em class="th" data-lang-id="dtvw.patent.no">번호</em>{{seq}}</td>
+								<td class="left">
+									{{{claim_text}}}
+								</td>
+							</tr>
+							{{/each}}
+						{{else}}
+							<tr>
+								<td colspan="2" data-lang-id="dtvw.patent.empt">데이터가 존재하지 않습니다.</td>
+							</tr>
+						{{/if}}
+						</tr>
+					</tbody>
+				</table>
+			</div>
+
+			<div class="tab-section-01">
+				<div class="title-box" data-size="lg">
+					<h4 class="title bul" data-s-type="dot" data-lang-id="dtvw.patent.fp">패밀리정보</h4>
+					<div class="utils"><a href="#" onclick="showOPD('A', 'KR', '{{toReplaceAll applno '[-]' ''}}'); return false;" class="btn-blank" title="새 창, 통합심사정보(OPD)" target="_blank" data-lang-id="dtvw.patent.iei">통합심사정보</a></div>
+				</div>
+				<div class="tab-section-02">
+					<table id="opFamilyTable" class="table table-hrzn" data-s-line="inside">
+						<caption>패밀리정보</caption>
+						<colgroup>
+							<col width="8%">
+							<col width="30%">
+							<col>
+							<col width="8%">
+							<col>
+							<col width="8%">
+						</colgroup>
+						<thead>
+							<tr>
+								<th scope="col" data-lang-id="dtvw.patent.ordrno">순번</th>
+								<th scope="col" data-lang-id="dtvw.patent.fno">패밀리번호</th>
+								<th scope="col" data-lang-id="dtvw.patent.adt">출원일자</th>
+								<th scope="col" data-lang-id="dtvw.patent.cntrc">국가코드</th>
+								<th scope="col" data-lang-id="dtvw.patent.cntr2">국가명</th>
+								<th scope="col" data-lang-id="dtvw.patent.tp">종류</th>
+							</tr>
+						</thead>
+						<tbody>
+						{{#if opfamilylist}}
+							{{#each opfamilylist}}
+								<tr>
+									<td><em class="th" data-lang-id="dtvw.patent.ordrno">순번</em>{{oneIncrementIndex @index}}</td>
+									<td><em class="th" data-lang-id="dtvw.patent.fno">패밀리번호</em>
+									{{#iif fmly_cntry_cd 'KR' '=='}}
+										<a href="#" onclick="openWindow('detail', {applno:'{{applno}}', right:'{{toRight fmly_cntry_cd}}'}); return false;" class="btn-blank" title="새 창, 상세정보" data-lang-id="title.opdetail" data-lang-type="title">{{fmly_pubno_epo}}</a>
+									{{else}}
+										{{#iif 'Y' fmly_link_yn '=='}}
+											<a href="#" onclick="openWindow('detail', {applno:'{{toFormatKeyV2 ltrtno}}', right:'{{toRight fmly_cntry_cd}}'}); return false;" class="btn-blank" title="새 창, 상세정보" data-lang-id="title.opdetail" data-lang-type="title">{{fmly_pubno_epo}}</a>
+										{{else}}
+											{{fmly_pubno_epo}}
+										{{/iif}}
+									{{/iif}}
+									{{#isChkIp5 fmly_cntry_cd appl_dt}}
+										{{#iif '\S' docdbnum}}
+											<a href="#" onclick="showOPD('U', '{{fmly_cntry_cd}}', '{{docdbnum}}'); return false;" class="btn-blank" title="새 창, OPD 심사정보" data-lang-id="title.opopd" data-lang-type="title"><span data-lang-id="dtvw.patent.ei">심사정보</span></a>
+										{{/iif}}
+									{{/isChkIp5}}
+									</td>
+									<td><em class="th" data-lang-id="dtvw.patent.adt">출원일자</em>{{toDateFormat appl_dt}}</td>
+									<td><em class="th" data-lang-id="dtvw.patent.cntrc">국가코드</em>{{fmly_cntry_cd}}</td>
+									<td><em class="th" data-lang-id="dtvw.patent.cntr2">국가명</em>{{nationNameKor}}</td>
+									<td><em class="th" data-lang-id="dtvw.patent.tp">종류</em>{{pat_tpcd}}</td>
+								</tr>
+							{{/each}}
+							{{#moreFamilyList opFamilyCnt}}
+								<tr id="moreOpFamilyList">
+									<input type="hidden" id="opFamilyPage" value="1"></input>
+									<td colspan="6" style="padding:5.25px; background-color:#EDF1F5;">
+										<button class="badge" style="width:100%; padding:0;" onclick="moreFamilyList('{{applno}}', 'OPFAMILY', '{{opFamilyCnt}}')">
+											<span data-lang-id="dtvw.patent.fpmore">더보기</span>(1/{{#familyListPage opFamilyCnt}}{{/familyListPage}})
+										</button>
+									</td>
+								</tr>
+							{{/moreFamilyList}}
+						{{else}}
+							<tr>
+								<td colspan="6" data-lang-id="dtvw.patent.empt">데이터가 존재하지 않습니다.</td>
+							</tr>
+						{{/if}}
+						</tbody>
+					</table>
+				</div>
+
+				<!-- data-tooltip-trigger="test" data-lang-type="tooltip" data-lang-id2="dtvw.patent.tooltip1" 
+				data-tooltip="DOCDB 패밀리정보는 유럽특허청(EPO)의 데이터를 바탕으로 제공하는 정보입니다." 
+				data-tooltip-title="DOCDB 패밀리정보는 유럽특허청(EPO)의 데이터를 바탕으로 제공하는 정보입니다."-->
+
+				<div class="tab-section-02">
+					<div class="title-box" data-size="md">
+						<h5 class="title color-main" data-lang-id="dtvw.patent.docdb">DOCDB 패밀리정보</h5>
+						<button style="background: url(../images/common/i_help.svg) no-repeat center center;width: 18px;height: 18px;margin: 3.75px;" 
+							data-tooltip-id="docdb">
+    					</button>
+					</div>
+
+					<table id="docFamilyTable" class="table table-hrzn" data-s-line="inside">
+						<caption>DOCDB 패밀리 정보</caption>
+						<colgroup>
+							<col width="8%">
+							<col>
+							<col>
+							<col width="8%">
+							<col>
+							<col width="8%">
+						</colgroup>
+						<thead>
+							<tr>
+								<th scope="col" data-lang-id="dtvw.patent.ordrno">순번</th>
+								<th scope="col" data-lang-id="dtvw.patent.fno">패밀리번호</th>
+								<th scope="col" data-lang-id="dtvw.patent.adt">출원일자</th>
+								<th scope="col" data-lang-id="dtvw.patent.cntrc">국가코드</th>
+								<th scope="col" data-lang-id="dtvw.patent.cntr2">국가명</th>
+								<th scope="col" data-lang-id="dtvw.patent.tp">종류</th>
+							</tr>
+						</thead>
+						<tbody>
+						{{#if docfamilylist}}
+							{{#each docfamilylist}}
+							<tr>
+								<td><em class="th" data-lang-id="dtvw.patent.ordrno">순번</em>{{oneIncrementIndex @index}}</td>
+								<td><em class="th" data-lang-id="dtvw.patent.fno">패밀리번호</em>
+								{{#iif 'Y' fmly_link_yn '=='}}
+									{{#iif fmly_cntry_cd 'KR' '=='}}
+										<a href="#" onclick="openWindow('detail', {applno:'{{kpat_applno}}', right:'{{toRight fmly_cntry_cd}}'}); return false;" class="btn-blank" title="새 창, 상세정보" data-lang-id="title.opdetail" data-lang-type="title">{{fmly_pubno_epo}}</a>
+									{{else}}
+										<a href="#" onclick="openWindow('detail', {applno:'{{toFormatKeyV2 ltrtno}}', right:'{{toRight fmly_cntry_cd}}'}); return false;" class="btn-blank" title="새 창, 상세정보" data-lang-id="title.opdetail" data-lang-type="title">{{fmly_pubno_epo}}</a>
+									{{/iif}}
+								{{else}}
+									{{fmly_pubno_epo}}
+								{{/iif}}
+								</td>
+								<td><em class="th" data-lang-id="dtvw.patent.adt">출원일자</em>{{toDateFormat appl_dt}}</td>
+								<td><em class="th" data-lang-id="dtvw.patent.cntrc">국가코드</em>{{fmly_cntry_cd}}</td>
+								<td><em class="th" data-lang-id="dtvw.patent.cntr2">국가명</em>{{nationNameKor}}</td>
+								<td><em class="th" data-lang-id="dtvw.patent.tp">종류</em>{{pat_tpcd}}</td>
+							</tr>
+							{{/each}}
+							{{#moreFamilyList docFamilyCnt}}
+								<tr id="moreDocFamilyList">
+									<input type="hidden" id="docFamilyPage" value="1"></input>
+									<td colspan="6" style="padding:5.25px; background-color:#EDF1F5;">
+										<button class="badge" style="width:100%; padding:0;" onclick="moreFamilyList('{{applno}}', 'DOCFAMILY', '{{docFamilyCnt}}')">
+											<span data-lang-id="dtvw.patent.fpmore">더보기</span>(1/{{#familyListPage docFamilyCnt}}{{/familyListPage}})
+										</button>
+									</td>
+								</tr>
+							{{/moreFamilyList}}
+						{{else}}
+							<tr>
+								<td colspan="6" data-lang-id="dtvw.patent.empt">데이터가 존재하지 않습니다.</td>
+							</tr>
+						{{/if}}
+						</tbody>
+					</table>
+				</div>
+			</div>
+
+			<div class="tab-section-01">
+				<div class="title-box" data-size="lg">
+					<h4 class="title bul" data-s-type="dot" data-lang-id="dtvw.patent.nrdp">국가연구개발사업</h4>
+				</div>
+
+				<table class="table table-hrzn" data-s-line="inside">
+					<caption>국가연구개발사업</caption>
+					<colgroup>
+						<col width="8%">
+						<col>
+						<col width="8%">
+						<col>
+						<col width="8%">
+					</colgroup>
+					<thead>
+						<tr>
+							<th scope="col" data-lang-id="dtvw.patent.ordrno">순번</th>
+							<th scope="col" data-lang-id="dtvw.patent.rm">연구부처</th>
+							<th scope="col" data-lang-id="dtvw.patent.li">주관기관</th>
+							<th scope="col" data-lang-id="dtvw.patent.rp">연구사업</th>
+							<th scope="col" data-lang-id="dtvw.patent.rt">연구과제</th>
+						</tr>
+					</thead>
+					<tbody>
+					{{#if rndInfolist}}
+						{{#each rndInfolist}}
+						<tr>
+							<td><em class="th" data-lang-id="dtvw.patent.ordrno">순번</em>{{oneIncrementIndex @index}}</td>
+							<td><em class="th" data-lang-id="dtvw.patent.rm">연구부처</em>{{stdy_mnoff_nm}}</td>
+							<td><em class="th" data-lang-id="dtvw.patent.li">주관기관</em>{{mgist_nm}}</td>
+							<td><em class="th" data-lang-id="dtvw.patent.rp">연구사업</em>{{projt_nm}}</td>
+							<td><em class="th" data-lang-id="dtvw.patent.rt">연구과제</em>{{tsk_nm}}</td>
+						</tr>
+						{{/each}}
+					{{else}}
+						<tr>
+							<td colspan="5" data-lang-id="dtvw.patent.empt">데이터가 존재하지 않습니다.</td>
+						</tr>
+					{{/if}}
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<div id="infoBoxTemplate" style="display: none;">
+			<div class="info-box">
+				<ul class="bul-list abs" data-s-type="dot">
+					<li data-lang-type="html"><em data-lang-id="dtvw.pdf.info">공보에 게재된 전체주소 중 일부만 게재되는 <em class="color-main">‘부분주소 게재’</em> 방식으로 변경을 원하시면, 특허로의 <a href="https://www.patent.go.kr/smart/jsp/ka/prestep/changeapagt/ChangeApagtIndex.do" target="_blank" class="btn-info-blank" title="공보의 주소 게재 변경 신청 바로가기, 새 창">공보의 주소 게재 변경 신청</a> 을 이용하십시오.</em></li>
+				</ul>
+				<button type="button" class="btn-close" onclick="closeInfoBox()" aria-label="닫기"></button>
+			</div>
+		</div>
+		<div class="tab-con pdf-container" data-tab-id="detail02" data-tab-con="detailTab">
+			<h3 class="blind" data-lang-id="dtvw.patent.uft">공개전문</h3>	
+			<div id="pdfViewer01" class="pdf-viewer"></div>
+		</div>
+		
+		<div class="tab-con pdf-container" data-tab-id="detail03" data-tab-con="detailTab">
+			<h3 class="blind" data-lang-id="dtvw.patent.pft">공고전문</h3>
+			<div id="pdfViewer02" class="pdf-viewer"></div>
+		</div>
+		
+		<div class="tab-con pdf-container" data-tab-id="detail04" data-tab-con="detailTab">
+			<div class="title-box" data-size="lg">
+				<h3 class="title bul" data-s-type="dot" data-lang-id="dtvw.patent.correction">정정(공개, 등록)공보</h3>
+			</div>
+			<div class="tab-section-01">
+				<table class="table table-hrzn" data-s-line="inside">
+					<caption>정정공보보기</caption>
+					<colgroup>
+						<col width="8%">
+						<col>
+					</colgroup>
+					<thead>
+						<tr>
+							<th scope="col" data-lang-id="dtvw.patent.no">번호</th>
+							<th scope="col" data-lang-id="dtvw.patent.an">출원번호</th>
+							<th scope="col" data-lang-id="dtvw.patent.pud">발간일자</th>
+							<th scope="col" data-lang-id="dtvw.patent.tp">공보종류</th>
+						</tr>
+					</thead>
+					<tbody>
+					{{#if correctionList}}
+						{{#each correctionList}}
+						<tr>
+							<td><em class="th" data-lang-id="dtvw.patent.no">번호</em>{{oneIncrementIndex @index}}</td>
+							<td><a href="#" onclick="goCorrectionFulltextKpat('{{applno}}', '{{seq}}'); return false;" class="btn-util btn-window" title="새 창, 상세정보" data-lang-id="title.opdetail" data-lang-type="title"><em class="th" data-lang-id="dtvw.patent.an">출원번호</em>{{applno}}</a></td>
+							<td><em class="th" data-lang-id="dtvw.patent.pud">발간일자</em>{{cd_no}}</td>
+							
+							<td><em class="th" data-lang-id="dtvw.patent.tp">공보종류</em>{{toPubtpcd pub_tpcd}}</td>
+						</tr>
+						{{/each}}
+					{{else}}
+						<tr>
+							<td colspan="4" data-lang-id="dtvw.patent.empt">데이터가 존재하지 않습니다.</td>
+						</tr>
+					{{/if}}	
+					</tbody>
+				</table>
+			</div>
+			<div id="pdfViewer03" class="pdf-viewer"></div>
+		</div>
+		
+		<div class="tab-con pdf-container" data-tab-id="detail05" data-tab-con="detailTab">
+			<div class="title-box" data-size="lg">
+				<h3 class="title bul" data-s-type="dot" data-lang-id="dtvw.patent.pte">존속기간연장등록공보</h3>
+			</div>
+			<div class="tab-section-01">
+				<table class="table table-hrzn" data-s-line="inside">
+					<caption>존속기간연장등록 공보</caption>
+					<colgroup>
+						<col width="8%">
+						<col>
+					</colgroup>
+					<thead>
+						<tr>
+							<th scope="col" data-lang-id="dtvw.patent.no">번호</th>
+							<th scope="col" data-lang-id="dtvw.patent.an">출원번호</th>
+							<th scope="col" data-lang-id="dtvw.patent.pud">발간일자</th>
+							<th scope="col" data-lang-id="dtvw.patent.tp">공보종류</th>
+						</tr>
+					</thead>
+					<tbody>
+					{{#if extList}}
+						{{#each extList}}
+						<tr>
+							<td><em class="th" data-lang-id="dtvw.patent.no">번호</em>{{oneIncrementIndex @index}}</td>
+							<td><a href="#" onclick="goExFulltextKpat('{{applno}}', '{{gen_pub_rcptno}}'); return false;" class="btn-util btn-window" title="새 창, 상세정보" data-lang-id="title.opdetail" data-lang-type="title"><em class="th" data-lang-id="dtvw.patent.an">출원번호</em>{{applno}}</a></td>
+							<td><em class="th" data-lang-id="dtvw.patent.pud">발간일자</em>{{web_opn_pub_dt}}</td>
+							
+							<td><em class="th" data-lang-id="dtvw.patent.tp">공보종류</em>{{pub_ttl}}</td>
+						</tr>
+						{{/each}}
+					{{else}}
+						<tr>
+							<td colspan="4" data-lang-id="dtvw.patent.empt">데이터가 존재하지 않습니다.</td>
+						</tr>
+					{{/if}}
+					</tbody>
+				</table>
+			</div>
+			<div id="pdfViewer04" class="pdf-viewer"></div>
+		</div>
+		
+		<!--등록사항 -->
+		<div class="tab-con" data-tab-id="detail07" data-tab-con="detailTab"></div>
+		
+		<div class="tab-con" data-tab-id="detail08" data-tab-con="detailTab">
+			<div class="title-box" data-size="lg">
+				<h3 class="title bul" data-s-type="dot" data-lang-id="dtvw.patent.jdgmnt">심판사항</h3>
+			</div>
+			<div class="tab-section-01">
+				<table class="table table-hrzn" data-s-line="inside">
+					<caption>심판사항보기</caption>
+					<colgroup>
+						<col width="8%">
+						<col>
+					</colgroup>
+					<thead>
+						<tr>
+							<th scope="col" data-lang-id="dtvw.patent.no">번호</th>
+							<th scope="col" data-lang-id="dtvw.patent.tnn">심판번호(숫자)</th>
+							<th scope="col" data-lang-id="dtvw.patent.tnl">심판번호(문자)</th>
+							<th scope="col" data-lang-id="dtvw.patent.ie">사건의표시</th>
+							<th scope="col" data-lang-id="dtvw.patent.rd2">청구일</th>
+							<th scope="col" data-lang-id="dtvw.patent.td">심결일자</th>
+						</tr>
+					</thead>
+					<tbody>
+					{{#each trlList}}
+						<tr>
+							<td>
+							<em class="th" data-lang-id="dtvw.patent.no">번호</em>{{oneIncrementIndex @index}}
+							</td>
+							{{#iif lnk_Trl_fg 'Y' '=='}}
+							<td class="left">
+								<a href="#" onclick="openWindow('detail', {applno:'{{trlno}}', right:'jg'}); return false;" class="btn-blank" title="새 창" data-lang-id="title.newwin" data-lang-type="title">
+								<em class="th" data-lang-id="dtvw.patent.tnn">심판번호(숫자)</em>{{trlno}}
+								</a>
+							</td>
+							{{else}}
+							<td class="left">
+								<em class="th" data-lang-id="dtvw.patent.tnl">심판번호(숫자)</em>{{trlno}}
+							</td>
+							{{/iif}}
+							
+							<td class="left">
+								<em class="th" data-lang-id="dtvw.patent.ie">심판번호(문자)</em>{{trlno_nm}}
+							</td>
+							
+							<td class="left">
+								<em class="th" data-lang-id="dtvw.patent.ie">사건의표시</em>{{evt_indic}}
+							</td>
+							
+							<td class="left">
+								<em class="th" data-lang-id="dtvw.patent.rd2">청구일</em>{{trl_dmnd_dt}}
+							</td>
+							
+							<td>
+								<em class="th" data-lang-id="dtvw.patent.td">심결일자</em>{{trldcsn_dt}}
+							</td>
+						</tr>
+					{{/each}}
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<div class="tab-con" data-tab-id="detail09" data-tab-con="detailTab"></div>
+		
+		<div class="tab-con" data-tab-id="detail10" data-tab-con="detailTab">
+			{{#each microlist}}
+			<div class="title-box" data-size="lg">
+				<h3 class="title bul" data-s-type="dot" data-lang-id="">미생물 기탁정보({{oneIncrementIndex @index}})</h3>
+			</div>
+			<div class="tab-section-01">
+				<table class="table table-hrzn" data-s-line="inside">
+					<caption>미생물 기탁정보보기</caption>
+					<colgroup>
+						<col width="20%">
+						<col width="80%">
+					</colgroup>
+					<tbody>
+						<tr>
+							<th scope="col" data-lang-id="">수탁번호(기탁일자)</th>
+							<td class="left">
+								{{micgmSpno}}({{mofmcDt}})
+							</td>
+						</tr>
+						<tr>
+							<th scope="col" data-lang-id="">미생물명</th>
+							<td class="left">
+								{{dpstMicgmNm}}
+							</td>
+						</tr>
+						<tr>
+							<th scope="col" data-lang-id="">미생물종류</th>
+							<td class="left">
+								{{micgmKindNm}}
+							</td>
+						</tr>
+						<tr>
+							<th scope="col" data-lang-id="">기탁기관명</th>
+							<td class="left">
+								{{micgmDpathNm}}
+							</td>
+						</tr>
+						<tr>
+							<th scope="col" data-lang-id="">기탁자</th>
+							<td class="left">
+								{{micgmPtodpNm}}
+							</td>
+						</tr>
+						<tr>
+							<th scope="col" data-lang-id="">기타사항</th>
+							<td class="left">
+								{{mofmcMemo}}
+							</td>
+						</tr>
+						<tr>
+							<th scope="col" data-lang-id="">기탁국내여부</th>
+							<td class="left">
+								{{mofmcDmstcYn}}
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			{{/each}}
+			
+			<div class="title-box" data-size="lg">
+				<h3 class="title bul" data-s-type="dot" data-lang-id="">미생물 분양정보</h3>
+			</div>
+			<div class="tab-section-02">
+				<table class="table table-hrzn" data-s-line="inside">
+					<caption>미생물 분양정보보기</caption>
+					<colgroup>
+						<col width="5%">
+						<col width="%">
+						<col width="">
+						<col width="">
+						<col width="">
+						<col width="">
+					</colgroup>
+					<thead>
+						<tr>
+							<th scope="col" data-lang-id="">번호</th>
+							<th scope="col" data-lang-id="">기탁번호</th>
+							<th scope="col" data-lang-id="">분양자</th>
+							<th scope="col" data-lang-id="">분양목적</th>
+							<th scope="col" data-lang-id="">분양일자</th>
+							<th scope="col" data-lang-id="">비고</th>
+						</tr>
+					</thead>
+					<tbody>
+					{{#iif distlist.length '0' '>'}}
+						{{#each distlist}}
+						{{#if MCDTB_SEQ}}
+						<tr>
+							<td class="left">
+								<em class="th" data-lang-id="">번호</em>{{MCDTB_SEQ}}
+							</td>
+							<td class="left">
+								<em class="th" data-lang-id="">기탁번호</em>{{MICGM_SPNO}}
+							</td>
+							<td class="left">
+								<em class="th" data-lang-id="">분양자</em>{{MCDTB_NM}}
+							</td>
+							<td class="left">
+								<em class="th" data-lang-id="">분양목적</em>{{MCDTB_PUPOS}}
+							</td>
+							<td class="left">
+								<em class="th" data-lang-id="">분양일자</em>{{toDateFormat MCDTB_DT}}
+							</td>
+							<td class="left">
+								<em class="th" data-lang-id="">비고</em>{{REMRK}}
+							</td>
+						</tr>
+						{{/if}}
+						{{/each}}
+					{{else}}
+						<tr>
+							<td colspan="6" data-lang-id="dtvw.patent.empt">데이터가 존재하지 않습니다.</td>
+						</tr>
+					{{/iif}}
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+	<!-- 상세정보 내용 :E -->
+	<!-- 도면 :S -->
+	<div id="detailBPArea" class="blueprint-area prevent-scroll">
+		<button type="button" id="btnToggleBP" class="btn-toggle" title="도면 닫기" onclick="searchPageModule.toggleBlueprint()" data-lang-type="title"><span data-lang-id="title.imgclose"></span></button>
+		<div class="bp-con prevent-scroll">
+			<div class="btn-wrap">
+				<input type="hidden" id="applno" value="{{toReplaceAll applno '[-]' ''}}" />
+				<button type="button" id="btnToggleBPList" class="btn-more" title="펼치기" onclick="changeImage({{toReplaceAll applno '[-]' ''}}); searchPageModule.toggleBlueprintList();" data-lang-id="title.expand" data-lang-type="title"><span data-lang-id="dtvw.patent.aiv">도면 전체보기</span></button>
+			</div>
+			<!-- 대표 도면 :S -->
+			<div class="bp-item main-item">
+				<div class="item-img">
+					<div class="img-box">
+						<img src="/kpat/remoteFile.do?method=downloadImage&applno={{toReplaceAll applno '[-]' ''}}&frontYn=Y&downYn=N" alt="대표도면">
+					</div>
+				</div>
+				<div class="item-info">
+					<strong class="tit" data-lang-id="dtvw.patent.rv">대표도면</strong>
+					<a href="javascript:openDown({{toReplaceAll applno '[-]' ''}});" class="btn-util btn-download" onclick="recordServiceStats('KPAT', 'OPSVC', 'IMDN');" title="대표도면 다운로드"><span class="blind" data-lang-id="dtvw.patent.qrdw">다운로드</span></a>
+					<button type="button" class="btn-util btn-window" onclick="openWindow('imageBig', {right : 'kpat', method : 'downloadImage', applno : '{{toReplaceAll applno '[-]' ''}}', frontYn : 'Y'}); return false;" title="새 창, 대표도면 크게보기"><span class="blind">크게보기</span></button>		
+				</div>
+			</div>
+			<!-- 대표 도면 :E -->
+
+			<!-- 도면 목록 :S -->
+			<div class="bp-list"></div>
+			<!-- 도면 목록 :E -->
+		</div>
+	</div>
+	<!-- 도면 :E -->
+</div>
+<button type="button" id="btnCloseDetail" class="btn-close" onclick="searchDrag.toggleDetail(false)">
+	<span class="type-pc">상세정보 닫기</span>
+	<span class="type-mobile">돌아가기</span>
+</button>

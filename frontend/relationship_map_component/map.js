@@ -1,10 +1,12 @@
 'use strict';
+const t = value => window.PatentTerminology?.text(value) ?? value;
 const $ = id => document.getElementById(id);
 const NS = 'http://www.w3.org/2000/svg';
 const el = (tag, cls, text) => {const n=document.createElement(tag);if(cls)n.className=cls;if(tag==='p'||cls==='detail-title')n.classList.add('readable-text');if(text!==undefined)n.textContent=text;return n;};
 const svgEl = (tag, attrs={}, text) => {const n=document.createElementNS(NS,tag);Object.entries(attrs).forEach(([k,v])=>n.setAttribute(k,v));if(text!==undefined)n.textContent=text;return n;};
 const send = (type, extra={}) => window.parent.postMessage({isStreamlitMessage:true,type,...extra},'*');
 let model, state, navigation=-1, hovered=null, visibleEdges=[];
+const nodeTitle = node => node.kind==='claim'||node.kind==='office_action' ? t(node.label) : node.label;
 const nodeById = id => model.nodes.find(n=>n.id===id);
 const itemFor = node => model.items.find(i=>i.id===node?.item_id);
 const edgeKey = edge => JSON.stringify([edge.source,edge.target,edge.relation]);
@@ -28,10 +30,10 @@ const statusOf = node => {
   if(item.indirect.some(r=>state.scope==='all'||state.scope===r))return 'impacted';
   return 'unaddressed';
 };
-const statusLabels = {direct:'직접 지적',objected:'Objection',allowed:'허용',withdrawn:'심사 대상 제외',impacted:'종속 영향',unaddressed:'추출된 지적 없음',missing:'원문 없음',canceled:'취소됨',rejection:'거절 / 지적 사유',citation:'인용 문헌',root:'Office Action'};
+const statusLabels = {direct:'직접 지적',objected:t('Objection'),allowed:t('허용'),withdrawn:'심사 대상 제외',impacted:'종속 영향',unaddressed:'추출된 지적 없음',missing:'원문 없음',canceled:t('취소됨'),rejection:t('거절 / 지적 사유'),citation:'인용 문헌',root:t('Office Action')};
 statusLabels.supporting_evidence='보조 증거';
 const makeButton = (text, callback, cls) => {const n=el('button',cls,text);n.type='button';n.onclick=callback;return n;};
-const citationType = ref => ref?.type==='npl'?'NPL · 비특허 문헌':ref?.type==='patent'?'Patent · 특허 문헌':'문헌 유형 미확인';
+const citationType = ref => ref?.type==='npl'?t('NPL · 비특허 문헌'):ref?.type==='patent'?t('Patent · 특허 문헌'):'문헌 유형 미확인';
 function emit(action){send('streamlit:setComponentValue',{value:{nonce:Date.now()+Math.random(),navigation,ui:state,action},dataType:'json'});}
 function selectNode(id){
   const node=nodeById(id);if(!node)return;
@@ -86,9 +88,9 @@ function graphView(){
 function drawControls(){
   document.querySelectorAll('#filters button').forEach(b=>b.setAttribute('aria-pressed',String(state.filter===b.dataset.filter)));
   $('direct-only').checked=state.direct_only;$('dependencies').checked=state.dependencies;$('citations').checked=state.citations;
-  $('scope').replaceChildren(new Option('전체 거절 사유','all'),...model.rejections.map(r=>new Option(r.rejection_id+' · '+r.statute,r.rejection_id)));
+  $('scope').replaceChildren(new Option(t('전체 거절 사유'),'all'),...model.rejections.map(r=>new Option(r.rejection_id+' · '+r.statute,r.rejection_id)));
   $('scope').value=state.scope;
-  $('claim-picker').replaceChildren(new Option('Claim 선택',''),...model.nodes.filter(n=>n.kind==='claim').map(n=>new Option(n.label,n.id)));
+  $('claim-picker').replaceChildren(new Option(t('Claim 선택'),''),...model.nodes.filter(n=>n.kind==='claim').map(n=>new Option(nodeTitle(n),n.id)));
   $('claim-picker').value=nodeById(state.selected)?.kind==='claim'?state.selected:'';
   $('branches').replaceChildren();
   if(['all','claim'].includes(state.filter))for(const r of scopedRejections()){
@@ -112,8 +114,8 @@ function drawGraph(){
   view.nodes.filter(n=>n.kind==='office_action').forEach(n=>positions.set(n.id,{x:24,y:65,w:140}));
   const height=Math.max(310,...[...positions.values()].map(p=>p.y+80)),width=view.nodes.some(n=>view.children.has(n.id))?846:650;
   svg.setAttribute('viewBox',`0 0 ${width} ${height}`);svg.setAttribute('height',height);svg.setAttribute('width','100%');
-  for(const [x,text] of [[24,'OFFICE ACTION'],[198,'거절 사유'],[420,'주요 CLAIM / 인용문헌'],[650,'선택 CLAIM의 종속항']]){
-    if(x<width-40)svg.append(svgEl('text',{x,y:26,class:'lane-label'},text));
+  for(const [x,text] of [[24,'OFFICE ACTION'],[198,t('거절 사유')],[420,t('주요 CLAIM / 인용문헌')],[650,t('선택 CLAIM의 종속항')]]){
+    if(x<width-40)svg.append(svgEl('text',{x,y:26,class:'lane-label'},t(text)));
   }
   for(const edge of view.edges){
     const a=positions.get(edge.source),b=positions.get(edge.target);let path;
@@ -122,16 +124,16 @@ function drawGraph(){
     svg.append(svgEl('path',{d:path,class:'edge '+edge.relation,'data-key':edgeKey(edge),'data-source':edge.source,'data-target':edge.target,'data-relation':edge.relation,'marker-end':'url(#arrow)'}));
   }
   for(const node of view.nodes){
-    const p=positions.get(node.id),status=statusOf(node),item=itemFor(node),g=svgEl('g',{class:'node '+status+(node.id===state.selected?' selected':''),transform:`translate(${p.x},${p.y})`,tabindex:0,role:'button','aria-label':node.label+' 관계 보기','aria-pressed':String(node.id===state.selected),'data-node-id':node.id});
+    const p=positions.get(node.id),status=statusOf(node),item=itemFor(node),g=svgEl('g',{class:'node '+status+(node.id===state.selected?' selected':''),transform:`translate(${p.x},${p.y})`,tabindex:0,role:'button','aria-label':nodeTitle(node)+' 관계 보기','aria-pressed':String(node.id===state.selected),'data-node-id':node.id});
     g.append(svgEl('rect',{width:p.w,height:50,rx:8}));
-    const title=node.kind==='citation'?(item?.title||node.label):node.label;
-    const subtitle=node.kind==='citation'?(item?.reference.publication_number||citationType(item?.reference)):node.kind==='claim'?statusLabels[status]:node.kind==='rejection'?'직접 지적 '+model.rejections.find(r=>r.rejection_id===node.id).claims.length+'개':'심사 의견서';
+    const title=node.kind==='citation'?(item?.title||nodeTitle(node)):nodeTitle(node);
+    const subtitle=node.kind==='citation'?(item?.reference.publication_number||citationType(item?.reference)):node.kind==='claim'?t(statusLabels[status]):node.kind==='rejection'?'직접 지적 '+model.rejections.find(r=>r.rejection_id===node.id).claims.length+'개':t('심사 의견서');
     const shorten=(s,n)=>s.length>n?s.slice(0,n-1)+'…':s;
-    g.append(svgEl('text',{x:10,y:21},shorten(title,Math.floor(p.w/7))));g.append(svgEl('text',{x:10,y:39,class:'subtitle'},shorten(subtitle,Math.floor(p.w/6))));g.append(svgEl('title',{},node.label+' · '+subtitle));
+    g.append(svgEl('text',{x:10,y:21},shorten(title,Math.floor(p.w/7))));g.append(svgEl('text',{x:10,y:39,class:'subtitle'},shorten(subtitle,Math.floor(p.w/6))));g.append(svgEl('title',{},nodeTitle(node)+' · '+subtitle));
     g.onclick=()=>selectNode(node.id);g.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();selectNode(node.id);}};
     g.onmouseenter=()=>{hovered=node.id;highlight();};g.onmouseleave=()=>{hovered=null;highlight();};g.onfocus=()=>{hovered=node.id;highlight();};g.onblur=()=>{hovered=null;highlight();};svg.append(g);
   }
-  highlight();$('map-status').textContent=`${view.nodes.length}개 노드 · ${view.edges.length}개 연결 · 접힌 Claim은 펼치기 또는 Claim 찾기로 확인하세요.`;
+  highlight();$('map-status').textContent=t(`${view.nodes.length}개 노드 · ${view.edges.length}개 연결 · 접힌 Claim은 펼치기 또는 Claim 찾기로 확인하세요.`);
 }
 function highlight(){
   const id=hovered||state.selected,node=nodeById(id),keys=new Set(),ids=new Set(id?[id]:[]);
@@ -151,10 +153,10 @@ function highlight(){
   document.querySelectorAll('.node').forEach(n=>n.classList.toggle('dimmed',Boolean(node)&&!ids.has(n.dataset.nodeId)));
 }
 function chips(root, nodes){
-  const row=el('div','chips');for(const node of nodes)row.append(makeButton(node.kind==='citation'?(itemFor(node)?.title||node.label):node.label,()=>selectNode(node.id)));root.append(row);
+  const row=el('div','chips');for(const node of nodes)row.append(makeButton(node.kind==='citation'?(itemFor(node)?.title||nodeTitle(node)):nodeTitle(node),()=>selectNode(node.id)));root.append(row);
 }
 function label(root,text){root.append(el('h4','detail-label',text));}
-function source(root,evidence,caption='Office Action'){
+function source(root,evidence,caption=t('Office Action')){
   const card=el('div','source-card readable-panel'),text=el('div','source preview readable-text');
   text.append(el('span','readable-text-content',evidence.text));
   card.append(el('p','detail-note',caption+' p. '+evidence.page_numbers.join(', ')),text);
@@ -166,16 +168,16 @@ function source(root,evidence,caption='Office Action'){
 }
 function drawDetail(){
   const root=$('map-detail'),node=nodeById(state.selected);root.replaceChildren();
-  if(!node){root.append(el('span','eyebrow','관계 상세'),el('h3','','관계를 선택하세요'),el('p','detail-note','처음에는 주요 Claim과 인용문헌만 표시합니다. 노드를 선택하면 관련 경로와 원문 연결을 확인할 수 있습니다.'));return;}
+  if(!node){root.append(el('span','eyebrow','관계 상세'),el('h3','','관계를 선택하세요'),el('p','detail-note',t('처음에는 주요 Claim과 인용문헌만 표시합니다. 노드를 선택하면 관련 경로와 원문 연결을 확인할 수 있습니다.')));return;}
   const item=itemFor(node),rids=relevantRejections(node).filter(r=>state.scope==='all'||r===state.scope),rejections=model.rejections.filter(r=>rids.includes(r.rejection_id));
-  root.append(el('div','detail-type '+statusOf(node),statusLabels[statusOf(node)]),el('h3','detail-title',node.kind==='citation'?(item?.title||node.label):node.label));
+  root.append(el('div','detail-type '+statusOf(node),t(statusLabels[statusOf(node)])),el('h3','detail-title',node.kind==='citation'?(item?.title||nodeTitle(node)):nodeTitle(node)));
   const actions=el('div','detail-actions');
-  if(item){const b=makeButton(node.kind==='claim'?'PDF에서 보기':'Office Action 근거 보기',()=>emit('open_pdf'),'source-button');b.id='open-source';actions.append(b);}
+  if(item){const b=makeButton(node.kind==='claim'?'PDF에서 보기':t('Office Action 근거 보기'),()=>emit('open_pdf'),'source-button');b.id='open-source';actions.append(b);}
   if(item&&node.kind==='claim')actions.append(makeButton('근거 비교',()=>emit('open_comparison'),'source-button'));
   if(node.kind==='citation'&&item){
     label(root,'문헌 역할');root.append(el('p','detail-text',statusOf(node)==='supporting_evidence'?'보조 증거':'거절 인용문헌'));
     label(root,'문헌 종류');root.append(el('p','detail-text',citationType(item.reference)));
-    label(root,'Publication');root.append(el('p','detail-text',item.reference.publication_number||[item.reference.publication,item.reference.year].filter(Boolean).join(' · ')||'원문 참조'));
+    label(root,t('Publication'));root.append(el('p','detail-text',item.reference.publication_number||[item.reference.publication,item.reference.year].filter(Boolean).join(' · ')||'원문 참조'));
   }
   label(root,'연결된 거절 · 법조항');chips(root,rejections.map(r=>nodeById(r.rejection_id)));
   if(node.kind==='claim'||node.kind==='rejection'){
@@ -183,17 +185,17 @@ function drawDetail(){
     label(root,'관련 인용문헌 · '+refs.size+'개');chips(root,[...refs].map(nodeById));
   }
   if(['citation','rejection'].includes(node.kind)){
-    label(root,'관련 Claim · 같은 거절에 연결된 청구항');const numbers=new Set(rejections.flatMap(r=>r.claims));chips(root,model.nodes.filter(n=>n.kind==='claim'&&numbers.has(n.claim_number)));
-    if(node.kind==='citation')root.append(el('p','detail-note','거절 사유 단위의 연결입니다. 각 문헌이 모든 Claim 구성을 개별적으로 개시한다는 판단은 아닙니다.'));
+    label(root,t('관련 Claim · 같은 거절에 연결된 청구항'));const numbers=new Set(rejections.flatMap(r=>r.claims));chips(root,model.nodes.filter(n=>n.kind==='claim'&&numbers.has(n.claim_number)));
+    if(node.kind==='citation')root.append(el('p','detail-note',t('거절 사유 단위의 연결입니다. 각 문헌이 모든 Claim 구성을 개별적으로 개시한다는 판단은 아닙니다.')));
   }
-  if(item){label(root,node.kind==='claim'?'Claim 원문':'Office Action 원문 근거');source(root,item.evidence,node.kind==='claim'?'Patent':'Office Action');root.append(actions);}
+  if(item){label(root,node.kind==='claim'?t('Claim 원문'):t('Office Action 원문 근거'));source(root,item.evidence,node.kind==='claim'?t('Patent'):t('Office Action'));root.append(actions);}
   for(const r of rejections){const details=el('details','rejection-source');details.dataset.rejectionId=r.rejection_id;details.append(el('summary','',r.rejection_id+' · '+r.statute+' 원문'));source(details,r.evidence);root.append(details);}
   if(node.kind==='claim'){
-    label(root,'상위 Claim');const parents=model.edges.filter(e=>e.relation==='depends_on'&&e.target===node.id).map(e=>nodeById(e.source));if(parents.length)chips(root,parents);else root.append(el('p','detail-note','독립항'));
-    label(root,'종속 Claim');const children=model.edges.filter(e=>e.relation==='depends_on'&&e.source===node.id).map(e=>nodeById(e.target));if(children.length)chips(root,children);else root.append(el('p','detail-note','직접 종속항 없음'));
-    if(!item)root.append(el('p','detail-note','분석 결과에 언급된 번호이지만 Claim 원문이 없어 PDF로 이동할 수 없습니다.'));
+    label(root,t('상위 Claim'));const parents=model.edges.filter(e=>e.relation==='depends_on'&&e.target===node.id).map(e=>nodeById(e.source));if(parents.length)chips(root,parents);else root.append(el('p','detail-note','독립항'));
+    label(root,t('종속 Claim'));const children=model.edges.filter(e=>e.relation==='depends_on'&&e.source===node.id).map(e=>nodeById(e.target));if(children.length)chips(root,children);else root.append(el('p','detail-note','직접 종속항 없음'));
+    if(!item)root.append(el('p','detail-note',t('분석 결과에 언급된 번호이지만 Claim 원문이 없어 PDF로 이동할 수 없습니다.')));
   }
-  if(node.kind==='office_action'){root.append(el('p','detail-note',model.documents.find(d=>d.kind==='office_action')?.filename||'Office Action'));}
+  if(node.kind==='office_action'){root.append(el('p','detail-note',model.documents.find(d=>d.kind==='office_action')?.filename||t('Office Action')));}
   root.scrollTop=0;
 }
 function draw(){if(!model)return;drawControls();drawGraph();drawDetail();}
@@ -216,6 +218,8 @@ window.addEventListener('resize',frameSize);
 window.addEventListener('message',event=>{
   if(event.source!==window.parent||event.data.type!=='streamlit:render')return;
   const args=event.data.args;
+  if(!window.PatentTerminology){const script=document.createElement('script');script.textContent=args.terminology_js;document.head.append(script);}
+  window.PatentTerminology.configure(args.terminology);
   let typography=$('readable-text-styles');
   if(!typography){typography=el('style');typography.id='readable-text-styles';document.head.append(typography);}
   if(typography.textContent!==args.readable_css)typography.textContent=args.readable_css||'';

@@ -1,0 +1,1984 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>KR20150096573A - 쿠폰 사용 상태 정보와 연계하여 쿠폰리스트를 표시하는 쿠폰 관리 시스템 및 방법 
+        - Google Patents</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
+    <meta name="referrer" content="origin-when-crossorigin">
+    <link rel="canonical" href="https://patents.google.com/patent/KR20150096573A/ko">
+    <meta name="description" content="
+     본 발명은 쿠폰 사용 상태 정보와 연계하여 쿠폰리스트를 표시하는 쿠폰 관리 시스템 및 방법에 관한 것으로서, 쿠폰정보를 등록 처리하는 쿠폰등록 처리부; 상기 등록된 쿠폰정보 중 사용자에게 발급된 쿠폰의 사용 여부에 관한 정보를 포함하는 쿠폰 사용 데이터를 수신하여 기간별 쿠폰 사용 데이터 및 쿠폰 사용처에 따른 쿠폰 사용 데이터의 연산을 처리하는 쿠폰 사용 데이터 처리부; 판매채널에 접속하여 쿠폰리스트를 요청한 사용자 단말장치의 위치정보를 수집하는 사용자 위치정보 수집부; 및 상기 쿠폰 사용 데이터 처리부의 처리 결과와 상기 사용자의 위치정보에 기초하여 상기 사용자의 위치를 중심으로 기 설정된 영역 내에서 상기 기간별 쿠폰 사용 수량이 많은 순서로 상기 쿠폰정보를 정렬한 쿠폰리스트를 생성하여 상기 단말장치에 표시하는 쿠폰리스트 관리부;를 포함하는 것을 특징으로 한다. 
+     
+         
+     
+   
+   ">
+    <meta name="DC.type" content="patent">
+    <meta name="DC.title" content="쿠폰 사용 상태 정보와 연계하여 쿠폰리스트를 표시하는 쿠폰 관리 시스템 및 방법 
+       ">
+    <meta name="DC.date" content="2014-02-14" scheme="dateSubmitted">
+    <meta name="DC.description" content="
+     본 발명은 쿠폰 사용 상태 정보와 연계하여 쿠폰리스트를 표시하는 쿠폰 관리 시스템 및 방법에 관한 것으로서, 쿠폰정보를 등록 처리하는 쿠폰등록 처리부; 상기 등록된 쿠폰정보 중 사용자에게 발급된 쿠폰의 사용 여부에 관한 정보를 포함하는 쿠폰 사용 데이터를 수신하여 기간별 쿠폰 사용 데이터 및 쿠폰 사용처에 따른 쿠폰 사용 데이터의 연산을 처리하는 쿠폰 사용 데이터 처리부; 판매채널에 접속하여 쿠폰리스트를 요청한 사용자 단말장치의 위치정보를 수집하는 사용자 위치정보 수집부; 및 상기 쿠폰 사용 데이터 처리부의 처리 결과와 상기 사용자의 위치정보에 기초하여 상기 사용자의 위치를 중심으로 기 설정된 영역 내에서 상기 기간별 쿠폰 사용 수량이 많은 순서로 상기 쿠폰정보를 정렬한 쿠폰리스트를 생성하여 상기 단말장치에 표시하는 쿠폰리스트 관리부;를 포함하는 것을 특징으로 한다. 
+     
+         
+     
+   
+   ">
+    <meta name="citation_patent_application_number" content="KR:1020140017286A">
+    <meta name="citation_pdf_url" content="https://patentimages.storage.googleapis.com/16/34/d3/4d3ba228b4a31c/KR20150096573A.pdf">
+    <meta name="citation_patent_publication_number" content="KR:20150096573:A">
+    <meta name="DC.date" content="2015-08-25">
+    <meta name="DC.contributor" content="황병순" scheme="inventor">
+    <meta name="DC.contributor" content="장병준" scheme="inventor">
+    <meta name="DC.contributor" content="에스케이플래닛 주식회사" scheme="assignee">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,400italic,500,500italic,700">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Product+Sans">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700">
+
+    <style>
+      
+      #gb { top: 15px; left: auto; right: 0; width: auto; min-width: 135px !important; }   
+      body { transition: none; }
+    </style>
+    <script></script>
+
+    <script>
+      window.version = 'patent-search.search_20260819_RC00';
+
+      function sendFeedback() {
+        userfeedback.api.startFeedback({
+          'productId': '713680',
+          'bucket': 'patent-search-web',
+          'productVersion': window.version,
+        });
+      }
+
+      window.experiments = {};
+      window.experiments.patentCountries = "ae,ag,al,am,ao,ap,ar,at,au,aw,az,ba,bb,bd,be,bf,bg,bh,bj,bn,bo,br,bw,bx,by,bz,ca,cf,cg,ch,ci,cl,cm,cn,co,cr,cs,cu,cy,cz,dd,de,dj,dk,dm,do,dz,ea,ec,ee,eg,em,ep,es,fi,fr,ga,gb,gc,gd,ge,gh,gm,gn,gq,gr,gt,gw,hk,hn,hr,hu,ib,id,ie,il,in,ir,is,it,jo,jp,ke,kg,kh,km,kn,kp,kr,kw,kz,la,lc,li,lk,lr,ls,lt,lu,lv,ly,ma,mc,md,me,mg,mk,ml,mn,mo,mr,mt,mw,mx,my,mz,na,ne,ng,ni,nl,no,nz,oa,om,pa,pe,pg,ph,pl,pt,py,qa,ro,rs,ru,rw,sa,sc,sd,se,sg,si,sk,sl,sm,sn,st,su,sv,sy,sz,td,tg,th,tj,tm,tn,tr,tt,tw,tz,ua,ug,us,uy,uz,vc,ve,vn,wo,yu,za,zm,zw";
+      
+      
+      window.experiments.keywordWizard = true;
+      
+      
+      
+      window.experiments.definitions = true;
+      window.experiments.plogs = true;
+
+      window.Polymer = {
+        dom: 'shady',
+        lazyRegister: true,
+      };
+    </script>
+
+    <script src="//www.gstatic.com/patent-search/frontend/patent-search.search_20260819_RC00/scs/compiled_dir/webcomponentsjs/webcomponents-lite.min.js"></script>
+    <link rel="import" href="//www.gstatic.com/patent-search/frontend/patent-search.search_20260819_RC00/scs/compiled_dir/search-app-vulcanized.html">
+  </head>
+  <body unresolved>
+    
+    
+    <script></script>
+    <script src="//www.gstatic.com/patent-search/frontend/patent-search.search_20260819_RC00/scs/compiled_dir/search-app-vulcanized.js"></script>
+    <search-app>
+      
+      
+
+      <article class="result" itemscope itemtype="http://schema.org/ScholarlyArticle">
+  <h1 itemprop="pageTitle">KR20150096573A - 쿠폰 사용 상태 정보와 연계하여 쿠폰리스트를 표시하는 쿠폰 관리 시스템 및 방법 
+        - Google Patents</h1>
+  <span itemprop="title">쿠폰 사용 상태 정보와 연계하여 쿠폰리스트를 표시하는 쿠폰 관리 시스템 및 방법 
+       </span>
+
+  <meta itemprop="type" content="patent">
+  <a href="https://patentimages.storage.googleapis.com/16/34/d3/4d3ba228b4a31c/KR20150096573A.pdf" itemprop="pdfLink">Download PDF</a>
+  <h2>Info</h2>
+
+  <dl>
+    <dt>Publication number</dt>
+    <dd itemprop="publicationNumber">KR20150096573A</dd>
+    <meta itemprop="numberWithoutCodes" content="20150096573">
+    <meta itemprop="kindCode" content="A">
+    <meta itemprop="publicationDescription" content="Official gazette of the unexamined patents">
+    <span>KR20150096573A</span>
+    <span>KR1020140017286A</span>
+    <span>KR20140017286A</span>
+    <span>KR20150096573A</span>
+    <span>KR 20150096573 A</span>
+    <span>KR20150096573 A</span>
+    <span>KR 20150096573A</span>
+    <span>KR 1020140017286 A</span>
+    <span>KR1020140017286 A</span>
+    <span>KR 1020140017286A</span>
+    <span>KR 20140017286 A</span>
+    <span>KR20140017286 A</span>
+    <span>KR 20140017286A</span>
+    <span>KR 20150096573 A</span>
+    <span>KR20150096573 A</span>
+    <span>KR 20150096573A</span>
+
+    <dt>Authority</dt>
+    <dd itemprop="countryCode">KR</dd>
+    <dd itemprop="countryName">South Korea</dd>
+
+    <dt>Prior art keywords</dt>
+    <dd itemprop="priorArtKeywords" repeat>coupon</dd>
+    <dd itemprop="priorArtKeywords" repeat>usage</dd>
+    <dd itemprop="priorArtKeywords" repeat>list</dd>
+    <dd itemprop="priorArtKeywords" repeat>information</dd>
+    <dd itemprop="priorArtKeywords" repeat>period</dd>
+
+    <dt>Prior art date</dt>
+    <dd><time itemprop="priorArtDate" datetime="2014-02-14">2014-02-14</time></dd>
+
+    <dt>Legal status (The legal status is an assumption and is not a legal conclusion. Google has not performed a legal analysis and makes no representation as to the accuracy of the status listed.)</dt>
+    <dd itemprop="legalStatusIfi" itemscope>
+      <span itemprop="status">Ceased</span>
+    </dd>
+  </dl>
+
+  <dt>Application number</dt>
+  <dd itemprop="applicationNumber">KR1020140017286A</dd>
+
+  <dt>Other languages</dt>
+  <dd itemprop="otherLanguages" itemscope repeat>
+    <a href="/patent/KR20150096573A/en">
+      <span itemprop="name">English</span> (<span itemprop="code">en</span>)
+    </a>
+  </dd>
+
+  
+
+  <dt>Inventor</dt>
+  <dd itemprop="inventor" repeat>황병순</dd>
+  <dd itemprop="inventor" repeat>장병준</dd>
+
+  
+
+  <dt>Original Assignee</dt>
+  <dd itemprop="assigneeOriginal" repeat>에스케이플래닛 주식회사</dd>
+
+  <dt>Priority date (The priority date is an assumption and is not a legal conclusion. Google has not performed a legal analysis and makes no representation as to the accuracy of the date listed.)</dt>
+  <dd><time itemprop="priorityDate" datetime="2014-02-14">2014-02-14</time></dd>
+
+  <dt>Filing date</dt>
+  <dd><time itemprop="filingDate" datetime="2014-02-14">2014-02-14</time></dd>
+
+  <dt>Publication date</dt>
+  <dd><time itemprop="publicationDate" datetime="2015-08-25">2015-08-25</time></dd>
+
+  
+  <dd itemprop="events" itemscope repeat>
+    <time itemprop="date" datetime="2014-02-14">2014-02-14</time>
+    <span itemprop="title">Application filed by 에스케이플래닛 주식회사</span>
+    <span itemprop="type">filed</span>
+    <span itemprop="critical" content="true" bool>Critical</span>
+    
+    
+    
+    <span itemprop="assigneeSearch">에스케이플래닛 주식회사</span>
+  </dd>
+  <dd itemprop="events" itemscope repeat>
+    <time itemprop="date" datetime="2014-02-14">2014-02-14</time>
+    <span itemprop="title">Priority to KR1020140017286A</span>
+    <span itemprop="type">priority</span>
+    <span itemprop="critical" content="true" bool>Critical</span>
+    
+    
+    <span itemprop="documentId">patent/KR20150096573A/ko</span>
+    
+  </dd>
+  <dd itemprop="events" itemscope repeat>
+    <time itemprop="date" datetime="2015-08-25">2015-08-25</time>
+    <span itemprop="title">Publication of KR20150096573A</span>
+    <span itemprop="type">publication</span>
+    <span itemprop="critical" content="true" bool>Critical</span>
+    
+    
+    <span itemprop="documentId">patent/KR20150096573A/ko</span>
+    
+  </dd>
+  <dd itemprop="events" itemscope repeat>
+    <time itemprop="date">Status</time>
+    <span itemprop="title">Ceased</span>
+    <span itemprop="type">legal-status</span>
+    <span itemprop="critical" content="true" bool>Critical</span>
+    <span itemprop="current" content="true" bool>Current</span>
+    
+    
+    
+  </dd>
+
+  <h2>Links</h2>
+  <ul>
+    
+
+    <li itemprop="links" itemscope repeat>
+        <meta itemprop="id" content="espacenetLink">
+        <a href="https://worldwide.espacenet.com/publicationDetails/biblio?CC=KR&amp;NR=20150096573A&amp;KC=A&amp;FT=D" itemprop="url" target="_blank"><span itemprop="text">Espacenet</span></a>
+      </li>
+      
+
+    
+
+    <li itemprop="links" itemscope repeat>
+      <meta itemprop="id" content="globalDossierLink">
+      <a href="https://globaldossier.uspto.gov/result/application/KR/20140017286/1" itemprop="url" target="_blank"><span itemprop="text">Global Dossier</span></a>
+    </li>
+
+    
+
+      
+
+      
+
+      
+      <li itemprop="links" itemscope repeat>
+        <meta itemprop="id" content="stackexchangeLink">
+        <a href="https://patents.stackexchange.com/questions/tagged/KR20150096573A" itemprop="url"><span itemprop="text">Discuss</span></a>
+      </li>
+  </ul>
+
+  
+
+  <section>
+    <h2>Images</h2>
+    <ul>
+      <li itemprop="images" itemscope repeat>
+        <img itemprop="thumbnail" src="https://patentimages.storage.googleapis.com/d9/1c/3c/0bb8dd61556825/pat00001.png">
+        <meta itemprop="full" content="https://patentimages.storage.googleapis.com/d0/54/35/139e10b0259ced/pat00001.png">
+        <ul>
+          <li itemprop="callouts" itemscope repeat>
+            <meta itemprop="figurePage" content="0">
+            <meta itemprop="id" content="100">
+            <meta itemprop="label" content="use processing device">
+            <span itemprop="bounds" itemscope>
+              <meta itemprop="left" content="307">
+              <meta itemprop="top" content="211">
+              <meta itemprop="right" content="386">
+              <meta itemprop="bottom" content="247">
+            </span>
+          </li>
+          <li itemprop="callouts" itemscope repeat>
+            <meta itemprop="figurePage" content="0">
+            <meta itemprop="id" content="200">
+            <meta itemprop="label" content="coupon management device">
+            <span itemprop="bounds" itemscope>
+              <meta itemprop="left" content="904">
+              <meta itemprop="top" content="25">
+              <meta itemprop="right" content="985">
+              <meta itemprop="bottom" content="58">
+            </span>
+          </li>
+          <li itemprop="callouts" itemscope repeat>
+            <meta itemprop="figurePage" content="0">
+            <meta itemprop="id" content="300">
+            <meta itemprop="label" content="terminal device">
+            <span itemprop="bounds" itemscope>
+              <meta itemprop="left" content="1503">
+              <meta itemprop="top" content="438">
+              <meta itemprop="right" content="1588">
+              <meta itemprop="bottom" content="471">
+            </span>
+          </li>
+        </ul>
+      </li>
+      <li itemprop="images" itemscope repeat>
+        <img itemprop="thumbnail" src="https://patentimages.storage.googleapis.com/19/f7/b0/658118d7a858d8/pat00002.png">
+        <meta itemprop="full" content="https://patentimages.storage.googleapis.com/09/79/f0/33b10fa6c3e4dd/pat00002.png">
+        <ul>
+          <li itemprop="callouts" itemscope repeat>
+            <meta itemprop="figurePage" content="1">
+            <meta itemprop="id" content="1">
+            <meta itemprop="label" content="INVENTION">
+            <span itemprop="bounds" itemscope>
+              <meta itemprop="left" content="1734">
+              <meta itemprop="top" content="566">
+              <meta itemprop="right" content="1755">
+              <meta itemprop="bottom" content="600">
+            </span>
+          </li>
+          <li itemprop="callouts" itemscope repeat>
+            <meta itemprop="figurePage" content="1">
+            <meta itemprop="id" content="200">
+            <meta itemprop="label" content="coupon management device">
+            <span itemprop="bounds" itemscope>
+              <meta itemprop="left" content="1258">
+              <meta itemprop="top" content="35">
+              <meta itemprop="right" content="1340">
+              <meta itemprop="bottom" content="70">
+            </span>
+          </li>
+          <li itemprop="callouts" itemscope repeat>
+            <meta itemprop="figurePage" content="1">
+            <meta itemprop="id" content="210">
+            <meta itemprop="label" content="registration processing unit">
+            <span itemprop="bounds" itemscope>
+              <meta itemprop="left" content="37">
+              <meta itemprop="top" content="285">
+              <meta itemprop="right" content="122">
+              <meta itemprop="bottom" content="319">
+            </span>
+          </li>
+          <li itemprop="callouts" itemscope repeat>
+            <meta itemprop="figurePage" content="1">
+            <meta itemprop="id" content="212">
+            <meta itemprop="label" content="data processing unit">
+            <span itemprop="bounds" itemscope>
+              <meta itemprop="left" content="38">
+              <meta itemprop="top" content="510">
+              <meta itemprop="right" content="120">
+              <meta itemprop="bottom" content="543">
+            </span>
+          </li>
+          <li itemprop="callouts" itemscope repeat>
+            <meta itemprop="figurePage" content="1">
+            <meta itemprop="id" content="214">
+            <meta itemprop="label" content="information collection unit">
+            <span itemprop="bounds" itemscope>
+              <meta itemprop="left" content="38">
+              <meta itemprop="top" content="735">
+              <meta itemprop="right" content="122">
+              <meta itemprop="bottom" content="771">
+            </span>
+          </li>
+          <li itemprop="callouts" itemscope repeat>
+            <meta itemprop="figurePage" content="1">
+            <meta itemprop="id" content="216">
+            <meta itemprop="label" content="coupon information DB">
+            <span itemprop="bounds" itemscope>
+              <meta itemprop="left" content="1500">
+              <meta itemprop="top" content="322">
+              <meta itemprop="right" content="1584">
+              <meta itemprop="bottom" content="356">
+            </span>
+          </li>
+          <li itemprop="callouts" itemscope repeat>
+            <meta itemprop="figurePage" content="1">
+            <meta itemprop="id" content="218">
+            <meta itemprop="label" content="user information DB">
+            <span itemprop="bounds" itemscope>
+              <meta itemprop="left" content="1500">
+              <meta itemprop="top" content="585">
+              <meta itemprop="right" content="1583">
+              <meta itemprop="bottom" content="619">
+            </span>
+          </li>
+          <li itemprop="callouts" itemscope repeat>
+            <meta itemprop="figurePage" content="1">
+            <meta itemprop="id" content="220">
+            <meta itemprop="label" content="list management unit">
+            <span itemprop="bounds" itemscope>
+              <meta itemprop="left" content="995">
+              <meta itemprop="top" content="1110">
+              <meta itemprop="right" content="1076">
+              <meta itemprop="bottom" content="1144">
+            </span>
+          </li>
+        </ul>
+      </li>
+      <li itemprop="images" itemscope repeat>
+        <img itemprop="thumbnail" src="https://patentimages.storage.googleapis.com/49/a4/3a/312fff9ca09cba/pat00003.png">
+        <meta itemprop="full" content="https://patentimages.storage.googleapis.com/f7/93/03/01f09e2bf0ce1e/pat00003.png">
+        <ul>
+        </ul>
+      </li>
+      <li itemprop="images" itemscope repeat>
+        <img itemprop="thumbnail" src="https://patentimages.storage.googleapis.com/33/b6/d2/e5d5aea4bd5618/pat00004.png">
+        <meta itemprop="full" content="https://patentimages.storage.googleapis.com/6a/5a/69/11705855e9173f/pat00004.png">
+        <ul>
+        </ul>
+      </li>
+      <li itemprop="images" itemscope repeat>
+        <img itemprop="thumbnail" src="https://patentimages.storage.googleapis.com/ad/ef/3c/dd0fa8cb84b1a6/pat00005.png">
+        <meta itemprop="full" content="https://patentimages.storage.googleapis.com/74/1d/bd/99d8069ac1768f/pat00005.png">
+        <ul>
+        </ul>
+      </li>
+      <li itemprop="images" itemscope repeat>
+        <img itemprop="thumbnail" src="https://patentimages.storage.googleapis.com/21/47/54/3f0d6e1bca4d56/pat00006.png">
+        <meta itemprop="full" content="https://patentimages.storage.googleapis.com/af/ca/f7/5585a52d7ceffd/pat00006.png">
+        <ul>
+        </ul>
+      </li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Classifications</h2>
+    <ul>
+      <li>
+        <ul itemprop="classifications" itemscope repeat>
+          <li itemprop="classifications" itemscope repeat>
+            <span itemprop="Code">G</span>&mdash;<span itemprop="Description">PHYSICS</span>
+            <meta itemprop="IsCPC" content="true">
+          </li>
+          <li itemprop="classifications" itemscope repeat>
+            <span itemprop="Code">G06</span>&mdash;<span itemprop="Description">COMPUTING OR CALCULATING; COUNTING</span>
+            <meta itemprop="IsCPC" content="true">
+          </li>
+          <li itemprop="classifications" itemscope repeat>
+            <span itemprop="Code">G06Q</span>&mdash;<span itemprop="Description">INFORMATION AND COMMUNICATION TECHNOLOGY [ICT] SPECIALLY ADAPTED FOR ADMINISTRATIVE, COMMERCIAL, FINANCIAL, MANAGERIAL OR SUPERVISORY PURPOSES; SYSTEMS OR METHODS SPECIALLY ADAPTED FOR ADMINISTRATIVE, COMMERCIAL, FINANCIAL, MANAGERIAL OR SUPERVISORY PURPOSES, NOT OTHERWISE PROVIDED FOR</span>
+            <meta itemprop="IsCPC" content="true">
+          </li>
+          <li itemprop="classifications" itemscope repeat>
+            <span itemprop="Code">G06Q30/00</span>&mdash;<span itemprop="Description">Commerce</span>
+            <meta itemprop="IsCPC" content="true">
+          </li>
+          <li itemprop="classifications" itemscope repeat>
+            <span itemprop="Code">G06Q30/02</span>&mdash;<span itemprop="Description">Marketing; Price estimation or determination; Fundraising</span>
+            <meta itemprop="IsCPC" content="true">
+          </li>
+          <li itemprop="classifications" itemscope repeat>
+            <span itemprop="Code">G06Q30/0241</span>&mdash;<span itemprop="Description">Advertisements</span>
+            <meta itemprop="IsCPC" content="true">
+          </li>
+          <li itemprop="classifications" itemscope repeat>
+            <span itemprop="Code">G06Q30/0251</span>&mdash;<span itemprop="Description">Targeted advertisements</span>
+            <meta itemprop="IsCPC" content="true">
+          </li>
+          <li itemprop="classifications" itemscope repeat>
+            <span itemprop="Code">G06Q30/0261</span>&mdash;<span itemprop="Description">Targeted advertisements based on user location</span>
+            <meta itemprop="Leaf" content="true"><meta itemprop="FirstCode" content="true"><meta itemprop="IsCPC" content="true">
+          </li>
+        </ul>
+      </li>
+      <li>
+        <ul itemprop="classifications" itemscope repeat>
+          <li itemprop="classifications" itemscope repeat>
+            <span itemprop="Code">G</span>&mdash;<span itemprop="Description">PHYSICS</span>
+            <meta itemprop="IsCPC" content="true">
+          </li>
+          <li itemprop="classifications" itemscope repeat>
+            <span itemprop="Code">G06</span>&mdash;<span itemprop="Description">COMPUTING OR CALCULATING; COUNTING</span>
+            <meta itemprop="IsCPC" content="true">
+          </li>
+          <li itemprop="classifications" itemscope repeat>
+            <span itemprop="Code">G06Q</span>&mdash;<span itemprop="Description">INFORMATION AND COMMUNICATION TECHNOLOGY [ICT] SPECIALLY ADAPTED FOR ADMINISTRATIVE, COMMERCIAL, FINANCIAL, MANAGERIAL OR SUPERVISORY PURPOSES; SYSTEMS OR METHODS SPECIALLY ADAPTED FOR ADMINISTRATIVE, COMMERCIAL, FINANCIAL, MANAGERIAL OR SUPERVISORY PURPOSES, NOT OTHERWISE PROVIDED FOR</span>
+            <meta itemprop="IsCPC" content="true">
+          </li>
+          <li itemprop="classifications" itemscope repeat>
+            <span itemprop="Code">G06Q30/00</span>&mdash;<span itemprop="Description">Commerce</span>
+            <meta itemprop="IsCPC" content="true">
+          </li>
+          <li itemprop="classifications" itemscope repeat>
+            <span itemprop="Code">G06Q30/02</span>&mdash;<span itemprop="Description">Marketing; Price estimation or determination; Fundraising</span>
+            <meta itemprop="IsCPC" content="true">
+          </li>
+          <li itemprop="classifications" itemscope repeat>
+            <span itemprop="Code">G06Q30/0207</span>&mdash;<span itemprop="Description">Discounts or incentives, e.g. coupons or rebates</span>
+            <meta itemprop="IsCPC" content="true">
+          </li>
+          <li itemprop="classifications" itemscope repeat>
+            <span itemprop="Code">G06Q30/0211</span>&mdash;<span itemprop="Description">Determining the effectiveness of discounts or incentives</span>
+            <meta itemprop="Leaf" content="true"><meta itemprop="IsCPC" content="true">
+          </li>
+        </ul>
+      </li>
+      <li>
+        <ul itemprop="classifications" itemscope repeat>
+          <li itemprop="classifications" itemscope repeat>
+            <span itemprop="Code">G</span>&mdash;<span itemprop="Description">PHYSICS</span>
+            <meta itemprop="IsCPC" content="true">
+          </li>
+          <li itemprop="classifications" itemscope repeat>
+            <span itemprop="Code">G06</span>&mdash;<span itemprop="Description">COMPUTING OR CALCULATING; COUNTING</span>
+            <meta itemprop="IsCPC" content="true">
+          </li>
+          <li itemprop="classifications" itemscope repeat>
+            <span itemprop="Code">G06Q</span>&mdash;<span itemprop="Description">INFORMATION AND COMMUNICATION TECHNOLOGY [ICT] SPECIALLY ADAPTED FOR ADMINISTRATIVE, COMMERCIAL, FINANCIAL, MANAGERIAL OR SUPERVISORY PURPOSES; SYSTEMS OR METHODS SPECIALLY ADAPTED FOR ADMINISTRATIVE, COMMERCIAL, FINANCIAL, MANAGERIAL OR SUPERVISORY PURPOSES, NOT OTHERWISE PROVIDED FOR</span>
+            <meta itemprop="IsCPC" content="true">
+          </li>
+          <li itemprop="classifications" itemscope repeat>
+            <span itemprop="Code">G06Q30/00</span>&mdash;<span itemprop="Description">Commerce</span>
+            <meta itemprop="IsCPC" content="true">
+          </li>
+          <li itemprop="classifications" itemscope repeat>
+            <span itemprop="Code">G06Q30/02</span>&mdash;<span itemprop="Description">Marketing; Price estimation or determination; Fundraising</span>
+            <meta itemprop="IsCPC" content="true">
+          </li>
+          <li itemprop="classifications" itemscope repeat>
+            <span itemprop="Code">G06Q30/0241</span>&mdash;<span itemprop="Description">Advertisements</span>
+            <meta itemprop="IsCPC" content="true">
+          </li>
+          <li itemprop="classifications" itemscope repeat>
+            <span itemprop="Code">G06Q30/0251</span>&mdash;<span itemprop="Description">Targeted advertisements</span>
+            <meta itemprop="IsCPC" content="true">
+          </li>
+          <li itemprop="classifications" itemscope repeat>
+            <span itemprop="Code">G06Q30/0255</span>&mdash;<span itemprop="Description">Targeted advertisements based on user history</span>
+            <meta itemprop="Leaf" content="true"><meta itemprop="IsCPC" content="true">
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </section>
+
+  
+
+  
+
+  
+
+  <section>
+    <h2>Landscapes</h2>
+    <ul>
+      <li itemprop="landscapes" itemscope repeat>
+        <span itemprop="name">Business, Economics &amp; Management</span>
+        (<span itemprop="type">AREA</span>)
+      </li>
+      <li itemprop="landscapes" itemscope repeat>
+        <span itemprop="name">Engineering &amp; Computer Science</span>
+        (<span itemprop="type">AREA</span>)
+      </li>
+      <li itemprop="landscapes" itemscope repeat>
+        <span itemprop="name">Accounting &amp; Taxation</span>
+        (<span itemprop="type">AREA</span>)
+      </li>
+      <li itemprop="landscapes" itemscope repeat>
+        <span itemprop="name">Development Economics</span>
+        (<span itemprop="type">AREA</span>)
+      </li>
+      <li itemprop="landscapes" itemscope repeat>
+        <span itemprop="name">Strategic Management</span>
+        (<span itemprop="type">AREA</span>)
+      </li>
+      <li itemprop="landscapes" itemscope repeat>
+        <span itemprop="name">Finance</span>
+        (<span itemprop="type">AREA</span>)
+      </li>
+      <li itemprop="landscapes" itemscope repeat>
+        <span itemprop="name">Game Theory and Decision Science</span>
+        (<span itemprop="type">AREA</span>)
+      </li>
+      <li itemprop="landscapes" itemscope repeat>
+        <span itemprop="name">Entrepreneurship &amp; Innovation</span>
+        (<span itemprop="type">AREA</span>)
+      </li>
+      <li itemprop="landscapes" itemscope repeat>
+        <span itemprop="name">Economics</span>
+        (<span itemprop="type">AREA</span>)
+      </li>
+      <li itemprop="landscapes" itemscope repeat>
+        <span itemprop="name">Marketing</span>
+        (<span itemprop="type">AREA</span>)
+      </li>
+      <li itemprop="landscapes" itemscope repeat>
+        <span itemprop="name">Physics &amp; Mathematics</span>
+        (<span itemprop="type">AREA</span>)
+      </li>
+      <li itemprop="landscapes" itemscope repeat>
+        <span itemprop="name">General Business, Economics &amp; Management</span>
+        (<span itemprop="type">AREA</span>)
+      </li>
+      <li itemprop="landscapes" itemscope repeat>
+        <span itemprop="name">General Physics &amp; Mathematics</span>
+        (<span itemprop="type">AREA</span>)
+      </li>
+      <li itemprop="landscapes" itemscope repeat>
+        <span itemprop="name">Theoretical Computer Science</span>
+        (<span itemprop="type">AREA</span>)
+      </li>
+      <li itemprop="landscapes" itemscope repeat>
+        <span itemprop="name">Management, Administration, Business Operations System, And Electronic Commerce</span>
+        (<span itemprop="type">AREA</span>)
+      </li>
+    </ul>
+  </section>
+
+
+  <section itemprop="abstract" itemscope>
+    <h2>Abstract</h2>
+    
+    <div itemprop="content" html><abstract mxw-id="PA160218159" lang="KO" load-source="patent-office">
+    <div num="0001a" class="abstract">본 발명은 쿠폰 사용 상태 정보와 연계하여 쿠폰리스트를 표시하는 쿠폰 관리 시스템 및 방법에 관한 것으로서, 쿠폰정보를 등록 처리하는 쿠폰등록 처리부; 상기 등록된 쿠폰정보 중 사용자에게 발급된 쿠폰의 사용 여부에 관한 정보를 포함하는 쿠폰 사용 데이터를 수신하여 기간별 쿠폰 사용 데이터 및 쿠폰 사용처에 따른 쿠폰 사용 데이터의 연산을 처리하는 쿠폰 사용 데이터 처리부; 판매채널에 접속하여 쿠폰리스트를 요청한 사용자 단말장치의 위치정보를 수집하는 사용자 위치정보 수집부; 및 상기 쿠폰 사용 데이터 처리부의 처리 결과와 상기 사용자의 위치정보에 기초하여 상기 사용자의 위치를 중심으로 기 설정된 영역 내에서 상기 기간별 쿠폰 사용 수량이 많은 순서로 상기 쿠폰정보를 정렬한 쿠폰리스트를 생성하여 상기 단말장치에 표시하는 쿠폰리스트 관리부;를 포함하는 것을 특징으로 한다.</div>
+    <div num="0002a" class="abstract">
+      <figref num="1"> </figref>
+    </div>
+  </abstract>
+  </div>
+  </section>
+
+  <section itemprop="description" itemscope>
+    <h2>Description</h2>
+    
+    <div itemprop="content" html><div mxw-id="PDES94256534" lang="KO" load-source="patent-office" class="description">
+    <invention-title lang="KO">쿠폰 사용 상태 정보와 연계하여 쿠폰리스트를 표시하는 쿠폰 관리 시스템 및 방법{APPARATUS AND METHOD FOR DISPLAYING COUPON IN CONNECTION WITH COUPON USAGE INFORMATION}</invention-title>
+    <technical-field>
+      <div num="0001" class="description-paragraph">본 발명은 쿠폰 사용 상태 정보와 연계하여 쿠폰리스트를 표시하는 쿠폰 관리 시스템 및 방법에 관한 것으로서, 보다 상세하게는 발급된 쿠폰 사용 상태 정보를 수집하고, 수집된 정보를 바탕으로 쿠폰 사용량이 증가하는 시기와 위치를 파악하여 실시간으로 쿠폰리스트의 정렬 순서를 조정하여 사용자에게 노출시킴으로써 해당 쿠폰의 판매량을 증가시킬 수 있는 쿠폰 사용 상태 정보와 연계하여 쿠폰리스트를 표시하는 쿠폰 관리 시스템 및 방법에 관한 것이다. </div>
+    </technical-field>
+    <background-art>
+      <div num="0002" class="description-paragraph">전자 상거래가 활성화되고, 전자 상거래를 뒷받침할 수 있는 다양한 종류의 IT 기술들이 개발됨에 따라, 이러한 전자 상거래에 활용되는 쿠폰(Coupon) 역시 다양한 형태 또는 다양한 종류로 진화하고 있다. </div>
+      <div num="0003" class="description-paragraph">예를 들어, 쿠폰의 형태와 관련해서는, 전통적인 종이 쿠폰에서 탈피한 전자 쿠폰이 널리 사용되고 있으며, 전자 쿠폰의 형태 자체도 다양한 GUI(Graphic User Interface) 기술, 통신 기술(RFID, NFC 등), 이미지 코드(QR 코드, 바코드 등) 기술을 바탕으로 다양하게 세분화되고 있다. 또한, 쿠폰의 종류와 관련해서도, 전통적인 상품 할인 쿠폰 이외에, 상품 교환 쿠폰, 서비스 제공 쿠폰, 소셜 커머스 쿠폰 등 다양한 종류의 쿠폰이 활용되고 있다. </div>
+      <div num="0004" class="description-paragraph">하지만 이러한 쿠폰 기술의 진화는 쿠폰의 발급 또는 배포 과정을 중심으로 이루어지고 있으며, 쿠폰의 발급 또는 배포 이후의 과정들과 관련해서는 충분한 기술들이 개발되지 못하였다. 특히, 쿠폰이 발급 또는 배포된 이후의 사용 상태를 관리하고, 사용자들의 쿠폰 사용을 유도할 수 있는 보조 기술들이 개발되지 못하였다. </div>
+      <div num="0005" class="description-paragraph">따라서, 이러한 분야와 관련된 새로운 쿠폰 관리 기술이 요구되고 있다.  본 발명은 이러한 기술적 배경을 바탕으로 발명되었으며, 이상에서 살핀 기술적 요구를 충족시킴은 물론, 본 기술분야에서 통상의 지식을 가진 자가 용이하게 발명할 수 없는 추가적인 기술요소들을 제공하기 위해 발명되었다.</div>
+    </background-art>
+    <div>
+      <div>
+        <div num="0006" class="description-paragraph">
+          <patcit>
+            <text>한국공개특허 제10-2013-0106716호: 무선통신단말기를 이용한 쿠폰제공방법</text>
+          </patcit>
+        </div>
+      </div>
+    </div>
+    <summary-of-invention>
+      <tech-problem>
+        <div num="0007" class="description-paragraph">본 발명은 상술한 과제를 해결하기 위하여 안출된 것으로서, 발급된 쿠폰의 사용 여부에 관한 쿠폰 사용 상태 정보를 수집하고, 수집된 정보를 바탕으로 쿠폰 사용량이 증가하는 시기와 위치를 파악하여 실시간으로 쿠폰리스트의 정렬 순서를 조정하여 사용자에게 노출시킴으로써 해당 쿠폰의 판매량을 증가시키는 기술을 제공하는 것을 해결 과제로 한다.  </div>
+        <div num="0008" class="description-paragraph">본 발명이 이루고자 하는 기술적 과제는 이상에서 언급한 기술적 과제로 제한되지 않으며, 이하에서 설명할 내용으로부터 통상의 기술자에게 자명한 범위 내에서 다양한 기술적 과제가 포함될 수 있다. </div>
+      </tech-problem>
+      <tech-solution>
+        <div num="0009" class="description-paragraph">상술한 과제를 해결하기 위한 본 발명의 일 측면에 따르면, 쿠폰정보를 등록 처리하는 쿠폰등록 처리부; 상기 등록된 쿠폰정보 중 사용자에게 발급된 쿠폰의 사용 여부에 관한 정보를 포함하는 쿠폰 사용 데이터를 수신하여 기간별 쿠폰 사용 데이터 및 쿠폰 사용처에 따른 쿠폰 사용 데이터의 연산을 처리하는 쿠폰 사용 데이터 처리부; 판매채널에 접속하여 쿠폰리스트를 요청한 사용자 단말장치의 위치정보를 수집하는 사용자 위치정보 수집부; 및 상기 쿠폰 사용 데이터 처리부의 처리 결과와 상기 사용자의 위치정보에 기초하여 상기 사용자의 위치를 중심으로 기 설정된 영역 내에서 상기 기간별 쿠폰 사용 수량이 많은 순서로 상기 쿠폰정보를 정렬한 쿠폰리스트를 생성하여 상기 단말장치에 표시하는 쿠폰리스트 관리부;를 포함하는 쿠폰 관리 장치가 제공된다.</div>
+        <div num="0010" class="description-paragraph">여기서, 상기 쿠폰 사용 데이터 처리부는, 최근에 사용된 쿠폰일수록 상기 쿠폰리스트 상에서 상위에 위치하도록 상기 기간별 쿠폰 사용 데이터에 대해 기간별 가중치를 부여하여 연산할 수 있다.</div>
+        <div num="0011" class="description-paragraph">그리고, 상기 쿠폰 사용 데이터는, 쿠폰ID, 쿠폰 번호, 사용처 위치 정보 및 사용 시간 중 적어도 하나 이상을 포함할 수 있다.</div>
+        <div num="0012" class="description-paragraph">또한, 상기 쿠폰 사용 데이터 처리부는, 상기 쿠폰 사용 데이터를 실시간 수신하여 상기 쿠폰리스트 관리부에 기간별 쿠폰 사용 데이터 및 쿠폰 사용처에 따른 쿠폰 사용 데이터를 실시간으로 제공할 수 있다.</div>
+        <div num="0013" class="description-paragraph">상술한 과제를 해결하기 위한 본 발명의 다른 측면에 따르면, 쿠폰의 사용처에서 쿠폰을 사용 처리를 하였을 때 쿠폰의 사용 상태가 사용 완료 상태로 변경되었음을 쿠폰 사용 데이터 형태로 송신하는 쿠폰 사용 처리장치; 쿠폰의 판매채널에 접속하여 쿠폰리스트를 요청하는 사용자 단말장치; 및 상기 쿠폰 사용 처리장치로부터 상기 쿠폰 사용 데이터를 수신하여 기간별 쿠폰 사용 데이터 및 쿠폰 사용처에 따른 쿠폰 사용 데이터의 연산하고 상기 사용자 단말장치의 위치정보를 수집하여, 상기 사용자의 위치를 중심으로 기 설정된 영역 내에서 상기 기간별 쿠폰 사용 수량이 많은 순서로 정렬된 쿠폰리스트를 생성하여 상기 단말장치에 표시하는 쿠폰 관리 장치;를 포함하는 쿠폰 관리 시스템이 제공된다.</div>
+        <div num="0014" class="description-paragraph">여기서, 상기 쿠폰 관리 장치는, 상기 쿠폰 사용 처리장치로부터, 쿠폰ID, 쿠폰 번호, 사용처 위치 정보 및 사용 시간 중 적어도 하나 이상을 포함하는 상기 쿠폰 사용 데이터를 실시간 수신하여 상기 쿠폰 판매채널에 표시되는 쿠폰리스트의 정렬 순서를 관리할 수 있다.</div>
+        <div num="0015" class="description-paragraph">그리고, 상기 쿠폰 관리 장치는, 최근에 사용된 쿠폰일수록 상기 쿠폰리스트 상에서 상위에 위치하도록 상기 기간별 쿠폰 사용 데이터에 대해 기간별 가중치를 부여하여 연산할 수 있다.</div>
+        <div num="0016" class="description-paragraph">상술한 과제를 해결하기 위한 본 발명의 또 다른 측면에 따르면, (a) 쿠폰 사용 처리장치가 고객이 제시한 쿠폰을 사용 처리하여 쿠폰ID, 쿠폰 번호, 사용처 위치 정보 및 사용 시간을 포함하는 쿠폰 사용 데이터를 송신하는 단계; (b) 쿠폰 관리 장치가 상기 쿠폰 사용 처리장치로부터 상기 쿠폰 사용 데이터를 수신하여 저장하는 단계; (c) 상기 쿠폰 관리 장치가 상기 쿠폰 사용 데이터에 기초하여 기간별 쿠폰 사용 데이터 및 쿠폰 사용처에 따른 쿠폰 사용 데이터의 연산을 처리하는 단계; 및 (d) 쿠폰 판매채널에 접속한 사용자 단말장치에 상기 기간별 쿠폰 사용 수량이 많은 순서로 쿠폰리스트를 생성하여 표시하는 단계;를 포함하는 쿠폰 사용 상태 정보와 연계하여 쿠폰리스트를 표시방법이 제공된다.</div>
+        <div num="0017" class="description-paragraph">여기서, 상기 (c) 단계는, 최근에 사용된 쿠폰일수록 상기 쿠폰리스트 상에서 상위에 위치하도록 상기 기간별 쿠폰 사용 데이터에 대해 기간별 가중치를 부여하여 연산하는 단계를 포함할 수 있다.</div>
+        <div num="0018" class="description-paragraph">그리고, 상기 판매채널에 접속하여 쿠폰리스트를 요청한 사용자 단말장치의 위치정보를 수집하는 단계; 및 상기 쿠폰 사용 데이터 처리부의 처리 결과와 상기 사용자 단말장치의 위치정보에 기초하여 상기 사용자의 위치를 중심으로 기 설정된 영역 내에서 상기 기간별 쿠폰 사용 수량이 많은 순서로 쿠폰리스트를 생성하여 상기 단말장치에 표시하는 단계를 더 포함할 수 있다.</div>
+        <div num="0019" class="description-paragraph">상술한 과제를 해결하기 위한 본 발명의 또 다른 측면에 따르면, (a) 쿠폰 사용 데이터 처리부에서 사용 처리된 쿠폰ID, 쿠폰 번호, 사용처 위치 정보 및 사용 시간을 포함하는 쿠폰 사용 데이터를 수신하는 단계; (b) 상기 쿠폰 사용 데이터 처리부에서 상기 쿠폰 사용 데이터에 기초하여 기간별 쿠폰 사용 데이터 및 쿠폰 사용처에 따른 쿠폰 사용 데이터의 연산하는 단계; (c) 쿠폰리스트 관리부에서 상기 기간별 쿠폰 사용 수량이 많은 순서로 쿠폰리스트가 정렬되도록 쿠폰 전시정보를 조정하는 단계; (d) 사용자 위치정보 수집부에서 쿠폰 판매채널에 접속한 사용자 단말장치의 위치정보를 수집하는 단계; 및 (e) 상기 사용자 단말장치의 위치를 중심으로 기 설정된 영역 내에서 상기 기간별 쿠폰 사용 수량이 많은 순서로 쿠폰리스트를 생성하여 상기 단말장치에 표시하는 단계;를 포함하는 쿠폰 사용 상태 정보와 연계하여 쿠폰리스트를 표시방법이 제공된다.</div>
+        <div num="0020" class="description-paragraph">여기서, 상기 (c) 단계는, 최근에 사용된 쿠폰일수록 상기 쿠폰리스트 상에서 상위에 위치하도록 상기 기간별 쿠폰 사용 데이터에 대해 기간별 가중치를 부여하여 연산하는 단계를 포함할 수 있다.</div>
+        <div num="0021" class="description-paragraph">상술한 과제를 해결하기 위한 본 발명의 또 다른 측면에 따르면, (a) 쿠폰 사용 데이터 처리부에서 사용 처리된 쿠폰ID, 쿠폰 번호, 사용처 위치 정보 및 사용 시간을 포함하는 쿠폰 사용 데이터를 수신하는 단계; (b) 상기 쿠폰 사용 데이터 처리부에서 상기 쿠폰 사용 데이터에 기초하여 기간별 쿠폰 사용 데이터 및 쿠폰 사용처에 따른 쿠폰 사용 데이터의 연산하는 단계; (c) 쿠폰리스트 관리부에서 상기 기간별 쿠폰 사용 수량이 많은 순서로 정렬된 쿠폰리스트가 생성되도록 쿠폰 전시정보를 조정하는 단계; (d) 사용자 위치정보 수집부에서 쿠폰 판매채널에 접속한 사용자 단말장치의 위치정보를 수집하는 단계; (e) 상기 사용자 단말장치의 위치를 중심으로 기 설정된 영역 내에서 상기 기간별 쿠폰 사용 수량이 많은 순서로 쿠폰리스트를 생성하여 상기 단말장치에 표시하는 단계; 를 포함하는 쿠폰 사용 상태 정보와 연계하여 쿠폰리스트를 표시방법이 프로그램의 형태로 기록된 전자 장치에서 판독 가능한 기록 매체가 제공된다.</div>
+      </tech-solution>
+      <advantageous-effects>
+        <div num="0022" class="description-paragraph">본 발명은 쿠폰 사용 상태 정보를 관리할 수 있으며, 이러한 쿠폰 사용 상태 정보를 바탕으로 쿠폰 사용량이 증가하는 시기와 위치를 실시간으로 파악할 수 있다.</div>
+        <div num="0023" class="description-paragraph">또한, 본 발명은 쿠폰 사용량이 증가하는 시기와 위치를 실시간으로 파악하여 사용자에게 노출되는 쿠폰리스트의 정렬 순서를 조정함으로써 쿠폰의 판매량을 증가시킬 수 있다.</div>
+        <div num="0024" class="description-paragraph">또한, 본 발명은 쿠폰을 요청한 사용자의 현재 위치를 기준으로 주변에서 많이 사용된 쿠폰을 기간별 쿠폰 사용 순위와 조합하여 제시함으로써 사용자의 주변에서 최근 가장 많이 사용되고 있는 쿠폰의 정보를 제공하는 한편, 쿠폰 구매를 유도할 수 있다.</div>
+        <div num="0025" class="description-paragraph">본 발명의 효과는 이상에서 언급한 효과들로 제한되지 않으며, 이하에서 설명할 내용으로부터 통상의 기술자에게 자명한 범위 내에서 다양한 효과들이 포함될 수 있다.</div>
+      </advantageous-effects>
+    </summary-of-invention>
+    <description-of-drawings>
+      <div num="0026" class="description-paragraph">도 1은 본 발명의 일 실시예에 따른 쿠폰 관리 시스템의 구성도<br/>
+도 2는 본 발명의 일 실시예에 따른 쿠폰 관리 장치의 제어 블럭도 <br/>
+도 3은 본 발명의 일 실시예에 따른 쿠폰 관리 시스템의 동작 흐름도<br/>
+도 4는 본 발명의 일 실시예에 따른 쿠폰리스트 표시 방법의 흐름도<br/>
+도 5는 본 발명의 일 실시예에 따른 쿠폰 전시 상태도<br/>
+도 6은 본 발명의 일 실시예에 따른 쿠폰리스트 제공 상태도</div>
+    </description-of-drawings>
+    <description-of-embodiments>
+      <div num="0027" class="description-paragraph">이하, 첨부된 도면을 참조하여 본 발명의 바람직한 실시예를 보다 상세히 설명하기로 한다. 첨부 도면을 참조하여 설명함에 있어 동일하거나 대응하는 구성 요소는 동일한 도면번호를 부여하고 이에 대한 중복되는 설명은 생략하기로 한다.</div>
+      <div num="0028" class="description-paragraph">도 1은 본 발명의 일 실시예에 따른 쿠폰 관리 시스템의 구성도이다.</div>
+      <div num="0029" class="description-paragraph">도 1에 도시된 바와 같이, 본 발명의 쿠폰 관리 시스템은 통신망을 통해 접속되는 쿠폰 사용 처리장치(100), 쿠폰 관리 장치(200) 및 단말장치(300)를 포함한다.</div>
+      <div num="0030" class="description-paragraph">쿠폰 사용 처리장치(100)는 쿠폰의 온/오프라인 사용처에서 고객이 제시한 쿠폰을 사용 처리를 하였을 때 쿠폰의 사용 상태가 사용 완료 상태로 변경되었음을 쿠폰 사용 데이터 형태로 쿠폰 관리 장치(200)로 송신한다. 쿠폰 사용 데이터는 쿠폰ID, 쿠폰 번호, 사용처 위치 정보 및 사용 시간을 포함한다.</div>
+      <div num="0031" class="description-paragraph">쿠폰 관리 장치(200)는 쿠폰의 판매채널에 쿠폰리스트를 표시하고, 사용자 선택에 따라 쿠폰을 판매 및 발급하여 쿠폰 서비스를 제공하는 일련의 과정을 제어한다. 쿠폰 관리 장치(200)는 쿠폰 사용 처리장치(100)와 실시간 연동하여 쿠폰 사용 처리장치(100)로부터 수신된 쿠폰 사용 데이터를 기반으로 쿠폰 판매채널에 표시되는 쿠폰리스트의 정렬 순서를 관리한다.</div>
+      <div num="0032" class="description-paragraph">쿠폰 관리 장치(200)는 쿠폰 원장 정보에 저장된 쿠폰 전시정보를 변경함으로써, 쿠폰 판매채널에 표시되는 쿠폰리스트의 정렬 순서를 관리할 수 있다. 쿠폰 전시정보는 쿠폰의 원장 정보 중 전시 채널 설정 등을 포함하는 정보로서, 웹, 모바일, 앱 등의 판매채널에 등록된 쿠폰들이 노출되는 쿠폰리스트에서의 전시 순위 정보를 포함한다. </div>
+      <div num="0033" class="description-paragraph">쿠폰 관리 장치(200)는 쿠폰 사용 처리장치(100)로부터 수신된 쿠폰 사용 데이터에 따라, 기간별 쿠폰 사용 수량 데이터를 각 쿠폰 원장 정보에 포함된 쿠폰 전시 정보에 반영한다. 여기서, 쿠폰 관리 장치(200)는 기간별 쿠폰 사용 데이터에 대해 기간별 가중치를 부여함으로 최근에 사용된 쿠폰일수록 가중치가 부여되도록 쿠폰 전시 정보를 제어할 수 있다. 또한, 쿠폰 관리 장치(200)는 판매채널에 접속한 사용자 단말장치(300)의 현재 위치에 따라, 사용자의 위치 좌표를 중심으로 주변에서 많이 사용된 쿠폰을 기간별 쿠폰 사용 순위와 조합하여 쿠폰리스트를 제공할 수 있다.</div>
+      <div num="0034" class="description-paragraph">이러한 본 발명의 일 실시예에 따른 쿠폰 관리 장치(200)는, 다양한 통신 규격을 통해 다른 전자 장치들과 통신할 수 있고, 다양한 데이터 처리 연산을 수행할 수 있는 전자 장치를 통해 구현될 수 있다. 예를 들어, 쿠폰 관리 장치(200)는 서버(Server) 장치의 형태로 구현될 수 있으며, 이러한 서버 장치의 형태 이외에도 다양한 전자 장치의 형태로 구현될 수 있다. 또한, 쿠폰 관리 장치(200)는 단일의 전자 장치의 형태로 구현되거나, 둘 이상의 전자 장치가 결합 된 형태로 구현될 수 있다. </div>
+      <div num="0035" class="description-paragraph">도 2는 본 발명의 일 실시예에 따른 쿠폰 관리 장치(200)의 제어 블럭도이다.</div>
+      <div num="0036" class="description-paragraph">도 2에 도시된 바와 같이 쿠폰 관리 장치(200)는, 쿠폰정보를 등록받아 쿠폰정보 DB(216)에 등록 처리하는 쿠폰등록 처리부(210), 서비스 사용자 관련 정보가 저장되는 사용자정보 DB(218), 발급된 쿠폰의 사용 여부에 관한 정보를 포함하는 쿠폰 사용 데이터를 처리하여 기간별 쿠폰 사용 수량, 쿠폰 사용처에 따른 쿠폰 사용 수량 등을 연산하는 쿠폰 사용 데이터 처리부(212), 쿠폰 리스트를 요청한 사용자의 위치정보를 수집하는 사용자 위치정보 수집부(214) 및 쿠폰 사용 데이터 처리부(212)의 처리 결과에 따라 판매채널에 표시된 쿠폰리스트의 정렬 순서를 조정하는 쿠폰리스트 관리부(220)를 포함한다.</div>
+      <div num="0037" class="description-paragraph">쿠폰등록 처리부(210)는 쿠폰들의 타입(Type) 정보, 식별 정보, 혜택 정보, 발급받는 사용자 계정 정보 등을 쿠폰정보 DB(216)에 등록하여 관리한다. 쿠폰등록 처리부(210)는 각 쿠폰들에 대한 사용 상태에 관한 정보를 실시간으로 관리할 수 있으며, 특히 &#39;쿠폰 사용 상태 정보&#39;를 관리할 수 있다. 이 경우 상기 &#39;쿠폰 사용 상태 정보&#39;에는, 사용이 완료된 쿠폰 정보, 미사용 상태이지만 유효 조건(유효 기간 등)이 만료되지 않은 쿠폰 정보, 미사용 상태에서 유효 조건이 만료된 쿠폰 정보 등의 정보가 포함될 수 있다</div>
+      <div num="0038" class="description-paragraph">쿠폰 사용 데이터 처리부(212)는 쿠폰 사용 처리장치(100)로부터 쿠폰이 온/오프라인 사용처에서 고객이 제시한 쿠폰을 사용 처리를 하였을 때 쿠폰의 사용 상태가 사용 완료 상태로 변경되었음을 쿠폰 사용 데이터 형태로 수신한다. 여기서, 쿠폰 사용 데이터는 쿠폰ID, 쿠폰 번호, 사용처 위치 정보 및 사용 시간을 포함한다. 쿠폰 사용 데이터 처리부(212)는 쿠폰 사용 데이터에 기초하여 기간별 쿠폰 사용 수량을 연산하며 연산결과를 쿠폰리스트 관리부(220)에 제공한다. 또한, 쿠폰 사용 데이터 처리부(212)는 쿠폰 사용 데이터에 기초하여 각 쿠폰 사용처에 따른 쿠폰 사용 수량도 연산하여 쿠폰리스트 관리부(220)에 제공할 수 있다.</div>
+      <div num="0039" class="description-paragraph">사용자 위치정보 수집부(214)는 단말장치(300)를 통해 웹, 모바일, 앱 등의 판매채널에 접속하여 쿠폰리스트를 요청하는 단말장치(300)의 위치정보를 수집한다. 사용자 위치정보 수집부(214)는 수집된 사용자의 위치정보를 쿠폰리스트 관리부(220)에 제공한다.</div>
+      <div num="0040" class="description-paragraph">쿠폰리스트 관리부(220)는 쿠폰 사용 처리장치(100)로부터 수신된 쿠폰 사용 데이터를 기반으로 쿠폰 판매채널에 표시되는 쿠폰리스트의 정렬 순서를 관리한다. 쿠폰리스트 관리부(220)는 쿠폰 원장 정보에 저장된 쿠폰 전시정보를 변경함으로써, 쿠폰 판매채널에 표시되는 쿠폰리스트의 정렬 순서를 관리할 수 있다. 쿠폰 전시정보는 쿠폰의 원장 정보 중 전시 채널 설정 등을 포함하는 정보로서, 웹, 모바일, 앱 등의 판매채널에 등록된 쿠폰들이 노출되는 쿠폰리스트에서의 전시 순위 정보를 포함한다. </div>
+      <div num="0041" class="description-paragraph">쿠폰리스트 관리부(220)는 쿠폰사용 데이터 처리부(212)로부터 제공받은 기간별 쿠폰 사용 수량 데이터를 각 쿠폰 원장 정보에 포함된 쿠폰 전시 정보에 반영한다. 여기서, 쿠폰리스트 관리부(220)는 기간별 쿠폰 사용 데이터에 대해 기간별 가중치를 부여함으로 최근에 사용된 쿠폰일수록 가중치가 부여되어 쿠폰리스트의 상위권에 정렬되도록 쿠폰 전시 정보를 제어할 수 있다. </div>
+      <div num="0042" class="description-paragraph">쿠폰리스트 관리부(220)는 사용자 위치정보 수집부(214)로부터 판매채널에 접속한 사용자 단말장치(300)의 현재 위치를 제공받고, 사용자의 위치 좌표를 중심으로 주변에서 많이 사용된 쿠폰을 기간별 쿠폰 사용 순위와 조합하여 쿠폰리스트를 제공할 수 있다.</div>
+      <div num="0043" class="description-paragraph">도 3은 본 발명의 일 실시예에 따른 쿠폰 관리 시스템의 동작 흐름도이다.</div>
+      <div num="0044" class="description-paragraph">쿠폰 사용 처리장치(100)는 쿠폰의 온/오프라인 사용처에서 고객이 제시한 쿠폰을 사용 처리를 하였을 때 쿠폰의 사용 상태가 사용 완료 상태로 변경되었음을 쿠폰 사용 데이터 형태로 쿠폰 관리 장치(200)로 송신한다(S1100). 여기서, 쿠폰 사용 데이터는 쿠폰ID, 쿠폰 번호, 사용처 위치 정보 및 사용 시간을 포함한다.</div>
+      <div num="0045" class="description-paragraph">쿠폰 관리 장치(200)는 수신된 쿠폰 사용 데이터에서 쿠폰 사용장소 및 사용 시간을 저장하고(S112), 기간별 쿠폰 사용 데이터를 산출한다(S114). </div>
+      <div num="0046" class="description-paragraph">쿠폰 관리 장치(200)는 기간별 쿠폰 사용 데이터에 따라 기간별 쿠폰 사용 수량 데이터를 각 쿠폰 원장 정보에 포함된 쿠폰 전시 정보에 반영한다(S116). 여기서, 쿠폰 관리 장치(200)는 쿠폰 사용 기간에 따라 각기 다른 가중치를 부여함으로써 최근에 사용된 쿠폰일수록 가중치가 부여되도록 쿠폰 전시 정보를 제어할 수 있다. </div>
+      <div num="0047" class="description-paragraph">단말장치(300)는 웹, 모바일, 앱 등의 판매채널에 접속하여 쿠폰 판매 혹은 추천을 요청한다(S118).</div>
+      <div num="0048" class="description-paragraph">이에, 쿠폰 관리 장치(200)는 해당 단말장치(300)의 위치정보를 수집하고(S120), 단말장치(300)의 현재 위치에 따라, 사용자의 위치 좌표를 중심으로 주변에서 많이 사용된 쿠폰을 기간별 쿠폰 사용 순위와 조합하여 쿠폰리스트의 정렬 상태를 조정한다(S112).</div>
+      <div num="0049" class="description-paragraph">쿠폰 관리 장치(200)는 조정된 쿠폰리스트를 단말장치(300)에 제공한다(S124). 이에, 사용자는 현재 위치를 기준으로 최근에 많이 사용된 쿠폰들을 확인하여 구매할 수 있다.</div>
+      <div num="0050" class="description-paragraph">도 4는 본 발명의 일 실시예에 따른 쿠폰리스트 표시 방법의 흐름도이다. 쿠폰 관리 장치(200)는 쿠폰 사용 데이터 처리부(212)를 통해 쿠폰 사용 데이터를 수신한다(S210). </div>
+      <div num="0051" class="description-paragraph">쿠폰 관리 장치(200)는 쿠폰 사용 처리장치(100)로부터 수신된 쿠폰 사용 데이터에 따라, 기간별 쿠폰 사용 수량 데이터를 각 쿠폰 원장 정보에 포함된 쿠폰 전시 정보에 반영한다(S212). 여기서, 쿠폰 관리 장치(200)는 기간별 쿠폰 사용 데이터에 대해 기간별 가중치를 부여함으로 최근에 사용된 쿠폰일수록 가중치가 부여되도록 쿠폰 전시 정보를 제어할 수 있다(S214). </div>
+      <div num="0052" class="description-paragraph">쿠폰 관리 장치(200)는 판매채널에 접속한 사용자 단말장치(300)의 현재 위치정보를 수집하고(S216), 사용자의 위치 좌표를 중심으로 쿠폰 사용 순위를 재분류하고(S218), 기간별 쿠폰 사용 순위를 조합하여 쿠폰리스트를 제공할 수 있다(S220). 이에, 판매채널에 접속한 사용자는 현재 위치를 기준으로 최근에 주변에서 많이 사용된 쿠폰의 리스트를 제공받을 수 있다. 이러한 쿠폰리스트는 도 5와 같이 제공될 수 있다. </div>
+      <div num="0053" class="description-paragraph">도 5는 본 발명의 일 실시예에 따른 쿠폰리스트 전시 상태도로서 사용자의 위치를 기준으로 주변에서 많이 사용된 쿠폰의 순위를 확인할 수 있다. </div>
+      <div num="0054" class="description-paragraph">즉, 쿠폰 관리 장치(200)는 실시간 쿠폰 사용 데이터를 반영하여 기간별 쿠폰 사용량에 따라 쿠폰 리스트의 정렬 순서를 결정할 수 있다. 이 후, 사용자가 쿠폰 리스트를 요청하면 사용자의 현재 위치를 중심으로 주변의 쿠폰 사용처에서 사용한 쿠폰을 연산하여 쿠폰 리스트의 정렬 순서를 결정할 수 있다.</div>
+      <div num="0055" class="description-paragraph">도 6은 본 발명의 일 실시예에 따른 쿠폰리스트 제공 상태도이다.</div>
+      <div num="0056" class="description-paragraph">본 발명의 실시예에 따른 쿠폰 리스트 생성방법에 따르면 소정 기간을 기준으로 &#34;누적 쿠폰 사용순위&#34;를 집계하여 쿠폰 리스트를 생성할 수 있다.</div>
+      <div num="0057" class="description-paragraph">이 후, 사용자가 쿠폰 리스트를 요청하는 경우, &#34;누적 쿠폰 사용순위&#34;에 &#34;실시간 쿠폰 사용순위&#34;를 반영하여 쿠폰 리스트를 조정할 수 있다. 예컨대, &#34;누적 쿠폰 사용순위&#34;는 쿠폰 A, B, C, 순으로 집계되었으나, 최근(예를 들어, 최근 3시간, 6시간, 등)의 쿠폰 사용순위에서 쿠폰 B의 사용순위가 급상승 한 경우 이를 쿠폰 사용순위에 반영하여 쿠폰 B, A, C 순으로 정렬된 리스트를 제공할 수 있다.</div>
+      <div num="0058" class="description-paragraph">또한, 사용자의 현재 위치를 반영하는 경우 사용자를 중심으로 기준 반경 이내에서의 쿠폰 사용순위를 반영하여 쿠폰리스트를 제공할 수 있다. 이에, &#34;제1지역 쿠폰 사용순위&#34;는 쿠폰, B, A, C 순으로 조정되어 제공될 수 있고 &#34;제2지역 쿠폰 사용순위&#34;는 쿠폰 A, B, C 순으로 조정되어 제공될 수 있다.</div>
+      <div num="0059" class="description-paragraph">이상 설명한 바와 같이, 본 발명의 쿠폰리스트 제공방법은, 실시간 쿠폰 사용 데이터를 반영하여 기간별 쿠폰 사용량에 따라 쿠폰 리스트의 정렬 순서를 결정할 수 있다.</div>
+      <div num="0060" class="description-paragraph">한편, 본 발명의 다른 측면에 따르면, (a) 쿠폰 사용 데이터 처리부에서 사용 처리된 쿠폰ID, 쿠폰 번호, 사용처 위치 정보 및 사용 시간을 포함하는 쿠폰 사용 데이터를 수신하는 단계; (b) 상기 쿠폰 사용 데이터 처리부에서 상기 쿠폰 사용 데이터에 기초하여 기간별 쿠폰 사용 데이터 및 쿠폰 사용처에 따른 쿠폰 사용 데이터의 연산하는 단계; (c) 쿠폰리스트 관리부에서 상기 기간별 쿠폰 사용 수량이 많은 순서로 쿠폰리스트가 정렬되도록 쿠폰 전시정보를 조정하는 단계; (d) 사용자 위치정보 수집부에서 쿠폰 판매채널에 접속한 사용자 단말장치의 위치정보를 수집하는 단계; (e) 상기 사용자 단말장치의 위치를 중심으로 기 설정된 영역 내에서 상기 기간별 쿠폰 사용 수량이 많은 순서로 쿠폰리스트를 정렬하여 상기 단말장치에 표시하는 단계;를 포함하는 쿠폰 사용 상태 정보와 연계하여 쿠폰리스트를 표시방법이 프로그램의 형태로 기록된 전자 장치에서 판독 가능한 기록 매체에 기록될 수 있다. </div>
+      <div num="0061" class="description-paragraph">이러한 쿠폰리스트를 표시방법은 프로그램으로 작성 가능하며, 프로그램을 구성하는 코드들 및 코드 세그먼트들은 당해 분야의 프로그래머에 의하여 용이하게 추론될 수 있다. 또한, 쿠폰리스트를 표시방법에 관한 프로그램은 전자장치가 읽을 수 있는 정보저장매체(Readable Media)에 저장되고, 전자장치에 의하여 읽혀지고 실행될 수 있다.</div>
+      <div num="0062" class="description-paragraph">이와 같이, 본 발명이 속하는 기술분야의 당업자는 본 발명이 그 기술적 사상이나 필수적 특징을 변경하지 않고서 다른 구체적인 형태로 실시될 수 있다는 것을 이해할 수 있을 것이다.  그러므로 이상에서 기술한 실시예들은 모든 면에서 예시적인 것이며 한정적인 것이 아닌 것으로서 이해해야만 한다.  본 발명의 범위는 상기 상세한 설명보다는 후술하는 특허청구범위에 의하여 나타내어지며, 특허청구범위의 의미 및 범위 그리고 그 등가 개념으로부터 도출되는 모든 변경 또는 변형된 형태가 본 발명의 범위에 포함되는 것으로 해석되어야 한다.</div>
+    </description-of-embodiments>
+    <industrial-applicability>
+      <div num="0063" class="description-paragraph">본 발명은 쿠폰 데이터가 활용되는 다양한 종류의 커머스(Commerce) 시스템에서 발급된 쿠폰 사용 상태 정보를 수집하고, 수집된 정보를 바탕으로 쿠폰 사용량이 증가하는 시기와 위치를 파악하여 실시간으로 해당 쿠폰의 전시를 조정하여 사용자에게 노출시킴으로써 해당 쿠폰의 판매량을 증가시킬 수 있는 쿠폰 사용 상태 정보와 연계하여 쿠폰리스트를 표시하는 쿠폰 관리 시스템 및 방법을 제공하는 데에 이용할 수 있다.</div>
+    </industrial-applicability>
+    <reference-signs-list>
+      <div num="0064" class="description-paragraph">100 : 쿠폰 사용 처리장치
+
+200 : 쿠폰 관리 장치<br/>
+210 : 쿠폰등록 처리부
+
+
+212 : 쿠폰 사용 데이터 처리부<br/>
+214 : 사용자 위치정보 수집부
+
+216 : 쿠폰정보 DB<br/>
+218 : 사용자정보 DB
+
+
+220 : 쿠폰리스트 관리부<br/>
+300 : 단말장치</div>
+    </reference-signs-list>
+  </div>
+  </div>
+  </section>
+
+  <section itemprop="claims" itemscope>
+    <h2>Claims (<span itemprop="count">13</span>)</h2>
+    
+    <div itemprop="content" html><ol mxw-id="PCLM86190898" lang="KO" load-source="patent-office" class="claims">
+    <li class="claim"> <div num="1" class="claim">
+      <div class="claim-text">쿠폰정보를 등록 처리하는 쿠폰등록 처리부;<br/>상기 등록된 쿠폰정보 중 사용자에게 발급된 쿠폰의 사용 여부에 관한 정보를 포함하는 쿠폰 사용 데이터를 수신하여 기간별 쿠폰 사용 데이터 및 쿠폰 사용처에 따른 쿠폰 사용 데이터의 연산을 처리하는 쿠폰 사용 데이터 처리부;<br/>판매채널에 접속하여 쿠폰리스트를 요청한 사용자 단말장치의 위치정보를 수집하는 사용자 위치정보 수집부; 및<br/>상기 쿠폰 사용 데이터 처리부의 처리 결과와 상기 사용자의 위치정보에 기초하여 상기 사용자의 위치를 중심으로 기 설정된 영역 내에서 상기 기간별 쿠폰 사용 수량이 많은 순서로 상기 쿠폰정보를 정렬한 쿠폰리스트를 생성하여 상기 단말장치에 표시하는 쿠폰리스트 관리부;<br/>를 포함하는 쿠폰 관리 장치.</div>
+    </div>
+    </li> <li class="claim-dependent"> <div num="2" class="claim">
+      <div class="claim-text">제1항에 있어서,<br/>상기 쿠폰 사용 데이터 처리부는,<br/>최근에 사용된 쿠폰일수록 상기 쿠폰리스트 상에서 상위에 위치하도록 상기 기간별 쿠폰 사용 데이터에 대해 기간별 가중치를 부여하여 연산하는 것을 특징으로 하는 쿠폰 관리 장치.</div>
+    </div>
+    </li> <li class="claim-dependent"> <div num="3" class="claim">
+      <div class="claim-text">제1항에 있어서,<br/>상기 쿠폰 사용 데이터는,<br/>쿠폰ID, 쿠폰 번호, 사용처 위치 정보 및 사용 시간 중 적어도 하나 이상을 포함하는 것을 특징으로 하는 쿠폰 관리 장치.</div>
+    </div>
+    </li> <li class="claim-dependent"> <div num="4" class="claim">
+      <div class="claim-text">제1항에 있어서,<br/>상기 쿠폰 사용 데이터 처리부는,<br/>상기 쿠폰 사용 데이터를 실시간 수신하여 상기 쿠폰리스트 관리부에 기간별 쿠폰 사용 데이터 및 쿠폰 사용처에 따른 쿠폰 사용 데이터를 실시간으로 제공하는 것을 특징으로 하는 쿠폰 관리 장치.</div>
+    </div>
+    </li> <li class="claim"> <div num="5" class="claim">
+      <div class="claim-text">쿠폰의 사용처에서 쿠폰을 사용 처리를 하였을 때 쿠폰의 사용 상태가 사용 완료 상태로 변경되었음을 쿠폰 사용 데이터 형태로 송신하는 쿠폰 사용 처리장치;<br/>쿠폰의 판매채널에 접속하여 쿠폰리스트를 요청하는 사용자 단말장치; 및<br/>상기 쿠폰 사용 처리장치로부터 상기 쿠폰 사용 데이터를 수신하여 기간별 쿠폰 사용 데이터 및 쿠폰 사용처에 따른 쿠폰 사용 데이터의 연산하고 상기 사용자 단말장치의 위치정보를 수집하여, 상기 사용자의 위치를 중심으로 기 설정된 영역 내에서 상기 기간별 쿠폰 사용 수량이 많은 순서로 정렬된 쿠폰리스트를 생성하여 상기 단말장치에 표시하는 쿠폰 관리 장치;<br/>를 포함하는 쿠폰 관리 시스템.</div>
+    </div>
+    </li> <li class="claim-dependent"> <div num="6" class="claim">
+      <div class="claim-text">제5항에 있어서,<br/>상기 쿠폰 관리 장치는,<br/>상기 쿠폰 사용 처리장치로부터, 쿠폰ID, 쿠폰 번호, 사용처 위치 정보 및 사용 시간 중 적어도 하나 이상을 포함하는 상기 쿠폰 사용 데이터를 실시간 수신하여 상기 쿠폰 판매채널에 표시되는 쿠폰리스트의 정렬 순서를 관리하는 것을 특징으로 하는 쿠폰 관리 시스템.</div>
+    </div>
+    </li> <li class="claim-dependent"> <div num="7" class="claim">
+      <div class="claim-text">제5항에 있어서,<br/>상기 쿠폰 관리 장치는,<br/>최근에 사용된 쿠폰일수록 상기 쿠폰리스트 상에서 상위에 위치하도록 상기 기간별 쿠폰 사용 데이터에 대해 기간별 가중치를 부여하여 연산하는 것을 특징으로 하는 쿠폰 관리 시스템.</div>
+    </div>
+    </li> <li class="claim"> <div num="8" class="claim">
+      <div class="claim-text">(a) 쿠폰 사용 처리장치가 고객이 제시한 쿠폰을 사용 처리하여 쿠폰ID, 쿠폰 번호, 사용처 위치 정보 및 사용 시간을 포함하는 쿠폰 사용 데이터를 송신하는 단계;<br/>(b) 쿠폰 관리 장치가 상기 쿠폰 사용 처리장치로부터 상기 쿠폰 사용 데이터를 수신하여 저장하는 단계;<br/>(c) 상기 쿠폰 관리 장치가 상기 쿠폰 사용 데이터에 기초하여 기간별 쿠폰 사용 데이터 및 쿠폰 사용처에 따른 쿠폰 사용 데이터의 연산을 처리하는 단계; 및<br/>(d) 쿠폰 판매채널에 접속한 사용자 단말장치에 상기 기간별 쿠폰 사용 수량이 많은 순서로 쿠폰리스트를 생성하여 표시하는 단계;<br/>를 포함하는 쿠폰 사용 상태 정보와 연계하여 쿠폰리스트를 표시방법.</div>
+    </div>
+    </li> <li class="claim-dependent"> <div num="9" class="claim">
+      <div class="claim-text">제8항에 있어서,<br/>상기 (c) 단계는,<br/>최근에 사용된 쿠폰일수록 상기 쿠폰리스트 상에서 상위에 위치하도록 상기 기간별 쿠폰 사용 데이터에 대해 기간별 가중치를 부여하여 연산하는 단계를 포함하는 것을 특징으로 하는 쿠폰 사용 상태 정보와 연계하여 쿠폰리스트를 표시방법.</div>
+    </div>
+    </li> <li class="claim-dependent"> <div num="10" class="claim">
+      <div class="claim-text">제8항에 있어서,<br/>상기 판매채널에 접속하여 쿠폰리스트를 요청한 사용자 단말장치의 위치정보를 수집하는 단계; 및<br/>상기 쿠폰 사용 데이터 처리부의 처리 결과와 상기 사용자 단말장치의 위치정보에 기초하여 상기 사용자의 위치를 중심으로 기 설정된 영역 내에서 상기 기간별 쿠폰 사용 수량이 많은 순서로 쿠폰리스트를 생성하여 상기 단말장치에 표시하는 단계를 더 포함하는 것을 특징으로 하는 쿠폰 사용 상태 정보와 연계하여 쿠폰리스트를 표시방법.</div>
+    </div>
+    </li> <li class="claim"> <div num="11" class="claim">
+      <div class="claim-text">(a) 쿠폰 사용 데이터 처리부에서 사용 처리된 쿠폰ID, 쿠폰 번호, 사용처 위치 정보 및 사용 시간을 포함하는 쿠폰 사용 데이터를 수신하는 단계;<br/>(b) 상기 쿠폰 사용 데이터 처리부에서 상기 쿠폰 사용 데이터에 기초하여 기간별 쿠폰 사용 데이터 및 쿠폰 사용처에 따른 쿠폰 사용 데이터의 연산하는 단계; <br/>(c) 쿠폰리스트 관리부에서 상기 기간별 쿠폰 사용 수량이 많은 순서로 쿠폰리스트가 정렬되도록 쿠폰 전시정보를 조정하는 단계;<br/>(d) 사용자 위치정보 수집부에서 쿠폰 판매채널에 접속한 사용자 단말장치의 위치정보를 수집하는 단계; 및<br/>(e) 상기 사용자 단말장치의 위치를 중심으로 기 설정된 영역 내에서 상기 기간별 쿠폰 사용 수량이 많은 순서로 쿠폰리스트를 생성하여 상기 단말장치에 표시하는 단계;<br/>를 포함하는 쿠폰 사용 상태 정보와 연계하여 쿠폰리스트를 표시방법.</div>
+    </div>
+    </li> <li class="claim-dependent"> <div num="12" class="claim">
+      <div class="claim-text">제11항에 있어서,<br/>상기 (c) 단계는,<br/>최근에 사용된 쿠폰일수록 상기 쿠폰리스트 상에서 상위에 위치하도록 상기 기간별 쿠폰 사용 데이터에 대해 기간별 가중치를 부여하여 연산하는 단계를 포함하는 것을 특징으로 하는 쿠폰 사용 상태 정보와 연계하여 쿠폰리스트를 표시방법.</div>
+    </div>
+    </li> <li class="claim"> <div num="13" class="claim">
+      <div class="claim-text">(a) 쿠폰 사용 데이터 처리부에서 사용 처리된 쿠폰ID, 쿠폰 번호, 사용처 위치 정보 및 사용 시간을 포함하는 쿠폰 사용 데이터를 수신하는 단계; (b) 상기 쿠폰 사용 데이터 처리부에서 상기 쿠폰 사용 데이터에 기초하여 기간별 쿠폰 사용 데이터 및 쿠폰 사용처에 따른 쿠폰 사용 데이터의 연산하는 단계; (c) 쿠폰리스트 관리부에서 상기 기간별 쿠폰 사용 수량이 많은 순서로 정렬된 쿠폰리스트가 생성되도록 쿠폰 전시정보를 조정하는 단계; (d) 사용자 위치정보 수집부에서 쿠폰 판매채널에 접속한 사용자 단말장치의 위치정보를 수집하는 단계; (e) 상기 사용자 단말장치의 위치를 중심으로 기 설정된 영역 내에서 상기 기간별 쿠폰 사용 수량이 많은 순서로 쿠폰리스트를 생성하여 상기 단말장치에 표시하는 단계; 를 포함하는 쿠폰 사용 상태 정보와 연계하여 쿠폰리스트를 표시방법이 프로그램의 형태로 기록된 전자 장치에서 판독 가능한 기록 매체.</div>
+    </div>
+  </li> </ol>
+  </div>
+  </section>
+
+  <section itemprop="application" itemscope>
+
+    <section itemprop="metadata" itemscope>
+      <span itemprop="applicationNumber">KR1020140017286A</span>
+      <span itemprop="priorityDate">2014-02-14</span>
+      <span itemprop="filingDate">2014-02-14</span>
+      <span itemprop="title">쿠폰 사용 상태 정보와 연계하여 쿠폰리스트를 표시하는 쿠폰 관리 시스템 및 방법 
+       </span>
+      <span itemprop="ifiStatus">Ceased</span>
+      
+      <a href="/patent/KR20150096573A/ko">
+        <span itemprop="representativePublication">KR20150096573A</span>
+        (<span itemprop="primaryLanguage">ko</span>)
+      </a>
+    </section>
+
+    <h2>Priority Applications (1)</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Application Number</th>
+          <th>Priority Date</th>
+          <th>Filing Date</th>
+          <th>Title</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr itemprop="priorityApps" itemscope repeat>
+          <td>
+            <span itemprop="applicationNumber">KR1020140017286A</span>
+            
+            <a href="/patent/KR20150096573A/ko">
+              <span itemprop="representativePublication">KR20150096573A</span>
+                (<span itemprop="primaryLanguage">ko</span>)
+            </a>
+          </td>
+          <td itemprop="priorityDate">2014-02-14</td>
+          <td itemprop="filingDate">2014-02-14</td>
+          <td itemprop="title">쿠폰 사용 상태 정보와 연계하여 쿠폰리스트를 표시하는 쿠폰 관리 시스템 및 방법 
+       </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>Applications Claiming Priority (1)</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Application Number</th>
+          <th>Priority Date</th>
+          <th>Filing Date</th>
+          <th>Title</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr itemprop="appsClaimingPriority" itemscope repeat>
+          <td>
+            <span itemprop="applicationNumber">KR1020140017286A</span>
+            <a href="/patent/KR20150096573A/ko">
+              <span itemprop="representativePublication">KR20150096573A</span>
+                (<span itemprop="primaryLanguage">ko</span>)
+            </a>
+          </td>
+          <td itemprop="priorityDate">2014-02-14</td>
+          <td itemprop="filingDate">2014-02-14</td>
+          <td itemprop="title">쿠폰 사용 상태 정보와 연계하여 쿠폰리스트를 표시하는 쿠폰 관리 시스템 및 방법 
+       </td>
+        </tr>
+      </tbody>
+    </table>
+
+    
+
+    
+
+    <h2>Publications (1)</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Publication Number</th>
+          <th>Publication Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr itemprop="pubs" itemscope repeat>
+          <td>
+            <span itemprop="publicationNumber">KR20150096573A</span>
+            
+            <span itemprop="thisPatent">true</span>
+            <a href="/patent/KR20150096573A/ko">
+              KR20150096573A
+              (<span itemprop="primaryLanguage">ko</span>)
+            </a>
+          </td>
+          <td itemprop="publicationDate">2015-08-25</td>
+        </tr>
+      </tbody>
+    </table>
+
+  </section>
+
+  <section itemprop="family" itemscope>
+    <h1>Family</h1>
+    <h2>ID=54058896</h2>
+
+    <h2>Family Applications (1)</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Application Number</th>
+          <th>Title</th>
+          <th>Priority Date</th>
+          <th>Filing Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr itemprop="applications" itemscope repeat>
+          <td>
+            <span itemprop="applicationNumber">KR1020140017286A</span>
+            <span itemprop="ifiStatus">Ceased</span>
+            
+            <a href="/patent/KR20150096573A/ko">
+              <span itemprop="representativePublication">KR20150096573A</span>
+                (<span itemprop="primaryLanguage">ko</span>)
+            </a>
+          </td>
+          <td itemprop="priorityDate">2014-02-14</td>
+          <td itemprop="filingDate">2014-02-14</td>
+          <td itemprop="title">쿠폰 사용 상태 정보와 연계하여 쿠폰리스트를 표시하는 쿠폰 관리 시스템 및 방법 
+       </td>
+        </tr>
+      </tbody>
+    </table>
+
+    
+
+    
+
+    <h2>Country Status (1)</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Country</th>
+          <th>Link</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr itemprop="countryStatus" itemscope repeat>
+          <td>
+            <span itemprop="countryCode">KR</span>
+            (<span itemprop="num">1</span>)
+            <meta itemprop="thisCountry" content="true">
+          </td>
+          <td>
+            <a href="/patent/KR20150096573A/ko">
+              <span itemprop="representativePublication">KR20150096573A</span>
+              (<span itemprop="primaryLanguage">ko</span>)
+            </a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>Cited By (6)</h2>
+    <table>
+      <caption>* Cited by examiner, † Cited by third party</caption>
+      <thead>
+        <tr>
+          <th>Publication number</th>
+          <th>Priority date</th>
+          <th>Publication date</th>
+          <th>Assignee</th>
+          <th>Title</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr itemprop="forwardReferencesOrig" itemscope repeat>
+          <td>
+            <a href="/patent/KR20190025857A/ko">
+              <span itemprop="publicationNumber">KR20190025857A</span>
+              (<span itemprop="primaryLanguage">ko</span>)
+            </a>
+            <span itemprop="examinerCited">*</span>
+            
+          </td>
+          <td itemprop="priorityDate">2019-01-03</td>
+          <td itemprop="publicationDate">2019-03-12</td>
+          <td><span itemprop="assigneeOriginal">한국기술교육대학교 산학협력단</span></td>
+          <td itemprop="title">전자쿠폰 시스템 및 전자쿠폰 처리 방법 
+       </td>
+        </tr>
+        <tr itemprop="forwardReferencesOrig" itemscope repeat>
+          <td>
+            <a href="/patent/CN112749988A/zh">
+              <span itemprop="publicationNumber">CN112749988A</span>
+              (<span itemprop="primaryLanguage">zh</span>)
+            </a>
+            <span itemprop="examinerCited">*</span>
+            
+          </td>
+          <td itemprop="priorityDate">2021-01-21</td>
+          <td itemprop="publicationDate">2021-05-04</td>
+          <td><span itemprop="assigneeOriginal">上海普麦信息科技有限公司</span></td>
+          <td itemprop="title">一种电子券内容展示方法和装置 
+       </td>
+        </tr>
+        <tr itemprop="forwardReferencesOrig" itemscope repeat>
+          <td>
+            <a href="/patent/CN113742568A/zh">
+              <span itemprop="publicationNumber">CN113742568A</span>
+              (<span itemprop="primaryLanguage">zh</span>)
+            </a>
+            <span itemprop="examinerCited">*</span>
+            
+          </td>
+          <td itemprop="priorityDate">2020-05-29</td>
+          <td itemprop="publicationDate">2021-12-03</td>
+          <td><span itemprop="assigneeOriginal">多点(深圳)数字科技有限公司</span></td>
+          <td itemprop="title">信息显示方法、电子设备和计算机可读介质 
+       </td>
+        </tr>
+        <tr itemprop="forwardReferencesOrig" itemscope repeat>
+          <td>
+            <a href="/patent/KR102639619B1/ko">
+              <span itemprop="publicationNumber">KR102639619B1</span>
+              (<span itemprop="primaryLanguage">ko</span>)
+            </a>
+            <span itemprop="examinerCited">*</span>
+            
+          </td>
+          <td itemprop="priorityDate">2023-10-02</td>
+          <td itemprop="publicationDate">2024-02-21</td>
+          <td><span itemprop="assigneeOriginal">주식회사 케타버스</span></td>
+          <td itemprop="title">메타버스 환경에서의 전기차량 충전소 정보제공시스템 
+       </td>
+        </tr>
+        <tr itemprop="forwardReferencesOrig" itemscope repeat>
+          <td>
+            <a href="/patent/CN119151600A/zh">
+              <span itemprop="publicationNumber">CN119151600A</span>
+              (<span itemprop="primaryLanguage">zh</span>)
+            </a>
+            <span itemprop="examinerCited">*</span>
+            
+          </td>
+          <td itemprop="priorityDate">2024-08-28</td>
+          <td itemprop="publicationDate">2024-12-17</td>
+          <td><span itemprop="assigneeOriginal">广州智赢万世市场管理有限公司</span></td>
+          <td itemprop="title">一种分级用户权益交互系统 
+       </td>
+        </tr>
+        <tr itemprop="forwardReferencesOrig" itemscope repeat>
+          <td>
+            <a href="/patent/WO2025089625A1/ko">
+              <span itemprop="publicationNumber">WO2025089625A1</span>
+              (<span itemprop="primaryLanguage">ko</span>)
+            </a>
+            <span itemprop="examinerCited">*</span>
+            
+          </td>
+          <td itemprop="priorityDate">2023-10-27</td>
+          <td itemprop="publicationDate">2025-05-01</td>
+          <td><span itemprop="assigneeOriginal">삼성전자주식회사</span></td>
+          <td itemprop="title">쿠폰을 관리하는 전자 장치, 방법, 및 비-일시적 컴퓨터 판독 가능 기록 매체 
+       </td>
+        </tr>
+      </tbody>
+    </table>
+
+    
+
+    
+
+    
+
+    <ul>
+      <li itemprop="applicationsByYear" itemscope repeat>
+        <span itemprop="year">2014</span>
+        <ul>
+          <li itemprop="application" itemscope repeat>
+            <span itemprop="filingDate">2014-02-14</span>
+            <span itemprop="countryCode">KR</span>
+            <span itemprop="applicationNumber">KR1020140017286A</span>
+            <a href="/patent/KR20150096573A/ko"><span itemprop="documentId">patent/KR20150096573A/ko</span></a>
+            <span itemprop="legalStatusCat">not_active</span>
+            <span itemprop="legalStatus">Ceased</span>
+            <span itemprop="thisApp" content="true" bool></span>
+          </li>
+        </ul>
+      </li>
+    </ul>
+
+    </section>
+
+  
+
+  
+
+  <h2>Cited By (6)</h2>
+  <table>
+    <caption>* Cited by examiner, † Cited by third party</caption>
+    <thead>
+      <tr>
+        <th>Publication number</th>
+        <th>Priority date</th>
+        <th>Publication date</th>
+        <th>Assignee</th>
+        <th>Title</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr itemprop="forwardReferences" itemscope repeat>
+        <td>
+          <a href="/patent/KR20190025857A/ko">
+            <span itemprop="publicationNumber">KR20190025857A</span>
+            (<span itemprop="primaryLanguage">ko</span>)
+          </a>
+          <span itemprop="examinerCited">*</span>
+          
+        </td>
+        <td itemprop="priorityDate">2019-01-03</td>
+        <td itemprop="publicationDate">2019-03-12</td>
+        <td><span itemprop="assigneeOriginal">한국기술교육대학교 산학협력단</span></td>
+        <td itemprop="title">전자쿠폰 시스템 및 전자쿠폰 처리 방법 
+       </td>
+      </tr>
+      <tr itemprop="forwardReferences" itemscope repeat>
+        <td>
+          <a href="/patent/CN113742568A/zh">
+            <span itemprop="publicationNumber">CN113742568A</span>
+            (<span itemprop="primaryLanguage">zh</span>)
+          </a>
+          <span itemprop="examinerCited">*</span>
+          
+        </td>
+        <td itemprop="priorityDate">2020-05-29</td>
+        <td itemprop="publicationDate">2021-12-03</td>
+        <td><span itemprop="assigneeOriginal">多点(深圳)数字科技有限公司</span></td>
+        <td itemprop="title">信息显示方法、电子设备和计算机可读介质 
+       </td>
+      </tr>
+      <tr itemprop="forwardReferences" itemscope repeat>
+        <td>
+          <a href="/patent/CN112749988A/zh">
+            <span itemprop="publicationNumber">CN112749988A</span>
+            (<span itemprop="primaryLanguage">zh</span>)
+          </a>
+          <span itemprop="examinerCited">*</span>
+          
+        </td>
+        <td itemprop="priorityDate">2021-01-21</td>
+        <td itemprop="publicationDate">2021-05-04</td>
+        <td><span itemprop="assigneeOriginal">上海普麦信息科技有限公司</span></td>
+        <td itemprop="title">一种电子券内容展示方法和装置 
+       </td>
+      </tr>
+      <tr itemprop="forwardReferences" itemscope repeat>
+        <td>
+          <a href="/patent/KR102639619B1/ko">
+            <span itemprop="publicationNumber">KR102639619B1</span>
+            (<span itemprop="primaryLanguage">ko</span>)
+          </a>
+          <span itemprop="examinerCited">*</span>
+          
+        </td>
+        <td itemprop="priorityDate">2023-10-02</td>
+        <td itemprop="publicationDate">2024-02-21</td>
+        <td><span itemprop="assigneeOriginal">주식회사 케타버스</span></td>
+        <td itemprop="title">메타버스 환경에서의 전기차량 충전소 정보제공시스템 
+       </td>
+      </tr>
+      <tr itemprop="forwardReferences" itemscope repeat>
+        <td>
+          <a href="/patent/WO2025089625A1/ko">
+            <span itemprop="publicationNumber">WO2025089625A1</span>
+            (<span itemprop="primaryLanguage">ko</span>)
+          </a>
+          <span itemprop="examinerCited">*</span>
+          
+        </td>
+        <td itemprop="priorityDate">2023-10-27</td>
+        <td itemprop="publicationDate">2025-05-01</td>
+        <td><span itemprop="assigneeOriginal">삼성전자주식회사</span></td>
+        <td itemprop="title">쿠폰을 관리하는 전자 장치, 방법, 및 비-일시적 컴퓨터 판독 가능 기록 매체 
+       </td>
+      </tr>
+      <tr itemprop="forwardReferences" itemscope repeat>
+        <td>
+          <a href="/patent/CN119151600A/zh">
+            <span itemprop="publicationNumber">CN119151600A</span>
+            (<span itemprop="primaryLanguage">zh</span>)
+          </a>
+          <span itemprop="examinerCited">*</span>
+          
+        </td>
+        <td itemprop="priorityDate">2024-08-28</td>
+        <td itemprop="publicationDate">2024-12-17</td>
+        <td><span itemprop="assigneeOriginal">广州智赢万世市场管理有限公司</span></td>
+        <td itemprop="title">一种分级用户权益交互系统 
+       </td>
+      </tr>
+    </tbody>
+  </table>
+
+  
+
+  <section>
+    <h2>Similar Documents</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Publication</th>
+          <th>Publication Date</th>
+          <th>Title</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr itemprop="similarDocuments" itemscope repeat>
+          <td>
+            <meta itemprop="isPatent" content="true">
+              <a href="/patent/CN106487715B/zh">
+                <span itemprop="publicationNumber">CN106487715B</span>
+                (<span itemprop="primaryLanguage">zh</span>)
+              </a>
+            
+            
+          </td>
+          <td>
+            <time itemprop="publicationDate" datetime="2020-10-02">2020-10-02</time>
+            
+            
+          </td>
+          <td itemprop="title">一种用于为用户分配资源的方法和装置 
+       </td>
+        </tr>
+        <tr itemprop="similarDocuments" itemscope repeat>
+          <td>
+            <meta itemprop="isPatent" content="true">
+              <a href="/patent/JP5625760B2/ja">
+                <span itemprop="publicationNumber">JP5625760B2</span>
+                (<span itemprop="primaryLanguage">ja</span>)
+              </a>
+            
+            
+          </td>
+          <td>
+            <time itemprop="publicationDate" datetime="2014-11-19">2014-11-19</time>
+            
+            
+          </td>
+          <td itemprop="title">広告アクセス分析装置及び広告アクセス分析方法 
+       </td>
+        </tr>
+        <tr itemprop="similarDocuments" itemscope repeat>
+          <td>
+            <meta itemprop="isPatent" content="true">
+              <a href="/patent/KR20160114724A/ko">
+                <span itemprop="publicationNumber">KR20160114724A</span>
+                (<span itemprop="primaryLanguage">ko</span>)
+              </a>
+            
+            
+          </td>
+          <td>
+            <time itemprop="publicationDate" datetime="2016-10-05">2016-10-05</time>
+            
+            
+          </td>
+          <td itemprop="title">구매 정보 활용 시스템 및 구매 정보 활용 방법 및 프로그램 
+       </td>
+        </tr>
+        <tr itemprop="similarDocuments" itemscope repeat>
+          <td>
+            <meta itemprop="isPatent" content="true">
+              <a href="/patent/JP2019149098A/ja">
+                <span itemprop="publicationNumber">JP2019149098A</span>
+                (<span itemprop="primaryLanguage">ja</span>)
+              </a>
+            
+            
+          </td>
+          <td>
+            <time itemprop="publicationDate" datetime="2019-09-05">2019-09-05</time>
+            
+            
+          </td>
+          <td itemprop="title">広告管理装置、広告提供システム、広告管理方法、及びプログラム 
+       </td>
+        </tr>
+        <tr itemprop="similarDocuments" itemscope repeat>
+          <td>
+            <meta itemprop="isPatent" content="true">
+              <a href="/patent/JP7649713B2/ja">
+                <span itemprop="publicationNumber">JP7649713B2</span>
+                (<span itemprop="primaryLanguage">ja</span>)
+              </a>
+            
+            
+          </td>
+          <td>
+            <time itemprop="publicationDate" datetime="2025-03-21">2025-03-21</time>
+            
+            
+          </td>
+          <td itemprop="title">サーバ装置及びプログラム 
+       </td>
+        </tr>
+        <tr itemprop="similarDocuments" itemscope repeat>
+          <td>
+            <meta itemprop="isPatent" content="true">
+              <a href="/patent/JP2023146808A/ja">
+                <span itemprop="publicationNumber">JP2023146808A</span>
+                (<span itemprop="primaryLanguage">ja</span>)
+              </a>
+            
+            
+          </td>
+          <td>
+            <time itemprop="publicationDate" datetime="2023-10-12">2023-10-12</time>
+            
+            
+          </td>
+          <td itemprop="title">情報処理装置及び情報処理方法 
+       </td>
+        </tr>
+        <tr itemprop="similarDocuments" itemscope repeat>
+          <td>
+            <meta itemprop="isPatent" content="true">
+              <a href="/patent/KR20130065849A/ko">
+                <span itemprop="publicationNumber">KR20130065849A</span>
+                (<span itemprop="primaryLanguage">ko</span>)
+              </a>
+            
+            
+          </td>
+          <td>
+            <time itemprop="publicationDate" datetime="2013-06-20">2013-06-20</time>
+            
+            
+          </td>
+          <td itemprop="title">애플리케이션 추천 시스템, 방법 및 그에 대한 기록매체 
+       </td>
+        </tr>
+        <tr itemprop="similarDocuments" itemscope repeat>
+          <td>
+            <meta itemprop="isPatent" content="true">
+              <a href="/patent/KR101423210B1/ko">
+                <span itemprop="publicationNumber">KR101423210B1</span>
+                (<span itemprop="primaryLanguage">ko</span>)
+              </a>
+            
+            
+          </td>
+          <td>
+            <time itemprop="publicationDate" datetime="2014-07-29">2014-07-29</time>
+            
+            
+          </td>
+          <td itemprop="title">고객에게 고객유치정보를 제공하는 시스템 및 방법 
+       </td>
+        </tr>
+        <tr itemprop="similarDocuments" itemscope repeat>
+          <td>
+            <meta itemprop="isPatent" content="true">
+              <a href="/patent/JP2022154978A/ja">
+                <span itemprop="publicationNumber">JP2022154978A</span>
+                (<span itemprop="primaryLanguage">ja</span>)
+              </a>
+            
+            
+          </td>
+          <td>
+            <time itemprop="publicationDate" datetime="2022-10-13">2022-10-13</time>
+            
+            
+          </td>
+          <td itemprop="title">情報処理装置 
+       </td>
+        </tr>
+        <tr itemprop="similarDocuments" itemscope repeat>
+          <td>
+            <meta itemprop="isPatent" content="true">
+              <a href="/patent/JP2015106189A/ja">
+                <span itemprop="publicationNumber">JP2015106189A</span>
+                (<span itemprop="primaryLanguage">ja</span>)
+              </a>
+            
+            
+          </td>
+          <td>
+            <time itemprop="publicationDate" datetime="2015-06-08">2015-06-08</time>
+            
+            
+          </td>
+          <td itemprop="title">クーポン管理サーバ、クーポン管理システム及びクーポン管理方法 
+       </td>
+        </tr>
+        <tr itemprop="similarDocuments" itemscope repeat>
+          <td>
+            <meta itemprop="isPatent" content="true">
+              <a href="/patent/JP2015060396A/ja">
+                <span itemprop="publicationNumber">JP2015060396A</span>
+                (<span itemprop="primaryLanguage">ja</span>)
+              </a>
+            
+            
+          </td>
+          <td>
+            <time itemprop="publicationDate" datetime="2015-03-30">2015-03-30</time>
+            
+            
+          </td>
+          <td itemprop="title">クーポンシステム 
+       </td>
+        </tr>
+        <tr itemprop="similarDocuments" itemscope repeat>
+          <td>
+            <meta itemprop="isPatent" content="true">
+              <a href="/patent/JP2009238148A/ja">
+                <span itemprop="publicationNumber">JP2009238148A</span>
+                (<span itemprop="primaryLanguage">ja</span>)
+              </a>
+            
+            
+          </td>
+          <td>
+            <time itemprop="publicationDate" datetime="2009-10-15">2009-10-15</time>
+            
+            
+          </td>
+          <td itemprop="title">動線情報を利用した広告表示システム 
+       </td>
+        </tr>
+        <tr itemprop="similarDocuments" itemscope repeat>
+          <td>
+            <meta itemprop="isPatent" content="true">
+              <a href="/patent/KR20120087203A/ko">
+                <span itemprop="publicationNumber">KR20120087203A</span>
+                (<span itemprop="primaryLanguage">ko</span>)
+              </a>
+            
+            
+          </td>
+          <td>
+            <time itemprop="publicationDate" datetime="2012-08-07">2012-08-07</time>
+            
+            
+          </td>
+          <td itemprop="title">사용자 위치기반 포인트정보 제공 시스템 및 방법 
+       </td>
+        </tr>
+        <tr itemprop="similarDocuments" itemscope repeat>
+          <td>
+            <meta itemprop="isPatent" content="true">
+              <a href="/patent/JP2022131705A/ja">
+                <span itemprop="publicationNumber">JP2022131705A</span>
+                (<span itemprop="primaryLanguage">ja</span>)
+              </a>
+            
+            
+          </td>
+          <td>
+            <time itemprop="publicationDate" datetime="2022-09-07">2022-09-07</time>
+            
+            
+          </td>
+          <td itemprop="title">情報処理装置及び情報処理方法 
+       </td>
+        </tr>
+        <tr itemprop="similarDocuments" itemscope repeat>
+          <td>
+            <meta itemprop="isPatent" content="true">
+              <a href="/patent/JP7254995B1/ja">
+                <span itemprop="publicationNumber">JP7254995B1</span>
+                (<span itemprop="primaryLanguage">ja</span>)
+              </a>
+            
+            
+          </td>
+          <td>
+            <time itemprop="publicationDate" datetime="2023-04-10">2023-04-10</time>
+            
+            
+          </td>
+          <td itemprop="title">データ処理装置、データ処理システム、データ処理方法及びプログラム 
+       </td>
+        </tr>
+        <tr itemprop="similarDocuments" itemscope repeat>
+          <td>
+            <meta itemprop="isPatent" content="true">
+              <a href="/patent/JP6749985B2/ja">
+                <span itemprop="publicationNumber">JP6749985B2</span>
+                (<span itemprop="primaryLanguage">ja</span>)
+              </a>
+            
+            
+          </td>
+          <td>
+            <time itemprop="publicationDate" datetime="2020-09-02">2020-09-02</time>
+            
+            
+          </td>
+          <td itemprop="title">決定装置、決定方法及び決定プログラム 
+       </td>
+        </tr>
+        <tr itemprop="similarDocuments" itemscope repeat>
+          <td>
+            <meta itemprop="isPatent" content="true">
+              <a href="/patent/JP2024124476A/ja">
+                <span itemprop="publicationNumber">JP2024124476A</span>
+                (<span itemprop="primaryLanguage">ja</span>)
+              </a>
+            
+            
+          </td>
+          <td>
+            <time itemprop="publicationDate" datetime="2024-09-12">2024-09-12</time>
+            
+            
+          </td>
+          <td itemprop="title">情報処理装置、情報処理方法及び情報処理プログラム 
+       </td>
+        </tr>
+        <tr itemprop="similarDocuments" itemscope repeat>
+          <td>
+            <meta itemprop="isPatent" content="true">
+              <a href="/patent/JP2007265365A/ja">
+                <span itemprop="publicationNumber">JP2007265365A</span>
+                (<span itemprop="primaryLanguage">ja</span>)
+              </a>
+            
+            
+          </td>
+          <td>
+            <time itemprop="publicationDate" datetime="2007-10-11">2007-10-11</time>
+            
+            
+          </td>
+          <td itemprop="title">クーポン配信システム、管理サーバ、クーポン配信方法及びプログラム 
+       </td>
+        </tr>
+        <tr itemprop="similarDocuments" itemscope repeat>
+          <td>
+            <meta itemprop="isPatent" content="true">
+              <a href="/patent/KR102235735B1/ko">
+                <span itemprop="publicationNumber">KR102235735B1</span>
+                (<span itemprop="primaryLanguage">ko</span>)
+              </a>
+            
+            
+          </td>
+          <td>
+            <time itemprop="publicationDate" datetime="2021-04-02">2021-04-02</time>
+            
+            
+          </td>
+          <td itemprop="title">위치기반 쿠폰 판매정보 제공 시스템 및 방법 
+       </td>
+        </tr>
+        <tr itemprop="similarDocuments" itemscope repeat>
+          <td>
+            <meta itemprop="isPatent" content="true">
+              <a href="/patent/KR20180100863A/ko">
+                <span itemprop="publicationNumber">KR20180100863A</span>
+                (<span itemprop="primaryLanguage">ko</span>)
+              </a>
+            
+            
+          </td>
+          <td>
+            <time itemprop="publicationDate" datetime="2018-09-12">2018-09-12</time>
+            
+            
+          </td>
+          <td itemprop="title">모바일 쿠폰 관리 시스템 
+       </td>
+        </tr>
+        <tr itemprop="similarDocuments" itemscope repeat>
+          <td>
+            <meta itemprop="isPatent" content="true">
+              <a href="/patent/JP2016146140A/ja">
+                <span itemprop="publicationNumber">JP2016146140A</span>
+                (<span itemprop="primaryLanguage">ja</span>)
+              </a>
+            
+            
+          </td>
+          <td>
+            <time itemprop="publicationDate" datetime="2016-08-12">2016-08-12</time>
+            
+            
+          </td>
+          <td itemprop="title">ポイント管理システム及びポイント管理方法 
+       </td>
+        </tr>
+        <tr itemprop="similarDocuments" itemscope repeat>
+          <td>
+            <meta itemprop="isPatent" content="true">
+              <a href="/patent/KR101931330B1/ko">
+                <span itemprop="publicationNumber">KR101931330B1</span>
+                (<span itemprop="primaryLanguage">ko</span>)
+              </a>
+            
+            
+          </td>
+          <td>
+            <time itemprop="publicationDate" datetime="2018-12-20">2018-12-20</time>
+            
+            
+          </td>
+          <td itemprop="title">실시간 마케팅 메시지를 전송하는 장치 및 방법 
+       </td>
+        </tr>
+        <tr itemprop="similarDocuments" itemscope repeat>
+          <td>
+            <meta itemprop="isPatent" content="true">
+              <a href="/patent/JP6690129B2/ja">
+                <span itemprop="publicationNumber">JP6690129B2</span>
+                (<span itemprop="primaryLanguage">ja</span>)
+              </a>
+            
+            
+          </td>
+          <td>
+            <time itemprop="publicationDate" datetime="2020-04-28">2020-04-28</time>
+            
+            
+          </td>
+          <td itemprop="title">販売促進情報管理システム、販売促進情報管理サーバ、プログラム及び販売促進情報管理方法 
+       </td>
+        </tr>
+        <tr itemprop="similarDocuments" itemscope repeat>
+          <td>
+            <meta itemprop="isPatent" content="true">
+              <a href="/patent/JP2023119708A/ja">
+                <span itemprop="publicationNumber">JP2023119708A</span>
+                (<span itemprop="primaryLanguage">ja</span>)
+              </a>
+            
+            
+          </td>
+          <td>
+            <time itemprop="publicationDate" datetime="2023-08-29">2023-08-29</time>
+            
+            
+          </td>
+          <td itemprop="title">自動販売機システム 
+       </td>
+        </tr>
+        <tr itemprop="similarDocuments" itemscope repeat>
+          <td>
+            <meta itemprop="isPatent" content="true">
+              <a href="/patent/JP2011107790A/ja">
+                <span itemprop="publicationNumber">JP2011107790A</span>
+                (<span itemprop="primaryLanguage">ja</span>)
+              </a>
+            
+            
+          </td>
+          <td>
+            <time itemprop="publicationDate" datetime="2011-06-02">2011-06-02</time>
+            
+            
+          </td>
+          <td itemprop="title">ポイント集約装置、ポイント集約システム及びポイント集約方法 
+       </td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <h2>Legal Events</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Code</th>
+          <th>Title</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr itemprop="legalEvents" itemscope repeat>
+          <td><time itemprop="date" datetime="2014-02-14">2014-02-14</time></td>
+          <td itemprop="code">PA0109</td>
+          <td itemprop="title">Patent application</td>
+          <td>
+            <p itemprop="attributes" itemscope repeat>
+              <strong itemprop="label">Patent event code</strong>:
+              <span itemprop="value">PA01091R01D</span>
+            </p>
+            <p itemprop="attributes" itemscope repeat>
+              <strong itemprop="label">Comment text</strong>:
+              <span itemprop="value">Patent Application</span>
+            </p>
+            <p itemprop="attributes" itemscope repeat>
+              <strong itemprop="label">Patent event date</strong>:
+              <span itemprop="value">20140214</span>
+            </p>
+          </td>
+        </tr>
+        <tr itemprop="legalEvents" itemscope repeat>
+          <td><time itemprop="date" datetime="2015-08-25">2015-08-25</time></td>
+          <td itemprop="code">PG1501</td>
+          <td itemprop="title">Laying open of application</td>
+          <td>
+          </td>
+        </tr>
+        <tr itemprop="legalEvents" itemscope repeat>
+          <td><time itemprop="date" datetime="2019-02-14">2019-02-14</time></td>
+          <td itemprop="code">A201</td>
+          <td itemprop="title">Request for examination</td>
+          <td>
+          </td>
+        </tr>
+        <tr itemprop="legalEvents" itemscope repeat>
+          <td><time itemprop="date" datetime="2019-02-14">2019-02-14</time></td>
+          <td itemprop="code">AMND</td>
+          <td itemprop="title">Amendment</td>
+          <td>
+          </td>
+        </tr>
+        <tr itemprop="legalEvents" itemscope repeat>
+          <td><time itemprop="date" datetime="2019-02-14">2019-02-14</time></td>
+          <td itemprop="code">PA0201</td>
+          <td itemprop="title">Request for examination</td>
+          <td>
+            <p itemprop="attributes" itemscope repeat>
+              <strong itemprop="label">Patent event code</strong>:
+              <span itemprop="value">PA02012R01D</span>
+            </p>
+            <p itemprop="attributes" itemscope repeat>
+              <strong itemprop="label">Patent event date</strong>:
+              <span itemprop="value">20190214</span>
+            </p>
+            <p itemprop="attributes" itemscope repeat>
+              <strong itemprop="label">Comment text</strong>:
+              <span itemprop="value">Request for Examination of Application</span>
+            </p>
+            <p itemprop="attributes" itemscope repeat>
+              <strong itemprop="label">Patent event code</strong>:
+              <span itemprop="value">PA02011R01I</span>
+            </p>
+            <p itemprop="attributes" itemscope repeat>
+              <strong itemprop="label">Patent event date</strong>:
+              <span itemprop="value">20140214</span>
+            </p>
+            <p itemprop="attributes" itemscope repeat>
+              <strong itemprop="label">Comment text</strong>:
+              <span itemprop="value">Patent Application</span>
+            </p>
+          </td>
+        </tr>
+        <tr itemprop="legalEvents" itemscope repeat>
+          <td><time itemprop="date" datetime="2020-07-07">2020-07-07</time></td>
+          <td itemprop="code">E902</td>
+          <td itemprop="title">Notification of reason for refusal</td>
+          <td>
+          </td>
+        </tr>
+        <tr itemprop="legalEvents" itemscope repeat>
+          <td><time itemprop="date" datetime="2020-07-07">2020-07-07</time></td>
+          <td itemprop="code">PE0902</td>
+          <td itemprop="title">Notice of grounds for rejection</td>
+          <td>
+            <p itemprop="attributes" itemscope repeat>
+              <strong itemprop="label">Comment text</strong>:
+              <span itemprop="value">Notification of reason for refusal</span>
+            </p>
+            <p itemprop="attributes" itemscope repeat>
+              <strong itemprop="label">Patent event date</strong>:
+              <span itemprop="value">20200707</span>
+            </p>
+            <p itemprop="attributes" itemscope repeat>
+              <strong itemprop="label">Patent event code</strong>:
+              <span itemprop="value">PE09021S01D</span>
+            </p>
+          </td>
+        </tr>
+        <tr itemprop="legalEvents" itemscope repeat>
+          <td><time itemprop="date" datetime="2020-09-07">2020-09-07</time></td>
+          <td itemprop="code">AMND</td>
+          <td itemprop="title">Amendment</td>
+          <td>
+          </td>
+        </tr>
+        <tr itemprop="legalEvents" itemscope repeat>
+          <td><time itemprop="date" datetime="2021-01-13">2021-01-13</time></td>
+          <td itemprop="code">E601</td>
+          <td itemprop="title">Decision to refuse application</td>
+          <td>
+          </td>
+        </tr>
+        <tr itemprop="legalEvents" itemscope repeat>
+          <td><time itemprop="date" datetime="2021-01-13">2021-01-13</time></td>
+          <td itemprop="code">PE0601</td>
+          <td itemprop="title">Decision on rejection of patent</td>
+          <td>
+            <p itemprop="attributes" itemscope repeat>
+              <strong itemprop="label">Patent event date</strong>:
+              <span itemprop="value">20210113</span>
+            </p>
+            <p itemprop="attributes" itemscope repeat>
+              <strong itemprop="label">Comment text</strong>:
+              <span itemprop="value">Decision to Refuse Application</span>
+            </p>
+            <p itemprop="attributes" itemscope repeat>
+              <strong itemprop="label">Patent event code</strong>:
+              <span itemprop="value">PE06012S01D</span>
+            </p>
+            <p itemprop="attributes" itemscope repeat>
+              <strong itemprop="label">Patent event date</strong>:
+              <span itemprop="value">20200707</span>
+            </p>
+            <p itemprop="attributes" itemscope repeat>
+              <strong itemprop="label">Comment text</strong>:
+              <span itemprop="value">Notification of reason for refusal</span>
+            </p>
+            <p itemprop="attributes" itemscope repeat>
+              <strong itemprop="label">Patent event code</strong>:
+              <span itemprop="value">PE06011S01I</span>
+            </p>
+          </td>
+        </tr>
+        <tr itemprop="legalEvents" itemscope repeat>
+          <td><time itemprop="date" datetime="2021-01-13">2021-01-13</time></td>
+          <td itemprop="code">X091</td>
+          <td itemprop="title">Application refused [patent]</td>
+          <td>
+          </td>
+        </tr>
+        <tr itemprop="legalEvents" itemscope repeat>
+          <td><time itemprop="date" datetime="2021-02-10">2021-02-10</time></td>
+          <td itemprop="code">AMND</td>
+          <td itemprop="title">Amendment</td>
+          <td>
+          </td>
+        </tr>
+        <tr itemprop="legalEvents" itemscope repeat>
+          <td><time itemprop="date" datetime="2021-02-10">2021-02-10</time></td>
+          <td itemprop="code">PX0901</td>
+          <td itemprop="title">Re-examination</td>
+          <td>
+            <p itemprop="attributes" itemscope repeat>
+              <strong itemprop="label">Patent event code</strong>:
+              <span itemprop="value">PX09011S01I</span>
+            </p>
+            <p itemprop="attributes" itemscope repeat>
+              <strong itemprop="label">Patent event date</strong>:
+              <span itemprop="value">20210113</span>
+            </p>
+            <p itemprop="attributes" itemscope repeat>
+              <strong itemprop="label">Comment text</strong>:
+              <span itemprop="value">Decision to Refuse Application</span>
+            </p>
+            <p itemprop="attributes" itemscope repeat>
+              <strong itemprop="label">Patent event code</strong>:
+              <span itemprop="value">PX09012R01I</span>
+            </p>
+            <p itemprop="attributes" itemscope repeat>
+              <strong itemprop="label">Patent event date</strong>:
+              <span itemprop="value">20200907</span>
+            </p>
+            <p itemprop="attributes" itemscope repeat>
+              <strong itemprop="label">Comment text</strong>:
+              <span itemprop="value">Amendment to Specification, etc.</span>
+            </p>
+            <p itemprop="attributes" itemscope repeat>
+              <strong itemprop="label">Patent event code</strong>:
+              <span itemprop="value">PX09012R01I</span>
+            </p>
+            <p itemprop="attributes" itemscope repeat>
+              <strong itemprop="label">Patent event date</strong>:
+              <span itemprop="value">20190214</span>
+            </p>
+            <p itemprop="attributes" itemscope repeat>
+              <strong itemprop="label">Comment text</strong>:
+              <span itemprop="value">Amendment to Specification, etc.</span>
+            </p>
+          </td>
+        </tr>
+        <tr itemprop="legalEvents" itemscope repeat>
+          <td><time itemprop="date" datetime="2021-03-03">2021-03-03</time></td>
+          <td itemprop="code">PX0601</td>
+          <td itemprop="title">Decision of rejection after re-examination</td>
+          <td>
+            <p itemprop="attributes" itemscope repeat>
+              <strong itemprop="label">Comment text</strong>:
+              <span itemprop="value">Decision to Refuse Application</span>
+            </p>
+            <p itemprop="attributes" itemscope repeat>
+              <strong itemprop="label">Patent event code</strong>:
+              <span itemprop="value">PX06014S01D</span>
+            </p>
+            <p itemprop="attributes" itemscope repeat>
+              <strong itemprop="label">Patent event date</strong>:
+              <span itemprop="value">20210303</span>
+            </p>
+            <p itemprop="attributes" itemscope repeat>
+              <strong itemprop="label">Comment text</strong>:
+              <span itemprop="value">Amendment to Specification, etc.</span>
+            </p>
+            <p itemprop="attributes" itemscope repeat>
+              <strong itemprop="label">Patent event code</strong>:
+              <span itemprop="value">PX06012R01I</span>
+            </p>
+            <p itemprop="attributes" itemscope repeat>
+              <strong itemprop="label">Patent event date</strong>:
+              <span itemprop="value">20210210</span>
+            </p>
+            <p itemprop="attributes" itemscope repeat>
+              <strong itemprop="label">Comment text</strong>:
+              <span itemprop="value">Decision to Refuse Application</span>
+            </p>
+            <p itemprop="attributes" itemscope repeat>
+              <strong itemprop="label">Patent event code</strong>:
+              <span itemprop="value">PX06011S01I</span>
+            </p>
+            <p itemprop="attributes" itemscope repeat>
+              <strong itemprop="label">Patent event date</strong>:
+              <span itemprop="value">20210113</span>
+            </p>
+            <p itemprop="attributes" itemscope repeat>
+              <strong itemprop="label">Comment text</strong>:
+              <span itemprop="value">Amendment to Specification, etc.</span>
+            </p>
+            <p itemprop="attributes" itemscope repeat>
+              <strong itemprop="label">Patent event code</strong>:
+              <span itemprop="value">PX06012R01I</span>
+            </p>
+            <p itemprop="attributes" itemscope repeat>
+              <strong itemprop="label">Patent event date</strong>:
+              <span itemprop="value">20200907</span>
+            </p>
+            <p itemprop="attributes" itemscope repeat>
+              <strong itemprop="label">Comment text</strong>:
+              <span itemprop="value">Notification of reason for refusal</span>
+            </p>
+            <p itemprop="attributes" itemscope repeat>
+              <strong itemprop="label">Patent event code</strong>:
+              <span itemprop="value">PX06013S01I</span>
+            </p>
+            <p itemprop="attributes" itemscope repeat>
+              <strong itemprop="label">Patent event date</strong>:
+              <span itemprop="value">20200707</span>
+            </p>
+            <p itemprop="attributes" itemscope repeat>
+              <strong itemprop="label">Comment text</strong>:
+              <span itemprop="value">Amendment to Specification, etc.</span>
+            </p>
+            <p itemprop="attributes" itemscope repeat>
+              <strong itemprop="label">Patent event code</strong>:
+              <span itemprop="value">PX06012R01I</span>
+            </p>
+            <p itemprop="attributes" itemscope repeat>
+              <strong itemprop="label">Patent event date</strong>:
+              <span itemprop="value">20190214</span>
+            </p>
+          </td>
+        </tr>
+        <tr itemprop="legalEvents" itemscope repeat>
+          <td><time itemprop="date" datetime="2021-03-03">2021-03-03</time></td>
+          <td itemprop="code">X601</td>
+          <td itemprop="title">Decision of rejection after re-examination</td>
+          <td>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+</article>
+
+    </search-app>
+    
+    <script></script>
+    <script type="text/javascript" src="//www.gstatic.com/feedback/api.js"></script>
+    <script type="text/javascript" src="//www.gstatic.com/feedback/js/help/prod/service/lazy.min.js"></script>
+    <script type="text/javascript">
+      if (window.help && window.help.service) {
+        helpApi = window.help.service.Lazy.create(0, {apiKey: 'AIzaSyDTEI_0tLX4varJ7bwK8aT-eOI5qr3BmyI', locale: 'en-US'});
+        window.requestedSurveys = new Set();
+        window.requestSurvey = function(triggerId) {
+          if (window.requestedSurveys.has(triggerId)) {
+            return;
+          }
+          window.requestedSurveys.add(triggerId);
+          helpApi.requestSurvey({
+            triggerId: triggerId,
+            enableTestingMode: false,
+            callback: (requestSurveyCallbackParam) => {
+              if (!requestSurveyCallbackParam.surveyData) {
+                return;
+              }
+              helpApi.presentSurvey({
+                productData: {
+                  productVersion: window.version,
+                  customData: {
+                    "experiments": "",
+                  },
+                },
+                surveyData: requestSurveyCallbackParam.surveyData,
+                colorScheme: 1,
+                customZIndex: 10000,
+              });
+            }
+          });
+        };
+
+        window.requestSurvey('YXTwAsvoW0kedxbuTdH0RArc9VhT');
+      }
+    </script>
+    <script src="/sw/null_loader.js"></script>
+  </body>
+</html>

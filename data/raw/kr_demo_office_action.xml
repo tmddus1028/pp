@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<krpat:PatentOpinionSubmission xmlns:krpat="urn:kr:gov:doc:kipo:patent"
+ xmlns:krcom="urn:kr:gov:doc:kipo:common"
+ xmlns:com="http://www.wipo.int/standards/XMLSchema/ST96/Common">
+ <com:ApplicationNumberText>1020200000001</com:ApplicationNumberText>
+ <krcom:SendDate>2020-06-01</krcom:SendDate>
+ <krpat:ExaminationLawArticle><krcom:Row>
+  <krcom:Entry>청구항 제1항</krcom:Entry><krcom:Entry>특허법 제29조제2항</krcom:Entry>
+ </krcom:Row></krpat:ExaminationLawArticle>
+ <krpat:RejectionLawDetail><krcom:P>가상 문서 · 실제 심사 의견이 아닌 UI 동작 확인용 예제입니다.</krcom:P>
+ <krcom:P>청구항 제1항은 특허법 제29조제2항에 따라 특허를 받을 수 없습니다. 인용발명 1의 센서부 및 통신부 구성과 비교하여 검토하세요.</krcom:P>
+ <krcom:P>인용발명 1 : 공개특허공보 제10-2010-0000001호 (가상 인용 예시)</krcom:P>
+ </krpat:RejectionLawDetail>
+</krpat:PatentOpinionSubmission>

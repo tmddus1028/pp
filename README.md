@@ -52,6 +52,74 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\stop.ps1
 
 ## 구현 범위
 
+### 같은 앱에서 미국 / 한국 모드 선택
+
+기존 **http://127.0.0.1:8501**의 **문서 업로드**에서 **미국 특허 / 한국 특허**를 선택합니다.
+미국 모드가 기본값이며 기존 입력·분석 공급자 설정은 그대로입니다. 두 모드는 동일한
+PDF 검토·청구항 분석·관계 지도·근거 비교 화면을 사용합니다. 한국 전용 화면이나 CSS는 추가하지 않습니다.
+
+- 한국 입력: 텍스트 기반 한국 공개특허 PDF/TXT + KIPRIS `PatentOpinionSubmission` 의견제출통지서 XML.
+  텍스트 입력 방식에서는 오른쪽 칸에 XML 전체를 붙여 넣습니다.
+- 실제 사례: `korean_prototype/data/kr_1020190000844/KR20190025857A.pdf`와
+  같은 폴더의 `office_action_20190409.xml`을 업로드합니다.
+  기대 결과는 청구항 1개, 직접 지적 1개, 종속 영향 0개, 특허법 제29조제2항 거절 1개,
+  인용발명 3개입니다. 자료의 출처와 버전은 [사례 설명](korean_prototype/data/kr_1020190000844/README.md)을 참고하세요.
+- **예제 분석 · 가상 문서**는 선택한 모드의 합성 예제를 실행합니다. 실제 사례와 구분합니다.
+- 모드를 바꾸면 이전 분석 결과·PDF가 화면에서 해제됩니다. 새 분석 완료 시 선택·필터도 초기화됩니다.
+- 한국 특허 PDF는 실제 페이지·좌표를 사용합니다. **OA XML은 기존 텍스트 뷰어로 표시하며,
+  화면의 p.1은 텍스트 표시용 논리 페이지입니다. 실제 OA PDF 페이지 번호가 아닙니다.**
+  원문 텍스트와 근거 문자 위치는 유지하고 이 구분을 문서 처리 정보에도 기록합니다.
+- 인용문헌 클릭은 기존 정책대로 OA의 인용 위치로 이동합니다. 별도 인용발명 PDF 업로드·검색 UI는 추가하지 않았습니다.
+
+API는 기존 `/analyze/files`, `/analyze/text`에 선택적 query `jurisdiction=KR`을 지정합니다.
+생략하거나 `jurisdiction=US`이면 기존 미국 처리 경로이며 응답 모델은 동일합니다.
+한국은 기존 시제품의 로컬 추출기를 adapter로 연결합니다. 미국의 OpenAI/Azure 설정을
+한국 문서의 기존 분석에 자동 적용하지 않습니다. 독립 시제품의 명시적 Azure 검토는 그대로 보존됩니다.
+공통 앱에서는 아래의 **개선 방안 보기** 버튼으로만 별도 검토를 요청합니다.
+한국 OA PDF·한국 스캔 OCR·모든 한국 심사 문서 형식의 지원을 의미하지 않습니다.
+
+기존 실행 명령으로 두 모드를 사용할 수 있으며 8502/8001의 별도 한국 서버는 필요하지 않습니다.
+한국 추출 모듈을 재사용하므로 `korean_prototype/kr_review/` 폴더를 함께 유지해야 합니다.
+통합 검증과 화면 전후 비교 결과는 [KOREAN_INTEGRATION_VALIDATION.md](KOREAN_INTEGRATION_VALIDATION.md)에 기록합니다.
+
+### 청구항 개선 방안 — 명시적 실행
+
+**PDF 검토의 청구항 상세 카드** 또는 **청구항 분석의 상세 보기** 하단에서
+**개선 방안 보기**를 누르면 같은 카드의 accordion에 검토용 결과가 표시됩니다.
+PDF 검토에서는 선택한 거절 범위(또는 현재 확인 중인 거절 근거)에 맞춰 생성하며,
+청구항 분석에서는 해당 청구항에 연결된 전체 사유를 검토합니다.
+원본 청구항·문서를 수정하거나 보정서·의견서를 작성하여 제출하는 기능은 아닙니다.
+
+- 로컬 모드: 원문에 따른 검토 질문과 근거 부족 안내. AI 분석이나 구체적 보정안으로 표시하지 않습니다.
+- 외부 AI: 기존 OpenAI/Azure 연결을 재사용하여 버튼을 누른 때에만 Structured Output을 요청합니다.
+  문서 전체 대신 선택 청구항, 상위·중간 청구항, 연결된 거절·인용·자동 연결된 명세서 발췌만 보냅니다.
+  관련 context JSON이 48,000자를 넘으면 잘라서 숨기지 않고 사유를 하나만 선택하도록 오류를 알립니다.
+- 선행문헌 본문은 현재 공통 분석 모델에 포함되지 않으므로 **선행문헌 원문 미확보**로 표시합니다.
+  OA의 인용 문장을 선행문헌 본문처럼 사용하지 않습니다. 실제 한국 샘플은 명세서 자동 연결도 없어
+  기술적 한정 제안을 제한합니다. 독립 시제품에 저장한 인용발명 PDF를 자동으로 첨부하지 않습니다.
+- 근거 ID·원문 인용·요청 청구항/법조항/사유 범위를 검증하며 실패하면 개선안을 표시하지 않습니다.
+  문서별 결과는 세션에서만 캐시하고 문서·관할 변경 시 초기화합니다.
+
+원래 분석은 로컬로 유지하면서 개선안만 Azure로 요청하려면 루트 `.env`에:
+
+```dotenv
+LLM_PROVIDER=local
+IMPROVEMENT_PROVIDER=azure
+AZURE_OPENAI_ENDPOINT=https://YOUR-RESOURCE.openai.azure.com
+AZURE_OPENAI_API_KEY=YOUR-KEY
+AZURE_OPENAI_DEPLOYMENT=YOUR-DEPLOYMENT-NAME
+```
+
+기본 `IMPROVEMENT_PROVIDER=inherit`는 기존 `LLM_PROVIDER`를 따릅니다. 한국 모드에서는
+`korean_prototype/.env` 또는 환경변수의 `KR_AZURE_OPENAI_*` 세 값이 있으면 그 연결을 우선합니다.
+한국 전용 값이 없으면 위 개선안 공급자 설정을 사용하며 일부 값만 있으면 설정 오류를 알립니다.
+`IMPROVEMENT_PROVIDER=local`이면 한국 Azure 설정이 있어도 외부 호출을 하지 않습니다.
+설정 변경 후 API 서버를 재시작하세요. API는 `POST /improvements`이며 기존 분석 응답은 바뀌지 않습니다.
+
+검증과 한계: [IMPROVEMENT_VALIDATION.md](IMPROVEMENT_VALIDATION.md).
+
+### 기존 미국 분석 파이프라인
+
 Phase 1~4 분석 파이프라인, PDF 검토 중심 Streamlit UI, 평가 기반을 구현했습니다.
 
 | 모듈 | 기능 |

@@ -1,0 +1,50 @@
+{
+  "application": "1020190000902",
+  "publication": "KR20190004821A",
+  "patent_file": "publications\\KR20190004821A.pdf",
+  "oa_xml": "official_samples\\1020190000902_952019021826308\\1020190000902_952019021826308.xml",
+  "oa_pdf": "official_samples\\1020190000902_952019021826308\\1020190000902_952019021826308.pdf",
+  "patent_pages": 23,
+  "oa_pdf_pages": 3,
+  "version_status": "same application verified; historical claim version not fully verified",
+  "http_status": 200,
+  "claim_count": 16,
+  "direct": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10
+  ],
+  "dependency": [],
+  "unknown": [
+    11,
+    12,
+    13,
+    14,
+    15,
+    16
+  ],
+  "statutes": [
+    "특허법 제42조제4항제2호"
+  ],
+  "citations": [],
+  "evidence_checks": 53,
+  "status": "PARTIAL_FAIL",
+  "defects": [
+    {
+      "claim": 6,
+      "actual_parents": [],
+      "expected_parents": [
+        1
+      ],
+      "source_text": "공개특허 10-2019-0004821\n- 3 -\n\n청구항 1항에 있어서,\n상기 인디게이터는 상기 자외선 발광다이오드와 직렬로 연결되어 점등 및 소등이 함께 이루어지는, 살균기.",
+      "reason": "PDF page header is inside Claim 6, so the existing Korean dependency parser misses the opening '청구항 1항에 있어서'."
+    }
+  ]
+}

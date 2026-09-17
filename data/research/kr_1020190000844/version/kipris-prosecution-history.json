@@ -1,0 +1,163 @@
+{
+  "source": "https://www.kipris.or.kr/khome/detail/newWindow.do?applno=1020190000844&right=kpat",
+  "retrieval": "browser public detail response",
+  "application_number": "1020190000844",
+  "publication_number": "1020190025857",
+  "publication_date": "20190312",
+  "history": [
+    {
+      "rsno": "1-1-2019-0008414-34",
+      "rs_dt": "2019.01.03",
+      "rs_doc_nm": "[분할출원]특허출원서",
+      "rs_doc_nm_eng": "[Divisional Application] Patent Application",
+      "cd_nm": "수리 (Accepted) "
+    },
+    {
+      "rsno": "1-1-2019-0038761-10",
+      "rs_dt": "2019.01.11",
+      "rs_doc_nm": "[심사청구]심사청구(우선심사신청)서",
+      "rs_doc_nm_eng": "[Request for Examination] Request for Examination (Request for Preferential Examination)",
+      "cd_nm": "수리 (Accepted) "
+    },
+    {
+      "rsno": "1-5-2019-0009331-15",
+      "rs_dt": "2019.01.14",
+      "rs_doc_nm": "보정요구서",
+      "rs_doc_nm_eng": "Request for Amendment",
+      "cd_nm": "발송처리완료 (Completion of Transmission) "
+    },
+    {
+      "rsno": "1-1-2019-0047121-10",
+      "rs_dt": "2019.01.15",
+      "rs_doc_nm": "[출원서등 보정]보정서",
+      "rs_doc_nm_eng": "[Amendment to Patent Application, etc.] Amendment",
+      "cd_nm": "수리 (Accepted) "
+    },
+    {
+      "rsno": "1-5-2019-0038161-18",
+      "rs_dt": "2019.03.06",
+      "rs_doc_nm": "직권정정안내서",
+      "rs_doc_nm_eng": "Notification of Ex officio Correction",
+      "cd_nm": "발송처리완료 (Completion of Transmission) "
+    },
+    {
+      "rsno": "9-5-2019-0256824-92",
+      "rs_dt": "2019.04.09",
+      "rs_doc_nm": "의견제출통지서",
+      "rs_doc_nm_eng": "Notification of reason for refusal",
+      "cd_nm": "발송처리완료 (Completion of Transmission) "
+    },
+    {
+      "rsno": "1-1-2019-0588038-17",
+      "rs_dt": "2019.06.10",
+      "rs_doc_nm": "[지정기간연장]기간연장(단축, 경과구제)신청서",
+      "rs_doc_nm_eng": "[Designated Period Extension] Application of Period Extension(Reduction, Progress relief)",
+      "cd_nm": "수리 (Accepted) "
+    },
+    {
+      "rsno": "1-1-2019-0703124-67",
+      "rs_dt": "2019.07.09",
+      "rs_doc_nm": "[지정기간연장]기간연장(단축, 경과구제)신청서",
+      "rs_doc_nm_eng": "[Designated Period Extension] Application of Period Extension(Reduction, Progress relief)",
+      "cd_nm": "수리 (Accepted) "
+    },
+    {
+      "rsno": "1-1-2019-0820049-07",
+      "rs_dt": "2019.08.09",
+      "rs_doc_nm": "[명세서등 보정]보정서",
+      "rs_doc_nm_eng": "[Amendment to Description, etc.] Amendment",
+      "cd_nm": "보정승인간주 (Regarded as an acceptance of amendment) "
+    },
+    {
+      "rsno": "1-1-2019-0820019-37",
+      "rs_dt": "2019.08.09",
+      "rs_doc_nm": "[거절이유 등 통지에 따른 의견]의견(답변, 소명)서",
+      "rs_doc_nm_eng": "[Opinion according to the Notification of Reasons for Refusal] Written Opinion(Written Reply, Written Substantiation)",
+      "cd_nm": "수리 (Accepted) "
+    },
+    {
+      "rsno": "9-5-2019-0889992-12",
+      "rs_dt": "2019.12.09",
+      "rs_doc_nm": "거절결정서",
+      "rs_doc_nm_eng": "Decision to Refuse a Patent",
+      "cd_nm": "발송처리완료 (Completion of Transmission) "
+    },
+    {
+      "rsno": "1-1-2020-0024118-13",
+      "rs_dt": "2020.01.09",
+      "rs_doc_nm": "[법정기간연장]기간연장(단축, 경과구제)신청서",
+      "rs_doc_nm_eng": " ",
+      "cd_nm": "수리 (Accepted) "
+    },
+    {
+      "rsno": "1-5-2020-0006457-57",
+      "rs_dt": "2020.01.10",
+      "rs_doc_nm": "법정기간연장승인서",
+      "rs_doc_nm_eng": " ",
+      "cd_nm": "발송처리완료 (Completion of Transmission) "
+    },
+    {
+      "rsno": "1-1-2020-0137300-44",
+      "rs_dt": "2020.02.10",
+      "rs_doc_nm": "[명세서등 보정]보정서(재심사)",
+      "rs_doc_nm_eng": "Amendment to Description, etc(Reexamination)",
+      "cd_nm": "보정승인 (Acceptance of amendment) "
+    },
+    {
+      "rsno": "1-1-2020-0137283-55",
+      "rs_dt": "2020.02.10",
+      "rs_doc_nm": "[거절이유 등 통지에 따른 의견]의견(답변, 소명)서",
+      "rs_doc_nm_eng": "[Opinion according to the Notification of Reasons for Refusal] Written Opinion(Written Reply, Written Substantiation)",
+      "cd_nm": "수리 (Accepted) "
+    },
+    {
+      "rsno": "9-5-2020-0158423-34",
+      "rs_dt": "2020.03.02",
+      "rs_doc_nm": "등록결정서",
+      "rs_doc_nm_eng": "Decision to Grant Registration",
+      "cd_nm": "발송처리완료 (Completion of Transmission) "
+    },
+    {
+      "rsno": "1-1-2020-5019985-92",
+      "rs_dt": "2020.08.03",
+      "rs_doc_nm": "[명세서등 보정]보정서(심사관 직권보정)",
+      "rs_doc_nm_eng": " ",
+      "cd_nm": "보정승인간주 (Regarded as an acceptance of amendment) "
+    },
+    {
+      "rsno": "4-1-2022-5126885-28",
+      "rs_dt": "2022.05.30",
+      "rs_doc_nm": "특허고객번호 정보변경(경정)신고서·정정신고서",
+      "rs_doc_nm_eng": " ",
+      "cd_nm": "수리 (Accepted) "
+    },
+    {
+      "rsno": "4-1-2023-5022136-89",
+      "rs_dt": "2023.01.30",
+      "rs_doc_nm": "특허고객번호 정보변경(경정)신고서·정정신고서",
+      "rs_doc_nm_eng": " ",
+      "cd_nm": "수리 (Accepted) "
+    },
+    {
+      "rsno": "4-1-2023-5167406-12",
+      "rs_dt": "2023.06.28",
+      "rs_doc_nm": "특허고객번호 정보변경(경정)신고서·정정신고서",
+      "rs_doc_nm_eng": " ",
+      "cd_nm": "수리 (Accepted) "
+    },
+    {
+      "rsno": "4-1-2023-5213789-07",
+      "rs_dt": "2023.08.17",
+      "rs_doc_nm": "특허고객번호 정보변경(경정)신고서·정정신고서",
+      "rs_doc_nm_eng": " ",
+      "cd_nm": "수리 (Accepted) "
+    },
+    {
+      "rsno": "4-1-2024-5328663-51",
+      "rs_dt": "2024.11.11",
+      "rs_doc_nm": "특허고객번호 정보변경(경정)신고서·정정신고서",
+      "rs_doc_nm_eng": " ",
+      "cd_nm": "수리 (Accepted) "
+    }
+  ]
+}

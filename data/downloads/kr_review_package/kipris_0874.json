@@ -1,0 +1,416 @@
+[
+  {
+    "url": "https://www.kipris.or.kr/kpat/dynaPath/aKDLbQLGUYdXPZdK1CZ4TO21KdXZaAMLMLH3a24QJWKXRZAa44/zAHDCA3BQ2BBACEIh9",
+    "body": {
+      "lst_dspsl_desc": "등록결정(재심사후)",
+      "applno": "1020190000874",
+      "appl_dt": "20190103",
+      "pubno": " ",
+      "pub_dt": "20191219",
+      "opnno": "1020190003855",
+      "opn_dt": "20190109",
+      "rgstno": "1020574660000",
+      "rgst_dt": "20191213",
+      "org_ap_rgst_desc": "10",
+      "org_ap_rgstno": "10-2010-0105217",
+      "org_ap_rgst_dt": "2010.10.27",
+      "invnt_ttl": "선택적 데이터 제공을 위한 장치 및 방법",
+      "invnt_ttl_eng": "Data providing apparatus and method",
+      "exmn_dmnd_dt": "Y(2019.01.03)",
+      "bs_itm_cnt": "7",
+      "trl_dmnd_stcd": "",
+      "rgst_stcd": "등록",
+      "retro_tpcd": "국내출원/분할",
+      "laps": "",
+      "trns_sbmt_dt": " ",
+      "ltrt_id_cd": "B1",
+      "familyJson": "",
+      "opFamilyCnt": "1",
+      "docFamilyCnt": "0",
+      "existDurDt": "",
+      "rgsterInfo": null,
+      "pub_reg": "",
+      "hangjung_nm": "",
+      "abstractText": "<summary> <p num=\"0001a\">본 발명은, 사용자 단말기가 데이터 네트워크에 접속하여 APN을 이용해 데이터 서비스를 제공받을 때, 데이터 차단 기능에 따라 구분되는 복수의 APN(Access Point Name) 중 어느 하나를 통한 사용자 단말의 접속 경로를 인식하고, 상기 인식된 접속 경로에 따라, 상기 사용자 단말기에 선택적으로 데이터를 제공하는 선택적 데이터 제공 방법 및 이를 위한 장치에 관한 것이다.</p> ",
+      "frontClaimText": "<claim-text>통신망에 접속한 사용자 단말기로 데이터를 제공하는 데이터 제공 장치에 있어서, <br></br>복수의 APN(Access Point Name) 중 어느 하나를 통한 사용자 단말의 접속 경로를 인식하는 접속 인식부;<br></br>상기 접속 인식부에서 인식된 접속 경로에 따라 접속된 무선 네트워크를 확인하여, 접속된 무선 네트워크에 따라 데이터 차단 상태인지 여부를 판단하여 상기 사용자 단말기에 대한 데이터 서비스 기능의 설정 상태를 인식하고, 상기 데이터 서비스 기능의 설정 상태에 따라서 상기 통신망에 접속한 상기 사용자 단말기에 선택적으로 과금 데이터 및 비과금 데이터 중 적어도 하나를 제공하는 데이터 제공부를 포함하는 데이터 제공 장치.</claim-text></claim>\n",
+      "lcns_aprv_hope_fg": "0",
+      "tech_trans_hope_fg": "0",
+      "tech_ld_hope_fg": "0",
+      "abstmap": {
+        "drwCont": "<p><ul id=\"reference_numerals\"><li>(AA) Connection by using an APN A (web.kstelecom.com)</li><li>(BB) Connection by using an APN B (mms.kstelecom.com)</li><li>(CC) Use the APN A in case 3G data is unblocked, use the APN B in case 3G data is blocked</li><li>(DD) WCDMA network</li><li>(EE) Permit</li><li>(FF) Block</li><li>(GG) Block connection to charging data</li><li>(HH) MMS server</li><li>(II) Permit</li><li>(JJ) Data network</li></ul></p>",
+        "abst1": "",
+        "abst0": "The present invention relates to a method and apparatus for providing selective data which recognizes a connection path of the user terminal through any one of a plurality of APNs (Access Point Names) classified according to the data blocking function when a user terminal accesses a data network and receives a data service using an APN, and selectively provides data to the user terminal according to the recognized connection path.",
+        "abst2": "COPYRIGHT KIPO 2019"
+      },
+      "unexaminedFullTextFg": "Y",
+      "examinedFullTextFg": "Y",
+      "facsimileUnExFg": "N",
+      "facsimileExFg": "N",
+      "correctionFg": "N",
+      "rgstInfoFg": "Y",
+      "trl_fg": "N",
+      "unexFileKindCd": "S10221",
+      "unexCaseNo": "7",
+      "exFileKindCd": "S10221",
+      "exCaseNo": "7",
+      "ipclist": [
+        {
+          "clss_cd": "H04W 48/20",
+          "detail_cd": "",
+          "ver_dt": "2009.01.01"
+        },
+        {
+          "clss_cd": "H04W 4/24",
+          "detail_cd": "",
+          "ver_dt": "2024.01.01"
+        },
+        {
+          "clss_cd": "H04M 15/00",
+          "detail_cd": "",
+          "ver_dt": "2024.01.01"
+        }
+      ],
+      "cpclist": [
+        {
+          "cpc_cd": "H04W 48/20",
+          "ver_dt": "(2013.01)"
+        },
+        {
+          "cpc_cd": "H04W 4/24",
+          "ver_dt": "(2024.01)"
+        },
+        {
+          "cpc_cd": "H04M 15/88",
+          "ver_dt": "(2013.01)"
+        }
+      ],
+      "familylist": [
+        {
+          "reff_applno": "1020100105217",
+          "tb_kp10Fg": "Y",
+          "ltrtno": "",
+          "fmly_cntry_cd": "",
+          "publ_key_link": "",
+          "docdbnum": "",
+          "fmly_link_yn": "",
+          "kpat_applno": "",
+          "nationNameKor": "",
+          "nationNameEng": "",
+          "fmly_pubno_epo": "",
+          "pat_tpcd": "",
+          "check_double": "",
+          "tbkind": "",
+          "nation_Code": "",
+          "fmly_appl_kind": "",
+          "applno": "",
+          "appl_dt": "",
+          "opnno": "",
+          "opn_dt": "",
+          "rgstno": "",
+          "rgst_dt": "",
+          "pubno": "",
+          "pub_dt": ""
+        },
+        {
+          "reff_applno": null,
+          "tb_kp10Fg": "N",
+          "ltrtno": "",
+          "fmly_cntry_cd": "",
+          "publ_key_link": "",
+          "docdbnum": "",
+          "fmly_link_yn": "",
+          "kpat_applno": "",
+          "nationNameKor": "",
+          "nationNameEng": "",
+          "fmly_pubno_epo": "",
+          "pat_tpcd": "",
+          "check_double": "",
+          "tbkind": "",
+          "nation_Code": "",
+          "fmly_appl_kind": "",
+          "applno": "",
+          "appl_dt": "",
+          "opnno": "",
+          "opn_dt": "",
+          "rgstno": "",
+          "rgst_dt": "",
+          "pubno": "",
+          "pub_dt": ""
+        }
+      ],
+      "dsgnlist": [],
+      "applicantlist": [
+        {
+          "nm_kor_long": "에스케이텔레콤 주식회사",
+          "nm_eng_long": "SK TELECOM CO., LTD.",
+          "apagt_addr": "서울특별시 중구...",
+          "natl_nm": "KR",
+          "apagt_cd": "119980042966",
+          "brgno": null,
+          "rrn": "110111-0371346"
+        }
+      ],
+      "inventorlist": [
+        {
+          "inv_name": "홍승표",
+          "inv_name_eng": "HONG, Seung Pyo",
+          "inv_addr": "서울특별시 용산구...",
+          "natl_nm": null,
+          "invntr_cd": null,
+          "name": "",
+          "name_eng": "",
+          "code": "",
+          "addr": "",
+          "addr_eng": ""
+        },
+        {
+          "inv_name": "배성수",
+          "inv_name_eng": "BAE, Seong Soo",
+          "inv_addr": "경기도 성남시 분당구...",
+          "natl_nm": null,
+          "invntr_cd": null,
+          "name": "",
+          "name_eng": "",
+          "code": "",
+          "addr": "",
+          "addr_eng": ""
+        }
+      ],
+      "agentlist": [
+        {
+          "nm_kor_long": "박종한",
+          "nm_eng_long": "Park,Chong Han",
+          "apagt_addr": "서울특별시 구로구 디지털로**길 * (구로동) ***호(한림특허법률사무소)",
+          "natl_nm": "KR",
+          "apagt_cd": "920030001195",
+          "name": "",
+          "name_eng": "",
+          "code": "",
+          "addr": "",
+          "addr_eng": ""
+        }
+      ],
+      "patenteelist": [
+        {
+          "nm_kor_long": "에스케이텔레콤 주식회사",
+          "patentee_addr": "서울특별시 중구...",
+          "natl_nm": "대한민국",
+          "brgno": null,
+          "rrn": "110111-0371346"
+        }
+      ],
+      "prioritylist": [],
+      "claimlist": [
+        {
+          "seq": "1",
+          "claim_text": "<claim-text>통신망에 접속한 사용자 단말기로 데이터를 제공하는 데이터 제공 장치에 있어서, <br></br>복수의 APN(Access Point Name) 중 어느 하나를 통한 사용자 단말의 접속 경로를 인식하는 접속 인식부;<br></br>상기 접속 인식부에서 인식된 접속 경로에 따라 접속된 무선 네트워크를 확인하여, 접속된 무선 네트워크에 따라 데이터 차단 상태인지 여부를 판단하여 상기 사용자 단말기에 대한 데이터 서비스 기능의 설정 상태를 인식하고, 상기 데이터 서비스 기능의 설정 상태에 따라서 상기 통신망에 접속한 상기 사용자 단말기에 선택적으로 과금 데이터 및 비과금 데이터 중 적어도 하나를 제공하는 데이터 제공부를 포함하는 데이터 제공 장치.</claim-text></claim>\n"
+        },
+        {
+          "seq": "2",
+          "claim_text": "<AmendStatus status=\"D\">삭제</AmendStatus></claim>\n"
+        },
+        {
+          "seq": "3",
+          "claim_text": "<claim-text>제1항에 있어서, 상기 데이터 제공부는,<br></br>과금 데이터 및 비과금 데이터를 모두 제공하거나, 과금 데이터는 차단하고 비과금 데이터만 제공하는 것을 특징으로 하는 데이터 제공 장치.</claim-text></claim>\n"
+        },
+        {
+          "seq": "4",
+          "claim_text": "<claim-text>제1항에 있어서, 상기 데이터 제공부는,<br></br>외부 인터넷 접속 트래픽을 선택적으로 차단하는 것을 특징으로 하는 데이터 제공 장치.</claim-text></claim>\n"
+        },
+        {
+          "seq": "5",
+          "claim_text": "<claim-text>통신부와 선택적 데이터 제공 서비스를 위한 어플리케이션부를 포함하는 사용자 단말기로, <br></br>상기 통신부와 어플리케이션부에 의하여,<br></br>데이터 서비스 기능의 설정 상태에 따라 복수의 APN(Access Point Name) 중 어느 하나를 통해 통신망에 접속하고, <br></br>상기 복수의 APN 중 어느 하나에 따른 접속 경로에 따라, 접속된 무선 네트워크를 확인하여, 접속된 무선 네트워크에 따라 데이터 차단 상태인지 여부를 판단하여 데이터 서비스 기능의 설정 상태를 인식하고, 상기 데이터 서비스 기능의 설정 상태에 따라서 과금 데이터 및 비과금 데이터 중 적어도 하나를 선택적으로 제공받는 것을 특징으로 하는 사용자 단말기.</claim-text></claim>\n"
+        },
+        {
+          "seq": "6",
+          "claim_text": "<claim-text>제5항에 있어서, 상기 어플리케이션부는,<br></br>상기 접속 경로에 따라서, 과금 데이터 및 비과금 데이터를 모두 제공받거나, 비과금 데이터만 제공받는 것을 특징으로 하는 사용자 단말기.</claim-text></claim>\n"
+        },
+        {
+          "seq": "7",
+          "claim_text": "<claim-text>제5항에 있어서, 상기 어플리케이션부는,<br></br>상기 접속 경로에 따라서, 외부 인터넷 접속 트래픽이 아닌 데이터만 제공받는 것을 특징으로 하는 사용자 단말기.</claim-text></claim>\n"
+        },
+        {
+          "seq": "8",
+          "claim_text": "<claim-text>통신망을 통해 접속한 사용자 단말기로 데이터를 제공하는 데이터 제공 장치가,<br></br>상기 사용자 단말기가 접속하면, 복수의 APN 중 어느 하나를 통한 사용자 단말기의 접속 경로를 인식하는 단계;<br></br>상기 인식된 접속 경로에 따라, 접속된 무선 네트워크를 확인하여, 접속된 무선 네트워크에 따라 데이터 차단 상태인지 여부를 판단하여 상기 사용자 단말기에 대한 데이터 서비스 기능의 설정 상태를 인식하고, 상기 데이터 서비스 기능의 설정 상태에 따라서 상기 사용자 단말기에 선택적으로 과금 데이터 및 비과금 데이터 중 적어도 하나를 제공하는 단계를 포함하는 것을 특징으로 하는 선택적 데이터 제공을 위한 방법. </claim-text></claim>\n"
+        },
+        {
+          "seq": "9",
+          "claim_text": "<AmendStatus status=\"D\">삭제</AmendStatus></claim>"
+        }
+      ],
+      "hangjunglist": [
+        {
+          "rsno": "1-1-2019-0008596-24",
+          "rs_dt": "2019.01.03",
+          "rs_doc_nm": "[분할출원]특허출원서",
+          "rs_doc_nm_eng": "[Divisional Application] Patent Application",
+          "cd_nm": "수리 (Accepted) "
+        },
+        {
+          "rsno": "9-5-2019-0239374-04",
+          "rs_dt": "2019.04.01",
+          "rs_doc_nm": "의견제출통지서",
+          "rs_doc_nm_eng": "Notification of reason for refusal",
+          "cd_nm": "발송처리완료 (Completion of Transmission) "
+        },
+        {
+          "rsno": "1-1-2019-0450747-23",
+          "rs_dt": "2019.05.02",
+          "rs_doc_nm": "[명세서등 보정]보정서",
+          "rs_doc_nm_eng": "[Amendment to Description, etc.] Amendment",
+          "cd_nm": "보정승인간주 (Regarded as an acceptance of amendment) "
+        },
+        {
+          "rsno": "1-1-2019-0450746-88",
+          "rs_dt": "2019.05.02",
+          "rs_doc_nm": "[거절이유 등 통지에 따른 의견]의견(답변, 소명)서",
+          "rs_doc_nm_eng": "[Opinion according to the Notification of Reasons for Refusal] Written Opinion(Written Reply, Written Substantiation)",
+          "cd_nm": "수리 (Accepted) "
+        },
+        {
+          "rsno": "9-5-2019-0729317-16",
+          "rs_dt": "2019.10.08",
+          "rs_doc_nm": "거절결정서",
+          "rs_doc_nm_eng": "Decision to Refuse a Patent",
+          "cd_nm": "발송처리완료 (Completion of Transmission) "
+        },
+        {
+          "rsno": "1-1-2019-1132077-05",
+          "rs_dt": "2019.11.05",
+          "rs_doc_nm": "[명세서등 보정]보정서(재심사)",
+          "rs_doc_nm_eng": "Amendment to Description, etc(Reexamination)",
+          "cd_nm": "보정승인 (Acceptance of amendment) "
+        },
+        {
+          "rsno": "1-1-2019-1132076-59",
+          "rs_dt": "2019.11.05",
+          "rs_doc_nm": "[거절이유 등 통지에 따른 의견]의견(답변, 소명)서",
+          "rs_doc_nm_eng": "[Opinion according to the Notification of Reasons for Refusal] Written Opinion(Written Reply, Written Substantiation)",
+          "cd_nm": "수리 (Accepted) "
+        },
+        {
+          "rsno": "9-5-2019-0809460-92",
+          "rs_dt": "2019.11.08",
+          "rs_doc_nm": "등록결정서",
+          "rs_doc_nm_eng": "Decision to Grant Registration",
+          "cd_nm": "발송처리완료 (Completion of Transmission) "
+        }
+      ],
+      "precedenceList": [],
+      "docfamilylist": [],
+      "opfamilylist": [
+        {
+          "reff_applno": "",
+          "tb_kp10Fg": "N",
+          "ltrtno": "KR1020100105217",
+          "fmly_cntry_cd": "KR",
+          "publ_key_link": "KR1020100105217",
+          "docdbnum": "KR.20100105217.A",
+          "fmly_link_yn": "N",
+          "kpat_applno": "",
+          "nationNameKor": "대한민국",
+          "nationNameEng": "Republic of Korea",
+          "fmly_pubno_epo": "KR101937235",
+          "pat_tpcd": "B1",
+          "check_double": "KR10201001052B120190110",
+          "tbkind": "KR",
+          "nation_Code": "KR",
+          "fmly_appl_kind": "",
+          "applno": "1020100105217",
+          "appl_dt": "20101027",
+          "opnno": "101937235",
+          "opn_dt": "20190110",
+          "rgstno": "1019372350000",
+          "rgst_dt": "20190104",
+          "pubno": null,
+          "pub_dt": "20190110"
+        }
+      ],
+      "intergratedList": [],
+      "trlList": [],
+      "correctionList": [],
+      "extList": [],
+      "quotedCodelist": [],
+      "intnlB": {
+        "intnl_applno": null,
+        "intnl_appl_dt": null,
+        "intnl_opnno": null,
+        "intnl_opn_dt": null,
+        "publ_key": null
+      },
+      "frontDrawB": null,
+      "existTechSelInfo": false,
+      "techSelInfo": null,
+      "extFg": "N",
+      "rndInfolist": [],
+      "doiinfoFg": "N",
+      "quotationlist": [
+        {
+          "std_applno": "1020060001489",
+          "cntry_nm": "대한민국",
+          "cntry_cd": "KR",
+          "ltrtno": "1020070073517",
+          "ctltr_cd": "A",
+          "pub_dt": "2007.07.10",
+          "ttl": "듀얼 모드를 지원하는 이동 통신 단말기 및 그 방법",
+          "ipc": "H04W 48/18",
+          "appl_dt": ""
+        },
+        {
+          "std_applno": "1020080116103",
+          "cntry_nm": "대한민국",
+          "cntry_cd": "KR",
+          "ltrtno": "1020100021334",
+          "ctltr_cd": "A",
+          "pub_dt": "2010.02.24",
+          "ttl": "한도 만료 안내 서비스 시스템 및 방법",
+          "ipc": "H04B 7/26",
+          "appl_dt": ""
+        }
+      ],
+      "quotedlist": [],
+      "microlist": [],
+      "distlist": [],
+      "rginList": [
+        {
+          "inv_name": "",
+          "inv_name_eng": "",
+          "inv_addr": "",
+          "natl_nm": "",
+          "invntr_cd": "",
+          "name": "홍승표",
+          "name_eng": null,
+          "code": null,
+          "addr": "서울특별시 용산구...",
+          "addr_eng": null
+        },
+        {
+          "inv_name": "",
+          "inv_name_eng": "",
+          "inv_addr": "",
+          "natl_nm": "",
+          "invntr_cd": "",
+          "name": "배성수",
+          "name_eng": null,
+          "code": null,
+          "addr": "경기도 성남시 분당구...",
+          "addr_eng": null
+        }
+      ],
+      "rgagList": [
+        {
+          "nm_kor_long": "",
+          "nm_eng_long": "",
+          "apagt_addr": "",
+          "natl_nm": "",
+          "apagt_cd": "",
+          "name": "박종한",
+          "name_eng": "Park,Chong Han",
+          "code": "920030001195",
+          "addr": "서울특별시 구로구 디지털로**길 * (구로동) ***호(한림특허법률사무소)",
+          "addr_eng": "Room ***, * Digital-ro **-gil, Guro-gu, Seoul, Republic of Korea(HanLim Patent & Law Office)"
+        }
+      ]
+    }
+  }
+]

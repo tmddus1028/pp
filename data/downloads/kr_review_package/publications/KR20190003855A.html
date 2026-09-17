@@ -1,0 +1,2117 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>KR20190003855A - 선택적 데이터 제공을 위한 장치 및 방법 
+      - Google Patents</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
+    <meta name="referrer" content="origin-when-crossorigin">
+    <link rel="canonical" href="https://patents.google.com/patent/KR20190003855A/ko">
+    <meta name="description" content="
+     본 발명은, 사용자 단말기가 데이터 네트워크에 접속하여 APN을 이용해 데이터 서비스를 제공받을 때, 데이터 차단 기능에 따라 구분되는 복수의 APN(Access Point Name) 중 어느 하나를 통한 사용자 단말의 접속 경로를 인식하고, 상기 인식된 접속 경로에 따라, 상기 사용자 단말기에 선택적으로 데이터를 제공하는 선택적 데이터 제공 방법 및 이를 위한 장치에 관한 것이다. 
+     
+         
+     
+   
+   ">
+    <meta name="DC.type" content="patent">
+    <meta name="DC.title" content="선택적 데이터 제공을 위한 장치 및 방법 
+     ">
+    <meta name="DC.date" content="2019-01-03" scheme="dateSubmitted">
+    <meta name="DC.description" content="
+     본 발명은, 사용자 단말기가 데이터 네트워크에 접속하여 APN을 이용해 데이터 서비스를 제공받을 때, 데이터 차단 기능에 따라 구분되는 복수의 APN(Access Point Name) 중 어느 하나를 통한 사용자 단말의 접속 경로를 인식하고, 상기 인식된 접속 경로에 따라, 상기 사용자 단말기에 선택적으로 데이터를 제공하는 선택적 데이터 제공 방법 및 이를 위한 장치에 관한 것이다. 
+     
+         
+     
+   
+   ">
+    <meta name="citation_patent_application_number" content="KR:1020190000874A">
+    <meta name="citation_pdf_url" content="https://patentimages.storage.googleapis.com/cc/32/e0/7a169e1f5f5373/KR20190003855A.pdf">
+    <meta name="citation_patent_publication_number" content="KR:20190003855:A">
+    <meta name="DC.date" content="2019-01-09">
+    <meta name="DC.contributor" content="홍승표" scheme="inventor">
+    <meta name="DC.contributor" content="배성수" scheme="inventor">
+    <meta name="DC.contributor" content="에스케이텔레콤 주식회사" scheme="assignee">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,400italic,500,500italic,700">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Product+Sans">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700">
+
+    <style>
+      
+      #gb { top: 15px; left: auto; right: 0; width: auto; min-width: 135px !important; }   
+      body { transition: none; }
+    </style>
+    <script></script>
+
+    <script>
+      window.version = 'patent-search.search_20260819_RC00';
+
+      function sendFeedback() {
+        userfeedback.api.startFeedback({
+          'productId': '713680',
+          'bucket': 'patent-search-web',
+          'productVersion': window.version,
+        });
+      }
+
+      window.experiments = {};
+      window.experiments.patentCountries = "ae,ag,al,am,ao,ap,ar,at,au,aw,az,ba,bb,bd,be,bf,bg,bh,bj,bn,bo,br,bw,bx,by,bz,ca,cf,cg,ch,ci,cl,cm,cn,co,cr,cs,cu,cy,cz,dd,de,dj,dk,dm,do,dz,ea,ec,ee,eg,em,ep,es,fi,fr,ga,gb,gc,gd,ge,gh,gm,gn,gq,gr,gt,gw,hk,hn,hr,hu,ib,id,ie,il,in,ir,is,it,jo,jp,ke,kg,kh,km,kn,kp,kr,kw,kz,la,lc,li,lk,lr,ls,lt,lu,lv,ly,ma,mc,md,me,mg,mk,ml,mn,mo,mr,mt,mw,mx,my,mz,na,ne,ng,ni,nl,no,nz,oa,om,pa,pe,pg,ph,pl,pt,py,qa,ro,rs,ru,rw,sa,sc,sd,se,sg,si,sk,sl,sm,sn,st,su,sv,sy,sz,td,tg,th,tj,tm,tn,tr,tt,tw,tz,ua,ug,us,uy,uz,vc,ve,vn,wo,yu,za,zm,zw";
+      
+      
+      window.experiments.keywordWizard = true;
+      
+      
+      
+      window.experiments.definitions = true;
+      window.experiments.plogs = true;
+
+      window.Polymer = {
+        dom: 'shady',
+        lazyRegister: true,
+      };
+    </script>
+
+    <script src="//www.gstatic.com/patent-search/frontend/patent-search.search_20260819_RC00/scs/compiled_dir/webcomponentsjs/webcomponents-lite.min.js"></script>
+    <link rel="import" href="//www.gstatic.com/patent-search/frontend/patent-search.search_20260819_RC00/scs/compiled_dir/search-app-vulcanized.html">
+  </head>
+  <body unresolved>
+    
+    
+    <script></script>
+    <script src="//www.gstatic.com/patent-search/frontend/patent-search.search_20260819_RC00/scs/compiled_dir/search-app-vulcanized.js"></script>
+    <search-app>
+      
+      
+
+      <article class="result" itemscope itemtype="http://schema.org/ScholarlyArticle">
+  <h1 itemprop="pageTitle">KR20190003855A - 선택적 데이터 제공을 위한 장치 및 방법 
+      - Google Patents</h1>
+  <span itemprop="title">선택적 데이터 제공을 위한 장치 및 방법 
+     </span>
+
+  <meta itemprop="type" content="patent">
+  <a href="https://patentimages.storage.googleapis.com/cc/32/e0/7a169e1f5f5373/KR20190003855A.pdf" itemprop="pdfLink">Download PDF</a>
+  <h2>Info</h2>
+
+  <dl>
+    <dt>Publication number</dt>
+    <dd itemprop="publicationNumber">KR20190003855A</dd>
+    <meta itemprop="numberWithoutCodes" content="20190003855">
+    <meta itemprop="kindCode" content="A">
+    <meta itemprop="publicationDescription" content="Official gazette of the unexamined patents">
+    <span>KR20190003855A</span>
+    <span>KR1020190000874A</span>
+    <span>KR20190000874A</span>
+    <span>KR20190003855A</span>
+    <span>KR 20190003855 A</span>
+    <span>KR20190003855 A</span>
+    <span>KR 20190003855A</span>
+    <span>KR 1020190000874 A</span>
+    <span>KR1020190000874 A</span>
+    <span>KR 1020190000874A</span>
+    <span>KR 20190000874 A</span>
+    <span>KR20190000874 A</span>
+    <span>KR 20190000874A</span>
+    <span>KR 20190003855 A</span>
+    <span>KR20190003855 A</span>
+    <span>KR 20190003855A</span>
+
+    <dt>Authority</dt>
+    <dd itemprop="countryCode">KR</dd>
+    <dd itemprop="countryName">South Korea</dd>
+
+    <dt>Prior art keywords</dt>
+    <dd itemprop="priorArtKeywords" repeat>data</dd>
+    <dd itemprop="priorArtKeywords" repeat>user terminal</dd>
+    <dd itemprop="priorArtKeywords" repeat>providing</dd>
+    <dd itemprop="priorArtKeywords" repeat>network</dd>
+    <dd itemprop="priorArtKeywords" repeat>unit</dd>
+
+    <dt>Prior art date</dt>
+    <dd><time itemprop="priorArtDate" datetime="2019-01-03">2019-01-03</time></dd>
+
+    <dt>Legal status (The legal status is an assumption and is not a legal conclusion. Google has not performed a legal analysis and makes no representation as to the accuracy of the status listed.)</dt>
+    <dd itemprop="legalStatusIfi" itemscope>
+      <span itemprop="status">Granted</span>
+    </dd>
+  </dl>
+
+  <dt>Application number</dt>
+  <dd itemprop="applicationNumber">KR1020190000874A</dd>
+
+  <dt>Other languages</dt>
+  <dd itemprop="otherLanguages" itemscope repeat>
+    <a href="/patent/KR20190003855A/en">
+      <span itemprop="name">English</span> (<span itemprop="code">en</span>)
+    </a>
+  </dd>
+
+  <dt>Other versions</dt>
+  <dd itemprop="directAssociations" itemscope repeat>
+    <a href="/patent/KR102057466B1/ko">
+      <span itemprop="publicationNumber">KR102057466B1</span>
+      (<span itemprop="primaryLanguage">ko</span>
+    </a>
+  </dd>
+
+  <dt>Inventor</dt>
+  <dd itemprop="inventor" repeat>홍승표</dd>
+  <dd itemprop="inventor" repeat>배성수</dd>
+
+  
+
+  <dt>Original Assignee</dt>
+  <dd itemprop="assigneeOriginal" repeat>에스케이텔레콤 주식회사</dd>
+
+  <dt>Priority date (The priority date is an assumption and is not a legal conclusion. Google has not performed a legal analysis and makes no representation as to the accuracy of the date listed.)</dt>
+  <dd><time itemprop="priorityDate" datetime="2019-01-03">2019-01-03</time></dd>
+
+  <dt>Filing date</dt>
+  <dd><time itemprop="filingDate" datetime="2019-01-03">2019-01-03</time></dd>
+
+  <dt>Publication date</dt>
+  <dd><time itemprop="publicationDate" datetime="2019-01-09">2019-01-09</time></dd>
+
+  
+  <dd itemprop="events" itemscope repeat>
+    <time itemprop="date" datetime="2019-01-03">2019-01-03</time>
+    <span itemprop="title">Application filed by 에스케이텔레콤 주식회사</span>
+    <span itemprop="type">filed</span>
+    <span itemprop="critical" content="true" bool>Critical</span>
+    
+    
+    
+    <span itemprop="assigneeSearch">에스케이텔레콤 주식회사</span>
+  </dd>
+  <dd itemprop="events" itemscope repeat>
+    <time itemprop="date" datetime="2019-01-03">2019-01-03</time>
+    <span itemprop="title">Priority to KR1020190000874A</span>
+    <span itemprop="type">priority</span>
+    <span itemprop="critical" content="true" bool>Critical</span>
+    
+    
+    <span itemprop="documentId">patent/KR102057466B1/ko</span>
+    
+  </dd>
+  <dd itemprop="events" itemscope repeat>
+    <time itemprop="date" datetime="2019-01-09">2019-01-09</time>
+    <span itemprop="title">Publication of KR20190003855A</span>
+    <span itemprop="type">publication</span>
+    <span itemprop="critical" content="true" bool>Critical</span>
+    
+    
+    <span itemprop="documentId">patent/KR20190003855A/ko</span>
+    
+  </dd>
+  <dd itemprop="events" itemscope repeat>
+    <time itemprop="date" datetime="2019-12-19">2019-12-19</time>
+    <span itemprop="title">Application granted</span>
+    <span itemprop="type">granted</span>
+    <span itemprop="critical" content="true" bool>Critical</span>
+    
+    
+    
+    
+  </dd>
+  <dd itemprop="events" itemscope repeat>
+    <time itemprop="date" datetime="2019-12-19">2019-12-19</time>
+    <span itemprop="title">Publication of KR102057466B1</span>
+    <span itemprop="type">publication</span>
+    <span itemprop="critical" content="true" bool>Critical</span>
+    
+    
+    <span itemprop="documentId">patent/KR102057466B1/ko</span>
+    
+  </dd>
+  <dd itemprop="events" itemscope repeat>
+    <time itemprop="date">Status</time>
+    <span itemprop="title">Active</span>
+    <span itemprop="type">legal-status</span>
+    <span itemprop="critical" content="true" bool>Critical</span>
+    <span itemprop="current" content="true" bool>Current</span>
+    
+    
+    
+  </dd>
+  <dd itemprop="events" itemscope repeat>
+    <time itemprop="date" datetime="2030-10-27">2030-10-27</time>
+    <span itemprop="title">Anticipated expiration</span>
+    <span itemprop="type">legal-status</span>
+    <span itemprop="critical" content="true" bool>Critical</span>
+    
+    
+    
+    
+  </dd>
+
+  <h2>Links</h2>
+  <ul>
+    
+
+    <li itemprop="links" itemscope repeat>
+        <meta itemprop="id" content="espacenetLink">
+        <a href="https://worldwide.espacenet.com/publicationDetails/biblio?CC=KR&amp;NR=20190003855A&amp;KC=A&amp;FT=D" itemprop="url" target="_blank"><span itemprop="text">Espacenet</span></a>
+      </li>
+      
+
+    
+
+    <li itemprop="links" itemscope repeat>
+      <meta itemprop="id" content="globalDossierLink">
+      <a href="https://globaldossier.uspto.gov/result/application/KR/20190000874/1" itemprop="url" target="_blank"><span itemprop="text">Global Dossier</span></a>
+    </li>
+
+    
+
+      
+
+      
+
+      
+      <li itemprop="links" itemscope repeat>
+        <meta itemprop="id" content="stackexchangeLink">
+        <a href="https://patents.stackexchange.com/questions/tagged/KR20190003855A" itemprop="url"><span itemprop="text">Discuss</span></a>
+      </li>
+  </ul>
+
+  
+
+  <section>
+    <h2>Images</h2>
+    <ul>
+      <li itemprop="images" itemscope repeat>
+        <img itemprop="thumbnail" src="https://patentimages.storage.googleapis.com/3a/0b/5f/5f0f6537458486/pat00001.png">
+        <meta itemprop="full" content="https://patentimages.storage.googleapis.com/e7/e1/e6/1294d5bc0c3ab0/pat00001.png">
+        <ul>
+          <li itemprop="callouts" itemscope repeat>
+            <meta itemprop="figurePage" content="0">
+            <meta itemprop="id" content="100">
+            <meta itemprop="label" content="data providing system">
+            <span itemprop="bounds" itemscope>
+              <meta itemprop="left" content="1012">
+              <meta itemprop="top" content="20">
+              <meta itemprop="right" content="1064">
+              <meta itemprop="bottom" content="45">
+            </span>
+          </li>
+          <li itemprop="callouts" itemscope repeat>
+            <meta itemprop="figurePage" content="0">
+            <meta itemprop="id" content="110">
+            <meta itemprop="label" content="user terminal">
+            <span itemprop="bounds" itemscope>
+              <meta itemprop="left" content="164">
+              <meta itemprop="top" content="211">
+              <meta itemprop="right" content="216">
+              <meta itemprop="bottom" content="236">
+            </span>
+          </li>
+          <li itemprop="callouts" itemscope repeat>
+            <meta itemprop="figurePage" content="0">
+            <meta itemprop="id" content="120">
+            <meta itemprop="label" content="communication network">
+            <span itemprop="bounds" itemscope>
+              <meta itemprop="left" content="694">
+              <meta itemprop="top" content="76">
+              <meta itemprop="right" content="742">
+              <meta itemprop="bottom" content="97">
+            </span>
+          </li>
+          <li itemprop="callouts" itemscope repeat>
+            <meta itemprop="figurePage" content="0">
+            <meta itemprop="id" content="122">
+            <meta itemprop="label" content="first data network">
+            <span itemprop="bounds" itemscope>
+              <meta itemprop="left" content="625">
+              <meta itemprop="top" content="167">
+              <meta itemprop="right" content="675">
+              <meta itemprop="bottom" content="189">
+            </span>
+          </li>
+          <li itemprop="callouts" itemscope repeat>
+            <meta itemprop="figurePage" content="0">
+            <meta itemprop="id" content="124">
+            <meta itemprop="label" content="second data network">
+            <span itemprop="bounds" itemscope>
+              <meta itemprop="left" content="648">
+              <meta itemprop="top" content="315">
+              <meta itemprop="right" content="700">
+              <meta itemprop="bottom" content="336">
+            </span>
+          </li>
+          <li itemprop="callouts" itemscope repeat>
+            <meta itemprop="figurePage" content="0">
+            <meta itemprop="id" content="130">
+            <meta itemprop="label" content="data providing apparatus">
+            <span itemprop="bounds" itemscope>
+              <meta itemprop="left" content="1106">
+              <meta itemprop="top" content="108">
+              <meta itemprop="right" content="1155">
+              <meta itemprop="bottom" content="132">
+            </span>
+          </li>
+          <li itemprop="callouts" itemscope repeat>
+            <meta itemprop="figurePage" content="0">
+            <meta itemprop="id" content="140">
+            <meta itemprop="label" content="MMS server">
+            <span itemprop="bounds" itemscope>
+              <meta itemprop="left" content="1104">
+              <meta itemprop="top" content="292">
+              <meta itemprop="right" content="1154">
+              <meta itemprop="bottom" content="316">
+            </span>
+          </li>
+        </ul>
+      </li>
+      <li itemprop="images" itemscope repeat>
+        <img itemprop="thumbnail" src="https://patentimages.storage.googleapis.com/db/d0/6a/b89ddbd075d473/pat00002.png">
+        <meta itemprop="full" content="https://patentimages.storage.googleapis.com/94/c1/cf/d603ae7af5fa7b/pat00002.png">
+        <ul>
+          <li itemprop="callouts" itemscope repeat>
+            <meta itemprop="figurePage" content="1">
+            <meta itemprop="id" content="110">
+            <meta itemprop="label" content="user terminal">
+            <span itemprop="bounds" itemscope>
+              <meta itemprop="left" content="669">
+              <meta itemprop="top" content="25">
+              <meta itemprop="right" content="716">
+              <meta itemprop="bottom" content="47">
+            </span>
+          </li>
+          <li itemprop="callouts" itemscope repeat>
+            <meta itemprop="figurePage" content="1">
+            <meta itemprop="id" content="210">
+            <meta itemprop="label" content="communication unit">
+            <span itemprop="bounds" itemscope>
+              <meta itemprop="left" content="137">
+              <meta itemprop="top" content="91">
+              <meta itemprop="right" content="184">
+              <meta itemprop="bottom" content="111">
+            </span>
+          </li>
+          <li itemprop="callouts" itemscope repeat>
+            <meta itemprop="figurePage" content="1">
+            <meta itemprop="id" content="220">
+            <meta itemprop="label" content="input unit">
+            <span itemprop="bounds" itemscope>
+              <meta itemprop="left" content="393">
+              <meta itemprop="top" content="91">
+              <meta itemprop="right" content="438">
+              <meta itemprop="bottom" content="110">
+            </span>
+          </li>
+          <li itemprop="callouts" itemscope repeat>
+            <meta itemprop="figurePage" content="1">
+            <meta itemprop="id" content="230">
+            <meta itemprop="label" content="application unit">
+            <span itemprop="bounds" itemscope>
+              <meta itemprop="left" content="648">
+              <meta itemprop="top" content="91">
+              <meta itemprop="right" content="694">
+              <meta itemprop="bottom" content="110">
+            </span>
+          </li>
+          <li itemprop="callouts" itemscope repeat>
+            <meta itemprop="figurePage" content="1">
+            <meta itemprop="id" content="240">
+            <meta itemprop="label" content="storage unit">
+            <span itemprop="bounds" itemscope>
+              <meta itemprop="left" content="460">
+              <meta itemprop="top" content="552">
+              <meta itemprop="right" content="506">
+              <meta itemprop="bottom" content="573">
+            </span>
+          </li>
+          <li itemprop="callouts" itemscope repeat>
+            <meta itemprop="figurePage" content="1">
+            <meta itemprop="id" content="250">
+            <meta itemprop="label" content="display unit">
+            <span itemprop="bounds" itemscope>
+              <meta itemprop="left" content="205">
+              <meta itemprop="top" content="553">
+              <meta itemprop="right" content="250">
+              <meta itemprop="bottom" content="573">
+            </span>
+          </li>
+        </ul>
+      </li>
+      <li itemprop="images" itemscope repeat>
+        <img itemprop="thumbnail" src="https://patentimages.storage.googleapis.com/17/9e/5a/8a4e56f73b567c/pat00003.png">
+        <meta itemprop="full" content="https://patentimages.storage.googleapis.com/33/c4/fb/3f9a3b8a1f3984/pat00003.png">
+        <ul>
+          <li itemprop="callouts" itemscope repeat>
+            <meta itemprop="figurePage" content="2">
+            <meta itemprop="id" content="130">
+            <meta itemprop="label" content="data providing apparatus">
+            <span itemprop="bounds" itemscope>
+              <meta itemprop="left" content="516">
+              <meta itemprop="top" content="14">
+              <meta itemprop="right" content="566">
+              <meta itemprop="bottom" content="37">
+            </span>
+          </li>
+          <li itemprop="callouts" itemscope repeat>
+            <meta itemprop="figurePage" content="2">
+            <meta itemprop="id" content="310">
+            <meta itemprop="label" content="communication unit">
+            <span itemprop="bounds" itemscope>
+              <meta itemprop="left" content="148">
+              <meta itemprop="top" content="68">
+              <meta itemprop="right" content="198">
+              <meta itemprop="bottom" content="89">
+            </span>
+          </li>
+          <li itemprop="callouts" itemscope repeat>
+            <meta itemprop="figurePage" content="2">
+            <meta itemprop="id" content="320">
+            <meta itemprop="label" content="data providing unit">
+            <span itemprop="bounds" itemscope>
+              <meta itemprop="left" content="420">
+              <meta itemprop="top" content="68">
+              <meta itemprop="right" content="471">
+              <meta itemprop="bottom" content="89">
+            </span>
+          </li>
+          <li itemprop="callouts" itemscope repeat>
+            <meta itemprop="figurePage" content="2">
+            <meta itemprop="id" content="330">
+            <meta itemprop="label" content="connection recognizing unit">
+            <span itemprop="bounds" itemscope>
+              <meta itemprop="left" content="447">
+              <meta itemprop="top" content="558">
+              <meta itemprop="right" content="497">
+              <meta itemprop="bottom" content="581">
+            </span>
+          </li>
+          <li itemprop="callouts" itemscope repeat>
+            <meta itemprop="figurePage" content="2">
+            <meta itemprop="id" content="340">
+            <meta itemprop="label" content="database">
+            <span itemprop="bounds" itemscope>
+              <meta itemprop="left" content="175">
+              <meta itemprop="top" content="559">
+              <meta itemprop="right" content="225">
+              <meta itemprop="bottom" content="580">
+            </span>
+          </li>
+        </ul>
+      </li>
+      <li itemprop="images" itemscope repeat>
+        <img itemprop="thumbnail" src="https://patentimages.storage.googleapis.com/3a/64/c3/9f08b4a36da3e9/pat00004.png">
+        <meta itemprop="full" content="https://patentimages.storage.googleapis.com/2a/b2/b0/c3f5aa559d6fa2/pat00004.png">
+        <ul>
+          <li itemprop="callouts" itemscope repeat>
+            <meta itemprop="figurePage" content="3">
+            <meta itemprop="id" content="400">
+            <meta itemprop="label" content="user terminal">
+            <span itemprop="bounds" itemscope>
+              <meta itemprop="left" content="674">
+              <meta itemprop="top" content="26">
+              <meta itemprop="right" content="723">
+              <meta itemprop="bottom" content="47">
+            </span>
+          </li>
+          <li itemprop="callouts" itemscope repeat>
+            <meta itemprop="figurePage" content="3">
+            <meta itemprop="id" content="410">
+            <meta itemprop="label" content="communication unit">
+            <span itemprop="bounds" itemscope>
+              <meta itemprop="left" content="131">
+              <meta itemprop="top" content="90">
+              <meta itemprop="right" content="178">
+              <meta itemprop="bottom" content="112">
+            </span>
+          </li>
+          <li itemprop="callouts" itemscope repeat>
+            <meta itemprop="figurePage" content="3">
+            <meta itemprop="id" content="420">
+            <meta itemprop="label" content="input unit">
+            <span itemprop="bounds" itemscope>
+              <meta itemprop="left" content="392">
+              <meta itemprop="top" content="91">
+              <meta itemprop="right" content="441">
+              <meta itemprop="bottom" content="111">
+            </span>
+          </li>
+          <li itemprop="callouts" itemscope repeat>
+            <meta itemprop="figurePage" content="3">
+            <meta itemprop="id" content="430">
+            <meta itemprop="label" content="application unit">
+            <span itemprop="bounds" itemscope>
+              <meta itemprop="left" content="653">
+              <meta itemprop="top" content="91">
+              <meta itemprop="right" content="703">
+              <meta itemprop="bottom" content="112">
+            </span>
+          </li>
+          <li itemprop="callouts" itemscope repeat>
+            <meta itemprop="figurePage" content="3">
+            <meta itemprop="id" content="440">
+            <meta itemprop="label" content="storage unit">
+            <span itemprop="bounds" itemscope>
+              <meta itemprop="left" content="461">
+              <meta itemprop="top" content="563">
+              <meta itemprop="right" content="507">
+              <meta itemprop="bottom" content="583">
+            </span>
+          </li>
+          <li itemprop="callouts" itemscope repeat>
+            <meta itemprop="figurePage" content="3">
+            <meta itemprop="id" content="450">
+            <meta itemprop="label" content="display unit">
+            <span itemprop="bounds" itemscope>
+              <meta itemprop="left" content="199">
+              <meta itemprop="top" content="563">
+              <meta itemprop="right" content="247">
+              <meta itemprop="bottom" content="583">
+            </span>
+          </li>
+        </ul>
+      </li>
+      <li itemprop="images" itemscope repeat>
+        <img itemprop="thumbnail" src="https://patentimages.storage.googleapis.com/4d/ae/5e/012ec2935dc84e/pat00005.png">
+        <meta itemprop="full" content="https://patentimages.storage.googleapis.com/b5/d0/21/b27145d1f610b1/pat00005.png">
+        <ul>
+          <li itemprop="callouts" itemscope repeat>
+            <meta itemprop="figurePage" content="4">
+            <meta itemprop="id" content="110">
+            <meta itemprop="label" content="user terminal">
+            <span itemprop="bounds" itemscope>
+              <meta itemprop="left" content="192">
+              <meta itemprop="top" content="57">
+              <meta itemprop="right" content="235">
+              <meta itemprop="bottom" content="75">
+            </span>
+          </li>
+          <li itemprop="callouts" itemscope repeat>
+            <meta itemprop="figurePage" content="4">
+            <meta itemprop="id" content="130">
+            <meta itemprop="label" content="data providing apparatus">
+            <span itemprop="bounds" itemscope>
+              <meta itemprop="left" content="337">
+              <meta itemprop="top" content="71">
+              <meta itemprop="right" content="380">
+              <meta itemprop="bottom" content="91">
+            </span>
+          </li>
+        </ul>
+      </li>
+      <li itemprop="images" itemscope repeat>
+        <img itemprop="thumbnail" src="https://patentimages.storage.googleapis.com/36/b5/9d/7b27b8df3631b0/pat00006.png">
+        <meta itemprop="full" content="https://patentimages.storage.googleapis.com/96/c1/7e/34cffe4ce31ab4/pat00006.png">
+        <ul>
+        </ul>
+      </li>
+      <li itemprop="images" itemscope repeat>
+        <img itemprop="thumbnail" src="https://patentimages.storage.googleapis.com/c1/66/68/41577f114bd720/pat00007.png">
+        <meta itemprop="full" content="https://patentimages.storage.googleapis.com/25/35/3d/6f702560b90493/pat00007.png">
+        <ul>
+        </ul>
+      </li>
+      <li itemprop="images" itemscope repeat>
+        <img itemprop="thumbnail" src="https://patentimages.storage.googleapis.com/ef/1e/da/aaf6b8032292e2/pat00008.png">
+        <meta itemprop="full" content="https://patentimages.storage.googleapis.com/24/0b/d9/40fa2070b6abe0/pat00008.png">
+        <ul>
+        </ul>
+      </li>
+      <li itemprop="images" itemscope repeat>
+        <img itemprop="thumbnail" src="https://patentimages.storage.googleapis.com/d5/3c/2f/8619124f7ca5d4/pat00009.png">
+        <meta itemprop="full" content="https://patentimages.storage.googleapis.com/80/3d/f6/002fbf1df0651d/pat00009.png">
+        <ul>
+          <li itemprop="callouts" itemscope repeat>
+            <meta itemprop="figurePage" content="8">
+            <meta itemprop="id" content="110">
+            <meta itemprop="label" content="user terminal">
+            <span itemprop="bounds" itemscope>
+              <meta itemprop="left" content="271">
+              <meta itemprop="top" content="455">
+              <meta itemprop="right" content="337">
+              <meta itemprop="bottom" content="483">
+            </span>
+          </li>
+          <li itemprop="callouts" itemscope repeat>
+            <meta itemprop="figurePage" content="8">
+            <meta itemprop="id" content="122">
+            <meta itemprop="label" content="first data network">
+            <span itemprop="bounds" itemscope>
+              <meta itemprop="left" content="1184">
+              <meta itemprop="top" content="234">
+              <meta itemprop="right" content="1251">
+              <meta itemprop="bottom" content="265">
+            </span>
+          </li>
+          <li itemprop="callouts" itemscope repeat>
+            <meta itemprop="figurePage" content="8">
+            <meta itemprop="id" content="124">
+            <meta itemprop="label" content="second data network">
+            <span itemprop="bounds" itemscope>
+              <meta itemprop="left" content="1185">
+              <meta itemprop="top" content="383">
+              <meta itemprop="right" content="1257">
+              <meta itemprop="bottom" content="414">
+            </span>
+          </li>
+          <li itemprop="callouts" itemscope repeat>
+            <meta itemprop="figurePage" content="8">
+            <meta itemprop="id" content="140">
+            <meta itemprop="label" content="MMS server">
+            <span itemprop="bounds" itemscope>
+              <meta itemprop="left" content="1509">
+              <meta itemprop="top" content="436">
+              <meta itemprop="right" content="1574">
+              <meta itemprop="bottom" content="466">
+            </span>
+          </li>
+        </ul>
+      </li>
+      <li itemprop="images" itemscope repeat>
+        <img itemprop="thumbnail" src="https://patentimages.storage.googleapis.com/bc/30/f0/843cb49733c5ec/pat00010.png">
+        <meta itemprop="full" content="https://patentimages.storage.googleapis.com/a7/2e/67/9c5e5f39a23bb7/pat00010.png">
+        <ul>
+          <li itemprop="callouts" itemscope repeat>
+            <meta itemprop="figurePage" content="9">
+            <meta itemprop="id" content="1010">
+            <meta itemprop="label" content="user terminal">
+            <span itemprop="bounds" itemscope>
+              <meta itemprop="left" content="102">
+              <meta itemprop="top" content="256">
+              <meta itemprop="right" content="175">
+              <meta itemprop="bottom" content="282">
+            </span>
+          </li>
+          <li itemprop="callouts" itemscope repeat>
+            <meta itemprop="figurePage" content="9">
+            <meta itemprop="id" content="1030">
+            <meta itemprop="label" content="GGSN">
+            <span itemprop="bounds" itemscope>
+              <meta itemprop="left" content="672">
+              <meta itemprop="top" content="291">
+              <meta itemprop="right" content="745">
+              <meta itemprop="bottom" content="319">
+            </span>
+          </li>
+          <li itemprop="callouts" itemscope repeat>
+            <meta itemprop="figurePage" content="9">
+            <meta itemprop="id" content="1040">
+            <meta itemprop="label" content="PDN A">
+            <span itemprop="bounds" itemscope>
+              <meta itemprop="left" content="1030">
+              <meta itemprop="top" content="181">
+              <meta itemprop="right" content="1103">
+              <meta itemprop="bottom" content="208">
+            </span>
+          </li>
+          <li itemprop="callouts" itemscope repeat>
+            <meta itemprop="figurePage" content="9">
+            <meta itemprop="id" content="1050">
+            <meta itemprop="label" content="PDN A">
+            <span itemprop="bounds" itemscope>
+              <meta itemprop="left" content="1362">
+              <meta itemprop="top" content="540">
+              <meta itemprop="right" content="1436">
+              <meta itemprop="bottom" content="565">
+            </span>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Classifications</h2>
+    <ul>
+      <li>
+        <ul itemprop="classifications" itemscope repeat>
+          <li itemprop="classifications" itemscope repeat>
+            <span itemprop="Code">H</span>&mdash;<span itemprop="Description">ELECTRICITY</span>
+            <meta itemprop="IsCPC" content="true">
+          </li>
+          <li itemprop="classifications" itemscope repeat>
+            <span itemprop="Code">H04</span>&mdash;<span itemprop="Description">ELECTRIC COMMUNICATION TECHNIQUE</span>
+            <meta itemprop="IsCPC" content="true">
+          </li>
+          <li itemprop="classifications" itemscope repeat>
+            <span itemprop="Code">H04W</span>&mdash;<span itemprop="Description">WIRELESS COMMUNICATION NETWORKS</span>
+            <meta itemprop="IsCPC" content="true">
+          </li>
+          <li itemprop="classifications" itemscope repeat>
+            <span itemprop="Code">H04W48/00</span>&mdash;<span itemprop="Description">Access restriction; Network selection; Access point selection</span>
+            <meta itemprop="IsCPC" content="true">
+          </li>
+          <li itemprop="classifications" itemscope repeat>
+            <span itemprop="Code">H04W48/20</span>&mdash;<span itemprop="Description">Selecting an access point</span>
+            <meta itemprop="Leaf" content="true"><meta itemprop="FirstCode" content="true"><meta itemprop="IsCPC" content="true">
+          </li>
+        </ul>
+      </li>
+      <li>
+        <ul itemprop="classifications" itemscope repeat>
+          <li itemprop="classifications" itemscope repeat>
+            <span itemprop="Code">H</span>&mdash;<span itemprop="Description">ELECTRICITY</span>
+            <meta itemprop="IsCPC" content="true">
+          </li>
+          <li itemprop="classifications" itemscope repeat>
+            <span itemprop="Code">H04</span>&mdash;<span itemprop="Description">ELECTRIC COMMUNICATION TECHNIQUE</span>
+            <meta itemprop="IsCPC" content="true">
+          </li>
+          <li itemprop="classifications" itemscope repeat>
+            <span itemprop="Code">H04M</span>&mdash;<span itemprop="Description">TELEPHONIC COMMUNICATION</span>
+            <meta itemprop="IsCPC" content="true">
+          </li>
+          <li itemprop="classifications" itemscope repeat>
+            <span itemprop="Code">H04M15/00</span>&mdash;<span itemprop="Description">Arrangements for metering, time-control or time indication ; Metering, charging or billing arrangements for voice wireline or wireless communications, e.g. VoIP</span>
+            <meta itemprop="IsCPC" content="true">
+          </li>
+          <li itemprop="classifications" itemscope repeat>
+            <span itemprop="Code">H04M15/88</span>&mdash;<span itemprop="Description">Provision for limiting connection, or expenditure</span>
+            <meta itemprop="Leaf" content="true"><meta itemprop="IsCPC" content="true">
+          </li>
+        </ul>
+      </li>
+      <li>
+        <ul itemprop="classifications" itemscope repeat>
+          <li itemprop="classifications" itemscope repeat>
+            <span itemprop="Code">H</span>&mdash;<span itemprop="Description">ELECTRICITY</span>
+            <meta itemprop="IsCPC" content="true">
+          </li>
+          <li itemprop="classifications" itemscope repeat>
+            <span itemprop="Code">H04</span>&mdash;<span itemprop="Description">ELECTRIC COMMUNICATION TECHNIQUE</span>
+            <meta itemprop="IsCPC" content="true">
+          </li>
+          <li itemprop="classifications" itemscope repeat>
+            <span itemprop="Code">H04W</span>&mdash;<span itemprop="Description">WIRELESS COMMUNICATION NETWORKS</span>
+            <meta itemprop="IsCPC" content="true">
+          </li>
+          <li itemprop="classifications" itemscope repeat>
+            <span itemprop="Code">H04W4/00</span>&mdash;<span itemprop="Description">Services specially adapted for wireless communication networks; Facilities therefor</span>
+            <meta itemprop="IsCPC" content="true">
+          </li>
+          <li itemprop="classifications" itemscope repeat>
+            <span itemprop="Code">H04W4/24</span>&mdash;<span itemprop="Description">Accounting or billing</span>
+            <meta itemprop="Leaf" content="true"><meta itemprop="IsCPC" content="true">
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </section>
+
+  
+
+  
+
+  
+
+  <section>
+    <h2>Landscapes</h2>
+    <ul>
+      <li itemprop="landscapes" itemscope repeat>
+        <span itemprop="name">Engineering &amp; Computer Science</span>
+        (<span itemprop="type">AREA</span>)
+      </li>
+      <li itemprop="landscapes" itemscope repeat>
+        <span itemprop="name">Computer Networks &amp; Wireless Communication</span>
+        (<span itemprop="type">AREA</span>)
+      </li>
+      <li itemprop="landscapes" itemscope repeat>
+        <span itemprop="name">Signal Processing</span>
+        (<span itemprop="type">AREA</span>)
+      </li>
+      <li itemprop="landscapes" itemscope repeat>
+        <span itemprop="name">Computer Security &amp; Cryptography</span>
+        (<span itemprop="type">AREA</span>)
+      </li>
+      <li itemprop="landscapes" itemscope repeat>
+        <span itemprop="name">Business, Economics &amp; Management</span>
+        (<span itemprop="type">AREA</span>)
+      </li>
+      <li itemprop="landscapes" itemscope repeat>
+        <span itemprop="name">Accounting &amp; Taxation</span>
+        (<span itemprop="type">AREA</span>)
+      </li>
+      <li itemprop="landscapes" itemscope repeat>
+        <span itemprop="name">Telephonic Communication Services</span>
+        (<span itemprop="type">AREA</span>)
+      </li>
+      <li itemprop="landscapes" itemscope repeat>
+        <span itemprop="name">Mobile Radio Communication Systems</span>
+        (<span itemprop="type">AREA</span>)
+      </li>
+    </ul>
+  </section>
+
+
+  <section itemprop="abstract" itemscope>
+    <h2>Abstract</h2>
+    
+    <div itemprop="content" html><abstract mxw-id="PA281173697" lang="KO" load-source="patent-office">
+    <div num="0001a" class="abstract">본 발명은, 사용자 단말기가 데이터 네트워크에 접속하여 APN을 이용해 데이터 서비스를 제공받을 때, 데이터 차단 기능에 따라 구분되는 복수의 APN(Access Point Name) 중 어느 하나를 통한 사용자 단말의 접속 경로를 인식하고, 상기 인식된 접속 경로에 따라, 상기 사용자 단말기에 선택적으로 데이터를 제공하는 선택적 데이터 제공 방법 및 이를 위한 장치에 관한 것이다.</div>
+    <div num="0002a" class="abstract">
+      <figref num="9"> </figref>
+    </div>
+  </abstract>
+  </div>
+  </section>
+
+  <section itemprop="description" itemscope>
+    <h2>Description</h2>
+    
+    <div itemprop="content" html><div mxw-id="PDES182424380" lang="KO" load-source="patent-office" class="description">
+    <invention-title lang="KO">선택적 데이터 제공을 위한 장치 및 방법{Data providing apparatus and method}</invention-title>
+    <technical-field>
+      <div num="0001" class="description-paragraph">본 발명은 사용자 단말기가 패킷 데이터 네트워크에 접속하여 데이터를 서비스받을 때 선택적으로 데이터 접속을 차단하여 부당 데이터 과금을 방지하는 데이터 제공을 위한 장치 및 방법에 관한 것으로서, 더욱 자세하게는 사용자 단말기가 데이터 네트워크에 접속하여 APN을 이용해 데이터 서비스를 제공받을 때, 데이터 차단 기능이 설정되어 있는 경우에, 다른 APN을 이용하여 다른 데이터 네트워크를 통해 데이터 제공장치에 접속하여, MMS 또는 비과금 데이터만 제공받음으로써 과금 데이터의 제공을 차단하여 부당 과금을 방지할 수 있도록 된 것이다.</div>
+    </technical-field>
+    <background-art>
+      <div num="0002" class="description-paragraph">일반적으로 WCDMA 네트워크에서 이용하는 APN은 Access Point Name의 약자로, 3GPP망에서 PDN(Packet Data Network)에 접속하기 위한 액세스 포인트의 위치를 나타낸다. WCDMA 단말기에서 APN을 이용하여 데이터 접속 요청을 올리면, GGSN은 APN에 따라 IP 할당 및 해당 데이터 네트워크에 접속 여부를 결정한다. </div>
+      <div num="0003" class="description-paragraph">도 10은 종래 WCDMA 네트워크에서의 데이터 제공 서비스의 트래픽 흐름을 나타낸 도면이다.</div>
+      <div num="0004" class="description-paragraph">도 10의 경우, 사용자 단말기(1010)는 APN(예, web.rstelecom.com)을 이용하여 GGSN(1030)에 접속하여 IP를 할당받고, PDN A(1040)를 통해 외부 인터넷 접속이나 MMS 서버(1050)로부터 MMS와 같은 데이터 서비스를 제공받는다.</div>
+      <div num="0005" class="description-paragraph">여기서, 사용자 단말기(1010)가 스마트폰과 같이 데이터를 사용하는 어플리케이션이 많이 사용되는 경우, 사용자 의도와는 무관하게 어플리케이션에서 이동 통신망(3G망)을 이용하게 되는 경우가 발생하고, 이로 인한 과금이 발생하게 된다. 따라서 대부분의 스마트폰은 “3G 데이터 차단” 기능을 지원하며, 이를 선택한 경우 모든 데이터 접속을 차단하여 부당 데이터 과금을 방지하게 된다. </div>
+      <div num="0006" class="description-paragraph">사용자 단말기(1010)에서 “3G 데이터 차단” 기능을 적용하여 데이터 접속을 막으면 부당 데이터 과금의 소지는 없으나, 비과금으로 이루어지는 MMS 서비스의 송수신(MMS 송신: 건당과금, 수신: 비과금)이나 비과금 정보성 데이터 서비스들까지 모두 제한되어, 사용자가 원하는 서비스들까지 제한되는 단점이 있다.</div>
+    </background-art>
+    <div>
+      <div>
+        <div num="0007" class="description-paragraph">
+          <patcit>
+            <text>한국공개특허 제10-2007-0073517호, 2007.07.10. 공개 (듀얼 모드를 지원하는 이동통신단말기 및 그 방법)</text>
+          </patcit>
+        </div>
+      </div>
+    </div>
+    <summary-of-invention>
+      <tech-problem>
+        <div num="0008" class="description-paragraph">전술한 사정을 감안한 본 발명은, 사용자 단말기가 데이터 네트워크에 접속하여 APN을 이용해 데이터 서비스를 제공받을 때, 데이터 차단 기능이 설정되어 있는 경우에, 다른 APN을 이용하여 다른 데이터 네트워크를 통해 데이터제공장치에 접속하여, MMS 또는 비과금 데이터만 제공받음으로써 과금 데이터의 제공을 차단하여 부당 과금을 방지할 수 있도록 된, 선택적 데이터를 위한 제공 방법 및 이를 위한 장치를 제공함에 그 목적이 있다.</div>
+      </tech-problem>
+      <tech-solution>
+        <div num="0009" class="description-paragraph">상술한 과제의 해결 수단으로서, 본 발명은, 통신망에 접속한 사용자 단말기로 데이터를 제공하는 데이터 제공 장치를 제공한다. 본 발명에 따른 데이터 제공 장치는, 복수의 APN(Access Point Name) 중 어느 하나를 통한 사용자 단말의 접속 경로를 인식하는 접속 인식부; 및 상기 접속 인식부에서 인식된 접속 경로에 따라, 상기 통신망에 접속한 상기 사용자 단말기에 선택적으로 데이터를 제공하는 데이터 제공부를 포함한다.</div>
+        <div num="0010" class="description-paragraph">더하여, 본 발명은 상술한 과제의 다른 해결 수단으로서, 통신부와 선택적 데이터 제공 서비스를 위한 어플리케이션부를 포함하고, 상기 통신부와 어플리케이션부에 의하여, 데이터 서비스 기능의 설정 상태에 따라 복수의 APN(Access Point Name) 중 어느 하나를 통해 상기 통신망에 접속하고, 상기 복수의 APN 중 어느 하나에 따른 접속 경로에 따라서, 데이터를 선택적으로 제공받는 것을 특징으로 하는 사용자 단말기를 제공한다.</div>
+        <div num="0011" class="description-paragraph">또한, 본 발명은, 통신망을 통해 접속한 사용자 단말기로 데이터를 제공하는 데이터 제공 장치가, 상기 사용자 단말기가 접속하면, 복수의 APN 중 어느 하나를 통한 사용자 단말기의 접속 경로를 인식하는 단계; 상기 인식된 접속 경로에 따라, 상기 사용자 단말기에 선택적으로 데이터를 제공하는 단계를 포함하는 것을 특징으로 하는 선택적 데이터 제공을 위한 방법을 제공한다.</div>
+      </tech-solution>
+      <advantageous-effects>
+        <div num="0012" class="description-paragraph">본 발명에 의하면, 데이터 접속 시 &#34;3G 데이터 차단&#34; 설정에 따른 동적 APN을 이용함으로써, 과금 데이터만 선택적으로 차단할 수 있고, MMS와 같은 데이터 트래픽과 비과금 데이터만 제공받을 수 있어, 사용자가 원치 않는 부당한 데이터의 과금을 방지할 수 있다.</div>
+      </advantageous-effects>
+    </summary-of-invention>
+    <description-of-drawings>
+      <div num="0013" class="description-paragraph">도 1은 본 발명의 실시예에 따른 선택적 데이터 제공 시스템의 전체적인 구성을 나타낸 구성도이다.<br/>
+도 2는 본 발명의 실시예에 따른 사용자 단말기의 기능 블럭을 나타낸 구성도이다.<br/>
+도 3은 본 발명의 실시예에 따른 데이터 제공 장치의 기능 블럭을 나타낸 구성도이다.<br/>
+도 4는 본 발명의 다른 실시예에 따라 서버 기능의 어플리케이션이 설치된 사용자 단말기의 기능 블럭을 나타낸 구성도이다.<br/>
+도 5는 본 발명의 실시예에 따른 선택적 데이터 제공 방법을 설명하기 위한 전체 흐름도이다.<br/>
+도 6은 본 발명의 실시예에 따른 사용자 단말기의 선택적 데이터 수신 방법을 설명하기 위한 동작 흐름도이다.<br/>
+도 7은 본 발명의 실시예에 따른 데이터제공장치의 선택적 데이터 제공 방법을 설명하기 위한 동작 흐름도이다.<br/>
+도 8은 본 발명의 다른 실시예에 따른 사용자 단말기의 선택적 데이터 제공 방법을 설명하기 위한 동작 흐름도이다.<br/>
+도 9는 본 발명의 실시예에 따라 데이터 차단 기능의 설정 또는 해제에 따른 서비스 흐름도를 나타낸 도면이다.<br/>
+도 10은 종래 WCDMA 네트워크에서의 데이터 제공 서비스의 트래픽 흐름을 나타낸 도면이다.</div>
+    </description-of-drawings>
+    <description-of-embodiments>
+      <div num="0014" class="description-paragraph">본 발명의 목적과 기술적 구성 및 그에 따른 작용 효과에 관한 자세한 사항은 본 발명의 명세서에 첨부된 도면에 의거한 이하 상세한 설명에 의해 보다 명확하게 이해될 것이다. 이하, 첨부된 도면을 참조하여 본 발명에 따른 실시예를 상세하게 설명한다.</div>
+      <div num="0015" class="description-paragraph">도 1은 본 발명의 실시예에 따른 선택적 데이터 제공 시스템의 전체적인 구성을 나타낸 구성도이다.</div>
+      <div num="0016" class="description-paragraph">도 1을 참조하면, 본 발명에 따른 선택적 데이터 제공 시스템(100)은, 사용자 단말기(110), 통신망(120), 데이터제공장치(130) 및 MMS(Multi Media Service) 서버(140) 등을 포함한다.</div>
+      <div num="0017" class="description-paragraph">사용자 단말기(110)는 데이터 차단 기능의 해제 시, 제1 APN을 이용해 제1 데이터 네트워크에 접속하여 과금 데이터 및 비과금 데이터를 제공받으며, 데이터 차단 기능의 설정 시 제2 APN을 이용해 제2 데이터 네트워크에 접속하여 비과금 데이터만을 제공받으며, 과금 데이터의 트래픽이 차단되는 서비스를 제공받는다.</div>
+      <div num="0018" class="description-paragraph">여기서, 사용자 단말기(110)는 휴대폰이나 스마트폰 등의 이동 단말기가 될 수 있고, 통신망(120)이 인터넷이나 PSTN인 경우 컴퓨터 단말기 등 유선 단말기가 될 수 있다.</div>
+      <div num="0019" class="description-paragraph">통신망(120)은 이동 통신망, 패킷 전송망, 무선 통신망 등을 포함한다. 또한, 통신망(120)은 제1 데이터 네트워크(Packet Data Network, PDN A)(122)와 제2 데이터 네트워크(PDN B)(124)를 포함한다. 제1 데이터 네트워크(122)는 사용자 단말기(110)가 제1 APN(Access Point Name)을 이용해 데이터제공장치(130)에 접속할 수 있는 접속 경로를 제공한다. 제2 데이터 네트워크(124)는 사용자 단말기(110)가 제2 APN을 이용해 데이터제공장치(130)에 접속할 수 있는 접속 경로를 제공한다.</div>
+      <div num="0020" class="description-paragraph">데이터제공장치(130)는 제1 APN을 이용해 제1 데이터 네트워크(122)를 통해 접속한 사용자 단말기(110)에 과금 데이터 및 비과금 데이터를 제공하고, 제2 APN을 이용해 제2 데이터 네트워크(124)를 통해 접속한 사용자 단말기(110)에 비과금 데이터만을 제공하면서 과금 데이터의 제공을 차단한다.</div>
+      <div num="0021" class="description-paragraph">여기서, 데이터제공장치(130)는 제1 데이터 네트워크(122) 및 제2 데이터 네트워크(124)를 통해 사용자 단말기(110)에 과금 데이터 및 비과금 데이터를 제공하는 서버 형태로 구현할 수 있다. 또한, 데이터제공장치(130)는 서버 기능의 어플리케이션이 설치된 사용자 단말기(110)로 구현할 수 있다.</div>
+      <div num="0022" class="description-paragraph">MMS 서버(140)는 제1 데이터 네트워크(122) 또는 제2 데이터 네트워크(124)를 통해 사용자 단말기(110)에 MMS 메시지를 제공한다.</div>
+      <div num="0023" class="description-paragraph">도 2는 본 발명의 실시예에 따른 사용자 단말기의 기능 블럭을 나타낸 구성도이다.</div>
+      <div num="0024" class="description-paragraph">도 2를 참조하면, 본 발명에 따른 사용자 단말기(110)는, 선택적 데이터 제공 서비스에 대한 클라이언트 기능으로, 통신부(210), 입력부(220), 어플리케이션부(230), 저장부(240) 및 디스플레이부(250) 등을 포함한다.</div>
+      <div num="0025" class="description-paragraph">통신부(210)는 데이터제공장치(130)와 통신망(120)을 통해 통신한다.</div>
+      <div num="0026" class="description-paragraph">입력부(220)는 데이터제공장치(130)로부터의 데이터 제공에 대한 데이터 차단 기능의 해제를 설정하거나, 데이터 차단 기능을 설정할 때 이용된다.</div>
+      <div num="0027" class="description-paragraph">어플리케이션부(230)는 데이터 차단 기능의 설정 시, 제2 APN을 이용해 제2 데이터 네트워크(124)를 통해 데이터제공장치(130)에 접속하여 데이터제공장치(130)로부터 비과금 데이터만을 제공받으며, 과금 데이터의 트래픽이 차단되는 서비스를 제공받는다.</div>
+      <div num="0028" class="description-paragraph">또한, 어플리케이션부(230)는, 데이터 차단 기능의 해제 시, 제1 APN을 이용해 제1 데이터 네트워크(122)를 통해 데이터제공장치(130)에 접속하여, 데이터제공장치(130)로부터 제1 데이터 네트워크(122)를 통해 과금 데이터 및 비과금 데이터를 제공받을 수 있다.</div>
+      <div num="0029" class="description-paragraph">저장부(240)는 제1 APN 및 제2 APN에 관한 APN 정보를 저장하고, 데이터제공장치(130)로부터 제공받은 과금 데이터 및 비과금 데이터를 저장한다.</div>
+      <div num="0030" class="description-paragraph">디스플레이부(250)는 데이터제공장치(130)로부터 제공받은 데이터를 화면 상에 디스플레이한다. 여기서, 입력부(220) 및 디스플레이부(250)는 예컨대, 스마트폰과 같이 터치 스크린 형태로 일체화시켜 구성할 수 있다.</div>
+      <div num="0031" class="description-paragraph">도 3은 본 발명의 실시예에 따른 데이터 제공 장치의 기능 블럭을 나타낸 구성도이다.</div>
+      <div num="0032" class="description-paragraph">도 3을 참조하면, 본 발명에 따른 데이터 제공 장치(130)는, 통신부(310), 데이터 제공부(320), 접속 인식부(330) 및 데이터베이스(340) 등을 포함한다.</div>
+      <div num="0033" class="description-paragraph">통신부(310)는 사용자 단말기(110)와 통신망(120)을 통해 통신한다.</div>
+      <div num="0034" class="description-paragraph">데이터 제공부(320)는 사용자 단말기(110)가 제2 APN을 이용한 제2 데이터 네트워크(124)를 통해 접속하면, 데이터 차단 기능의 설정으로 인식하여 과금 데이터의 제공을 차단하고 비과금 데이터만 사용자 단말기(110)에 제공되도록 한다.</div>
+      <div num="0035" class="description-paragraph">또한, 데이터 제공부(320)는, 사용자 단말기(110)가 제1 APN을 이용한 제1 데이터 네트워크(122)를 통해 접속하면, 데이터 차단 기능의 해제로 인식하여 과금 데이터 및 비과금 데이터가 제1 데이터 네트워크(122)를 통해 사용자 단말기(110)에 제공되도록 할 수 있다.</div>
+      <div num="0036" class="description-paragraph">접속 인식부(330)는 사용자 단말기(110)가 제1 데이터 네트워크(122)를 통해 접속하는지, 제2 데이터 네트워크(124)를 통해 접속하는지에 관한 접속 방식을 인식한다.</div>
+      <div num="0037" class="description-paragraph">데이터베이스(340)는 사용자 단말기(110)에 제공할 과금 데이터 및 비과금 데이터를 저장하고 있다.</div>
+      <div num="0038" class="description-paragraph">도 4는 본 발명의 다른 실시예에 따라 서버 기능의 어플리케이션이 설치된 사용자 단말기의 기능 블럭을 나타낸 구성도이다.</div>
+      <div num="0039" class="description-paragraph">본 발명의 다른 실시예에 따른 사용자 단말기(400)는 선택적 데이터 제공 서비스에 대한 클라이언트 기능의 사용자 단말기(110)와는 다르게 도 3의 데이터 제공 장치(130)와 같이 선택적 데이터 제공 서비스에 대한 서버 기능의 어플리케이션이 설치되어, 선택적 데이터 제공 서비스에 대한 서버 기능을 수행할 수 있다.</div>
+      <div num="0040" class="description-paragraph">도 4를 참조하면, 본 발명의 다른 실시예에 따른 사용자 단말기(400)는, 선택적 데이터 제공 서비스에 대한 서버 기능으로, 통신부(410), 입력부(420), 어플리케이션부(430), 저장부(440) 및 디스플레이부(450) 등을 포함한다.</div>
+      <div num="0041" class="description-paragraph">통신부(410)는 통신망(120)을 통해 다른 사용자 단말기(110)와 통신한다.</div>
+      <div num="0042" class="description-paragraph">입력부(420)는 선택적 데이터 제공 기능을 서버 기능으로 실행하도록 하는 명령이나 단말기의 기능 조작에 관한 명령 등을 입력한다.</div>
+      <div num="0043" class="description-paragraph">어플리케이션부(430)는 선택적 데이터 제공 서비스에 대한 서버 기능의 어플리케이션이 설치된 것으로서, 사용자 단말기(110)가 제2 APN을 이용한 제2 데이터 네트워크를 통해 접속하면, 데이터 차단 기능의 설정으로 인식하여 과금 데이터의 제공을 차단하고 비과금 데이터만 사용자 단말기(110)에 제공되도록 중계한다.</div>
+      <div num="0044" class="description-paragraph">또한, 어플리케이션부(430)는 사용자 단말기(110)가 제1 데이터 네트워크를 통해 접속하는지, 제2 데이터 네트워크를 통해 접속하는지에 관한 접속 방식을 인식한다.</div>
+      <div num="0045" class="description-paragraph">그리고, 어플리케이션부(430)는 사용자 단말기(110)가 제1 APN을 이용한 제1 데이터 네트워크를 통해 접속하면, 데이터 차단 기능의 해제로 인식하여 과금 데이터 및 비과금 데이터가 제1 데이터 네트워크를 통해 사용자 단말기(110)에 제공되도록 중계한다.</div>
+      <div num="0046" class="description-paragraph">저장부(440)는 사용자 단말기(110)의 접속 방식을 저장하거나, 데이터 차단 기능의 설정 상태를 저장한다.</div>
+      <div num="0047" class="description-paragraph">디스플레이부(450)는 단말기의 동작 상태 등을 디스플레이한다.</div>
+      <div num="0048" class="description-paragraph">도 5는 본 발명의 실시예에 따른 선택적 데이터 제공 방법을 설명하기 위한 전체 흐름도이다.</div>
+      <div num="0049" class="description-paragraph">도 5를 참조하면, 본 발명에 따른 사용자 단말기(110)는 데이터 서비스 기능의 설정 상태를 확인한다(S510).</div>
+      <div num="0050" class="description-paragraph">이어, 사용자 단말기(110)는 데이터 서비스 기능의 설정 상태가 데이터 차단 기능의 해제 상태인 경우(S520a), 제1 APN을 이용한 제1 데이터 네트워크(122)를 통해 데이터제공장치(130)에 접속하고(S530a), 데이터 서비스 기능의 설정 상태가 데이터 차단 기능으로 설정된 상태인 경우(S520b) 제2 APN을 이용한 제2 데이터 네트워크(124)를 통해 데이터제공장치(130)에 접속한다(S530b).</div>
+      <div num="0051" class="description-paragraph">한편, 데이터제공장치(130)는 사용자 단말기(110)가 제1 APN을 이용한 제1 데이터 네트워크(122)를 통해 접속한 경우, APN A를 이용한 PDN A를 통해 접속한 것으로 인식하여(S540a), 제1 데이터 네트워크(122)를 통해 과금 데이터 및 비과금 데이터를 제공한다(S550a).</div>
+      <div num="0052" class="description-paragraph">또한, 데이터제공장치(130)는 사용자 단말기(110)가 제2 APN을 이용한 제2 데이터 네트워크(124)를 통해 접속한 경우, APN B를 이용한 PDN B를 통해 접속한 것으로 인식하여(S540b) 과금 데이터의 제공을 차단하고 제2 데이터 네트워크(124)를 통해 비과금 데이터만 제공한다(S550b).</div>
+      <div num="0053" class="description-paragraph">도 6은 본 발명의 실시예에 따른 사용자 단말기의 선택적 데이터 수신 방법을 설명하기 위한 동작 흐름도이다.</div>
+      <div num="0054" class="description-paragraph">도 6을 참조하면, 본 발명에 따른 사용자 단말기(110)는, 선택적 데이터 제공 서비스에 대한 클라이언트 기능의 어플리케이션이 설치된 상태에서, 먼저 데이터 서비스 기능의 설정 상태를 확인한다(S610).</div>
+      <div num="0055" class="description-paragraph">이어, 사용자 단말기(110)는 데이터 서비스 기능의 설정 상태가 데이터 차단 기능으로 설정되어 있는 경우(S620-예), 제2 APN을 이용한 제2 데이터 네트워크(124)를 통해 데이터제공장치(130)에 접속한다(S630).</div>
+      <div num="0056" class="description-paragraph">이어, 사용자 단말기(110)는 MMS 서버(140)로부터 제2 데이터 네트워크(124)를 통해 MMS 데이터를 제공받거나, 데이터제공장치(130)로부터 제2 데이터 네트워크(124)를 통해 비과금 데이터만 제공받는다(S640).</div>
+      <div num="0057" class="description-paragraph">한편, 사용자 단말기(110)는 데이터 서비스 기능의 설정 상태가 데이터 차단 기능의 해제로 설정되어 있는 경우(S620-아니오), 제1 APN을 이용한 제1 데이터 네트워크(124)를 통해 데이터제공장치(130)에 접속할 수 있다(S650). </div>
+      <div num="0058" class="description-paragraph">이때, 사용자 단말기(110)는 데이터제공장치(130)로부터 제1 데이터 네트워크(122)를 통해 비과금 데이터 및 과금 데이터를 제공받을 수 있다(S660).</div>
+      <div num="0059" class="description-paragraph">도 7은 본 발명의 실시예에 따른 데이터제공장치의 선택적 데이터 제공 방법을 설명하기 위한 동작 흐름도이다.</div>
+      <div num="0060" class="description-paragraph">도 7을 참조하면, 본 발명에 따른 데이터제공장치(130)는 사용자 단말기(110)가 접속하면(S710), 제1 데이터 네트워크(122)를 통해 접속했는지, 제2 데이터 네트워크(124)를 통해 접속했는지에 관한 접속 방식을 확인한다(S720).</div>
+      <div num="0061" class="description-paragraph">이어, 데이터제공장치(130)는 접속 방식이 제2 APN을 이용해 제2 데이터 네트워크를 통한 접속인 경우(S730-예), 사용자 단말기(110)에 대해 데이터 차단 기능으로 인식한다(S740).</div>
+      <div num="0062" class="description-paragraph">이어, 데이터제공장치(130)는 도 9에 도시된 바와 같이 제2 데이터 네트워크(124)(PDN B)를 통해 비과금 데이터만 사용자 단말기(110)에 제공한다(S750). 즉, 데이터제공장치(130)는 제2 데이터 네트워크(124)(PDN B)를 통해 외부 인터넷 접속 트래픽을 차단하고, MMS 메시지 등 비과금 데이터만 사용자 단말기(110)에 제공되도록 한다. 여기서, 도 9는 본 발명의 실시예에 따라 데이터 차단 기능의 설정 또는 해제에 따른 서비스 흐름도를 나타낸 도면이다.</div>
+      <div num="0063" class="description-paragraph">한편, 데이터제공장치(130)는 사용자 단말기의 접속 방식이 제1 APN을 이용해 제1 데이터 네트워크를 통한 접속인 경우(S730-아니오), 데이터 차단 기능의 해제로 인식한다(S760).</div>
+      <div num="0064" class="description-paragraph">그리고, 데이터제공장치(130)는 도 9에 도시된 바와 같이 제1 데이터 네트워크(122)(PDN A)를 통해 사용자 단말기(110)에 비과금 데이터 및 과금 데이터를 제공한다(S770). </div>
+      <div num="0065" class="description-paragraph">도 8은 본 발명의 다른 실시예에 따른 사용자 단말기의 선택적 데이터 제공 방법을 설명하기 위한 동작 흐름도이다.</div>
+      <div num="0066" class="description-paragraph">도 8을 참조하면, 본 발명의 다른 실시예에 따른 사용자 단말기(400)는 선택적 데이터 제공 서비스에 대한 서버 기능의 어플리케이션이 설치된 상태에서, 사용자 단말기(110)가 통신망(120)을 통해 접속한 경우(S810), 제1 데이터 네트워크(122)를 통해 접속했는지, 제2 데이터 네트워크(124)를 통해 접속했는지에 관한 접속 방식을 확인한다(S820).</div>
+      <div num="0067" class="description-paragraph">이어, 사용자 단말기(400)는 접속 방식이 제2 APN을 이용해 제2 데이터 네트워크를 통한 접속인 경우(S830-예), 사용자 단말기(110)에 대해 데이터 차단 기능으로 인식한다(S840).</div>
+      <div num="0068" class="description-paragraph">이어, 사용자 단말기(400)는 제2 데이터 네트워크(124)(PDN B)를 통해 MMS 데이터 또는 비과금 데이터만 사용자 단말기(110)에 제공되도록 중계한다(S850).</div>
+      <div num="0069" class="description-paragraph">한편, 사용자 단말기(400)는 사용자 단말기의 접속 방식이 제1 APN을 이용해 제1 데이터 네트워크를 통한 접속인 경우(S830-아니오), 데이터 차단 기능의 해제로 인식한다(S860).</div>
+      <div num="0070" class="description-paragraph">그리고, 사용자 단말기(400)는 제1 데이터 네트워크(122)(PDN A)를 통해 사용자 단말기(110)에 비과금 데이터 및 과금 데이터가 제공되도록 중계한다(S870).</div>
+      <div num="0071" class="description-paragraph">전술한 바와 같이 본 발명에 의하면, 사용자 단말기가 데이터 네트워크에 접속하여 APN을 이용해 데이터 서비스를 제공받을 때, 데이터 차단 기능이 설정되어 있는 경우에, 다른 APN을 이용하여 다른 데이터 네트워크를 통해 데이터제공장치에 접속하여, MMS 또는 비과금 데이터만 제공받음으로써 과금 데이터의 제공을 차단하여 부당 과금을 방지할 수 있도록 된, 동적 APN을 이용한 선택적 데이터 제공 방법 및 시스템을 실현할 수 있다.</div>
+      <div num="0072" class="description-paragraph">본 발명이 속하는 기술분야의 당업자는 본 발명이 그 기술적 사상이나 필수적 특징을 변경하지 않고서 다른 구체적인 형태로 실시될 수 있으므로, 이상에서 기술한 실시예들은 모든 면에서 예시적인 것이며 한정적인 것이 아닌 것으로서 이해해야만 한다.  본 발명의 범위는 상기 상세한 설명보다는 후술하는 특허청구범위에 의하여 나타내어지며, 특허청구범위의 의미 및 범위 그리고 그 등가개념으로부터 도출되는 모든 변경 또는 변형된 형태가 본 발명의 범위에 포함되는 것으로 해석되어야 한다.</div>
+    </description-of-embodiments>
+    <industrial-applicability>
+      <div num="0073" class="description-paragraph">본 발명은 APN(Access Point Name)을 이용하여 데이터 네트워크에 접속하는 단말기나, 데이터 네트워크를 통해 데이터 제공 서비스를 제공하는 시스템 등에 적용할 수 있다. </div>
+    </industrial-applicability>
+    <reference-signs-list>
+      <div num="0074" class="description-paragraph">100 : 선택적 데이터 제공 시스템           110 : 사용자 단말기<br/>
+120 : 통신망                              130 : 데이터제공장치<br/>
+140 : MMS 서버                            210 : 통신부<br/>
+220 : 입력부                              230 : 어플리케이션부<br/>
+240 : 저장부                              250 : 디스플레이부<br/>
+310 : 통신부                              320 : 데이터 제공부<br/>
+330 : 접속 인식부                         340 : 데이터베이스<br/>
+400 : 서버 기능의 사용자 단말기           410 : 통신부<br/>
+420 : 입력부                              430 : 어플리케이션부<br/>
+440 : 저장부                              450 : 디스플레이부</div>
+    </reference-signs-list>
+  </div>
+  </div>
+  </section>
+
+  <section itemprop="claims" itemscope>
+    <h2>Claims (<span itemprop="count">9</span>)</h2>
+    
+    <div itemprop="content" html><ol mxw-id="PCLM176300971" lang="KO" load-source="patent-office" class="claims">
+    <li class="claim"> <div num="1" class="claim">
+      <div class="claim-text">통신망에 접속한 사용자 단말기로 데이터를 제공하는 데이터 제공 장치에 있어서, <br/>복수의 APN(Access Point Name) 중 어느 하나를 통한 사용자 단말의 접속 경로를 인식하는 접속 인식부;<br/>상기 접속 인식부에서 인식된 접속 경로에 따라, 상기 통신망에 접속한 상기 사용자 단말기에 선택적으로 데이터를 제공하는 데이터 제공부를 포함하는 데이터 제공 장치.</div>
+    </div>
+    </li> <li class="claim-dependent"> <div num="2" class="claim">
+      <div class="claim-text">제1항에 있어서, 상기 데이터 제공부는<br/>상기 접속 인식부에서 인식한 접속 경로에 따라서, 상기 사용자 단말기에 대한 데이터 서비스 기능의 설정 상태를 인식하고, <br/>상기 데이터 서비스 기능의 설정 상태에 따라서 상기 사용자 단말기에 데이터를 선택적으로 제공하는 것을 특징으로 하는 데이터 제공 장치.</div>
+    </div>
+    </li> <li class="claim-dependent"> <div num="3" class="claim">
+      <div class="claim-text">제1항에 있어서, 상기 데이터 제공부는,<br/>과금 데이터 및 비과금 데이터를 모두 제공하거나, 과금 데이터는 차단하고 비과금 데이터만 제공하는 것을 특징으로 하는 데이터 제공 장치.</div>
+    </div>
+    </li> <li class="claim-dependent"> <div num="4" class="claim">
+      <div class="claim-text">제1항에 있어서, 상기 데이터 제공부는,<br/>외부 인터넷 접속 트래픽을 선택적으로 차단하는 것을 특징으로 하는 데이터 제공 장치.</div>
+    </div>
+    </li> <li class="claim"> <div num="5" class="claim">
+      <div class="claim-text">통신부와 선택적 데이터 제공 서비스를 위한 어플리케이션부를 포함하는 사용자 단말기로, <br/>상기 통신부와 어플리케이션부에 의하여,<br/>데이터 서비스 기능의 설정 상태에 따라 복수의 APN(Access Point Name) 중 어느 하나를 통해 상기 통신망에 접속하고, <br/>상기 복수의 APN 중 어느 하나에 따른 접속 경로에 따라서, 데이터를 선택적으로 제공받는 것을 특징으로 하는 사용자 단말기.</div>
+    </div>
+    </li> <li class="claim-dependent"> <div num="6" class="claim">
+      <div class="claim-text">제5항에 있어서, 상기 어플리케이션부는,<br/>상기 접속 경로에 따라서, 과금 데이터 및 비과금 데이터를 모두 제공받거나, 비과금 데이터만 제공받는 것을 특징으로 하는 사용자 단말기.</div>
+    </div>
+    </li> <li class="claim-dependent"> <div num="7" class="claim">
+      <div class="claim-text">제5항에 있어서, 상기 어플리케이션부는,<br/>상기 접속 경로에 따라서, 외부 인터넷 접속 트래픽이 아닌 데이터만 제공받는 것을 특징으로 하는 사용자 단말기.</div>
+    </div>
+    </li> <li class="claim"> <div num="8" class="claim">
+      <div class="claim-text">통신망을 통해 접속한 사용자 단말기로 데이터를 제공하는 데이터 제공 장치가,<br/>상기 사용자 단말기가 접속하면, 복수의 APN 중 어느 하나를 통한 사용자 단말기의 접속 경로를 인식하는 단계;<br/>상기 인식된 접속 경로에 따라, 상기 사용자 단말기에 선택적으로 데이터를 제공하는 단계를 포함하는 것을 특징으로 하는 선택적 데이터 제공을 위한 방법. </div>
+    </div>
+    </li> <li class="claim-dependent"> <div num="9" class="claim">
+      <div class="claim-text">제8항에 있어서,<br/>상기 접속 경로에 따라서 상기 사용자 단말기에 대한 데이터 서비스 기능의 설정 상태를 인식하는 단계를 더 포함하고,<br/>상기 데이터를 제공하는 단계는, 상기 데이터 서비스 기능의 설정 상태에 맞추어 데이터를 선택적으로 제공하는 것을 특징으로 하는 선택적 데이터 제공을 위한 방법.</div>
+    </div>
+  </li> </ol>
+  </div>
+  </section>
+
+  <section itemprop="application" itemscope>
+
+    <section itemprop="metadata" itemscope>
+      <span itemprop="applicationNumber">KR1020190000874A</span>
+      <span itemprop="priorityDate">2019-01-03</span>
+      <span itemprop="filingDate">2019-01-03</span>
+      <span itemprop="title">선택적 데이터 제공을 위한 장치 및 방법 
+       </span>
+      <span itemprop="ifiStatus">Active</span>
+      
+      <a href="/patent/KR102057466B1/ko">
+        <span itemprop="representativePublication">KR102057466B1</span>
+        (<span itemprop="primaryLanguage">ko</span>)
+      </a>
+    </section>
+
+    <h2>Priority Applications (1)</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Application Number</th>
+          <th>Priority Date</th>
+          <th>Filing Date</th>
+          <th>Title</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr itemprop="priorityApps" itemscope repeat>
+          <td>
+            <span itemprop="applicationNumber">KR1020190000874A</span>
+            
+            <a href="/patent/KR102057466B1/ko">
+              <span itemprop="representativePublication">KR102057466B1</span>
+                (<span itemprop="primaryLanguage">ko</span>)
+            </a>
+          </td>
+          <td itemprop="priorityDate">2019-01-03</td>
+          <td itemprop="filingDate">2019-01-03</td>
+          <td itemprop="title">선택적 데이터 제공을 위한 장치 및 방법 
+       </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>Applications Claiming Priority (1)</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Application Number</th>
+          <th>Priority Date</th>
+          <th>Filing Date</th>
+          <th>Title</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr itemprop="appsClaimingPriority" itemscope repeat>
+          <td>
+            <span itemprop="applicationNumber">KR1020190000874A</span>
+            <a href="/patent/KR102057466B1/ko">
+              <span itemprop="representativePublication">KR102057466B1</span>
+                (<span itemprop="primaryLanguage">ko</span>)
+            </a>
+          </td>
+          <td itemprop="priorityDate">2019-01-03</td>
+          <td itemprop="filingDate">2019-01-03</td>
+          <td itemprop="title">선택적 데이터 제공을 위한 장치 및 방법 
+       </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>Related Parent Applications (1)</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Application Number</th>
+          <th>Title</th>
+          <th>Priority Date</th>
+          <th>Filing Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr itemprop="parentApps" itemscope repeat>
+          <td>
+            <span itemprop="applicationNumber">KR1020100105217A</span>
+            <span itemprop="relationType">Division</span>
+            <a href="/patent/KR101937235B1/ko">
+              <span itemprop="representativePublication">KR101937235B1</span>
+              (<span itemprop="primaryLanguage">ko</span>)
+            </a>
+          </td>
+          <td itemprop="priorityDate">2010-10-27</td>
+          <td itemprop="filingDate">2010-10-27</td>
+          <td itemprop="title">동적 ａｐｎ을 이용한 선택적 데이터 제공 방법 및 시스템 
+       </td>
+        </tr>
+      </tbody>
+    </table>
+
+    
+
+    <h2>Publications (2)</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Publication Number</th>
+          <th>Publication Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr itemprop="pubs" itemscope repeat>
+          <td>
+            <span itemprop="publicationNumber">KR20190003855A</span>
+            
+            <span itemprop="thisPatent">true</span>
+            <a href="/patent/KR20190003855A/ko">
+              KR20190003855A
+              (<span itemprop="primaryLanguage">ko</span>)
+            </a>
+          </td>
+          <td itemprop="publicationDate">2019-01-09</td>
+        </tr>
+        <tr itemprop="pubs" itemscope repeat>
+          <td>
+            <span itemprop="publicationNumber">KR102057466B1</span>
+            
+            <a href="/patent/KR102057466B1/ko">
+              KR102057466B1
+              (<span itemprop="primaryLanguage">ko</span>)
+            </a>
+          </td>
+          <td itemprop="publicationDate">2019-12-19</td>
+        </tr>
+      </tbody>
+    </table>
+
+  </section>
+
+  <section itemprop="family" itemscope>
+    <h1>Family</h1>
+    <h2>ID=65017266</h2>
+
+    <h2>Family Applications (1)</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Application Number</th>
+          <th>Title</th>
+          <th>Priority Date</th>
+          <th>Filing Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr itemprop="applications" itemscope repeat>
+          <td>
+            <span itemprop="applicationNumber">KR1020190000874A</span>
+            <span itemprop="ifiStatus">Active</span>
+            
+            <a href="/patent/KR102057466B1/ko">
+              <span itemprop="representativePublication">KR102057466B1</span>
+                (<span itemprop="primaryLanguage">ko</span>)
+            </a>
+          </td>
+          <td itemprop="priorityDate">2019-01-03</td>
+          <td itemprop="filingDate">2019-01-03</td>
+          <td itemprop="title">선택적 데이터 제공을 위한 장치 및 방법 
+       </td>
+        </tr>
+      </tbody>
+    </table>
+
+    
+
+    
+
+    <h2>Country Status (1)</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Country</th>
+          <th>Link</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr itemprop="countryStatus" itemscope repeat>
+          <td>
+            <span itemprop="countryCode">KR</span>
+            (<span itemprop="num">1</span>)
+            <meta itemprop="thisCountry" content="true">
+          </td>
+          <td>
+            <a href="/patent/KR102057466B1/ko">
+              <span itemprop="representativePublication">KR102057466B1</span>
+              (<span itemprop="primaryLanguage">ko</span>)
+            </a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    
+
+    
+
+    
+
+    
+
+    <ul>
+      <li itemprop="applicationsByYear" itemscope repeat>
+        <span itemprop="year">2019</span>
+        <ul>
+          <li itemprop="application" itemscope repeat>
+            <span itemprop="filingDate">2019-01-03</span>
+            <span itemprop="countryCode">KR</span>
+            <span itemprop="applicationNumber">KR1020190000874A</span>
+            <a href="/patent/KR102057466B1/ko"><span itemprop="documentId">patent/KR102057466B1/ko</span></a>
+            <span itemprop="legalStatusCat">active</span>
+            <span itemprop="legalStatus">Active</span>
+            <span itemprop="thisApp" content="true" bool></span>
+          </li>
+        </ul>
+      </li>
+    </ul>
+
+    </section>
+
+  
+
+  
+
+  
+
+  <section>
+    <h2>Also Published As</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Publication number</th>
+          <th>Publication date</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr itemprop="docdbFamily" itemscope repeat>
+          <td>
+            <a href="/patent/KR102057466B1/ko">
+              <span itemprop="publicationNumber">KR102057466B1</span>
+              (<span itemprop="primaryLanguage">ko</span>)
+            </a>
+          </td>
+          <td itemprop="publicationDate">2019-12-19</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <h2>Similar Documents</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Publication</th>
+          <th>Publication Date</th>
+          <th>Title</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr itemprop="similarDocuments" itemscope repeat>
+          <td>
+            <meta itemprop="isPatent" content="true">
+              <a href="/patent/US8620270B2/en">
+                <span itemprop="publicationNumber">US8620270B2</span>
+                (<span itemprop="primaryLanguage">en</span>)
+              </a>
+            
+            
+          </td>
+          <td>
+            <time itemprop="publicationDate" datetime="2013-12-31">2013-12-31</time>
+            
+            
+          </td>
+          <td itemprop="title">System and method providing interoperability between cellular and other wireless systems 
+       </td>
+        </tr>
+        <tr itemprop="similarDocuments" itemscope repeat>
+          <td>
+            <meta itemprop="isPatent" content="true">
+              <a href="/patent/US7548746B2/en">
+                <span itemprop="publicationNumber">US7548746B2</span>
+                (<span itemprop="primaryLanguage">en</span>)
+              </a>
+            
+            
+          </td>
+          <td>
+            <time itemprop="publicationDate" datetime="2009-06-16">2009-06-16</time>
+            
+            
+          </td>
+          <td itemprop="title">General purpose automated activation and provisioning technologies 
+       </td>
+        </tr>
+        <tr itemprop="similarDocuments" itemscope repeat>
+          <td>
+            <meta itemprop="isPatent" content="true">
+              <a href="/patent/KR101494068B1/ko">
+                <span itemprop="publicationNumber">KR101494068B1</span>
+                (<span itemprop="primaryLanguage">ko</span>)
+              </a>
+            
+            
+          </td>
+          <td>
+            <time itemprop="publicationDate" datetime="2015-02-16">2015-02-16</time>
+            
+            
+          </td>
+          <td itemprop="title">무선 네트워크에서 가입자 식별 데이터를 제공하는 장치 및 방법 
+       </td>
+        </tr>
+        <tr itemprop="similarDocuments" itemscope repeat>
+          <td>
+            <meta itemprop="isPatent" content="true">
+              <a href="/patent/US8594627B2/en">
+                <span itemprop="publicationNumber">US8594627B2</span>
+                (<span itemprop="primaryLanguage">en</span>)
+              </a>
+            
+            
+          </td>
+          <td>
+            <time itemprop="publicationDate" datetime="2013-11-26">2013-11-26</time>
+            
+            
+          </td>
+          <td itemprop="title">Remotely provisioned wirelessly proxy 
+       </td>
+        </tr>
+        <tr itemprop="similarDocuments" itemscope repeat>
+          <td>
+            <meta itemprop="isPatent" content="true">
+              <a href="/patent/KR101350692B1/ko">
+                <span itemprop="publicationNumber">KR101350692B1</span>
+                (<span itemprop="primaryLanguage">ko</span>)
+              </a>
+            
+            
+          </td>
+          <td>
+            <time itemprop="publicationDate" datetime="2014-01-10">2014-01-10</time>
+            
+            
+          </td>
+          <td itemprop="title">이동 단말기 및 그의 다이렉트 서비스 제공 방법 
+       </td>
+        </tr>
+        <tr itemprop="similarDocuments" itemscope repeat>
+          <td>
+            <meta itemprop="isPatent" content="true">
+              <a href="/patent/US20200220983A1/en">
+                <span itemprop="publicationNumber">US20200220983A1</span>
+                (<span itemprop="primaryLanguage">en</span>)
+              </a>
+            
+            
+          </td>
+          <td>
+            <time itemprop="publicationDate" datetime="2020-07-09">2020-07-09</time>
+            
+            
+          </td>
+          <td itemprop="title">Pair-the-plan system for devices and method of use 
+     </td>
+        </tr>
+        <tr itemprop="similarDocuments" itemscope repeat>
+          <td>
+            <meta itemprop="isPatent" content="true">
+              <a href="/patent/GB2367213A/en">
+                <span itemprop="publicationNumber">GB2367213A</span>
+                (<span itemprop="primaryLanguage">en</span>)
+              </a>
+            
+            
+          </td>
+          <td>
+            <time itemprop="publicationDate" datetime="2002-03-27">2002-03-27</time>
+            
+            
+          </td>
+          <td itemprop="title">Access authentication system 
+       </td>
+        </tr>
+        <tr itemprop="similarDocuments" itemscope repeat>
+          <td>
+            <meta itemprop="isPatent" content="true">
+              <a href="/patent/US9083664B2/en">
+                <span itemprop="publicationNumber">US9083664B2</span>
+                (<span itemprop="primaryLanguage">en</span>)
+              </a>
+            
+            
+          </td>
+          <td>
+            <time itemprop="publicationDate" datetime="2015-07-14">2015-07-14</time>
+            
+            
+          </td>
+          <td itemprop="title">System and method for acquiring and/or configuring a mobile platform to provide a suite of services 
+       </td>
+        </tr>
+        <tr itemprop="similarDocuments" itemscope repeat>
+          <td>
+            <meta itemprop="isPatent" content="true">
+              <a href="/patent/US20120282921A1/en">
+                <span itemprop="publicationNumber">US20120282921A1</span>
+                (<span itemprop="primaryLanguage">en</span>)
+              </a>
+            
+            
+          </td>
+          <td>
+            <time itemprop="publicationDate" datetime="2012-11-08">2012-11-08</time>
+            
+            
+          </td>
+          <td itemprop="title">Free wi-fi 
+       </td>
+        </tr>
+        <tr itemprop="similarDocuments" itemscope repeat>
+          <td>
+            <meta itemprop="isPatent" content="true">
+              <a href="/patent/US9462566B1/en">
+                <span itemprop="publicationNumber">US9462566B1</span>
+                (<span itemprop="primaryLanguage">en</span>)
+              </a>
+            
+            
+          </td>
+          <td>
+            <time itemprop="publicationDate" datetime="2016-10-04">2016-10-04</time>
+            
+            
+          </td>
+          <td itemprop="title">System and method for providing limited communication services to unprovisioned mobile communication devices 
+       </td>
+        </tr>
+        <tr itemprop="similarDocuments" itemscope repeat>
+          <td>
+            <meta itemprop="isPatent" content="true">
+              <a href="/patent/KR101937235B1/ko">
+                <span itemprop="publicationNumber">KR101937235B1</span>
+                (<span itemprop="primaryLanguage">ko</span>)
+              </a>
+            
+            
+          </td>
+          <td>
+            <time itemprop="publicationDate" datetime="2019-01-10">2019-01-10</time>
+            
+            
+          </td>
+          <td itemprop="title">동적 ａｐｎ을 이용한 선택적 데이터 제공 방법 및 시스템 
+       </td>
+        </tr>
+        <tr itemprop="similarDocuments" itemscope repeat>
+          <td>
+            <meta itemprop="isPatent" content="true">
+              <a href="/patent/KR102057466B1/ko">
+                <span itemprop="publicationNumber">KR102057466B1</span>
+                (<span itemprop="primaryLanguage">ko</span>)
+              </a>
+            
+            
+          </td>
+          <td>
+            <time itemprop="publicationDate" datetime="2019-12-19">2019-12-19</time>
+            
+            
+          </td>
+          <td itemprop="title">선택적 데이터 제공을 위한 장치 및 방법 
+       </td>
+        </tr>
+        <tr itemprop="similarDocuments" itemscope repeat>
+          <td>
+            <meta itemprop="isPatent" content="true">
+              <a href="/patent/KR101241398B1/ko">
+                <span itemprop="publicationNumber">KR101241398B1</span>
+                (<span itemprop="primaryLanguage">ko</span>)
+              </a>
+            
+            
+          </td>
+          <td>
+            <time itemprop="publicationDate" datetime="2013-03-12">2013-03-12</time>
+            
+            
+          </td>
+          <td itemprop="title">플랫폼 기반 통신망 접속 방법 및 이를 지원하는 무선 단말 
+       </td>
+        </tr>
+        <tr itemprop="similarDocuments" itemscope repeat>
+          <td>
+            <meta itemprop="isPatent" content="true">
+              <a href="/patent/US20150356534A1/en">
+                <span itemprop="publicationNumber">US20150356534A1</span>
+                (<span itemprop="primaryLanguage">en</span>)
+              </a>
+            
+            
+          </td>
+          <td>
+            <time itemprop="publicationDate" datetime="2015-12-10">2015-12-10</time>
+            
+            
+          </td>
+          <td itemprop="title">Content provider charged gateway 
+       </td>
+        </tr>
+        <tr itemprop="similarDocuments" itemscope repeat>
+          <td>
+            <meta itemprop="isPatent" content="true">
+              <a href="/patent/JP2003264859A/ja">
+                <span itemprop="publicationNumber">JP2003264859A</span>
+                (<span itemprop="primaryLanguage">ja</span>)
+              </a>
+            
+            
+          </td>
+          <td>
+            <time itemprop="publicationDate" datetime="2003-09-19">2003-09-19</time>
+            
+            
+          </td>
+          <td itemprop="title">位置情報サービスシステム、閉域網・広域網間接続装置、地図コンテンツマージ装置及び位置情報サービス方法 
+       </td>
+        </tr>
+        <tr itemprop="similarDocuments" itemscope repeat>
+          <td>
+            <meta itemprop="isPatent" content="true">
+              <a href="/patent/KR20140088923A/ko">
+                <span itemprop="publicationNumber">KR20140088923A</span>
+                (<span itemprop="primaryLanguage">ko</span>)
+              </a>
+            
+            
+          </td>
+          <td>
+            <time itemprop="publicationDate" datetime="2014-07-14">2014-07-14</time>
+            
+            
+          </td>
+          <td itemprop="title">개인용 무선공유기를 이용한 무선 인터넷 접속 시스템 및 그 방법 
+       </td>
+        </tr>
+        <tr itemprop="similarDocuments" itemscope repeat>
+          <td>
+            <meta itemprop="isPatent" content="true">
+              <a href="/patent/US20070072641A1/en">
+                <span itemprop="publicationNumber">US20070072641A1</span>
+                (<span itemprop="primaryLanguage">en</span>)
+              </a>
+            
+            
+          </td>
+          <td>
+            <time itemprop="publicationDate" datetime="2007-03-29">2007-03-29</time>
+            
+            
+          </td>
+          <td itemprop="title">Methods and Apparatus for Mobile Equipment Depersonalization 
+       </td>
+        </tr>
+        <tr itemprop="similarDocuments" itemscope repeat>
+          <td>
+            <meta itemprop="isPatent" content="true">
+              <a href="/patent/US10264427B1/en">
+                <span itemprop="publicationNumber">US10264427B1</span>
+                (<span itemprop="primaryLanguage">en</span>)
+              </a>
+            
+            
+          </td>
+          <td>
+            <time itemprop="publicationDate" datetime="2019-04-16">2019-04-16</time>
+            
+            
+          </td>
+          <td itemprop="title">Differentiated wireless communication service provisioning and connecting alternate pathways 
+       </td>
+        </tr>
+        <tr itemprop="similarDocuments" itemscope repeat>
+          <td>
+            <meta itemprop="isPatent" content="true">
+              <a href="/patent/US20120131209A1/en">
+                <span itemprop="publicationNumber">US20120131209A1</span>
+                (<span itemprop="primaryLanguage">en</span>)
+              </a>
+            
+            
+          </td>
+          <td>
+            <time itemprop="publicationDate" datetime="2012-05-24">2012-05-24</time>
+            
+            
+          </td>
+          <td itemprop="title">Nearby address network service information provisioning for marketing representatives 
+       </td>
+        </tr>
+        <tr itemprop="similarDocuments" itemscope repeat>
+          <td>
+            <meta itemprop="isPatent" content="true">
+              <a href="/patent/KR20150069699A/ko">
+                <span itemprop="publicationNumber">KR20150069699A</span>
+                (<span itemprop="primaryLanguage">ko</span>)
+              </a>
+            
+            
+          </td>
+          <td>
+            <time itemprop="publicationDate" datetime="2015-06-24">2015-06-24</time>
+            
+            
+          </td>
+          <td itemprop="title">가상 클라우딩 오피스 어드레스 기반의 서비스 제공을 위한 시스템 및 그 시스템에서의 가상 클라우딩 오피스 어드레스 기반의 서비스 제공을 위한 장치와 방법, 이를 위한 프로그램을 기록한 기록 매체 
+     </td>
+        </tr>
+        <tr itemprop="similarDocuments" itemscope repeat>
+          <td>
+            <meta itemprop="isPatent" content="true">
+              <a href="/patent/KR101648885B1/ko">
+                <span itemprop="publicationNumber">KR101648885B1</span>
+                (<span itemprop="primaryLanguage">ko</span>)
+              </a>
+            
+            
+          </td>
+          <td>
+            <time itemprop="publicationDate" datetime="2016-08-30">2016-08-30</time>
+            
+            
+          </td>
+          <td itemprop="title">통신사 가입자 식별 정보를 포함한 스마트 카드를 인식하는 스마트 카드 리더기를 구비하는 스마트 공중전화 단말 및 그 운용방법 
+       </td>
+        </tr>
+        <tr itemprop="similarDocuments" itemscope repeat>
+          <td>
+            <meta itemprop="isPatent" content="true">
+              <a href="/patent/US20220360610A1/en">
+                <span itemprop="publicationNumber">US20220360610A1</span>
+                (<span itemprop="primaryLanguage">en</span>)
+              </a>
+            
+            
+          </td>
+          <td>
+            <time itemprop="publicationDate" datetime="2022-11-10">2022-11-10</time>
+            
+            
+          </td>
+          <td itemprop="title">System for content triggered high-speed data service delivery independent of media delivery mechanisms 
+       </td>
+        </tr>
+        <tr itemprop="similarDocuments" itemscope repeat>
+          <td>
+            <meta itemprop="isPatent" content="true">
+              <a href="/patent/KR100721848B1/ko">
+                <span itemprop="publicationNumber">KR100721848B1</span>
+                (<span itemprop="primaryLanguage">ko</span>)
+              </a>
+            
+            
+          </td>
+          <td>
+            <time itemprop="publicationDate" datetime="2007-05-28">2007-05-28</time>
+            
+            
+          </td>
+          <td itemprop="title">발신번호 표시 서비스를 이용한 사용자 인증 방법 
+       </td>
+        </tr>
+        <tr itemprop="similarDocuments" itemscope repeat>
+          <td>
+            <meta itemprop="isPatent" content="true">
+              <a href="/patent/KR101652327B1/ko">
+                <span itemprop="publicationNumber">KR101652327B1</span>
+                (<span itemprop="primaryLanguage">ko</span>)
+              </a>
+            
+            
+          </td>
+          <td>
+            <time itemprop="publicationDate" datetime="2016-09-09">2016-09-09</time>
+            
+            
+          </td>
+          <td itemprop="title">통신사 가입자 정보를 가지는 스마트 카드를 이용한 공중전화 시스템 및 그 운영방법 
+       </td>
+        </tr>
+        <tr itemprop="similarDocuments" itemscope repeat>
+          <td>
+            <meta itemprop="isPatent" content="true">
+              <a href="/patent/KR20000012226A/ko">
+                <span itemprop="publicationNumber">KR20000012226A</span>
+                (<span itemprop="primaryLanguage">ko</span>)
+              </a>
+            
+            
+          </td>
+          <td>
+            <time itemprop="publicationDate" datetime="2000-03-06">2000-03-06</time>
+            
+            
+          </td>
+          <td itemprop="title">인터넷을 이용한 유료전화 서비스 제공방법 
+     </td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <h2>Legal Events</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Code</th>
+          <th>Title</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr itemprop="legalEvents" itemscope repeat>
+          <td><time itemprop="date" datetime="2019-01-03">2019-01-03</time></td>
+          <td itemprop="code">A107</td>
+          <td itemprop="title">Divisional application of patent</td>
+          <td>
+          </td>
+        </tr>
+        <tr itemprop="legalEvents" itemscope repeat>
+          <td><time itemprop="date" datetime="2019-01-03">2019-01-03</time></td>
+          <td itemprop="code">A201</td>
+          <td itemprop="title">Request for examination</td>
+          <td>
+          </td>
+        </tr>
+        <tr itemprop="legalEvents" itemscope repeat>
+          <td><time itemprop="date" datetime="2019-01-03">2019-01-03</time></td>
+          <td itemprop="code">PA0107</td>
+          <td itemprop="title">Divisional application</td>
+          <td>
+            <p itemprop="attributes" itemscope repeat>
+              <strong itemprop="label">St.27 status event code</strong>:
+              <span itemprop="value">A-0-1-A10-A18-div-PA0107</span>
+            </p>
+            <p itemprop="attributes" itemscope repeat>
+              <strong itemprop="label">St.27 status event code</strong>:
+              <span itemprop="value">A-0-1-A10-A16-div-PA0107</span>
+            </p>
+          </td>
+        </tr>
+        <tr itemprop="legalEvents" itemscope repeat>
+          <td><time itemprop="date" datetime="2019-01-03">2019-01-03</time></td>
+          <td itemprop="code">PA0201</td>
+          <td itemprop="title">Request for examination</td>
+          <td>
+            <p itemprop="attributes" itemscope repeat>
+              <strong itemprop="label">St.27 status event code</strong>:
+              <span itemprop="value">A-1-2-D10-D11-exm-PA0201</span>
+            </p>
+          </td>
+        </tr>
+        <tr itemprop="legalEvents" itemscope repeat>
+          <td><time itemprop="date" datetime="2019-01-09">2019-01-09</time></td>
+          <td itemprop="code">PG1501</td>
+          <td itemprop="title">Laying open of application</td>
+          <td>
+            <p itemprop="attributes" itemscope repeat>
+              <strong itemprop="label">St.27 status event code</strong>:
+              <span itemprop="value">A-1-1-Q10-Q12-nap-PG1501</span>
+            </p>
+          </td>
+        </tr>
+        <tr itemprop="legalEvents" itemscope repeat>
+          <td><time itemprop="date" datetime="2019-04-01">2019-04-01</time></td>
+          <td itemprop="code">E902</td>
+          <td itemprop="title">Notification of reason for refusal</td>
+          <td>
+          </td>
+        </tr>
+        <tr itemprop="legalEvents" itemscope repeat>
+          <td><time itemprop="date" datetime="2019-04-01">2019-04-01</time></td>
+          <td itemprop="code">PE0902</td>
+          <td itemprop="title">Notice of grounds for rejection</td>
+          <td>
+            <p itemprop="attributes" itemscope repeat>
+              <strong itemprop="label">St.27 status event code</strong>:
+              <span itemprop="value">A-1-2-D10-D21-exm-PE0902</span>
+            </p>
+          </td>
+        </tr>
+        <tr itemprop="legalEvents" itemscope repeat>
+          <td><time itemprop="date" datetime="2019-05-02">2019-05-02</time></td>
+          <td itemprop="code">AMND</td>
+          <td itemprop="title">Amendment</td>
+          <td>
+          </td>
+        </tr>
+        <tr itemprop="legalEvents" itemscope repeat>
+          <td><time itemprop="date" datetime="2019-05-02">2019-05-02</time></td>
+          <td itemprop="code">E13-X000</td>
+          <td itemprop="title">Pre-grant limitation requested</td>
+          <td>
+            <p itemprop="attributes" itemscope repeat>
+              <strong itemprop="label">St.27 status event code</strong>:
+              <span itemprop="value">A-2-3-E10-E13-lim-X000</span>
+            </p>
+          </td>
+        </tr>
+        <tr itemprop="legalEvents" itemscope repeat>
+          <td><time itemprop="date" datetime="2019-05-02">2019-05-02</time></td>
+          <td itemprop="code">P11-X000</td>
+          <td itemprop="title">Amendment of application requested</td>
+          <td>
+            <p itemprop="attributes" itemscope repeat>
+              <strong itemprop="label">St.27 status event code</strong>:
+              <span itemprop="value">A-2-2-P10-P11-nap-X000</span>
+            </p>
+          </td>
+        </tr>
+        <tr itemprop="legalEvents" itemscope repeat>
+          <td><time itemprop="date" datetime="2019-05-02">2019-05-02</time></td>
+          <td itemprop="code">P13-X000</td>
+          <td itemprop="title">Application amended</td>
+          <td>
+            <p itemprop="attributes" itemscope repeat>
+              <strong itemprop="label">St.27 status event code</strong>:
+              <span itemprop="value">A-2-2-P10-P13-nap-X000</span>
+            </p>
+          </td>
+        </tr>
+        <tr itemprop="legalEvents" itemscope repeat>
+          <td><time itemprop="date" datetime="2019-10-08">2019-10-08</time></td>
+          <td itemprop="code">E601</td>
+          <td itemprop="title">Decision to refuse application</td>
+          <td>
+          </td>
+        </tr>
+        <tr itemprop="legalEvents" itemscope repeat>
+          <td><time itemprop="date" datetime="2019-10-08">2019-10-08</time></td>
+          <td itemprop="code">PE0601</td>
+          <td itemprop="title">Decision on rejection of patent</td>
+          <td>
+            <p itemprop="attributes" itemscope repeat>
+              <strong itemprop="label">St.27 status event code</strong>:
+              <span itemprop="value">N-2-6-B10-B15-exm-PE0601</span>
+            </p>
+          </td>
+        </tr>
+        <tr itemprop="legalEvents" itemscope repeat>
+          <td><time itemprop="date" datetime="2019-10-08">2019-10-08</time></td>
+          <td itemprop="code">X091</td>
+          <td itemprop="title">Application refused [patent]</td>
+          <td>
+          </td>
+        </tr>
+        <tr itemprop="legalEvents" itemscope repeat>
+          <td><time itemprop="date" datetime="2019-11-05">2019-11-05</time></td>
+          <td itemprop="code">AMND</td>
+          <td itemprop="title">Amendment</td>
+          <td>
+          </td>
+        </tr>
+        <tr itemprop="legalEvents" itemscope repeat>
+          <td><time itemprop="date" datetime="2019-11-05">2019-11-05</time></td>
+          <td itemprop="code">P11-X000</td>
+          <td itemprop="title">Amendment of application requested</td>
+          <td>
+            <p itemprop="attributes" itemscope repeat>
+              <strong itemprop="label">St.27 status event code</strong>:
+              <span itemprop="value">A-2-2-P10-P11-nap-X000</span>
+            </p>
+          </td>
+        </tr>
+        <tr itemprop="legalEvents" itemscope repeat>
+          <td><time itemprop="date" datetime="2019-11-05">2019-11-05</time></td>
+          <td itemprop="code">P13-X000</td>
+          <td itemprop="title">Application amended</td>
+          <td>
+            <p itemprop="attributes" itemscope repeat>
+              <strong itemprop="label">St.27 status event code</strong>:
+              <span itemprop="value">A-2-2-P10-P13-nap-X000</span>
+            </p>
+          </td>
+        </tr>
+        <tr itemprop="legalEvents" itemscope repeat>
+          <td><time itemprop="date" datetime="2019-11-05">2019-11-05</time></td>
+          <td itemprop="code">PX0901</td>
+          <td itemprop="title">Re-examination</td>
+          <td>
+            <p itemprop="attributes" itemscope repeat>
+              <strong itemprop="label">St.27 status event code</strong>:
+              <span itemprop="value">A-2-3-E10-E12-rex-PX0901</span>
+            </p>
+          </td>
+        </tr>
+        <tr itemprop="legalEvents" itemscope repeat>
+          <td><time itemprop="date" datetime="2019-11-08">2019-11-08</time></td>
+          <td itemprop="code">PX0701</td>
+          <td itemprop="title">Decision of registration after re-examination</td>
+          <td>
+            <p itemprop="attributes" itemscope repeat>
+              <strong itemprop="label">St.27 status event code</strong>:
+              <span itemprop="value">A-3-4-F10-F13-rex-PX0701</span>
+            </p>
+          </td>
+        </tr>
+        <tr itemprop="legalEvents" itemscope repeat>
+          <td><time itemprop="date" datetime="2019-11-08">2019-11-08</time></td>
+          <td itemprop="code">X701</td>
+          <td itemprop="title">Decision to grant (after re-examination)</td>
+          <td>
+          </td>
+        </tr>
+        <tr itemprop="legalEvents" itemscope repeat>
+          <td><time itemprop="date" datetime="2019-12-13">2019-12-13</time></td>
+          <td itemprop="code">GRNT</td>
+          <td itemprop="title">Written decision to grant</td>
+          <td>
+          </td>
+        </tr>
+        <tr itemprop="legalEvents" itemscope repeat>
+          <td><time itemprop="date" datetime="2019-12-13">2019-12-13</time></td>
+          <td itemprop="code">PR0701</td>
+          <td itemprop="title">Registration of establishment</td>
+          <td>
+            <p itemprop="attributes" itemscope repeat>
+              <strong itemprop="label">St.27 status event code</strong>:
+              <span itemprop="value">A-2-4-F10-F11-exm-PR0701</span>
+            </p>
+          </td>
+        </tr>
+        <tr itemprop="legalEvents" itemscope repeat>
+          <td><time itemprop="date" datetime="2019-12-13">2019-12-13</time></td>
+          <td itemprop="code">PR1002</td>
+          <td itemprop="title">Payment of registration fee</td>
+          <td>
+            <p itemprop="attributes" itemscope repeat>
+              <strong itemprop="label">St.27 status event code</strong>:
+              <span itemprop="value">A-2-2-U10-U11-oth-PR1002</span>
+            </p>
+            <p itemprop="attributes" itemscope repeat>
+              <strong itemprop="label">Fee payment year number</strong>:
+              <span itemprop="value">1</span>
+            </p>
+          </td>
+        </tr>
+        <tr itemprop="legalEvents" itemscope repeat>
+          <td><time itemprop="date" datetime="2019-12-19">2019-12-19</time></td>
+          <td itemprop="code">PG1601</td>
+          <td itemprop="title">Publication of registration</td>
+          <td>
+            <p itemprop="attributes" itemscope repeat>
+              <strong itemprop="label">St.27 status event code</strong>:
+              <span itemprop="value">A-4-4-Q10-Q13-nap-PG1601</span>
+            </p>
+          </td>
+        </tr>
+        <tr itemprop="legalEvents" itemscope repeat>
+          <td><time itemprop="date" datetime="2022-09-23">2022-09-23</time></td>
+          <td itemprop="code">FPAY</td>
+          <td itemprop="title">Annual fee payment</td>
+          <td>
+            <p itemprop="attributes" itemscope repeat>
+              <strong itemprop="label">Payment date</strong>:
+              <span itemprop="value">20220923</span>
+            </p>
+            <p itemprop="attributes" itemscope repeat>
+              <strong itemprop="label">Year of fee payment</strong>:
+              <span itemprop="value">4</span>
+            </p>
+          </td>
+        </tr>
+        <tr itemprop="legalEvents" itemscope repeat>
+          <td><time itemprop="date" datetime="2022-09-23">2022-09-23</time></td>
+          <td itemprop="code">PR1001</td>
+          <td itemprop="title">Payment of annual fee</td>
+          <td>
+            <p itemprop="attributes" itemscope repeat>
+              <strong itemprop="label">St.27 status event code</strong>:
+              <span itemprop="value">A-4-4-U10-U11-oth-PR1001</span>
+            </p>
+            <p itemprop="attributes" itemscope repeat>
+              <strong itemprop="label">Fee payment year number</strong>:
+              <span itemprop="value">4</span>
+            </p>
+          </td>
+        </tr>
+        <tr itemprop="legalEvents" itemscope repeat>
+          <td><time itemprop="date" datetime="2023-09-22">2023-09-22</time></td>
+          <td itemprop="code">PR1001</td>
+          <td itemprop="title">Payment of annual fee</td>
+          <td>
+            <p itemprop="attributes" itemscope repeat>
+              <strong itemprop="label">St.27 status event code</strong>:
+              <span itemprop="value">A-4-4-U10-U11-oth-PR1001</span>
+            </p>
+            <p itemprop="attributes" itemscope repeat>
+              <strong itemprop="label">Fee payment year number</strong>:
+              <span itemprop="value">5</span>
+            </p>
+          </td>
+        </tr>
+        <tr itemprop="legalEvents" itemscope repeat>
+          <td><time itemprop="date" datetime="2024-09-19">2024-09-19</time></td>
+          <td itemprop="code">PR1001</td>
+          <td itemprop="title">Payment of annual fee</td>
+          <td>
+            <p itemprop="attributes" itemscope repeat>
+              <strong itemprop="label">St.27 status event code</strong>:
+              <span itemprop="value">A-4-4-U10-U11-oth-PR1001</span>
+            </p>
+            <p itemprop="attributes" itemscope repeat>
+              <strong itemprop="label">Fee payment year number</strong>:
+              <span itemprop="value">6</span>
+            </p>
+          </td>
+        </tr>
+        <tr itemprop="legalEvents" itemscope repeat>
+          <td><time itemprop="date" datetime="2025-08-11">2025-08-11</time></td>
+          <td itemprop="code">L13</td>
+          <td itemprop="title">Limitation or reissue of ip right requested</td>
+          <td>
+            <p itemprop="attributes" itemscope repeat>
+              <strong itemprop="label">Free format text</strong>:
+              <span itemprop="value">ST27 STATUS EVENT CODE: A-2-3-L10-L13-LIM-X000 (AS PROVIDED BY THE NATIONAL OFFICE)</span>
+            </p>
+          </td>
+        </tr>
+        <tr itemprop="legalEvents" itemscope repeat>
+          <td><time itemprop="date" datetime="2025-08-11">2025-08-11</time></td>
+          <td itemprop="code">L13-X000</td>
+          <td itemprop="title">Limitation or reissue of ip right requested</td>
+          <td>
+            <p itemprop="attributes" itemscope repeat>
+              <strong itemprop="label">St.27 status event code</strong>:
+              <span itemprop="value">A-2-3-L10-L13-lim-X000</span>
+            </p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+</article>
+
+    </search-app>
+    
+    <script></script>
+    <script type="text/javascript" src="//www.gstatic.com/feedback/api.js"></script>
+    <script type="text/javascript" src="//www.gstatic.com/feedback/js/help/prod/service/lazy.min.js"></script>
+    <script type="text/javascript">
+      if (window.help && window.help.service) {
+        helpApi = window.help.service.Lazy.create(0, {apiKey: 'AIzaSyDTEI_0tLX4varJ7bwK8aT-eOI5qr3BmyI', locale: 'en-US'});
+        window.requestedSurveys = new Set();
+        window.requestSurvey = function(triggerId) {
+          if (window.requestedSurveys.has(triggerId)) {
+            return;
+          }
+          window.requestedSurveys.add(triggerId);
+          helpApi.requestSurvey({
+            triggerId: triggerId,
+            enableTestingMode: false,
+            callback: (requestSurveyCallbackParam) => {
+              if (!requestSurveyCallbackParam.surveyData) {
+                return;
+              }
+              helpApi.presentSurvey({
+                productData: {
+                  productVersion: window.version,
+                  customData: {
+                    "experiments": "",
+                  },
+                },
+                surveyData: requestSurveyCallbackParam.surveyData,
+                colorScheme: 1,
+                customZIndex: 10000,
+              });
+            }
+          });
+        };
+
+        window.requestSurvey('YXTwAsvoW0kedxbuTdH0RArc9VhT');
+      }
+    </script>
+    <script src="/sw/null_loader.js"></script>
+  </body>
+</html>

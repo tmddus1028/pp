@@ -16,6 +16,7 @@ from frontend.evidence_comparison import render_evidence_comparison  # noqa: E40
 from frontend.pdf_review import pdf_review  # noqa: E402
 from frontend.readable_text import READABLE_CSS, observe_readable_overflow  # noqa: E402
 from frontend.relationship_map import relationship_map  # noqa: E402
+from frontend.terminology import labels  # noqa: E402
 
 st.set_page_config(page_title="Patent Review · PDF 검토", page_icon="▤", layout="wide")
 load_dotenv(ROOT / ".env")
@@ -40,17 +41,26 @@ def api_request(path, **kwargs):
     return response.json()
 
 
+def current_labels():
+    return labels(
+        st.session_state.get("result"),
+        korean=st.session_state.get("upload_jurisdiction") == "한국 특허",
+    )
+
+
 @st.dialog("설정")
 def settings_dialog():
+    t = current_labels()
     st.write("현재 분석 모드: " + provider.upper())
     st.write("OCR과 PDF 화면 렌더링은 로컬에서 처리합니다.")
     if provider != "local":
-        st.info("Office Action 텍스트는 설정된 LLM 공급자로 전송됩니다.")
+        st.info(t("Office Action 텍스트는 설정된 LLM 공급자로 전송됩니다."))
     st.caption("분석 공급자와 OCR 실행 경로는 프로젝트의 .env 설정을 사용합니다.")
 
 
 @st.dialog("PDF 검토 도움말")
 def help_dialog():
+    t = current_labels()
     st.write(
         "검토 카드를 선택하면 원문의 해당 페이지로 이동합니다. PDF 하이라이트를 클릭하면 연결된 카드가 열립니다."
     )
@@ -58,10 +68,14 @@ def help_dialog():
         "빨강은 직접 지적, 노랑은 종속 영향, 초록은 인용 문헌, 청록은 명시적으로 연결된 설명·근거입니다."
     )
     st.write(
-        "종속항이라도 직접 지적된 경우에는 빨강이 우선합니다. 거절 사유 필터로 각 사유의 영향을 따로 볼 수 있습니다."
+        t(
+            "종속항이라도 직접 지적된 경우에는 빨강이 우선합니다. 거절 사유 필터로 각 사유의 영향을 따로 볼 수 있습니다."
+        )
     )
     st.write(
-        "인용 문헌은 Office Action에서 인용된 위치를 보여줍니다. 명세서·도면은 원문에 명시된 연결만 표시합니다."
+        t(
+            "인용 문헌은 Office Action에서 인용된 위치를 보여줍니다. 명세서·도면은 원문에 명시된 연결만 표시합니다."
+        )
     )
     st.caption(
         "좌표를 확실하게 찾지 못한 경우 원문 페이지와 텍스트 근거를 표시합니다. 이 도구는 전문적인 법률 검토를 대체하지 않습니다."
@@ -126,60 +140,100 @@ if section_changed:
                     st.session_state.selected_claim = item.get("claim_number")
 
 
+def change_jurisdiction():
+    st.session_state.upload_jurisdiction = st.session_state.jurisdiction_selector
+    # A country switch must not display the previous country's analysis/assets.
+    for key in ("result", "pdf_assets"):
+        st.session_state.pop(key, None)
+    for key in ("improvement_identity", "improvement_results", "improvement_errors"):
+        st.session_state.pop(key, None)
+
+
 def upload_documents():
-    st.caption("WORKSPACE / DOCUMENTS")
+    t = current_labels()
+    st.caption(t("WORKSPACE / DOCUMENTS"))
     st.title("원문을 펼치고, 검토를 시작하세요.")
-    st.write("같은 시점의 청구항과 Office Action을 연결하여 원문에서 검토 근거를 확인합니다.")
+    st.write(t("같은 시점의 청구항과 Office Action을 연결하여 원문에서 검토 근거를 확인합니다."))
+    jurisdiction = st.radio(
+        "특허 관할",
+        ["미국 특허", "한국 특허"],
+        index=1 if st.session_state.get("upload_jurisdiction") == "한국 특허" else 0,
+        horizontal=True,
+        key="jurisdiction_selector",
+        on_change=change_jurisdiction,
+        label_visibility="collapsed",
+    )
+    korean = jurisdiction == "한국 특허"
+    st.session_state.upload_jurisdiction = jurisdiction
+    api_suffix = "?jurisdiction=KR" if korean else ""
+    input_prefix = "kr_" if korean else ""
     mode = st.radio("입력 방법", ["파일 업로드", "텍스트 입력"], horizontal=True, key="input_mode")
     first, second = st.columns(2, gap="large")
     files = []
     if mode == "파일 업로드":
         with first, st.container(border=True):
-            st.subheader("01 · Patent / Claims")
+            st.subheader(t("01 · Patent / Claims"))
             st.caption("검토할 특허·청구항 원문")
             patent = st.file_uploader(
-                "Patent PDF", type=["pdf", "txt", "json"], key="patent_upload"
+                t("Patent PDF"),
+                type=["pdf", "txt"] if korean else ["pdf", "txt", "json"],
+                key=input_prefix + "patent_upload",
             )
         with second, st.container(border=True):
-            st.subheader("02 · Office Action")
-            st.caption("해당 청구항에 대한 심사 의견서")
-            oa = st.file_uploader("Office Action PDF", type=["pdf", "txt", "json"], key="oa_upload")
+            st.subheader(t("02 · Office Action"))
+            st.caption(t("해당 청구항에 대한 심사 의견서"))
+            oa = st.file_uploader(
+                t("Office Action XML") if korean else t("Office Action PDF"),
+                type=["xml"] if korean else ["pdf", "txt", "json"],
+                key=input_prefix + "oa_upload",
+            )
         ready = patent is not None and oa is not None
         if ready:
             files = [(patent.name, patent.getvalue()), (oa.name, oa.getvalue())]
     else:
-        patent_text = first.text_area("01 · Patent / Claims", height=280, key="patent_text")
-        oa_text = second.text_area("02 · Office Action", height=280, key="oa_text")
+        patent_text = first.text_area(
+            t("01 · Patent / Claims"), height=280, key=input_prefix + "patent_text"
+        )
+        oa_text = second.text_area(
+            t("02 · Office Action"), height=280, key=input_prefix + "oa_text"
+        )
         ready = bool(patent_text.strip() and oa_text.strip())
     run, demo, _ = st.columns([1, 1.5, 3])
     analyze_clicked = run.button(
         "분석 시작", type="primary", disabled=not ready, key="analyze", width="stretch"
     )
     demo_clicked = demo.button("예제 분석 · 가상 문서", key="demo", width="stretch")
-    st.caption("PDF 원본은 변경하지 않습니다. TXT/JSON 입력은 텍스트 원문으로 검토할 수 있습니다.")
+    st.caption(
+        "PDF 원본은 변경하지 않습니다. TXT/XML 입력은 텍스트 원문으로 검토할 수 있습니다."
+        if korean
+        else "PDF 원본은 변경하지 않습니다. TXT/JSON 입력은 텍스트 원문으로 검토할 수 있습니다."
+    )
     if analyze_clicked or demo_clicked:
         try:
-            with st.spinner("청구항과 지적 사유를 분석하고 있습니다…"):
+            with st.spinner(t("청구항과 지적 사유를 분석하고 있습니다…")):
                 if demo_clicked:
+                    demo_patent = "kr_demo_patent.txt" if korean else "demo_patent.txt"
+                    demo_oa = "kr_demo_office_action.xml" if korean else "demo_office_action.txt"
                     result = api_request(
-                        "/analyze/text",
+                        "/analyze/text" + api_suffix,
                         json={
-                            "patent_text": (ROOT / "data/raw/demo_patent.txt").read_text(
+                            "patent_text": (ROOT / "data/raw" / demo_patent).read_text(
                                 encoding="utf-8"
                             ),
-                            "office_action_text": (
-                                ROOT / "data/raw/demo_office_action.txt"
-                            ).read_text(encoding="utf-8"),
+                            "office_action_text": (ROOT / "data/raw" / demo_oa).read_text(
+                                encoding="utf-8"
+                            ),
                         },
                     )
                     files = []
                 elif mode == "파일 업로드":
                     result = api_request(
-                        "/analyze/files", files={"patent": files[0], "office_action": files[1]}
+                        "/analyze/files" + api_suffix,
+                        files={"patent": files[0], "office_action": files[1]},
                     )
                 else:
                     result = api_request(
-                        "/analyze/text",
+                        "/analyze/text" + api_suffix,
                         json={"patent_text": patent_text, "office_action_text": oa_text},
                     )
             st.session_state.result = result
@@ -225,19 +279,21 @@ if section == "문서 업로드":
     upload_documents()
 elif "result" not in st.session_state:
     st.title(section)
-    st.info("먼저 Patent와 Office Action을 업로드하여 분석을 시작하세요.")
+    st.info(current_labels()("먼저 Patent와 Office Action을 업로드하여 분석을 시작하세요."))
     if st.button("문서 업로드로 이동"):
         st.session_state.next_section = "문서 업로드"
         st.rerun()
 else:
     result = st.session_state.result
     st.caption(
-        "WORKSPACE / "
-        + {
-            "청구항 분석": "CLAIM ANALYSIS",
-            "관계 지도": "RELATIONSHIP MAP",
-            "근거 비교": "EVIDENCE COMPARISON",
-        }.get(section, "DOCUMENT REVIEW")
+        current_labels()(
+            "WORKSPACE / "
+            + {
+                "청구항 분석": "CLAIM ANALYSIS",
+                "관계 지도": "RELATIONSHIP MAP",
+                "근거 비교": "EVIDENCE COMPARISON",
+            }.get(section, "DOCUMENT REVIEW")
+        )
     )
     st.title(section)
     if section == "청구항 분석":

@@ -1,0 +1,27 @@
+{
+  "application": "1020190000844",
+  "publication": "KR20190025857A",
+  "patent_file": "publications\\KR20190025857A.pdf",
+  "oa_xml": "official_samples\\1020190000844_952019025682492\\1020190000844_952019025682492.xml",
+  "oa_pdf": "official_samples\\1020190000844_952019025682492\\1020190000844_952019025682492.pdf",
+  "patent_pages": 17,
+  "oa_pdf_pages": 6,
+  "version_status": "existing claim/OA comparison available",
+  "http_status": 200,
+  "claim_count": 1,
+  "direct": [
+    1
+  ],
+  "dependency": [],
+  "unknown": [],
+  "statutes": [
+    "특허법 제29조제2항"
+  ],
+  "citations": [
+    "KR20150096573A",
+    "KR20150090348A",
+    "KR20150093093A"
+  ],
+  "evidence_checks": 21,
+  "status": "PASS"
+}

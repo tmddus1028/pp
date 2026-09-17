@@ -7,6 +7,7 @@ import streamlit.components.v1 as components
 
 from frontend.readable_text import READABLE_CSS, READABLE_JS
 from frontend.review_model import build_review_model
+from frontend.terminology import TERMINOLOGY_JS, component_terms
 
 _component = components.declare_component(
     "patent_relationship_map", path=str(Path(__file__).parent / "relationship_map_component")
@@ -71,6 +72,8 @@ def relationship_map(result, initial_item=None, initial_scope="all"):
             )
             st.session_state.relationship_navigation += 1
     event = _component(
+        terminology_js=TERMINOLOGY_JS,
+        terminology=component_terms(result),
         readable_css=READABLE_CSS,
         readable_js=READABLE_JS,
         model=model,

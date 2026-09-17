@@ -1,0 +1,118 @@
+[
+  {
+    "application": "1020190000844",
+    "publication": "KR20190025857A",
+    "patent_file": "publications\\KR20190025857A.pdf",
+    "oa_xml": "official_samples\\1020190000844_952019025682492\\1020190000844_952019025682492.xml",
+    "oa_pdf": "official_samples\\1020190000844_952019025682492\\1020190000844_952019025682492.pdf",
+    "patent_pages": 17,
+    "oa_pdf_pages": 6,
+    "version_status": "existing claim/OA comparison available",
+    "http_status": 200,
+    "claim_count": 1,
+    "direct": [
+      1
+    ],
+    "dependency": [],
+    "unknown": [],
+    "statutes": [
+      "특허법 제29조제2항"
+    ],
+    "citations": [
+      "KR20150096573A",
+      "KR20150090348A",
+      "KR20150093093A"
+    ],
+    "evidence_checks": 21,
+    "status": "PASS"
+  },
+  {
+    "application": "1020190000874",
+    "publication": "KR20190003855A",
+    "patent_file": "publications\\KR20190003855A.pdf",
+    "oa_xml": "official_samples\\1020190000874_952019023937404\\1020190000874_952019023937404.xml",
+    "oa_pdf": "official_samples\\1020190000874_952019023937404\\1020190000874_952019023937404.pdf",
+    "patent_pages": 16,
+    "oa_pdf_pages": 5,
+    "version_status": "same application verified; historical claim version not fully verified",
+    "http_status": 422,
+    "status": "UNSUPPORTED",
+    "error": "하나의 거절이유 본문에 여러 청구항 범위 또는 법조항이 연결됩니다. 인용발명 관계를 정확히 나눌 수 없어 이 XML 구조는 아직 지원하지 않습니다."
+  },
+  {
+    "application": "1020190000902",
+    "publication": "KR20190004821A",
+    "patent_file": "publications\\KR20190004821A.pdf",
+    "oa_xml": "official_samples\\1020190000902_952019021826308\\1020190000902_952019021826308.xml",
+    "oa_pdf": "official_samples\\1020190000902_952019021826308\\1020190000902_952019021826308.pdf",
+    "patent_pages": 23,
+    "oa_pdf_pages": 3,
+    "version_status": "same application verified; historical claim version not fully verified",
+    "http_status": 200,
+    "claim_count": 16,
+    "direct": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10
+    ],
+    "dependency": [],
+    "unknown": [
+      11,
+      12,
+      13,
+      14,
+      15,
+      16
+    ],
+    "statutes": [
+      "특허법 제42조제4항제2호"
+    ],
+    "citations": [],
+    "evidence_checks": 53,
+    "status": "PARTIAL_FAIL",
+    "defects": [
+      {
+        "claim": 6,
+        "actual_parents": [],
+        "expected_parents": [
+          1
+        ],
+        "source_text": "공개특허 10-2019-0004821\n- 3 -\n\n청구항 1항에 있어서,\n상기 인디게이터는 상기 자외선 발광다이오드와 직렬로 연결되어 점등 및 소등이 함께 이루어지는, 살균기.",
+        "reason": "PDF page header is inside Claim 6, so the existing Korean dependency parser misses the opening '청구항 1항에 있어서'."
+      }
+    ]
+  },
+  {
+    "application": "1020190000903",
+    "publication": "KR20190019097A",
+    "patent_file": "publications\\KR20190019097A.pdf",
+    "oa_xml": "official_samples\\1020190000903_952019013815712\\1020190000903_952019013815712.xml",
+    "oa_pdf": "official_samples\\1020190000903_952019013815712\\1020190000903_952019013815712.pdf",
+    "patent_pages": 12,
+    "oa_pdf_pages": 4,
+    "version_status": "same application verified; historical claim version not fully verified",
+    "http_status": 422,
+    "status": "UNSUPPORTED",
+    "error": "지원하는 형식의 명시적 거절이유를 찾지 못했습니다. 거절 없음으로 처리하지 않습니다."
+  },
+  {
+    "application": "1020190000948",
+    "publication": "KR20190005244A",
+    "patent_file": "publications\\KR20190005244A.pdf",
+    "oa_xml": "official_samples\\1020190000948_952019003450110\\1020190000948_952019003450110.xml",
+    "oa_pdf": "official_samples\\1020190000948_952019003450110\\1020190000948_952019003450110.pdf",
+    "patent_pages": 15,
+    "oa_pdf_pages": 5,
+    "version_status": "same application verified; historical claim version not fully verified",
+    "http_status": 422,
+    "status": "UNSUPPORTED",
+    "error": "하나의 거절이유 본문에 여러 청구항 범위 또는 법조항이 연결됩니다. 인용발명 관계를 정확히 나눌 수 없어 이 XML 구조는 아직 지원하지 않습니다."
+  }
+]
