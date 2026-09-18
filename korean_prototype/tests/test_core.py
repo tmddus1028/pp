@@ -220,10 +220,10 @@ def test_scanned_pdf_has_explicit_error_no_invented_text():
         read_document(stream.getvalue(), "scan.pdf", "patent")
 
 
-def test_invalid_pdf_and_unsupported_oa_pdf_errors():
+def test_invalid_patent_and_oa_pdf_errors():
     with pytest.raises(ReviewError, match="PDF를 열거나"):
         read_document(b"not a PDF", "broken.pdf", "patent")
-    with pytest.raises(ReviewError, match="OA PDF는 미지원"):
+    with pytest.raises(ReviewError, match="PDF를 열거나"):
         read_document(b"pdf", "oa.pdf", "office_action")
 
 

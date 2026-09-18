@@ -1,3 +1,4 @@
+import hashlib
 import json
 import os
 import sys
@@ -17,6 +18,7 @@ from frontend.pdf_review import pdf_review  # noqa: E402
 from frontend.readable_text import READABLE_CSS, observe_readable_overflow  # noqa: E402
 from frontend.relationship_map import relationship_map  # noqa: E402
 from frontend.terminology import labels  # noqa: E402
+from frontend.visual_theme import BRAND_HTML, HERO_DECORATION, upload_header  # noqa: E402
 
 st.set_page_config(page_title="Patent Review · PDF 검토", page_icon="▤", layout="wide")
 load_dotenv(ROOT / ".env")
@@ -90,7 +92,7 @@ except (httpx.HTTPError, ValueError, KeyError):
     provider = "연결 대기"
 
 with st.sidebar:
-    st.markdown('<div class="brand"><span>▤</span> Patent Review</div>', unsafe_allow_html=True)
+    st.markdown(BRAND_HTML, unsafe_allow_html=True)
     st.caption("AI와 함께하는 특허 검토")
     st.divider()
     section = st.radio(
@@ -145,16 +147,30 @@ def change_jurisdiction():
     # A country switch must not display the previous country's analysis/assets.
     for key in ("result", "pdf_assets"):
         st.session_state.pop(key, None)
-    for key in ("improvement_identity", "improvement_results", "improvement_errors"):
+    for key in (
+        "improvement_identity",
+        "improvement_results",
+        "improvement_errors",
+        "improvement_open",
+        "revision_results",
+        "revision_errors",
+        "revision_drafts",
+    ):
         st.session_state.pop(key, None)
 
 
 def upload_documents():
     t = current_labels()
-    st.caption(t("WORKSPACE / DOCUMENTS"))
-    st.title("원문을 펼치고, 검토를 시작하세요.")
-    st.write(t("같은 시점의 청구항과 Office Action을 연결하여 원문에서 검토 근거를 확인합니다."))
-    jurisdiction = st.radio(
+    with st.container(key="upload-hero"):
+        st.caption(t("WORKSPACE / DOCUMENTS"))
+        st.title("원문을 펼치고, 검토를 시작하세요.")
+        st.write(
+            t("같은 시점의 청구항과 Office Action을 연결하여 원문에서 검토 근거를 확인합니다.")
+        )
+        st.markdown(HERO_DECORATION, unsafe_allow_html=True)
+    with st.container(key="upload-options"):
+        country_column, input_column = st.columns([1, 2], gap="large")
+    jurisdiction = country_column.radio(
         "특허 관할",
         ["미국 특허", "한국 특허"],
         index=1 if st.session_state.get("upload_jurisdiction") == "한국 특허" else 0,
@@ -167,11 +183,18 @@ def upload_documents():
     st.session_state.upload_jurisdiction = jurisdiction
     api_suffix = "?jurisdiction=KR" if korean else ""
     input_prefix = "kr_" if korean else ""
-    mode = st.radio("입력 방법", ["파일 업로드", "텍스트 입력"], horizontal=True, key="input_mode")
+    mode = input_column.radio(
+        "입력 방법", ["파일 업로드", "텍스트 입력"], horizontal=True, key="input_mode"
+    )
     first, second = st.columns(2, gap="large")
     files = []
+    reference_files = []
     if mode == "파일 업로드":
-        with first, st.container(border=True):
+        with first, st.container(border=True, key="upload-card-patent"):
+            st.markdown(
+                upload_header(t("01 · Patent / Claims"), "검토할 특허·청구항 원문"),
+                unsafe_allow_html=True,
+            )
             st.subheader(t("01 · Patent / Claims"))
             st.caption("검토할 특허·청구항 원문")
             patent = st.file_uploader(
@@ -179,14 +202,27 @@ def upload_documents():
                 type=["pdf", "txt"] if korean else ["pdf", "txt", "json"],
                 key=input_prefix + "patent_upload",
             )
-        with second, st.container(border=True):
+        with second, st.container(border=True, key="upload-card-oa"):
+            st.markdown(
+                upload_header(t("02 · Office Action"), t("해당 청구항에 대한 심사 의견서")),
+                unsafe_allow_html=True,
+            )
             st.subheader(t("02 · Office Action"))
             st.caption(t("해당 청구항에 대한 심사 의견서"))
             oa = st.file_uploader(
-                t("Office Action XML") if korean else t("Office Action PDF"),
-                type=["xml"] if korean else ["pdf", "txt", "json"],
+                "의견제출통지서 XML / PDF" if korean else t("Office Action PDF"),
+                type=["xml", "pdf"] if korean else ["pdf", "txt", "json"],
                 key=input_prefix + "oa_upload",
             )
+            if korean:
+                with st.expander("인용발명 원문 (선택)", expanded=False):
+                    refs = st.file_uploader(
+                        "인용발명 PDF",
+                        type=["pdf"],
+                        accept_multiple_files=True,
+                        key="kr_reference_upload",
+                    )
+                    reference_files = [(ref.name, ref.getvalue()) for ref in refs]
         ready = patent is not None and oa is not None
         if ready:
             files = [(patent.name, patent.getvalue()), (oa.name, oa.getvalue())]
@@ -229,7 +265,11 @@ def upload_documents():
                 elif mode == "파일 업로드":
                     result = api_request(
                         "/analyze/files" + api_suffix,
-                        files={"patent": files[0], "office_action": files[1]},
+                        files=[
+                            ("patent", files[0]),
+                            ("office_action", files[1]),
+                            *[("references", ref) for ref in reference_files],
+                        ],
                     )
                 else:
                     result = api_request(
@@ -239,10 +279,17 @@ def upload_documents():
             st.session_state.result = result
             st.session_state.pdf_assets = {
                 document["document_id"]: data
-                for document, (name, data) in zip(result["documents"], files)
+                for document in result["documents"]
+                for name, data in files + reference_files
                 if Path(name).suffix.lower() == ".pdf"
+                and document["filename"] == name
+                and (
+                    not korean
+                    or document["document_id"].endswith(hashlib.sha256(data).hexdigest()[:16])
+                )
             }
             for key in [
+                "improvement_identity",
                 "review_model_id",
                 "claim_list_id",
                 "comparison_id",

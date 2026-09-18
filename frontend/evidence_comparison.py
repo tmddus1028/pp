@@ -320,6 +320,13 @@ def render_evidence_comparison(result, initial_claim=None, initial_scope="all"):
                             on_click=pdf_link,
                             args=("citation-" + ref["citation_id"], entry["rejection_ids"][0]),
                         )
+                        for index, link in enumerate(result.get("evidence_links", [])):
+                            if (
+                                link.get("citation_id") != ref["citation_id"]
+                                or link["rejection_id"] not in entry["rejection_ids"]
+                            ):
+                                continue
+                            source(link["evidence"], link["label"], "citation")
                 if not view["citations"]:
                     st.caption("선택한 비교 범위에 연결된 인용문헌이 없습니다.")
         with st.container(key="comparison-summary", border=True):

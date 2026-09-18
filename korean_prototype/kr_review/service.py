@@ -1,8 +1,10 @@
 """Deterministic Korean prototype orchestration, isolated from the US application."""
 
 from .ingestion import read_document
+from .links import retrieve_links
 from .models import AnalysisResult, ReviewError
 from .parsers import extract_claims, extract_office_action
+from .status import extract_statuses
 
 
 def analyze(
@@ -11,11 +13,21 @@ def analyze(
     oa_data: bytes,
     oa_filename: str,
     references: list[tuple[str, bytes]] | None = None,
+    amendments: list[tuple[str, bytes]] | None = None,
+    version_history: dict | None = None,
 ) -> AnalysisResult:
     if len(references or []) > 10:
         raise ReviewError("인용발명은 최대 10개까지 입력할 수 있습니다.")
-    patent = read_document(patent_data, patent_filename, "patent")
     office_action = read_document(oa_data, oa_filename, "office_action")
+    from .versions import select_version
+
+    (patent_data, patent_filename), version = select_version(
+        (patent_data, patent_filename),
+        [(data, name) for name, data in amendments or []],
+        version_history,
+        office_action.metadata.get("document_date", ""),
+    )
+    patent = read_document(patent_data, patent_filename, "patent")
     patent_application = patent.metadata.get("application_number")
     oa_application = office_action.metadata.get("application_number")
     if patent_application and patent_application != oa_application:
@@ -28,6 +40,7 @@ def analyze(
             "명세서에서 출원번호를 읽지 못해 두 입력의 동일 출원 여부를 확인하지 못했습니다."
         )
     warnings.append("출원번호 일치는 심사 당시 청구항 버전의 동일성을 자동 보증하지 않습니다.")
+    warnings.append("청구범위 버전 확인 필요: " + version["reason"])
     claims = extract_claims(patent)
     rejections, citations = extract_office_action(office_action)
     active = {claim.number for claim in claims if claim.status == "active"}
@@ -42,7 +55,13 @@ def analyze(
     reference_by_publication = {}
     seen_document_ids = {document.document_id for document in documents}
     for filename, data in references or []:
-        document = read_document(data, filename, "reference")
+        try:
+            document = read_document(data, filename, "reference")
+        except ReviewError as exc:
+            warnings.append(
+                f"{filename}: 인용발명 원문 사용 불가 ({exc}). 청구항·거절이유 분석은 유지합니다."
+            )
+            continue
         if document.document_id in seen_document_ids:
             continue
         seen_document_ids.add(document.document_id)
@@ -58,6 +77,10 @@ def analyze(
             )
         else:
             reference_by_publication[publication] = document
+            if publication not in {c.publication_number for c in citations}:
+                warnings.append(
+                    f"{filename}: {publication}은 이 거절이유의 인용발명 번호와 일치하지 않아 연결하지 않았습니다."
+                )
     for citation in citations:
         linked = reference_by_publication.get(citation.publication_number)
         if linked:
@@ -66,12 +89,16 @@ def analyze(
         else:
             warnings.append(f"{citation.publication_number}: 인용발명 원문이 입력되지 않았습니다.")
 
+    statuses = extract_statuses(claims, rejections, office_action)
+    terminal = {
+        s.claim_number for s in statuses if s.status in {"allowable", "withdrawn", "canceled"}
+    }
     impacted = set()
     changed = True
     while changed:
         changed = False
         for claim in claims:
-            if claim.number in active - direct - impacted and set(claim.depends_on) & (
+            if claim.number in active - direct - impacted - terminal and set(claim.depends_on) & (
                 direct | impacted
             ):
                 impacted.add(claim.number)
@@ -89,4 +116,7 @@ def analyze(
         direct_claims=sorted(direct),
         dependency_claims=sorted(impacted),
         warnings=list(dict.fromkeys(warnings)),
+        claim_statuses=statuses,
+        evidence_links=retrieve_links(patent, claims, rejections, citations, documents),
+        version=version,
     )

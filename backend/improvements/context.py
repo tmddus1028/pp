@@ -130,10 +130,37 @@ def build_context(request: ImprovementRequest):
                     "name": ref.name,
                     "publication_number": ref.publication_number,
                     "evidence_id": eid,
-                    "original_available": False,
+                    "original_available": any(
+                        link.get("citation_id") == ref.citation_id
+                        and link.get("rejection_id") == r.rejection_id
+                        for link in result.evidence_links
+                    ),
                 }
             )
-    # Reuse the exact existing UI link policy. No search-based/speculative support links.
+    for index, link in enumerate(result.evidence_links):
+        if (
+            link.get("citation_id")
+            and link.get("rejection_id") in {r.rejection_id for r in rejections}
+            and claim.claim_number in link.get("claim_numbers", [])
+        ):
+            ev = Evidence.model_validate(link["evidence"])
+            if documents[ev.document_id].kind != "reference":
+                raise ValueError("인용발명 본문 근거가 reference 문서에 속하지 않습니다.")
+            add(
+                f"REF-{index}",
+                "citation_original",
+                link["label"],
+                ev,
+                "citation-" + link["citation_id"],
+            )
+            sources[-1].provenance = link["provenance"]
+            for citation in citations:
+                if (
+                    citation["citation_id"] == link["citation_id"]
+                    and citation["rejection_id"] == link["rejection_id"]
+                ):
+                    citation.setdefault("original_evidence_ids", []).append(f"REF-{index}")
+    # KR candidates keep their source/provenance label; they are not proven support.
     for link in explicit_support(result.model_dump(mode="json")):
         if link["rejection_id"] in {r.rejection_id for r in rejections} and link["figure"] is None:
             add(
@@ -143,6 +170,7 @@ def build_context(request: ImprovementRequest):
                 Evidence.model_validate(link["evidence"]),
                 link["id"],
             )
+            sources[-1].provenance = link.get("provenance")
     if status and status.evidence:
         add(
             "STATUS",
@@ -165,7 +193,7 @@ def build_context(request: ImprovementRequest):
         missing.append(
             "현재 자동 연결된 명세서 근거가 없어 구체적인 기술적 한정·추가 보정안은 제시하지 않습니다."
         )
-    if citations:
+    if any(not c["original_available"] for c in citations):
         missing.append(
             "선행문헌 원문 미확보: 인용 위치는 심사관 문서의 인용 문장입니다. 선행문헌 본문을 읽거나 기술적 차이를 검증한 결과가 아닙니다."
         )

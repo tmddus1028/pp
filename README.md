@@ -58,8 +58,9 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\stop.ps1
 미국 모드가 기본값이며 기존 입력·분석 공급자 설정은 그대로입니다. 두 모드는 동일한
 PDF 검토·청구항 분석·관계 지도·근거 비교 화면을 사용합니다. 한국 전용 화면이나 CSS는 추가하지 않습니다.
 
-- 한국 입력: 텍스트 기반 한국 공개특허 PDF/TXT + KIPRIS `PatentOpinionSubmission` 의견제출통지서 XML.
-  텍스트 입력 방식에서는 오른쪽 칸에 XML 전체를 붙여 넣습니다.
+- 한국 입력: 한국 공개특허 PDF/TXT + 의견제출통지서 XML 또는 PDF.
+  native·스캔·혼합 PDF를 페이지별로 처리합니다. 스캔에는 아래 한국어 OCR 설치가 필요합니다.
+  텍스트 입력 방식에서는 오른쪽 칸에 XML 전체 또는 통지서 본문을 붙여 넣습니다.
 - 실제 사례: `korean_prototype/data/kr_1020190000844/KR20190025857A.pdf`와
   같은 폴더의 `office_action_20190409.xml`을 업로드합니다.
   기대 결과는 청구항 1개, 직접 지적 1개, 종속 영향 0개, 특허법 제29조제2항 거절 1개,
@@ -69,14 +70,36 @@ PDF 검토·청구항 분석·관계 지도·근거 비교 화면을 사용합�
 - 한국 특허 PDF는 실제 페이지·좌표를 사용합니다. **OA XML은 기존 텍스트 뷰어로 표시하며,
   화면의 p.1은 텍스트 표시용 논리 페이지입니다. 실제 OA PDF 페이지 번호가 아닙니다.**
   원문 텍스트와 근거 문자 위치는 유지하고 이 구분을 문서 처리 정보에도 기록합니다.
-- 인용문헌 클릭은 기존 정책대로 OA의 인용 위치로 이동합니다. 별도 인용발명 PDF 업로드·검색 UI는 추가하지 않았습니다.
+- 한국 업로드의 **인용발명 원문 (선택)**에 대응 PDF를 추가할 수 있습니다.
+  문헌번호가 일치한 원문만 연결합니다. 인용문헌 클릭은 통지서의 인용 위치로 이동하며,
+  카드의 **인용발명 PDF 보기**로 실제 원문을 확인합니다.
+  심사관이 지정한 위치와 **시스템 검색 후보**는 구분해 표시합니다.
 
 API는 기존 `/analyze/files`, `/analyze/text`에 선택적 query `jurisdiction=KR`을 지정합니다.
 생략하거나 `jurisdiction=US`이면 기존 미국 처리 경로이며 응답 모델은 동일합니다.
 한국은 기존 시제품의 로컬 추출기를 adapter로 연결합니다. 미국의 OpenAI/Azure 설정을
 한국 문서의 기존 분석에 자동 적용하지 않습니다. 독립 시제품의 명시적 Azure 검토는 그대로 보존됩니다.
 공통 앱에서는 아래의 **개선 방안 보기** 버튼으로만 별도 검토를 요청합니다.
-한국 OA PDF·한국 스캔 OCR·모든 한국 심사 문서 형식의 지원을 의미하지 않습니다.
+한국 실제 5개 사건의 XML/PDF 10개 조합을 검증했습니다. 모든 시기의 심사 문서와
+실제 저품질 스캔까지 지원한다는 의미는 아닙니다. [지원 범위·정량 검증·한계](KR_SUPPORT_VALIDATION.md).
+
+한국어 스캔을 사용하려면 Tesseract를 설치한 뒤 다음을 한 번 실행합니다.
+
+```powershell
+uv run python korean_prototype/scripts/install_korean_ocr.py
+```
+
+공식 `tessdata_best` 한국어 모델을 해시 확인 후 사용자 로컬 폴더에 설치합니다.
+Tesseract가 자동 탐지되지 않으면 서버를 실행하는 환경에 `KR_TESSERACT_CMD`를 지정합니다.
+별도 언어 모델 경로는 `KR_TESSDATA_DIR`입니다. 원본 PDF를 재저장하지 않으며,
+OCR 원문·정규화 텍스트·단어 좌표와 경고를 보존합니다.
+
+API `/analyze/files?jurisdiction=kr`는 선택 파일 목록 `references`, `amendments`와
+JSON 문자열 Form `version_history`를 받습니다. 보정 이력의 `submissions`에 파일
+`sha256`과 `submitted_at`(YYYY-MM-DD)을 제공하고, 명시적으로 선택할 때만
+`selected_sha256`을 지정합니다. 날짜만으로 버전을 조용히 교체하지 않으며,
+제공 이력만으로 심사 적용을 확정할 수 없어 `claim_version.status=uncertain`을 유지합니다.
+보정 이력 입력은 API 기능이며 새 화면을 추가하지 않았습니다.
 
 기존 실행 명령으로 두 모드를 사용할 수 있으며 8502/8001의 별도 한국 서버는 필요하지 않습니다.
 한국 추출 모듈을 재사용하므로 `korean_prototype/kr_review/` 폴더를 함께 유지해야 합니다.
@@ -85,20 +108,108 @@ API는 기존 `/analyze/files`, `/analyze/text`에 선택적 query `jurisdiction
 ### 청구항 개선 방안 — 명시적 실행
 
 **PDF 검토의 청구항 상세 카드** 또는 **청구항 분석의 상세 보기** 하단에서
-**개선 방안 보기**를 누르면 같은 카드의 accordion에 검토용 결과가 표시됩니다.
+**개선 방안 보기**는 같은 카드의 accordion만 엽니다. 그 안의 **AI 개선안 생성**을 눌러야
+LLM을 호출합니다. **수정 Claim**에 직접 수정한 문안을 붙여넣고 **수정본 검증**을 누르면
+원문과의 diff, 요소별 명세서 근거, 기존 거절 대응과 남은 문제를 별도로 검토합니다.
 PDF 검토에서는 선택한 거절 범위(또는 현재 확인 중인 거절 근거)에 맞춰 생성하며,
 청구항 분석에서는 해당 청구항에 연결된 전체 사유를 검토합니다.
 원본 청구항·문서를 수정하거나 보정서·의견서를 작성하여 제출하는 기능은 아닙니다.
 
-- 로컬 모드: 원문에 따른 검토 질문과 근거 부족 안내. AI 분석이나 구체적 보정안으로 표시하지 않습니다.
-- 외부 AI: 기존 OpenAI/Azure 연결을 재사용하여 버튼을 누른 때에만 Structured Output을 요청합니다.
-  문서 전체 대신 선택 청구항, 상위·중간 청구항, 연결된 거절·인용·자동 연결된 명세서 발췌만 보냅니다.
+- AI 공급자: **Qwen API**, local_ollama, OpenAI, Azure. `local` 규칙 모드와 `local_ollama` LLM은 다릅니다.
+  AI 버튼에 규칙 기반 템플릿을 대신 반환하지 않습니다. 모델 미설정 시 안내하고 기존 분석은 유지합니다.
+- 문서 전체 대신 선택 청구항, 상위·중간 청구항, 연결된 거절·인용 및 명세서 검색 후보를 보냅니다.
+  수정 요소별 Top-3, 전체 최대 12개 명세서 발췌를 검색합니다. 후보는 아직 지지가 확인된 근거가 아닙니다.
   관련 context JSON이 48,000자를 넘으면 잘라서 숨기지 않고 사유를 하나만 선택하도록 오류를 알립니다.
-- 선행문헌 본문은 현재 공통 분석 모델에 포함되지 않으므로 **선행문헌 원문 미확보**로 표시합니다.
-  OA의 인용 문장을 선행문헌 본문처럼 사용하지 않습니다. 실제 한국 샘플은 명세서 자동 연결도 없어
-  기술적 한정 제안을 제한합니다. 독립 시제품에 저장한 인용발명 PDF를 자동으로 첨부하지 않습니다.
+- 한국 모드에서 업로드·번호 연결된 인용발명은 실제 원문 발췌도 검토 문맥에 포함합니다.
+  원문이 없으면 **선행문헌 원문 미확보**를 유지하며 OA 문장으로 대신하지 않습니다.
+  명세서·인용발명 검색 후보는 확인된 지지 근거와 구분합니다. 독립 시제품에 저장한
+  인용발명 PDF를 자동 첨부하지 않으므로 원하는 파일을 업로드해야 합니다.
 - 근거 ID·원문 인용·요청 청구항/법조항/사유 범위를 검증하며 실패하면 개선안을 표시하지 않습니다.
-  문서별 결과는 세션에서만 캐시하고 문서·관할 변경 시 초기화합니다.
+  수정본은 원문과 별도 객체로 세션에 최근 3개까지 보관하고 문서·관할 변경 시 초기화합니다.
+  입력은 최대 12,000자, 요소 구간은 최대 32개입니다. 원본 PDF를 수정하거나 수정본을 파일로 저장하지 않습니다.
+- 명세서 지지 여부는 LLM이 `SUPPORTED / PARTIALLY_SUPPORTED / NOT_FOUND / UNCERTAIN`으로 검토합니다.
+  유사도는 별도 참고 수치이며 지지 판정에 threshold를 적용하지 않습니다.
+
+#### Qwen API로 개선안·수정본 검토
+
+로컬 모델 설치 없이 Alibaba Cloud Model Studio API를 사용합니다. 루트 `.env`에 설정합니다.
+기존 문서 분석은 `local`로 유지하고, 개선안 생성·수정본 검증 버튼만 외부 API를 호출합니다.
+
+```dotenv
+LLM_PROVIDER=local
+IMPROVEMENT_PROVIDER=qwen
+QWEN_API_KEY=
+QWEN_BASE_URL=
+QWEN_MODEL=
+LOCAL_EMBEDDING_MODEL=
+LLM_TIMEOUT_SECONDS=180
+```
+
+`QWEN_API_KEY`는 Model Studio에서 발급한 키이며 채팅이나 Git에 공유하지 않습니다.
+`QWEN_BASE_URL`은 키와 같은 리전/워크스페이스의 HTTPS 호환 API 주소를 복사합니다.
+주소는 `/compatible-mode/v1`로 끝나야 합니다. 공식 문서의 싱가포르 워크스페이스 예시는
+`https://{WorkspaceId}.ap-southeast-1.maas.aliyuncs.com/compatible-mode/v1`이며
+`{WorkspaceId}`는 실제 값으로 바꿉니다. 계정 콘솔에 표시된 주소를 우선 사용하세요.
+`QWEN_MODEL`은 해당 계정에서 접근 가능하고 **JSON Schema 출력을 지원하는 모델**로 설정합니다.
+현재 문서상의 예시는 `qwen3.7-plus`이며 계정/리전의 사용 가능 여부는 별도 확인해야 합니다.
+JSON Object만 지원하는 모델로 조용히 전환하지 않습니다.
+
+명시적인 `qwen` 선택은 한국 시제품의 `KR_AZURE_OPENAI_*` 설정보다 우선합니다.
+원본 문서는 그대로 두고 관련 원문 발췌를 전송합니다. API 요금은 사용 계정에 발생합니다.
+설정 변경 후 backend를 재시작하고 웹 화면을 새로고침하여 이전 세션의 결과와 구분하세요.
+
+```powershell
+# 기본: 포함된 한국 실문서 분석·문맥 구성·설정 검사. 외부 API 호출 없음.
+uv run python -X utf8 -m scripts.validate_qwen
+# 명시적 실제 호출: 개선안 1회 + 수정본 검토 1회, 최대 2회. 실패 시 중단.
+uv run python -X utf8 -m scripts.validate_qwen --live
+```
+
+기본 수정본은 원 청구항과 동일한 연결 확인용 입력입니다. 실제 수정 대응을 평가하려면
+`--revised-file 수정본.txt`를 지정합니다. 미국 사례 등 저장한 공통 분석 JSON은
+`--analysis-json 분석.json --claim 1 --rejection R1`로 선택할 수 있습니다.
+결과는 `data/outputs/qwen/<실행시각>/`에 저장합니다.
+실제 API 키 없는 테스트와 실제 모델 품질은 구분합니다. [Qwen 검증 기록](QWEN_API_VALIDATION.md).
+공식 참고: [키 발급](https://www.alibabacloud.com/help/en/model-studio/get-api-key),
+[구조화 출력과 지원 모델](https://www.alibabacloud.com/help/en/model-studio/qwen-structured-output).
+
+#### API 비용 없는 로컬 LLM 설정
+
+[Ollama Windows 설치](https://docs.ollama.com/windows)를 마친 뒤 PowerShell에서 실행합니다.
+모델 이름은 코드에 고정하지 않습니다. 사용할 로컬 모델을 직접 지정하세요.
+
+```powershell
+$env:OLLAMA_NO_CLOUD = "1"
+ollama serve
+```
+
+이미 Ollama 앱이 실행 중이면 서버를 중복 실행할 필요가 없습니다. 별도 터미널에서:
+
+```powershell
+$reviewModel = "사용할-로컬-모델명"
+ollama pull $reviewModel
+ollama list
+```
+
+루트 `.env`에 다음을 설정합니다(`LOCAL_LLM_MODEL`은 `ollama list`의 이름과 일치해야 합니다).
+
+```dotenv
+LLM_PROVIDER=local
+IMPROVEMENT_PROVIDER=local_ollama
+LOCAL_LLM_BASE_URL=http://127.0.0.1:11434
+LOCAL_LLM_MODEL=사용할-로컬-모델명
+LOCAL_LLM_TIMEOUT_SECONDS=180
+LOCAL_LLM_CONTEXT_TOKENS=32768
+# 선택: Ollama에서 설치한 embedding 모델 이름. 비어 있으면 단어 빈도 유사도 사용.
+LOCAL_EMBEDDING_MODEL=
+```
+
+이 provider는 loopback 서버만 허용하고 cloud 모델명을 거부합니다. 호출은
+[`/api/chat`의 JSON schema](https://docs.ollama.com/capabilities/structured-outputs)를 사용합니다.
+선택 embedding 모델은 [`/api/embed`](https://docs.ollama.com/api/embed)를 사용하며,
+미설정/실패 시 **의미 유사도와 구분한 단어 빈도 유사도**를 표시합니다. 실패 사실을 숨기지 않습니다.
+Ollama나 모델을 자동 다운로드하지 않습니다. 이번 검증 PC에는 Ollama가 설치되어 있지 않아
+실제 로컬 모델 출력 품질·속도·메모리 사용량은 미검증입니다.
 
 원래 분석은 로컬로 유지하면서 개선안만 Azure로 요청하려면 루트 `.env`에:
 
@@ -113,10 +224,13 @@ AZURE_OPENAI_DEPLOYMENT=YOUR-DEPLOYMENT-NAME
 기본 `IMPROVEMENT_PROVIDER=inherit`는 기존 `LLM_PROVIDER`를 따릅니다. 한국 모드에서는
 `korean_prototype/.env` 또는 환경변수의 `KR_AZURE_OPENAI_*` 세 값이 있으면 그 연결을 우선합니다.
 한국 전용 값이 없으면 위 개선안 공급자 설정을 사용하며 일부 값만 있으면 설정 오류를 알립니다.
-`IMPROVEMENT_PROVIDER=local`이면 한국 Azure 설정이 있어도 외부 호출을 하지 않습니다.
-설정 변경 후 API 서버를 재시작하세요. API는 `POST /improvements`이며 기존 분석 응답은 바뀌지 않습니다.
+`IMPROVEMENT_PROVIDER=local_ollama`이면 한국 Azure 설정이 있어도 Ollama를 사용합니다.
+`local`이면 외부 호출을 하지 않으며 AI 버튼에는 공급자 설정 안내가 표시됩니다.
+설정 변경 후 API 서버를 재시작하세요. API는 `POST /improvements`와
+`POST /improvements/revisions`이며 기존 분석 응답은 바뀌지 않습니다.
 
-검증과 한계: [IMPROVEMENT_VALIDATION.md](IMPROVEMENT_VALIDATION.md).
+최신 검증과 한계: [REVISION_VALIDATION.md](REVISION_VALIDATION.md).
+이전 1단계 구현 기록: [IMPROVEMENT_VALIDATION.md](IMPROVEMENT_VALIDATION.md).
 
 ### 기존 미국 분석 파이프라인
 

@@ -4,7 +4,13 @@ from pathlib import Path
 import streamlit as st
 import streamlit.components.v1 as components
 
-from frontend.improvements import component_reviews, prepare_session, request_improvement
+from frontend.improvements import (
+    component_reviews,
+    component_revisions,
+    prepare_session,
+    request_improvement,
+    request_revision,
+)
 from frontend.pdf_adapter import attach_coordinates, render_page, search_boxes
 from frontend.readable_text import READABLE_CSS
 from frontend.review_model import build_review_model
@@ -137,6 +143,11 @@ def pdf_review(
     event = _component(
         improvements=component_reviews(),
         improvement_errors=st.session_state.get("improvement_errors", {}),
+        improvement_open=st.session_state.get("improvement_open", {}),
+        revision_results=component_revisions(),
+        revision_errors=st.session_state.get("revision_errors", {}),
+        revision_drafts=st.session_state.get("revision_drafts", {}),
+        improvement_identity=st.session_state.get("improvement_identity"),
         terminology_js=TERMINOLOGY_JS,
         terminology=component_terms(result),
         readable_css=READABLE_CSS,
@@ -165,14 +176,28 @@ def pdf_review(
                 selected_item.get("claim_number") if selected_item else None
             )
             if (
-                event.get("action") == "improve_claim"
+                event.get("action")
+                in {"open_improvement", "improve_claim", "review_revision", "revision_draft"}
                 and selected_item
                 and selected_item["kind"] == "claim"
             ):
                 rid = event.get("improvement_rejection")
                 if rid is None or rid in selected_item["rejection_ids"]:
-                    with st.spinner("관련 근거를 바탕으로 검토용 개선 방안을 준비합니다…"):
-                        request_improvement(result, selected_item["claim_number"], rid)
+                    review_key = f"{selected_item['claim_number']}:{rid or 'all'}"
+                    st.session_state.improvement_open[review_key] = True
+                    action = event.get("action")
+                    if action == "improve_claim":
+                        with st.spinner("관련 근거를 바탕으로 AI 개선안을 준비합니다…"):
+                            request_improvement(result, selected_item["claim_number"], rid)
+                    elif action in {"review_revision", "revision_draft"}:
+                        text = event.get("revision_text", "")
+                        if isinstance(text, str) and len(text) <= 12000:
+                            st.session_state.revision_drafts[review_key] = text
+                            if action == "review_revision":
+                                with st.spinner("수정 청구항의 변경점과 근거를 검토합니다…"):
+                                    request_revision(
+                                        result, selected_item["claim_number"], rid, text
+                                    )
             if (
                 event.get("action") == "open_comparison"
                 and selected_item

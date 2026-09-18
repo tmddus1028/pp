@@ -35,6 +35,7 @@ def test_api_docs_json_upload_and_text_limits(settings, patent_text, oa_text):
                 "/analyze/text",
                 "/analyze/files",
                 "/improvements",
+                "/improvements/revisions",
             }
             response = client.post(
                 "/analyze/files",

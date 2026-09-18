@@ -1,0 +1,129 @@
+{
+  "application_number": "1020190000874",
+  "office_action_date": "2019-04-01",
+  "label_method": "manual transcription of publication claims and examiner numbered grounds; not parser output",
+  "version_status": "uncertain",
+  "sources": "data/downloads/Patent_Review_KR_Data_20260917/sources.json",
+  "files": [
+    {
+      "path": "data/downloads/Patent_Review_KR_Data_20260917/02_needs_work/1020190000874/1020190000874_952019023937404.pdf",
+      "sha256": "0f756c8bb7c0e434f3c7ff903486f78d17616f465302333e23a4253296bfe92b",
+      "role": "office_action"
+    },
+    {
+      "path": "data/downloads/Patent_Review_KR_Data_20260917/02_needs_work/1020190000874/1020190000874_952019023937404.xml",
+      "sha256": "c5f7385d19b3b21ae48a6a08c5afc94c16688f4f031b761c884b61227f57e4d2",
+      "role": "office_action"
+    },
+    {
+      "path": "data/downloads/Patent_Review_KR_Data_20260917/02_needs_work/1020190000874/KR20190003855A.pdf",
+      "sha256": "850d9451200c9802a6ef45b218afaa0e7f0ea9341e7dab02d07e299624e3823f",
+      "role": "patent"
+    },
+    {
+      "path": "data/fixtures/korean/references/KR20070073517A.pdf",
+      "role": "reference",
+      "sha256": "1ff6374b2cca35a6e353b6930d4006c9bb300e7787bdec75454e5937d7443be3"
+    },
+    {
+      "path": "data/fixtures/korean/references/KR20100021334A.pdf",
+      "role": "reference",
+      "sha256": "5de02283173b5759ca667a2fa8cb5016368746212d3aa408999c28cf4c0bbc95"
+    }
+  ],
+  "claims": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9
+  ],
+  "dependencies": {
+    "1": [],
+    "2": [
+      1
+    ],
+    "3": [
+      1
+    ],
+    "4": [
+      1
+    ],
+    "5": [],
+    "6": [
+      5
+    ],
+    "7": [
+      5
+    ],
+    "8": [],
+    "9": [
+      8
+    ]
+  },
+  "rejections": [
+    {
+      "statute_code": "KR_PATENT_ACT_42_4_2",
+      "claims": [
+        5,
+        6,
+        7
+      ],
+      "citations": []
+    },
+    {
+      "statute_code": "KR_PATENT_ACT_29_2",
+      "claims": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "citations": [
+        "KR20070073517A",
+        "KR20100021334A"
+      ]
+    }
+  ],
+  "statuses": {
+    "rejected": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+    ],
+    "unknown": []
+  },
+  "evidence": {
+    "label_method": "manual physical PDF page transcription; claim BODY start excludes a heading left on previous page; not bbox ground truth",
+    "claim_body_start_page": {
+      "1": 3,
+      "2": 3,
+      "3": 3,
+      "4": 3,
+      "5": 3,
+      "6": 3,
+      "7": 3,
+      "8": 4,
+      "9": 4
+    },
+    "rejection_start_pages": [
+      1,
+      2
+    ]
+  }
+}

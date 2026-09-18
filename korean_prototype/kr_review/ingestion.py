@@ -174,30 +174,33 @@ def _read_pdf(data: bytes) -> tuple[list[str], str, list[str]]:
             raise ReviewError(
                 "PDF를 열거나 텍스트를 추출할 수 없습니다. 원본 파일을 확인하세요."
             ) from exc
-    if not pages or not any(page.strip() for page in pages):
-        raise ReviewError(
-            "PDF에 읽을 수 있는 텍스트가 없습니다. 한국어 스캔 OCR은 이 시제품에서 아직 지원하지 "
-            "않습니다. 텍스트 PDF 또는 UTF-8 청구항 TXT를 입력하세요."
-        )
-    sparse_pages = [index for index, text in enumerate(pages, 1) if len(text.strip()) < 20]
-    if sparse_pages:
-        warnings.append(
-            "텍스트가 적은 페이지(도면·빈 페이지·스캔 가능): "
-            + ", ".join(map(str, sparse_pages))
-            + ". 이 시제품은 한국어 OCR을 실행하지 않습니다."
-        )
+    sparse = [i for i, text in enumerate(pages) if len(text.strip()) < 30]
+    if sparse and parser != "pdfium":
+        try:
+            alternate = _pdfium_text(data)
+            for i in sparse:
+                if len(alternate[i].strip()) >= 30:
+                    pages[i] = alternate[i]
+                    warnings.append(f"{i + 1}쪽: PDFium 텍스트 추출로 보완했습니다.")
+        except Exception:
+            pass  # The already opened pages remain available for rendering/OCR.
     return pages, parser, warnings
 
 
 def _bibliography(text: str) -> dict:
-    application = re.search(r"출원번호\s*(10\s*-\s*\d{4}\s*-\s*\d{7})", text)
-    publication = re.search(r"공개번호\s*10\s*-\s*(\d{4})\s*-\s*(\d{7})", text)
+    application = re.search(r"출\s*원\s*번\s*호\s*(10\s*-\s*\d{4}\s*-\s*\d{7})", text)
+    publication = re.search(
+        r"공개번호\s*(?:\(43\)\s*공개일자\s*)?10\s*-\s*(\d{4})\s*-\s*(\d{7})", text
+    )
     registered = re.search(r"등록번호\s*10\s*-\s*(\d{7})", text)
     title = re.search(r"발명의\s*명칭\s*([^\n]+)", text)
     metadata = {
         "application_number": re.sub(r"\D", "", application[1]) if application else "",
         "title": title[1].strip() if title else "",
     }
+    date = re.search(r"발\s*송\s*일\s*자\s*[:：]?\s*(\d{4})[.-](\d{2})[.-](\d{2})", text)
+    if date:
+        metadata["document_date"] = "-".join(date.groups())
     if publication:
         metadata["publication_number"] = f"KR{publication[1]}{publication[2]}A"
     elif registered:
@@ -217,12 +220,15 @@ def read_document(data: bytes, filename: str, kind: str) -> Document:
         if kind != "office_action":
             raise ReviewError("XML은 의견제출통지서 입력에만 사용할 수 있습니다.")
         return _read_xml(data, document_id, filename)
-    if kind == "office_action":
-        raise ReviewError(
-            "한국어 시제품의 의견제출통지서는 KIPRIS XML을 입력하세요. OA PDF는 미지원입니다."
-        )
+    ocr_metadata = {}
     if suffix == ".pdf":
         raw_pages, parser, warnings = _read_pdf(data)
+        from .ocr import recognize_pages
+
+        raw_pages, ocr_metadata, ocr_warnings = recognize_pages(data, raw_pages)
+        warnings.extend(ocr_warnings)
+        if not any(page.strip() for page in raw_pages):
+            raise ReviewError("한국어 스캔 OCR 후에도 읽을 수 있는 텍스트가 없습니다.")
     elif suffix == ".txt":
         try:
             raw_pages = [data.decode("utf-8-sig")]
@@ -231,7 +237,31 @@ def read_document(data: bytes, filename: str, kind: str) -> Document:
         parser, warnings = "text", []
     else:
         raise ReviewError("명세서·인용발명은 PDF 또는 UTF-8 TXT로 입력하세요.")
-    texts = [normalize_text(text) for text in raw_pages]
+    texts = []
+    removed_margins = []
+    for number, raw in enumerate(raw_pages, 1):
+        lines = normalize_text(raw).splitlines()
+        kept = []
+        for index, line in enumerate(lines):
+            if (
+                suffix == ".pdf"
+                and (index < 3 or index >= len(lines) - 3)
+                and re.fullmatch(
+                    r"(?:공개특허|등록특허)\s*10\s*-\s*(?:\d{4}\s*-\s*)?\d{7}|-\s*\d+\s*-|10-\d{4}-\d{7}",
+                    line,
+                )
+            ):
+                removed_margins.append(
+                    {
+                        "page_number": number,
+                        "text": line,
+                        "position": "header" if index < 3 else "footer",
+                        "reason": "Korean publication/page margin",
+                    }
+                )
+            else:
+                kept.append(line)
+        texts.append("\n".join(kept).strip())
     pages = []
     position = 0
     if suffix == ".pdf":
@@ -250,6 +280,9 @@ def read_document(data: bytes, filename: str, kind: str) -> Document:
             "format": suffix[1:],
             "parser": parser,
             "ocr_used": False,
+            **ocr_metadata,
+            "raw_pages": raw_pages,
+            "removed_margins": removed_margins,
             "warnings": warnings,
         },
     )
@@ -258,6 +291,14 @@ def read_document(data: bytes, filename: str, kind: str) -> Document:
 def evidence_at(document: Document, start: int, end: int, xml_path: str | None = None) -> Evidence:
     if not 0 <= start < end <= len(document.text):
         raise ReviewError("원문 근거의 문자 위치가 올바르지 않습니다.")
+    if xml_path is None:
+        enclosing = [
+            item
+            for item in document.metadata.get("xml_elements", [])
+            if item["start"] <= start and end <= item["end"]
+        ]
+        if enclosing:
+            xml_path = min(enclosing, key=lambda item: item["end"] - item["start"])["path"]
     return Evidence(
         document_id=document.document_id,
         text=document.text[start:end],

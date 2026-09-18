@@ -1,0 +1,146 @@
+{
+  "application_number": "1020190000948",
+  "office_action_date": "2019-01-15",
+  "label_method": "manual transcription of publication claims and examiner numbered grounds; not parser output",
+  "version_status": "uncertain",
+  "sources": "data/downloads/Patent_Review_KR_Data_20260917/sources.json",
+  "files": [
+    {
+      "path": "data/downloads/Patent_Review_KR_Data_20260917/02_needs_work/1020190000948/1020190000948_952019003450110.pdf",
+      "sha256": "e9e885d3005ca429e66e4ea8065125842f73b11395a1b6407182bf769e8caaa5",
+      "role": "office_action"
+    },
+    {
+      "path": "data/downloads/Patent_Review_KR_Data_20260917/02_needs_work/1020190000948/1020190000948_952019003450110.xml",
+      "sha256": "84d20fb4ac430f41aa945ffad2fc44a1df9c2a026556bb497d7d903296607003",
+      "role": "office_action"
+    },
+    {
+      "path": "data/downloads/Patent_Review_KR_Data_20260917/02_needs_work/1020190000948/KR20190005244A.pdf",
+      "sha256": "8f77d152c646a988a38d5f052c7cef845cec56c85d2930c45ce00ae8a16c4f3b",
+      "role": "patent"
+    }
+  ],
+  "claims": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9
+  ],
+  "dependencies": {
+    "1": [],
+    "2": [],
+    "3": [],
+    "4": [
+      2,
+      3
+    ],
+    "5": [],
+    "6": [],
+    "7": [
+      5,
+      6
+    ],
+    "8": [
+      7
+    ],
+    "9": [
+      7
+    ]
+  },
+  "rejections": [
+    {
+      "statute_code": "KR_PATENT_ACT_42_3_1",
+      "claims": [],
+      "citations": []
+    },
+    {
+      "statute_code": "KR_PATENT_ACT_42_4_1",
+      "claims": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "citations": []
+    },
+    {
+      "statute_code": "KR_PATENT_ACT_29_1_2",
+      "claims": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "citations": [
+        "npl:pharmacognmag51221262009"
+      ]
+    },
+    {
+      "statute_code": "KR_PATENT_ACT_29_2",
+      "claims": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "citations": [
+        "npl:pharmacognmag51221262009"
+      ]
+    }
+  ],
+  "statuses": {
+    "rejected": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+    ],
+    "unknown": []
+  },
+  "evidence": {
+    "label_method": "manual physical PDF page transcription; claim BODY start excludes a heading left on previous page; not bbox ground truth",
+    "claim_body_start_page": {
+      "1": 3,
+      "2": 3,
+      "3": 3,
+      "4": 3,
+      "5": 3,
+      "6": 3,
+      "7": 3,
+      "8": 3,
+      "9": 3
+    },
+    "rejection_start_pages": [
+      2,
+      2,
+      2,
+      3
+    ]
+  }
+}

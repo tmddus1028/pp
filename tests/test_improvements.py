@@ -94,7 +94,7 @@ def test_dependent_claim_all_ancestors_and_rewrite_only_when_examiner_explicit(l
         validate_suggestion(draft, context)
 
 
-def test_korean_real_context_law_and_missing_specification(local):
+def test_korean_real_context_law_and_retrieved_specification(local):
     data = ROOT / "korean_prototype/data/kr_1020190000844"
     result = analyze_korean(
         (data / "KR20190025857A.pdf").read_bytes(),
@@ -106,8 +106,10 @@ def test_korean_real_context_law_and_missing_specification(local):
     assert response.suggestion.jurisdiction == "kr"
     assert response.suggestion.rejection_basis[0].statute == "특허법 제29조제2항"
     assert len([s for s in response.sources if s.kind == "citation_mention"]) == 3
-    assert not any(s.kind == "specification" for s in response.sources)
-    assert any("명세서 근거" in m for m in response.suggestion.missing_evidence)
+    assert any(
+        s.kind == "specification" and "시스템 검색 후보" in s.label for s in response.sources
+    )
+    assert any("선행문헌 원문 미확보" in m for m in response.suggestion.missing_evidence)
     assert all(s.action_type == "argument_only" for s in response.suggestion.strategies)
 
 
@@ -330,10 +332,12 @@ def test_explicit_click_cache_and_analysis_change_reset(result, local):
         post.return_value = httpx.Response(200, json=response)
         button = "improve-" + result.analysis_id + "-1:all"
         ui.button(key=button).click().run()
+        assert post.call_count == 1  # opening the workflow no longer generates a review
+        ui.button(key="generate-1:all").click().run()
         assert post.call_count == 2
         assert ui.session_state["result"] == data
         assert any(e.label == "개선 방안" for e in ui.expander)
-        ui.button(key=button).click().run()
+        ui.button(key="generate-1:all").click().run()
         assert post.call_count == 2
         changed = deepcopy(data)
         changed["analysis_id"] += "-another-case"

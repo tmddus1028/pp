@@ -1,0 +1,73 @@
+{
+  "application_number": "1020190000844",
+  "office_action_date": "2019-04-09",
+  "label_method": "manual transcription of publication claims and examiner numbered grounds; not parser output",
+  "version_status": "uncertain",
+  "sources": "data/downloads/Patent_Review_KR_Data_20260917/sources.json",
+  "files": [
+    {
+      "path": "data/downloads/Patent_Review_KR_Data_20260917/01_verified/1020190000844/1020190000844_952019025682492.pdf",
+      "sha256": "04dec6f95d6a6a64ab6e7e000e60878db67eed7e28a35430271d2160868838af",
+      "role": "office_action"
+    },
+    {
+      "path": "data/downloads/Patent_Review_KR_Data_20260917/01_verified/1020190000844/1020190000844_952019025682492.xml",
+      "sha256": "8e55d09eb2d64683758ddc2dd82913c9cc979e261e8755102cd521669e332803",
+      "role": "office_action"
+    },
+    {
+      "path": "data/downloads/Patent_Review_KR_Data_20260917/01_verified/1020190000844/KR20190025857A.pdf",
+      "sha256": "bdda212cb4da55106447be86373180b27c05cdd21c9b7b59ea71833eba984b32",
+      "role": "patent"
+    },
+    {
+      "path": "data/downloads/Patent_Review_KR_Data_20260917/01_verified/1020190000844/references/KR20150090348A.pdf",
+      "sha256": "e11d5cf1aa5583ee943d1acb6b970aeb1a22efeba8999e3a21518bb70fb50b88",
+      "role": "reference"
+    },
+    {
+      "path": "data/downloads/Patent_Review_KR_Data_20260917/01_verified/1020190000844/references/KR20150093093A.pdf",
+      "sha256": "6a172101b1af500dbb502270010b14fe325237b23920cfeb8a5bfdfb18597ea4",
+      "role": "reference"
+    },
+    {
+      "path": "data/downloads/Patent_Review_KR_Data_20260917/01_verified/1020190000844/references/KR20150096573A.pdf",
+      "sha256": "dfe9a050a62b15cf41dfdddb5d826163b445cc03f17634ab5214a8f35a241517",
+      "role": "reference"
+    }
+  ],
+  "claims": [
+    1
+  ],
+  "dependencies": {
+    "1": []
+  },
+  "rejections": [
+    {
+      "statute_code": "KR_PATENT_ACT_29_2",
+      "claims": [
+        1
+      ],
+      "citations": [
+        "KR20150096573A",
+        "KR20150090348A",
+        "KR20150093093A"
+      ]
+    }
+  ],
+  "statuses": {
+    "rejected": [
+      1
+    ],
+    "unknown": []
+  },
+  "evidence": {
+    "label_method": "manual physical PDF page transcription; claim BODY start excludes a heading left on previous page; not bbox ground truth",
+    "claim_body_start_page": {
+      "1": 3
+    },
+    "rejection_start_pages": [
+      1
+    ]
+  }
+}

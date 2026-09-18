@@ -1,18 +1,21 @@
 """Korean publication headings and structured KIPRIS rejection fields only."""
 
 import re
+import unicodedata
 
 from .ingestion import evidence_at
 from .models import Citation, Claim, Document, Rejection, ReviewError
 
-CLAIM_HEADING = re.compile(r"(?m)^[ \t]*\[?청구항\s*(?:제\s*)?(\d+)\s*항?\]?[ \t]*$")
-SECTION_HEADING = re.compile(r"(?m)^[ \t]*\[?청\s*구\s*범\s*위\]?[ \t]*$")
-SECTION_END = re.compile(r"(?m)^[ \t]*\[?발명의\s*설명\]?[ \t]*$")
+CLAIM_HEADING = re.compile(
+    r"(?m)^[ \t]*[\[【]?청\s*구\s*항\s*(?:제\s*)?(\d+)\s*항?[\]】]?[.．]?[ \t]*$"
+)
+SECTION_HEADING = re.compile(r"(?m)^[ \t]*[\[【]?청\s*구\s*범\s*위[\]】]?[ \t]*$")
+SECTION_END = re.compile(r"(?m)^[ \t]*[\[【]?(?:발명의\s*설명|도\s*면|요\s*약\s*서)[\]】]?[ \t]*$")
 LAW = re.compile(
     r"특허법\s*제\s*\d+\s*조(?:\s*의\s*\d+)?(?:\s*제\s*\d+\s*항)?(?:\s*제\s*\d+\s*호)?"
 )
 DEPENDENCY = re.compile(
-    r"^\s*((?:청구항\s*)?제?\s*\d+\s*항[\s\S]{0,140}?)"
+    r"^\s*((?:청구항\s*)?제?\s*\d+\s*항?[\s\S]{0,140}?)"
     r"(?:에\s*있어서|에\s*따른|에\s*기재된|중\s*(?:어느|어떤)\s*한\s*항)"
 )
 REFERENCE = re.compile(
@@ -39,13 +42,65 @@ def claim_numbers(text: str) -> list[int]:
 
 def extract_claims(document: Document) -> list[Claim]:
     section = SECTION_HEADING.search(document.text)
-    if section is None:
-        raise ReviewError(
-            "한국어 청구범위 제목을 찾지 못했습니다. 청구범위·청구항 번호가 포함된 문서를 입력하세요."
+    ocr_section = None
+    ocr_end = None
+    if section is None and document.metadata.get("ocr_used"):
+        # Tesseract can misread italic colored section titles. Match heading
+        # structure only; NEVER replace characters in Document.text/evidence.
+        def distance(left, right):
+            a = unicodedata.normalize("NFD", re.sub(r"\s", "", left))
+            b = unicodedata.normalize("NFD", right)
+            row = list(range(len(b) + 1))
+            for i, x in enumerate(a, 1):
+                new = [i]
+                for j, y in enumerate(b, 1):
+                    new.append(min(new[-1] + 1, row[j] + 1, row[j - 1] + (x != y)))
+                row = new
+            return row[-1]
+
+        lines = list(re.finditer(r"(?m)^[가-힣 ]{4,12}$", document.text))
+        for line in lines:
+            next_heading = CLAIM_HEADING.search(document.text, line.end(), line.end() + 30)
+            if distance(line[0], "청구범위") <= 4 and next_heading and next_heading[1] == "1":
+                ends = [
+                    m
+                    for m in lines
+                    if m.start() > next_heading.end() + 100
+                    and re.sub(r"\s", "", m[0]).startswith("발명의")
+                    and distance(m[0], "발명의설명") <= 3
+                ]
+                if ends:
+                    ocr_section, ocr_end = line.end(), ends[0].start()
+                    document.metadata.setdefault("warnings", []).append(
+                        "OCR 제목의 자모 유사도와 청구항/설명 경계로 청구범위를 탐지했습니다. 원문 대조가 필요합니다."
+                    )
+                    break
+    if section is None and ocr_section is None:
+        candidates = list(CLAIM_HEADING.finditer(document.text))
+        # A missing title is accepted only with multiple consecutive claims and
+        # actual dependent-claim prose, not a numbered list in the description.
+        start = next(
+            (
+                m.start()
+                for i, m in enumerate(candidates[:-1])
+                if int(m[1]) == 1
+                and m.start() >= len(document.text) * 0.45
+                and int(candidates[i + 1][1]) == 2
+                and DEPENDENCY.search(document.text[candidates[i + 1].end() :].lstrip())
+            ),
+            None,
         )
-    end_match = SECTION_END.search(document.text, section.end())
-    section_end = end_match.start() if end_match else len(document.text)
-    headings = list(CLAIM_HEADING.finditer(document.text, section.end(), section_end))
+        if start is None:
+            raise ReviewError("한국어 청구범위 제목 또는 연속된 청구항 구간을 찾지 못했습니다.")
+        document.metadata["claim_detection"] = "consecutive_fallback"
+    else:
+        start = section.end() if section else ocr_section
+        document.metadata["claim_detection"] = "heading" if section else "ocr_heading_candidate"
+    end_match = SECTION_END.search(document.text, start)
+    section_end = (
+        ocr_end if ocr_end is not None else end_match.start() if end_match else len(document.text)
+    )
+    headings = list(CLAIM_HEADING.finditer(document.text, start, section_end))
     if not headings:
         raise ReviewError("청구범위에서 '청구항 1' 형식의 청구항을 찾지 못했습니다.")
     claims = []
@@ -75,6 +130,15 @@ def extract_claims(document: Document) -> list[Claim]:
                 depends_on=claim_numbers(dependency[1]) if dependency else [],
                 status="canceled" if canceled else "active",
                 evidence=evidence_at(document, start, end),
+                dependency_type=(
+                    "alternative"
+                    if dependency and re.search(r"또는|어느|어떤", dependency[0])
+                    else "multiple"
+                    if dependency and len(claim_numbers(dependency[1])) > 1
+                    else "single"
+                    if dependency
+                    else "independent"
+                ),
             )
         )
     _validate_dependencies(claims)
@@ -108,120 +172,7 @@ def _validate_dependencies(claims: list[Claim]) -> None:
         visit(number, set())
 
 
-def _content(document: Document, item: dict) -> str:
-    return document.text[item["start"] : item["end"]]
-
-
-def _statute(value: str) -> str:
-    return "특허법 " + re.sub(r"\s+", "", value.removeprefix("특허법"))
-
-
-def _citation_number(match: re.Match) -> str:
-    parts = re.split(r"[-－]", re.sub(r"\s+", "", match[3]))
-    if len(parts) == 3:
-        if match[2] == "등록특허공보":
-            raise ReviewError("인용발명의 공개번호와 등록공보 표시가 일치하지 않습니다.")
-        return f"KR{parts[1]}{parts[2]}A"
-    return "KR" + "".join(parts)
-
-
 def extract_office_action(document: Document) -> tuple[list[Rejection], list[Citation]]:
-    elements = document.metadata.get("xml_elements", [])
-    rows = [
-        item
-        for item in elements
-        if item["name"] == "Row" and ":ExaminationLawArticle[" in item["path"]
-    ]
-    details = [item for item in elements if item["name"] == "RejectionLawDetail"]
-    if not rows or not details:
-        raise ReviewError(
-            "XML에서 거절이유 표와 구체적인 거절이유를 확인하지 못했습니다. 지원 형식을 확인하세요."
-        )
-    citations: list[Citation] = []
-    by_number = {}
-    detail_citations: dict[str, list[str]] = {}
-    for detail in details:
-        citation_ids = []
-        for match in REFERENCE.finditer(_content(document, detail)):
-            publication = _citation_number(match)
-            if publication not in by_number:
-                citation = Citation(
-                    citation_id=f"C{len(citations) + 1}",
-                    publication_number=publication,
-                    title=f"인용발명 {match[1]}",
-                    evidence=evidence_at(
-                        document,
-                        detail["start"] + match.start(),
-                        detail["start"] + match.end(),
-                        detail["path"],
-                    ),
-                )
-                citations.append(citation)
-                by_number[publication] = citation
-            citation_ids.append(by_number[publication].citation_id)
-        detail_citations[detail["path"]] = list(dict.fromkeys(citation_ids))
+    from .oa import extract_office_action as extract
 
-    rejections = []
-    seen = set()
-    assigned_details = set()
-    for row in rows:
-        entries = [
-            item
-            for item in elements
-            if item["name"] == "Entry" and item["path"].startswith(row["path"] + "/")
-        ]
-        claim_cells = [
-            item
-            for item in entries
-            if re.search(r"청구항|제\s*\d+\s*항", _content(document, item))
-            and not LAW.search(_content(document, item))
-        ]
-        law_cells = [item for item in entries if LAW.search(_content(document, item))]
-        if not claim_cells or not law_cells:
-            continue
-        numbers = claim_numbers(_content(document, claim_cells[0]))
-        if not numbers:
-            continue
-        for cell in law_cells:
-            for law_match in LAW.finditer(_content(document, cell)):
-                statute = _statute(law_match[0])
-                key = tuple(numbers), statute
-                if key in seen:
-                    continue
-                seen.add(key)
-                matching_details = [
-                    detail
-                    for detail in details
-                    if statute
-                    in {_statute(match[0]) for match in LAW.finditer(_content(document, detail))}
-                ]
-                if len(matching_details) != 1:
-                    raise ReviewError(
-                        f"{statute} 거절이유 표와 본문 구간을 하나로 연결할 수 없습니다. "
-                        "이 XML 구조는 추가 검증이 필요합니다."
-                    )
-                detail = matching_details[0]
-                if detail["path"] in assigned_details:
-                    raise ReviewError(
-                        "하나의 거절이유 본문에 여러 청구항 범위 또는 법조항이 연결됩니다. "
-                        "인용발명 관계를 정확히 나눌 수 없어 이 XML 구조는 아직 지원하지 않습니다."
-                    )
-                assigned_details.add(detail["path"])
-                rejections.append(
-                    Rejection(
-                        rejection_id=f"R{len(rejections) + 1}",
-                        claims=numbers,
-                        statute=statute,
-                        explanation=_content(document, detail),
-                        evidence=evidence_at(
-                            document, detail["start"], detail["end"], detail["path"]
-                        ),
-                        citation_ids=detail_citations[detail["path"]],
-                    )
-                )
-    if not rejections:
-        raise ReviewError(
-            "지원하는 형식의 명시적 거절이유를 찾지 못했습니다. 거절 없음으로 처리하지 않습니다."
-        )
-    relied = {citation_id for rejection in rejections for citation_id in rejection.citation_ids}
-    return rejections, [citation for citation in citations if citation.citation_id in relied]
+    return extract(document)

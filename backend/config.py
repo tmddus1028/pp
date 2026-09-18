@@ -8,7 +8,17 @@ class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 
     llm_provider: Literal["local", "openai", "azure"] = "local"
-    improvement_provider: Literal["inherit", "local", "openai", "azure"] = "inherit"
+    improvement_provider: Literal["inherit", "local", "local_ollama", "openai", "azure", "qwen"] = (
+        "inherit"
+    )
+    qwen_api_key: str = Field(default="", repr=False)
+    qwen_base_url: str = ""
+    qwen_model: str = ""
+    local_llm_base_url: str = "http://127.0.0.1:11434"
+    local_llm_model: str = ""
+    local_embedding_model: str = ""
+    local_llm_timeout_seconds: float = Field(default=180, gt=0, le=600)
+    local_llm_context_tokens: int = Field(default=32768, ge=8192, le=131072)
     openai_api_key: str = Field(default="", repr=False)
     openai_model: str = ""
     azure_openai_endpoint: str = ""

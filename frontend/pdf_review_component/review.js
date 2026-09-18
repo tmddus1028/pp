@@ -9,7 +9,7 @@ const citationRoleLabels={relied_upon:'거절 근거'};
 const citationRoleHelp={citation:'심사관이 실제 거절 논리에 사용한 선행기술'};
 const itemLabel=item=>item.kind==='claim'&&item.status==='objected'&&!item.direct.length?t('Objection · 추가 검토'):t(labels[role(item)]);
 let model, state, currentPage, initialized=false, searchHits=[], searchIndex=-1, timer, pendingScroll=false, pendingSearch=false, serverNavigation=-1;
-let improvements={}, improvementErrors={};
+let improvements={}, improvementErrors={}, improvementOpen={}, revisionResults={}, revisionErrors={}, revisionDrafts={}, improvementIdentity=null;
 const expandedSources = new Map();
 const sourceKey = (card, detail) => card.dataset.reviewId+'|'+detail.querySelector('summary')?.textContent;
 const itemTitle = item => item.kind==='claim'||item.kind==='specification' ? t(item.title) : item.title;
@@ -80,7 +80,7 @@ function annotations(){
 }
 function drawToolbar(){
   const doc=docById(state.document);
-  $('document').replaceChildren(...model.documents.map(d=>{const o=el('option','',(d.kind==='patent'?t('Patent · '):t('Office Action · '))+d.filename);o.value=d.id;return o;}));
+  $('document').replaceChildren(...model.documents.map(d=>{const o=el('option','',(d.kind==='reference'?'인용발명 · ':d.kind==='patent'?t('Patent · '):t('Office Action · '))+d.filename);o.value=d.id;return o;}));
   $('document').value=state.document;$('page-number').value=state.page;$('page-number').max=doc.pages.length;$('page-total').textContent='/ '+doc.pages.length;
   $('prev').disabled=state.page<=1;$('next').disabled=state.page>=doc.pages.length;
   $('search').value=state.search||'';
@@ -223,6 +223,7 @@ function scrollToSelection(){
 }
 function evidenceSection(body,evidence,caption){
   body.append(el('div','source-caption',caption+' · p. '+evidence.page_numbers.join(', ')));
+  if(evidence.xml_path)body.append(el('div','source-caption readable-text','XML · '+evidence.xml_path));
   body.append(el('div','evidence readable-text',evidence.text));
 }
 function chips(body,values){const row=el('div','chips');values.forEach(([label,id])=>row.append(button(label,()=>selectItem(id))));body.append(row);}
@@ -261,6 +262,15 @@ function details(item,body){
     body.append(el('p','',t('심사관이 인용한 문헌의 Office Action 내 위치입니다.')));
     const firstOccurrence=(item.occurrences||[]).find(e=>e.role==='relied_upon'&&rids.includes(e.rejection_id));
     evidenceSection(body,firstOccurrence?.evidence||item.evidence,t('Office Action 인용 원문'));
+    if(item.reference.source_document_id)body.append(button('인용발명 PDF 보기',()=>jump(item.reference.source_document_id,1)));
+    for(const link of item.source_links||[]){
+      const detail=el('details');detail.append(el('summary','',link.label));
+      evidenceSection(detail,link.evidence,link.label);
+      detail.append(button('인용발명 원문에서 보기',()=>{
+        state.viewer_evidence=item.id;
+        jump(link.evidence.document_id,link.evidence.page_numbers[0]);
+      }));body.append(detail);
+    }
     for(const occurrence of item.occurrences||[]){
       if(occurrence.role!=='relied_upon'||state.scope!=='all'&&occurrence.rejection_id!==state.scope)continue;
       const entry=el('details','citation-occurrence');
@@ -323,16 +333,30 @@ function details(item,body){
     if(item.rejection_ids.length){
       const rid=state.scope!=='all'?state.scope:(item.rejection_ids.includes(state.active_rejection)?state.active_rejection:null);
       const key=item.claim_number+':'+(rid||'all');
-      const generate=button('개선 방안 보기',()=>{
-        if(improvements[key]){body.querySelector('.improvement-detail').open=true;return;}
-        generate.disabled=true;clearTimeout(timer);
-        send('streamlit:setComponentValue',{value:{nonce:Date.now()+Math.random(),navigation:serverNavigation,ui:state,action:'improve_claim',improvement_rejection:rid},dataType:'json'});
-      },'claim-pdf-link');
-      body.append(generate);
-      if(improvementErrors[key])body.append(el('p','notice',improvementErrors[key]));
-      if(improvements[key]){
+      const event = (action, text) => {
+        clearTimeout(timer);
+        send('streamlit:setComponentValue',{value:{nonce:Date.now()+Math.random(),navigation:serverNavigation,ui:state,action,improvement_rejection:rid,revision_text:text},dataType:'json'});
+      };
+      body.append(button('개선 방안 보기',()=>{
+        const current=body.querySelector('.improvement-detail');
+        if(current){current.open=true;return;}
+        event('open_improvement');
+      },'claim-pdf-link'));
+      if(improvementOpen[key]){
         const detail=el('details','improvement-detail');detail.open=true;detail.append(el('summary','','개선 방안'));
-        const content=el('div','readable-panel');content.innerHTML=improvements[key];detail.append(content);body.append(detail);
+        detail.append(button('AI 개선안 생성',()=>event('improve_claim'),'claim-pdf-link'));
+        if(improvementErrors[key])detail.append(el('p','notice',improvementErrors[key]));
+        if(improvements[key]){const content=el('div','readable-panel');content.innerHTML=improvements[key];detail.append(content);}
+        detail.append(el('h4','','수정 Claim 검증'));
+        const input=el('textarea','readable-text');input.rows=7;input.maxLength=12000;
+        input.setAttribute('aria-label','수정 Claim');input.value=revisionDrafts[key]||'';
+        input.style.boxSizing='border-box';input.style.resize='vertical';
+        input.addEventListener('input',()=>{revisionDrafts[key]=input.value;});
+        detail.append(input);
+        detail.append(button('수정본 검증',()=>event('review_revision',input.value),'claim-pdf-link'));
+        if(revisionErrors[key])detail.append(el('p','notice',revisionErrors[key]));
+        if(revisionResults[key]){const content=el('div','readable-panel');content.innerHTML=revisionResults[key];detail.append(content);}
+        body.append(detail);
       }
     }
   }
@@ -410,6 +434,10 @@ window.addEventListener('message',event=>{
   if(event.source!==window.parent||event.data.type!=='streamlit:render')return;
   const args=event.data.args;
   improvements=args.improvements||{};improvementErrors=args.improvement_errors||{};
+  improvementOpen=args.improvement_open||{};revisionResults=args.revision_results||{};revisionErrors=args.revision_errors||{};
+  const identity=JSON.stringify(args.improvement_identity);
+  if(identity!==improvementIdentity){revisionDrafts={};improvementIdentity=identity;}
+  revisionDrafts={...(args.revision_drafts||{}),...revisionDrafts};
   if(!window.PatentTerminology){const script=document.createElement('script');script.textContent=args.terminology_js;document.head.append(script);}
   window.PatentTerminology.configure(args.terminology);
   let typography=$('readable-text-styles');

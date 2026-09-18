@@ -6,7 +6,11 @@ from pathlib import Path
 import streamlit as st
 import streamlit.components.v1 as components
 
-READABLE_CSS = Path(__file__).with_suffix(".css").read_text(encoding="utf-8")
+READABLE_CSS = (
+    Path(__file__).with_suffix(".css").read_text(encoding="utf-8")
+    + "\n"
+    + (Path(__file__).parent / "styles/patent_theme.css").read_text(encoding="utf-8")
+)
 READABLE_JS = Path(__file__).with_suffix(".js").read_text(encoding="utf-8")
 
 

@@ -46,7 +46,7 @@ def check_korean(page):
     data = ROOT / "korean_prototype/data/kr_1020190000844"
     page.get_by_test_id("stSidebar").get_by_text("문서 업로드", exact=True).click()
     page.get_by_text("한국 특허", exact=True).click()
-    expect(page.get_by_text("의견제출통지서 XML", exact=True)).to_be_visible()
+    expect(page.get_by_text("의견제출통지서 XML / PDF", exact=True)).to_be_visible()
     inputs = page.locator('input[type="file"]')
     inputs.nth(0).set_input_files(data / "KR20190025857A.pdf")
     expect(page.get_by_text("KR20190025857A.pdf", exact=True)).to_be_visible()

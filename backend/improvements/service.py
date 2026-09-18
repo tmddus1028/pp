@@ -1,23 +1,28 @@
 """Structured, explicitly requested reviews with conservative evidence gates."""
 
-import json
 import os
 import re
 from pathlib import Path
+from typing import Literal
 
 from dotenv import dotenv_values
-from openai import APIError
 
 from backend.config import Settings
 from backend.errors import ProviderError
 from backend.improvements.context import REWRITE_PHRASE, build_context
+from backend.improvements.grounding import verify_quantities, verify_source_mentions
 from backend.improvements.models import ClaimImprovementSuggestion, ImprovementResponse
-from backend.improvements.prompts import COMMON, KR, US
+from backend.improvements.providers import get_provider
+from backend.improvements.retrieval import retrieved_context
 from backend.llm.client import OpenAIExtractionClient
 
 DISCLAIMER = (
     "검토용 개선 방안입니다. 자동 제출용 문안이 아니며 원문·출원 이력 및 전문가 검토가 필요합니다."
 )
+
+
+class ReviewProviderSettings(Settings):
+    llm_provider: Literal["local", "local_ollama", "openai", "azure", "qwen"] = "local"
 
 
 def provider_settings(settings, jurisdiction):
@@ -26,7 +31,11 @@ def provider_settings(settings, jurisdiction):
         if settings.improvement_provider == "inherit"
         else settings.improvement_provider
     )
-    if jurisdiction == "kr" and settings.improvement_provider != "local":
+    if jurisdiction == "kr" and settings.improvement_provider not in {
+        "local",
+        "local_ollama",
+        "qwen",
+    }:
         path = Path(__file__).resolve().parents[2] / "korean_prototype" / ".env"
         values = dotenv_values(path, interpolate=False)
         config = {
@@ -46,7 +55,9 @@ def provider_settings(settings, jurisdiction):
                 azure_openai_deployment=config["DEPLOYMENT"],
                 llm_timeout_seconds=settings.llm_timeout_seconds,
             )
-    return settings.model_copy(update={"llm_provider": selected})
+    return ReviewProviderSettings(
+        _env_file=None, **{**settings.model_dump(), "llm_provider": selected}
+    )
 
 
 def local_review(context):
@@ -180,6 +191,8 @@ def validate_suggestion(draft, context):
         for s in draft.strategies
         for value in (s.title, s.description, s.expected_effect, s.tradeoff)
     ]
+    for value in narrative:
+        verify_source_mentions(value, context)
     if any(
         re.search(
             r"이렇게\s*(?:수정|보정|하면).*?(?:특허됩니다|등록됩니다)|거절이\s*(?:반드시\s*)?해소됩니다|(?:guarantees?\s+(?:allowance|patentability))",
@@ -234,6 +247,12 @@ def validate_suggestion(draft, context):
         core(strategy.evidence_ids)
         if strategy.action_type not in {"argument_only", "dependency_rewrite"}:
             specification(strategy.evidence_ids, strategy.grounding)
+            quotes = " ".join(
+                q.quote
+                for q in strategy.grounding
+                if sources[q.evidence_id]["kind"] == "specification"
+            )
+            verify_quantities(strategy.description, context["claim_text"], quotes)
         if strategy.action_type == "dependency_rewrite":
             required = {"STATUS", *(p["evidence_id"] for p in context["parents"])}
             if (
@@ -251,6 +270,16 @@ def validate_suggestion(draft, context):
             raise ValueError("예시 수정 표현의 문안 또는 주의 문구가 없습니다.")
         core(example.evidence_ids)
         specification(example.evidence_ids, example.grounding)
+        verify_source_mentions(example.text, context)
+        verify_quantities(
+            example.text,
+            context["claim_text"],
+            " ".join(
+                q.quote
+                for q in example.grounding
+                if sources[q.evidence_id]["kind"] == "specification"
+            ),
+        )
     elif example.text is not None or example.evidence_ids or example.grounding:
         raise ValueError("미제공 예시에 수정 문안 또는 근거가 포함되어 있습니다.")
     return draft
@@ -259,33 +288,18 @@ def validate_suggestion(draft, context):
 def generate_improvement(request, settings, client_factory=OpenAIExtractionClient):
     context, sources, digest = build_context(request)
     config = provider_settings(settings, context["jurisdiction"])
+    if request.require_llm:
+        if config.llm_provider == "local":
+            raise ProviderError(
+                "AI 개선안에는 IMPROVEMENT_PROVIDER=qwen, local_ollama, azure 또는 openai 설정이 필요합니다."
+            )
+        context, sources, digest, _, _ = retrieved_context(
+            request, [("selected_claim", context["claim_text"])]
+        )
     if config.llm_provider == "local":
         draft = local_review(context)
     else:
-        client = client_factory(config)
-        try:
-            response = client.client.responses.parse(
-                model=client.model,
-                store=False,
-                max_output_tokens=6000,
-                text_format=ClaimImprovementSuggestion,
-                input=[
-                    {
-                        "role": "system",
-                        "content": COMMON + (KR if context["jurisdiction"] == "kr" else US),
-                    },
-                    {"role": "user", "content": json.dumps(context, ensure_ascii=False)},
-                ],
-            )
-            if response.status != "completed" or response.output_parsed is None:
-                raise ProviderError("개선 방안 응답이 완료되지 않았습니다.")
-            draft = ClaimImprovementSuggestion.model_validate(response.output_parsed)
-        except (APIError, ValueError) as exc:
-            raise ProviderError(
-                "개선 방안을 생성하지 못했습니다. 공급자 연결 또는 응답 형식을 확인하세요."
-            ) from exc
-        finally:
-            client.close()
+        draft = get_provider(config, client_factory).generate_improvement(context)
     try:
         validate_suggestion(draft, context)
     except ValueError as exc:

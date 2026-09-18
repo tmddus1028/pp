@@ -56,11 +56,12 @@ class OCRMetadata(Model):
 class Document(Model):
     document_id: str
     filename: str
-    kind: Literal["patent", "office_action"]
+    kind: Literal["patent", "office_action", "reference"]
     text: str
     pages: list[Page]
     warnings: list[str] = Field(default_factory=list)
     metadata: OCRMetadata = Field(default_factory=OCRMetadata)
+    source_metadata: dict = Field(default_factory=dict)
 
 
 class Evidence(Model):
@@ -69,6 +70,7 @@ class Evidence(Model):
     start: int = Field(ge=0)
     end: int = Field(ge=0)
     page_numbers: list[int]
+    xml_path: str | None = None
 
 
 class Claim(Model):
@@ -108,6 +110,7 @@ class CitedReference(Model):
     canonical_key: str = ""
     citation_role: Literal["relied_upon", "supporting_evidence", "not_relied_upon"] = "relied_upon"
     explicit_alias: bool = False
+    source_document_id: str | None = None
 
 
 class CitationDocument(Model):
@@ -124,6 +127,7 @@ class CitationDocument(Model):
     citation_role: Literal["relied_upon", "supporting_evidence", "not_relied_upon"]
     citation_roles: list[str]
     evidence: Evidence
+    source_document_id: str | None = None
 
 
 class RejectionCitation(Model):
@@ -145,6 +149,9 @@ class Rejection(Model):
     cited_references: list[CitedReference]
     evidence: Evidence
     extraction_method: Literal["local", "openai", "azure"]
+    statute_code: str = ""
+    raw_statute_text: str = ""
+    subject: str = "claims"
 
 
 class ReviewItem(Model):
@@ -162,6 +169,8 @@ class ClaimDisposition(Model):
     ]
     evidence: Evidence | None = None
     conditional_allowance: bool = False
+    raw_status: str = ""
+    source_status: str = ""
 
 
 class ClaimSummary(Model):
@@ -220,6 +229,8 @@ class AnalysisResult(Model):
     claim_summary: ClaimSummary = Field(default_factory=ClaimSummary)
     citations: list[CitationDocument] = Field(default_factory=list)
     rejection_citations: list[RejectionCitation] = Field(default_factory=list)
+    evidence_links: list[dict] = Field(default_factory=list)
+    claim_version: dict = Field(default_factory=dict)
 
 
 class TextAnalysisRequest(Model):

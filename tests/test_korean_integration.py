@@ -101,7 +101,17 @@ def test_existing_review_view_model_and_coordinates(korean_inputs, korean_result
         result,
         {result["documents"][0]["document_id"]: korean_inputs[0]},
     )
-    assert {item["kind"] for item in model["items"]} == {"claim", "rejection", "citation"}
+    assert {item["kind"] for item in model["items"]} == {
+        "claim",
+        "rejection",
+        "citation",
+        "specification",
+    }
+    assert all(
+        "시스템 검색 후보" in item["title"]
+        for item in model["items"]
+        if item["kind"] == "specification"
+    )
     assert len([item for item in model["items"] if item["kind"] == "citation"]) == 3
     annotations = model["annotations"]
     assert any(a["boxes"] and a["page"] == 3 for a in annotations if a["claim_number"] == 1)

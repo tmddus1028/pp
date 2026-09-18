@@ -28,9 +28,26 @@ from korean_prototype.kr_review.models import ReviewError
 from korean_prototype.kr_review.service import analyze as extract_korean
 
 
-def analyze_korean(patent_data, patent_filename, oa_data, oa_filename, max_chars=500000):
+def analyze_korean(
+    patent_data,
+    patent_filename,
+    oa_data,
+    oa_filename,
+    max_chars=500000,
+    references=None,
+    amendments=None,
+    version_history=None,
+):
     try:
-        extracted = extract_korean(patent_data, patent_filename, oa_data, oa_filename)
+        extracted = extract_korean(
+            patent_data,
+            patent_filename,
+            oa_data,
+            oa_filename,
+            references,
+            amendments,
+            version_history,
+        )
     except ReviewError as exc:
         raise DocumentError(str(exc)) from exc
     if any(len(document.text) > max_chars for document in extracted.documents):
@@ -58,6 +75,12 @@ def analyze_korean(patent_data, patent_filename, oa_data, oa_filename, max_chars
                 text=document.text,
                 pages=pages,
                 warnings=warnings,
+                source_metadata=document.metadata,
+                metadata={
+                    k: v
+                    for k, v in document.metadata.items()
+                    if k.startswith("ocr_") or k == "removed_margins"
+                },
             )
         )
 
@@ -68,6 +91,7 @@ def analyze_korean(patent_data, patent_filename, oa_data, oa_filename, max_chars
             start=source.start,
             end=source.end,
             page_numbers=[1] if source.document_id in logical_documents else source.page_numbers,
+            xml_path=source.xml_path,
         )
 
     patent = Patent(
@@ -90,11 +114,12 @@ def analyze_korean(patent_data, patent_filename, oa_data, oa_filename, max_chars
             name=citation.title or None,
             publication_number=citation.publication_number,
             evidence=evidence(citation.evidence),
-            type="patent",
+            type=citation.type,
             raw_text=citation.evidence.text,
             title=citation.title or None,
-            canonical_key="patent:" + citation.publication_number,
+            canonical_key=citation.canonical_key,
             citation_role=citation.role,
+            source_document_id=citation.document_id,
         )
         for citation in extracted.citations
     }
@@ -109,27 +134,22 @@ def analyze_korean(patent_data, patent_filename, oa_data, oa_filename, max_chars
             cited_references=[references[cid] for cid in rejection.citation_ids],
             evidence=evidence(rejection.evidence),
             extraction_method="local",
+            statute_code=rejection.statute_code,
+            raw_statute_text=rejection.raw_statute_text,
+            subject=rejection.subject,
         )
         for rejection in extracted.rejections
     ]
-    statuses = []
-    for claim in patent.claims:
-        rejection = next((r for r in rejections if claim.claim_number in r.claims), None)
-        statuses.append(
-            ClaimDisposition(
-                claim_number=claim.claim_number,
-                status="canceled"
-                if claim.status == "canceled"
-                else "rejected"
-                if rejection
-                else "unknown",
-                evidence=rejection.evidence
-                if rejection
-                else claim.evidence
-                if claim.status == "canceled"
-                else None,
-            )
+    statuses = [
+        ClaimDisposition(
+            claim_number=s.claim_number,
+            status={"allowable": "allowed", "amended": "pending"}.get(s.status, s.status),
+            source_status=s.status,
+            raw_status=s.raw_status,
+            evidence=evidence(s.evidence) if s.evidence else None,
         )
+        for s in extracted.claim_statuses
+    ]
     impacts = analyze_impacts(patent, rejections, statuses)
     for rejection, impact in zip(rejections, impacts):
         impact.review_items = generate_checklist(rejection, impact)
@@ -145,6 +165,7 @@ def analyze_korean(patent_data, patent_filename, oa_data, oa_filename, max_chars
             citation_role=ref.citation_role,
             citation_roles=[ref.citation_role],
             evidence=ref.evidence,
+            source_document_id=ref.source_document_id,
         )
         for ref in references.values()
     ]
@@ -181,4 +202,9 @@ def analyze_korean(patent_data, patent_filename, oa_data, oa_filename, max_chars
         claim_summary=summarize_claim_statuses(statuses, impacts),
         citations=citations,
         rejection_citations=edges,
+        evidence_links=[
+            {**link.model_dump(), "evidence": evidence(link.evidence).model_dump()}
+            for link in extracted.evidence_links
+        ],
+        claim_version=extracted.version,
     )

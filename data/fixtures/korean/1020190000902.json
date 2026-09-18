@@ -1,0 +1,153 @@
+{
+  "application_number": "1020190000902",
+  "office_action_date": "2019-03-25",
+  "label_method": "manual transcription of publication claims and examiner numbered grounds; not parser output",
+  "version_status": "uncertain",
+  "sources": "data/downloads/Patent_Review_KR_Data_20260917/sources.json",
+  "files": [
+    {
+      "path": "data/downloads/Patent_Review_KR_Data_20260917/02_needs_work/1020190000902/1020190000902_952019021826308.pdf",
+      "sha256": "547c41112a507ea1d7357b45b4be8ed7a61aeceebe7bf7e22e0df2c61182c7dd",
+      "role": "office_action"
+    },
+    {
+      "path": "data/downloads/Patent_Review_KR_Data_20260917/02_needs_work/1020190000902/1020190000902_952019021826308.xml",
+      "sha256": "225d4e411c717b7ad33780a4729fe98f1af39dc437cba11fef2725d4342ba042",
+      "role": "office_action"
+    },
+    {
+      "path": "data/downloads/Patent_Review_KR_Data_20260917/02_needs_work/1020190000902/KR20190004821A.pdf",
+      "sha256": "1336032499ec8fa0815040ac5b1e9525dc39a4454420e424e960b2afe74d71d6",
+      "role": "patent"
+    }
+  ],
+  "claims": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16
+  ],
+  "dependencies": {
+    "1": [],
+    "2": [
+      1
+    ],
+    "3": [
+      2
+    ],
+    "4": [
+      1
+    ],
+    "5": [
+      1
+    ],
+    "6": [
+      1
+    ],
+    "7": [
+      1
+    ],
+    "8": [
+      7
+    ],
+    "9": [
+      7
+    ],
+    "10": [
+      1
+    ],
+    "11": [],
+    "12": [
+      11
+    ],
+    "13": [
+      12
+    ],
+    "14": [
+      12
+    ],
+    "15": [
+      12
+    ],
+    "16": [
+      11
+    ]
+  },
+  "rejections": [
+    {
+      "statute_code": "KR_PATENT_ACT_42_4_2",
+      "claims": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "citations": []
+    }
+  ],
+  "statuses": {
+    "rejected": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10
+    ],
+    "pending": [
+      11,
+      12,
+      13,
+      14,
+      15,
+      16
+    ]
+  },
+  "label_notes": "OA p.1 explicitly lists examination claims 1-16. Claims 11-16 have no rejection and remain pending; no allowance statement. Initial transcription used unknown for unaddressed; corrected using this explicit source before status evaluation.",
+  "evidence": {
+    "label_method": "manual physical PDF page transcription; claim BODY start excludes a heading left on previous page; not bbox ground truth",
+    "claim_body_start_page": {
+      "1": 3,
+      "2": 3,
+      "3": 3,
+      "4": 3,
+      "5": 3,
+      "6": 4,
+      "7": 4,
+      "8": 4,
+      "9": 4,
+      "10": 4,
+      "11": 4,
+      "12": 5,
+      "13": 5,
+      "14": 5,
+      "15": 5,
+      "16": 5
+    },
+    "rejection_start_pages": [
+      1
+    ]
+  }
+}

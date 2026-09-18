@@ -9,16 +9,24 @@ class ImprovementRequest(Model):
     analysis: AnalysisResult
     claim_number: int = Field(gt=0, le=10000)
     rejection_id: str | None = None
+    require_llm: bool = False
 
 
 class ReviewEvidence(Model):
     evidence_id: str
     kind: Literal[
-        "claim", "parent_claim", "office_action", "status", "specification", "citation_mention"
+        "claim",
+        "parent_claim",
+        "office_action",
+        "status",
+        "specification",
+        "citation_mention",
+        "citation_original",
     ]
     label: str
     evidence: Evidence
     navigation_item: str
+    provenance: Literal["examiner_explicit_evidence", "system_retrieved_evidence"] | None = None
 
 
 class Grounding(Model):

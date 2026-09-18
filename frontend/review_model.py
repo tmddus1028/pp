@@ -26,6 +26,19 @@ def _source(document, start, end):
 
 def explicit_support(result):
     """Link only explicit OA paragraph/figure references found in the patent."""
+    if result["analysis_id"].startswith("kr-"):
+        return [
+            {
+                "id": f"spec-kr-{i}",
+                "label": link["label"],
+                "rejection_id": link["rejection_id"],
+                "evidence": link["evidence"],
+                "figure": None,
+                "provenance": link["provenance"],
+            }
+            for i, link in enumerate(result.get("evidence_links", []))
+            if link.get("citation_id") is None
+        ]
     patent = next(d for d in result["documents"] if d["kind"] == "patent")
     claim_start = min(c["evidence"]["start"] for c in result["patent"]["claims"])
     text = patent["text"][:claim_start]
@@ -214,9 +227,16 @@ def build_review_model(result):
             "text": citation["evidence"]["text"],
             "citation_role": citation["citation_role"],
             "occurrences": occurrences,
+            "source_links": [
+                link
+                for link in result.get("evidence_links", [])
+                if link.get("citation_id") == citation["citation_id"]
+            ],
             "affected_claims": sorted({n for edge in occurrences for n in edge["claim_numbers"]}),
         }
         items.append(item)
+        for link in item["source_links"]:
+            add_annotations(item, link["evidence"], "citation", link["rejection_id"])
         for occurrence in occurrences:
             add_annotations(
                 item,
