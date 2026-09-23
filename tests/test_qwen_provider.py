@@ -94,7 +94,7 @@ def test_improvement_and_revision_endpoints_preserve_analysis(config, jurisdicti
             assert args[0].endswith("/compatible-mode/v1/chat/completions")
             assert kwargs["headers"]["Authorization"] == "Bearer TEST-ONLY-KEY"
             assert kwargs["json"]["model"] == "configured-test-model"
-            assert kwargs["json"]["response_format"]["json_schema"]["strict"] is True
+            assert kwargs["json"]["response_format"] == {"type": "json_object"}
             assert kwargs["follow_redirects"] is False
             context = json.loads(kwargs["json"]["messages"][1]["content"])
             assert "documents" not in context
@@ -181,3 +181,51 @@ def test_qwen_cannot_bypass_evidence_validation(config):
         generate_improvement(
             ImprovementRequest(analysis=sample(), claim_number=1, require_llm=True), config
         )
+
+
+def test_json_object_mode_is_the_default_and_carries_the_schema_in_the_prompt(config):
+    assert config.qwen_response_format == "json_object"
+    body = QwenImprovementProvider(config).payload(
+        {"jurisdiction": "us"}, ClaimImprovementSuggestion, "지침"
+    )
+    system = body["messages"][0]["content"]
+    assert body["response_format"] == {"type": "json_object"}
+    # Model Studio rejects json_object requests whose prompt never mentions JSON.
+    assert "JSON" in system
+    assert system.startswith("지침")
+    assert '"issue_summary"' in system and '"strategies"' in system
+    assert json.loads(system[system.index("{") :])["properties"]["claim_number"]
+
+
+def test_json_schema_mode_sends_the_strict_schema_instead_of_prompt_text(config):
+    config.qwen_response_format = "json_schema"
+    body = QwenImprovementProvider(config).payload(
+        {"jurisdiction": "us"}, ClaimImprovementSuggestion, "지침"
+    )
+    schema = body["response_format"]["json_schema"]
+    assert body["response_format"]["type"] == "json_schema"
+    assert schema["strict"] is True and schema["name"] == "ClaimImprovementSuggestion"
+    assert schema["schema"]["properties"]["strategies"]
+    assert body["messages"][0]["content"] == "지침"
+
+
+@pytest.mark.parametrize("mode", ["json_object", "json_schema"])
+def test_both_response_modes_keep_the_evidence_gates(config, mode):
+    config.qwen_response_format = mode
+    request = ImprovementRequest(analysis=sample(), claim_number=1, require_llm=True)
+    with patch("backend.improvements.providers.httpx.post", side_effect=fake_post) as post:
+        response = generate_improvement(request, config)
+    assert response.provider == "qwen" and response.suggestion.strategies
+    assert post.call_args.kwargs["json"]["response_format"]["type"] == mode
+
+
+def test_unsupported_json_schema_model_points_at_the_portable_mode(config):
+    config.qwen_response_format = "json_schema"
+    with (
+        patch(
+            "backend.improvements.providers.httpx.post",
+            return_value=reply({"error": {"message": "response_format not supported"}}, 400),
+        ),
+        pytest.raises(ProviderError, match="json_object"),
+    ):
+        QwenImprovementProvider(config).complete({}, ClaimImprovementSuggestion, "test")

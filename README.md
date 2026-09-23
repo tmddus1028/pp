@@ -141,6 +141,7 @@ IMPROVEMENT_PROVIDER=qwen
 QWEN_API_KEY=
 QWEN_BASE_URL=
 QWEN_MODEL=
+QWEN_RESPONSE_FORMAT=json_object
 LOCAL_EMBEDDING_MODEL=
 LLM_TIMEOUT_SECONDS=180
 ```
@@ -150,9 +151,18 @@ LLM_TIMEOUT_SECONDS=180
 주소는 `/compatible-mode/v1`로 끝나야 합니다. 공식 문서의 싱가포르 워크스페이스 예시는
 `https://{WorkspaceId}.ap-southeast-1.maas.aliyuncs.com/compatible-mode/v1`이며
 `{WorkspaceId}`는 실제 값으로 바꿉니다. 계정 콘솔에 표시된 주소를 우선 사용하세요.
-`QWEN_MODEL`은 해당 계정에서 접근 가능하고 **JSON Schema 출력을 지원하는 모델**로 설정합니다.
-현재 문서상의 예시는 `qwen3.7-plus`이며 계정/리전의 사용 가능 여부는 별도 확인해야 합니다.
-JSON Object만 지원하는 모델로 조용히 전환하지 않습니다.
+`QWEN_MODEL`은 해당 계정에서 접근 가능한 텍스트 모델로 설정합니다.
+
+`QWEN_RESPONSE_FORMAT`은 구조화 출력 방식을 명시적으로 선택합니다. 자동 전환은 없습니다.
+
+- `json_object`(기본): Model Studio 텍스트 모델에서 폭넓게 지원합니다. 요청 schema를
+  프롬프트에 함께 보내고 응답은 기존 Pydantic·근거 검증을 그대로 통과해야 합니다.
+  Model Studio가 프롬프트에 `JSON` 표기를 요구하므로 해당 문구를 포함해 전송합니다.
+- `json_schema`: API가 schema를 강제하지만 이를 지원하는 모델에서만 동작합니다.
+  문서상의 예시는 `qwen3.7-plus` 계열이며 계정/리전의 사용 가능 여부는 별도 확인해야 합니다.
+  지원하지 않는 모델은 400 오류로 표시하고 `json_object`로 조용히 전환하지 않습니다.
+
+두 방식 모두 근거 ID·인용문 검증과 거절 범위 검사를 우회할 수 없습니다.
 
 명시적인 `qwen` 선택은 한국 시제품의 `KR_AZURE_OPENAI_*` 설정보다 우선합니다.
 원본 문서는 그대로 두고 관련 원문 발췌를 전송합니다. API 요금은 사용 계정에 발생합니다.

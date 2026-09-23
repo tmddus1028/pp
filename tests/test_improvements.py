@@ -299,7 +299,8 @@ def test_kr_configuration_isolated_from_us_and_partial_keys_fail(monkeypatch, lo
         "DEPLOYMENT": "kr-deployment",
     }.items():
         monkeypatch.setenv("KR_AZURE_OPENAI_" + key, value)
-    base = Settings(_env_file=None, llm_provider="local")
+    # Pin the inherit default: a developer .env selecting a provider must not change this check.
+    base = Settings(_env_file=None, llm_provider="local", improvement_provider="inherit")
     assert provider_settings(base, "us").llm_provider == "local"
     assert provider_settings(base, "kr").azure_openai_deployment == "kr-deployment"
     assert provider_settings(local, "kr").llm_provider == "local"
