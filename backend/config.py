@@ -14,6 +14,7 @@ class Settings(BaseSettings):
     qwen_api_key: str = Field(default="", repr=False)
     qwen_base_url: str = ""
     qwen_model: str = ""
+    qwen_response_format: Literal["json_object", "json_schema"] = "json_object"
     local_llm_base_url: str = "http://127.0.0.1:11434"
     local_llm_model: str = ""
     local_embedding_model: str = ""

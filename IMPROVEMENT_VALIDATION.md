@@ -159,3 +159,21 @@ uv run python -X utf8 scripts/audit_golden_pairs.py --input C:\Users\dltmddus\De
 uv run python -X utf8 scripts/validate_improvements.py
 uv run --project korean_prototype python -X utf8 scripts/browser_improvements.py
 ```
+
+## 11. 실제 로컬 모델 실측 · 2026-09-23 (macOS, M2 Pro 16GB)
+
+`IMPROVEMENT_PROVIDER=local_ollama`, `LOCAL_LLM_MODEL=qwen3:8b`로 **실제 모델**을 호출했다.
+합성 미국 예제의 Claim 1 / R1, 제공 근거 5개(`CLAIM-1`, `OA-R1`, 인용문헌 2개, `STATUS`),
+직렬화 context 3,332자. 응답 1회 약 92초.
+
+- 전송·스키마·파싱 경로는 정상 동작했다. 모델은 schema에 맞는 JSON을 반환했다.
+- 그러나 근거 검증에서 차단됐다: `개선안에 선택 청구항과 심사관 근거가 함께 필요합니다`.
+  전략 2개가 `evidence_ids`에 `CLAIM-1`·`STATUS`만 넣고 심사관 근거(`OA-R1`)를 빼먹었고,
+  `element_comparison`에는 선택 청구항이 없었으며, `narrow`/`add_limitation`에 명세서 근거가 없었다.
+  지침이 요구한 한국어 서술도 지키지 않았다(영어 출력).
+- 즉 **근거 게이트가 설계대로 작동해 근거 없는 AI 출력을 화면에 올리지 않았다.** 이는 안전장치
+  검증으로서의 통과이며, 개선안 품질 검증은 아니다.
+
+결론: 8B급 로컬 모델은 이 과제의 동시 제약(정확한 근거 ID·원문 인용·관할 용어·수정 유형별 근거)을
+충족하지 못한다. 실사용 품질 검증에는 Qwen API 또는 Azure 등 상위 모델이 필요하다.
+전송 경로는 이미 검증됐으므로 키 확보 후 `.env`의 provider 한 줄만 바꾸면 된다.

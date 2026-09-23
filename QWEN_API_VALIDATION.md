@@ -28,6 +28,32 @@ Model Studio의 `/chat/completions`로 관련 문맥과 엄격한 JSON Schema를
 - **개선안·수정본 판단의 품질: 미검증.** 테스트용 답변은 Qwen이 생성한 답변이 아닙니다.
 - 새로운 브라우저 테스트는 수행하지 않았습니다. 이번 변경에 frontend 파일은 없습니다.
 
+## 추가 검증 · 2026-09-23 (macOS)
+
+`response_format`를 `QWEN_RESPONSE_FORMAT`으로 명시적으로 선택합니다. 자동 전환은 없습니다.
+
+- 기본값 `json_object`: Model Studio 텍스트 모델에서 폭넓게 지원합니다. 요청 schema를 프롬프트로
+  함께 보내고, 프롬프트에 `JSON` 표기를 포함합니다. Model Studio는 해당 표기가 없는 json_object
+  요청을 거부합니다. 이전 구현은 `json_schema`만 전송했으므로 이를 지원하지 않는 모델에서는
+  실제 키를 넣어도 400으로 실패했습니다.
+- `json_schema`: 기존 strict schema 전송을 유지하며 지원 모델에서만 동작합니다. 400 오류 안내에
+  `json_object` 전환 방법을 표시합니다.
+- 두 방식 모두 기존 Pydantic·근거 ID·인용문·거절 범위 검증을 우회하지 못합니다.
+
+검증: `tests/test_qwen_provider.py` 31개 통과(기존 26 + 신규 5: 기본 모드·프롬프트 schema 포함,
+strict 모드 본문, 두 모드의 근거 검증 유지, 미지원 모델 400 안내).
+전체 회귀 `uv run pytest -q`: **378 passed**, 8 skipped.
+실패 2건과 에러 1건은 이 macOS 검증 환경에 Tesseract OCR이 없어서 발생하며 코드 변경과 무관합니다
+(`tests/test_ocr.py::test_env_tesseract_path_with_spaces`, `tests/test_pdf_fallback.py`의 실문서 2건).
+`uv run ruff check .`·`ruff format --check .` 통과(210개 파일).
+
+`tests/test_improvements.py::test_kr_configuration_isolated_from_us_and_partial_keys_fail`은
+`improvement_provider="inherit"`를 명시하도록 고정했습니다. `frontend/app.py`의 `load_dotenv`가
+실제 `.env`를 프로세스 환경에 넣기 때문에, `.env`에서 provider를 선택하면 이 검사가 깨졌습니다.
+
+**실제 Qwen 호출: 여전히 미검증.** 키가 없어 `scripts.validate_qwen`은 preflight에서 중단했습니다
+(한국 실문서 근거 12개, 직렬화 문맥 19,000자 구성 후 외부 요청 없이 종료).
+
 ## 재현
 
 ```powershell
