@@ -12,6 +12,13 @@ from backend.improvements.models import ClaimImprovementSuggestion
 from backend.improvements.prompts import COMMON, KR, US
 from backend.llm.client import OpenAIExtractionClient
 
+# Model Studio json_object mode accepts every text model but requires the word JSON in the
+# prompt, so the schema travels in the prompt instead of response_format.
+JSON_OBJECT_RULE = (
+    "\n반드시 JSON 객체 하나만 반환하세요. 코드 블록, 설명, 주석을 추가하지 않습니다.\n"
+    "다음 JSON Schema를 정확히 따릅니다:\n"
+)
+
 
 class ImprovementProvider(Protocol):
     def generate_improvement(self, context): ...
@@ -159,37 +166,53 @@ class QwenImprovementProvider(StructuredProvider):
             )
         return url + "/chat/completions"
 
+    def payload(self, context, schema, instructions):
+        """json_object is the portable default; json_schema needs a supporting model."""
+        system = instructions
+        if self.settings.qwen_response_format == "json_schema":
+            response_format = {
+                "type": "json_schema",
+                "json_schema": {
+                    "name": schema.__name__,
+                    "strict": True,
+                    "schema": schema.model_json_schema(),
+                },
+            }
+        else:
+            system = (
+                instructions
+                + JSON_OBJECT_RULE
+                + json.dumps(schema.model_json_schema(), ensure_ascii=False)
+            )
+            response_format = {"type": "json_object"}
+        return {
+            "model": self.settings.qwen_model,
+            "stream": False,
+            "enable_thinking": False,
+            "temperature": 0,
+            "max_tokens": 6000,
+            "messages": [
+                {"role": "system", "content": system},
+                {"role": "user", "content": json.dumps(context, ensure_ascii=False)},
+            ],
+            "response_format": response_format,
+        }
+
     def complete(self, context, schema, instructions):
         endpoint = self.endpoint()
         try:
             response = httpx.post(
                 endpoint,
                 headers={"Authorization": "Bearer " + self.settings.qwen_api_key},
-                json={
-                    "model": self.settings.qwen_model,
-                    "stream": False,
-                    "enable_thinking": False,
-                    "temperature": 0,
-                    "max_tokens": 6000,
-                    "messages": [
-                        {"role": "system", "content": instructions},
-                        {"role": "user", "content": json.dumps(context, ensure_ascii=False)},
-                    ],
-                    "response_format": {
-                        "type": "json_schema",
-                        "json_schema": {
-                            "name": schema.__name__,
-                            "strict": True,
-                            "schema": schema.model_json_schema(),
-                        },
-                    },
-                },
+                json=self.payload(context, schema, instructions),
                 timeout=self.settings.llm_timeout_seconds,
                 follow_redirects=False,
                 trust_env=False,
             )
             failures = {
-                400: "모델의 JSON Schema 지원 여부와 요청 설정을 확인하세요.",
+                400: "모델의 JSON 출력 지원 여부와 요청 설정을 확인하세요. "
+                "json_schema는 일부 최신 모델만 지원하므로 "
+                "QWEN_RESPONSE_FORMAT=json_object로 시도할 수 있습니다.",
                 401: "API 키와 키가 발급된 리전을 확인하세요.",
                 403: "모델 접근 권한과 리전을 확인하세요.",
                 404: "모델명과 API 주소를 확인하세요.",
