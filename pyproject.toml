@@ -19,6 +19,7 @@ dependencies = [
   "pytesseract>=0.3.13,<0.4",
   "pillow>=11,<13",
   "pypdfium2>=4.30,<6",
+  "psycopg[binary]>=3.2,<4",
 ]
 
 [dependency-groups]
@@ -27,7 +28,10 @@ dev = ["pytest>=8,<10", "pytest-cov>=6,<8", "ruff>=0.11,<1", "reportlab>=4,<5"]
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 pythonpath = ["."]
-markers = ["ocr_integration: real local Tesseract OCR (skipped only if Tesseract is absent)"]
+markers = [
+  "ocr_integration: real local Tesseract OCR (skipped only if Tesseract is absent)",
+  "postgres: needs the docker-compose PostgreSQL (skipped if unreachable)",
+]
 
 [tool.ruff]
 target-version = "py311"
