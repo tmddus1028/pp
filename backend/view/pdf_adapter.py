@@ -10,7 +10,7 @@ from io import BytesIO
 import pypdfium2 as pdfium
 import pypdfium2.raw as raw
 
-# Streamlit sessions share a process; PDFium requires serialized native calls.
+# API worker threads share a process; PDFium requires serialized native calls.
 PDF_LOCK = threading.RLock()
 
 
@@ -156,6 +156,15 @@ def search_boxes(data, number, page_text, query, words=None):
 
 
 def render_page(data: bytes, number: int):
+    png, width, height = render_png(data, number)
+    return {
+        "image": "data:image/png;base64," + base64.b64encode(png).decode(),
+        "width": width,
+        "height": height,
+    }
+
+
+def render_png(data: bytes, number: int):
     with PDF_LOCK, pdfium.PdfDocument(data) as pdf:
         if not 1 <= number <= len(pdf):
             raise ValueError("PDF 페이지 범위를 벗어났습니다.")
@@ -172,11 +181,7 @@ def render_page(data: bytes, number: int):
                 bitmap.close()
         finally:
             page.close()
-    return {
-        "image": "data:image/png;base64," + base64.b64encode(stream.getvalue()).decode(),
-        "width": width,
-        "height": height,
-    }
+    return stream.getvalue(), width, height
 
 
 def attach_coordinates(model, result, assets):

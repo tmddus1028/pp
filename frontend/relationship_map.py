@@ -5,38 +5,13 @@ from pathlib import Path
 import streamlit as st
 import streamlit.components.v1 as components
 
+from backend.view.models import build_relationship_model
 from frontend.readable_text import READABLE_CSS, READABLE_JS
-from frontend.review_model import build_review_model
 from frontend.terminology import TERMINOLOGY_JS, component_terms
 
 _component = components.declare_component(
     "patent_relationship_map", path=str(Path(__file__).parent / "relationship_map_component")
 )
-
-
-def build_relationship_model(result):
-    review = build_review_model(result)
-    items = {item["id"]: item for item in review["items"]}
-    nodes = []
-    for node in result["graph"]["nodes"]:
-        item_id = {
-            "claim": f"claim-{node.get('claim_number')}",
-            "citation": f"citation-{node['id']}",
-            "rejection": f"rejection-{node['id']}",
-        }.get(node["kind"])
-        nodes.append({**node, "item_id": item_id if item_id in items else None})
-    return {
-        "analysis_id": result["analysis_id"],
-        "nodes": nodes,
-        "edges": [
-            {key: edge.get(key) for key in ("source", "target", "relation", "citation_role")}
-            for edge in result["graph"]["edges"]
-        ],
-        "items": list(items.values()),
-        "rejections": review["rejections"],
-        "impacts": review["impacts"],
-        "documents": [{"filename": d["filename"], "kind": d["kind"]} for d in review["documents"]],
-    }
 
 
 def relationship_map(result, initial_item=None, initial_scope="all"):

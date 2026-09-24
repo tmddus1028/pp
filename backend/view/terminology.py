@@ -1,9 +1,8 @@
 """Jurisdiction-specific display labels. Never apply these to source/evidence text."""
 
 import re
-from pathlib import Path
 
-# Longest phrases win. Shared with both iframe components; identifiers stay unchanged.
+# Longest phrases win. Shared with the web client via the API; identifiers stay unchanged.
 KOREAN_TERMS = {
     "Patent / Claims": "명세서·청구범위",
     "Patent · 특허 문헌": "특허문헌",
@@ -68,7 +67,6 @@ def label_pattern(terms):
 
 
 _PATTERN = re.compile(label_pattern(KOREAN_TERMS))
-TERMINOLOGY_JS = Path(__file__).with_name("terminology.js").read_text(encoding="utf-8")
 
 
 def labels(result=None, *, korean=False):

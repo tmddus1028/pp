@@ -5,64 +5,10 @@ from html import escape
 
 import streamlit as st
 
-from frontend.claim_analysis import STATUS_LABELS, display_statute
+from backend.view.models import comparison_for_claim, display_statute
+from backend.view.review_model import build_review_model, relied_references
 from frontend.readable_text import readable_text, text_html
-from frontend.review_model import build_review_model, relied_references
 from frontend.terminology import labels, reference_kind
-
-
-def comparison_for_claim(model, number, scope="all"):
-    claim = next(i for i in model["items"] if i.get("claim_number") == number)
-    rejections = [
-        r
-        for r in model["rejections"]
-        if r["rejection_id"] in claim["rejection_ids"]
-        and (scope == "all" or r["rejection_id"] == scope)
-    ]
-    rids = {r["rejection_id"] for r in rejections}
-    direct, indirect = rids.intersection(claim["direct"]), rids.intersection(claim["indirect"])
-    role, status = (
-        ("direct_rejection", "직접 지적")
-        if direct
-        else ("dependency", "Objection · 추가 검토")
-        if claim.get("objected") or claim["status"] == "objected"
-        else ("dependency", "종속 영향")
-        if indirect
-        else ("unaddressed", STATUS_LABELS.get(claim["status"], "추출된 지적 없음"))
-    )
-    references = {}
-    for rejection in rejections:
-        for ref in relied_references(rejection):
-            entry = references.setdefault(
-                ref["citation_id"],
-                {
-                    "reference": ref,
-                    "rejection_ids": [],
-                    "claim_numbers": set(),
-                    "occurrences": [],
-                },
-            )
-            rid = rejection["rejection_id"]
-            if rid not in entry["rejection_ids"]:
-                entry["rejection_ids"].append(rid)
-                entry["occurrences"].append({"rejection_id": rid, "evidence": ref["evidence"]})
-            entry["claim_numbers"].update(rejection["claims"])
-    for entry in references.values():
-        entry["claim_numbers"] = sorted(entry["claim_numbers"])
-    support = [
-        i
-        for i in model["items"]
-        if i["id"] in claim["support_ids"] and rids.intersection(i["rejection_ids"])
-    ]
-    return {
-        "claim": claim,
-        "role": role,
-        "status": status,
-        "rejections": rejections,
-        "citations": list(references.values()),
-        "support": support,
-        "statutes": list(dict.fromkeys(r["statute"] for r in rejections)),
-    }
 
 
 def source(evidence, label, accent="", *, preview=True):
