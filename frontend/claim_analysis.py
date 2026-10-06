@@ -6,78 +6,18 @@ from html import escape
 
 import streamlit as st
 
+from backend.view.models import (  # noqa: F401
+    STATUS_LABELS,
+    claim_rows,
+    display_statute,
+    filter_claims,
+)
+from backend.view.review_model import build_review_model, relied_references  # noqa: F401
 from frontend.improvements import prepare_session, render_improvement
 from frontend.readable_text import readable_text
-from frontend.review_model import build_review_model, relied_references
 from frontend.terminology import checklist_label, labels, reference_kind
 
 FILTERS = ["전체", "직접 지적", "추가 검토", "허용"]
-STATUS_LABELS = {
-    "objected": "Objection · 추가 검토",
-    "allowed": "허용",
-    "withdrawn": "심사 대상 제외",
-    "canceled": "취소됨",
-    "pending": "계류 중",
-    "unknown": "추출된 지적 없음",
-}
-
-
-def claim_rows(result):
-    model = build_review_model(result)
-    rows = []
-    for item in model["items"]:
-        if item["kind"] != "claim":
-            continue
-        role, label = (
-            ("direct_rejection", "직접 지적")
-            if item["direct"]
-            else ("dependency", "Objection · 추가 검토")
-            if item["objected"] or item["status"] == "objected"
-            else ("dependency", "추가 검토 · 종속 영향")
-            if item["indirect"]
-            else ("unaddressed", STATUS_LABELS.get(item["status"], "추출된 지적 없음"))
-        )
-        # Match the PDF's direct-first status. Other dependency grounds remain in details.
-        primary = item["direct"] or item["objected"] or item["indirect"]
-        rejections = [r for r in model["rejections"] if r["rejection_id"] in item["rejection_ids"]]
-        statutes = list(
-            dict.fromkeys(
-                r["statute"]
-                for r in rejections
-                if r["rejection_id"] in primary and r["statute"] != "unknown"
-            )
-        )
-        rows.append(
-            {**item, "role": role, "label": label, "statutes": statutes, "rejections": rejections}
-        )
-    return sorted(rows, key=lambda row: row["claim_number"]), model
-
-
-def filter_claims(rows, selected_filter, query):
-    query = query.strip()
-    if query and (len(query) > 5 or not re.fullmatch(r"[0-9]+", query)):
-        return []
-    return [
-        row
-        for row in rows
-        if (not query or row["claim_number"] == int(query))
-        and (
-            selected_filter == "전체"
-            or (selected_filter == "직접 지적" and row["role"] == "direct_rejection")
-            or (selected_filter == "추가 검토" and row["role"] == "dependency")
-            or (selected_filter == "허용" and row["status"] == "allowed")
-            or (
-                selected_filter in ("§112", "§103")
-                and any(
-                    re.search(rf"\b{selected_filter[1:]}\b", statute) for statute in row["statutes"]
-                )
-            )
-        )
-    ]
-
-
-def display_statute(statute):
-    return re.sub(r"\b35\s+U\.?S\.?C\.?", "35 U.S.C.", statute, flags=re.I)
 
 
 def evidence_view(evidence, prefix):

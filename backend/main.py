@@ -191,3 +191,8 @@ async def analyze_files(
             run_korean, *korean_inputs, settings, reference_inputs, amendment_inputs, history
         )
     return await run_in_threadpool(run_analysis, *documents, settings)
+
+
+from backend.cases import router as cases_router  # noqa: E402  cases imports this module; keep last
+
+app.include_router(cases_router)

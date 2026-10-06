@@ -1,0 +1,19 @@
+# Local development database only. Bound to localhost; credentials are not secrets.
+services:
+  db:
+    image: postgres:17
+    environment:
+      POSTGRES_USER: patent
+      POSTGRES_PASSWORD: patent
+      POSTGRES_DB: patent_review
+    ports:
+      - "127.0.0.1:5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U patent -d patent_review"]
+      interval: 2s
+      retries: 30
+
+volumes:
+  pgdata:
