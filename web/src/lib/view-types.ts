@@ -14,10 +14,16 @@ export type GraphEdge = Schemas["GraphEdge"];
 
 export type CaseStatus = "open" | "in_progress" | "responded" | "closed";
 export const CASE_STATUS: Record<CaseStatus, string> = {
-  open: "대응 필요",
+  open: "대응 전",
   in_progress: "검토 중",
-  responded: "대응 완료",
+  responded: "제출 완료",
   closed: "종결",
+};
+export const STATUS_TONE: Record<CaseStatus, string> = {
+  open: "tone-direct",
+  in_progress: "tone-info",
+  responded: "tone-done",
+  closed: "tone-plain",
 };
 
 export type CaseMeta = {

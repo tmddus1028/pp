@@ -113,7 +113,7 @@ def create_demo_case(settings: Config, jurisdiction: Jurisdiction = "US"):
     )
     result = analyze_text(request, settings, jurisdiction)
     return save(
-        result, [], jurisdiction, "예제 분석 · 가상 문서 (" + ("KR" if korean else "US") + ")"
+        result, [], jurisdiction, "예제 분석 · 가상 문서 · " + ("한국" if korean else "미국")
     )
 
 

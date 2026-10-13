@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
 import { api, json } from "@/lib/api";
+import { deadlineLabel } from "@/lib/labels";
 import { translator } from "@/lib/terminology";
 import { CASE_STATUS, type CaseDetail, type CaseMeta, type CaseStatus } from "@/lib/view-types";
 
@@ -17,10 +18,10 @@ export function useCase() {
 }
 
 const TABS = [
-  ["review", "PDF 검토"],
-  ["claims", "청구항 분석"],
-  ["map", "관계 지도"],
-  ["compare", "근거 비교"],
+  ["review", "거절 이유 검토"],
+  ["claims", "청구항 현황"],
+  ["map", "관계도"],
+  ["compare", "선행문헌 대비"],
 ] as const;
 
 export function CaseShell({ id, children }: { id: string; children: ReactNode }) {
@@ -32,13 +33,12 @@ export function CaseShell({ id, children }: { id: string; children: ReactNode })
     api<CaseDetail>(`/cases/${id}`).then(setDetail, (e: Error) => setError(e.message));
   }, [id]);
 
-  if (error) return <p className="error">{error}</p>;
-  if (!detail) return <p className="muted">사건을 불러오는 중…</p>;
+  if (error) return <p className="page error">{error}</p>;
+  if (!detail) return <p className="page muted">사건을 불러오는 중…</p>;
   return (
     <CaseContext value={{ detail, t }}>
       <CaseHeader meta={detail.case} onChange={(meta) => setDetail({ ...detail, case: meta })} />
-      <Tabs id={id} />
-      {children}
+      <div className="case-body">{children}</div>
     </CaseContext>
   );
 }
@@ -46,6 +46,7 @@ export function CaseShell({ id, children }: { id: string; children: ReactNode })
 function CaseHeader({ meta, onChange }: { meta: CaseMeta; onChange: (meta: CaseMeta) => void }) {
   const router = useRouter();
   const [error, setError] = useState("");
+  const left = deadlineLabel(meta.deadline);
 
   function save(fields: Partial<Pick<CaseMeta, "title" | "status" | "deadline">>) {
     setError("");
@@ -64,10 +65,12 @@ function CaseHeader({ meta, onChange }: { meta: CaseMeta; onChange: (meta: CaseM
 
   return (
     <header className="case-header">
-      <div className="breadcrumb">
-        <Link href="/cases">사건 목록</Link> / {meta.jurisdiction === "KR" ? "한국" : "미국"}
-      </div>
-      <div className="row">
+      <nav className="breadcrumb" aria-label="위치">
+        <Link href="/cases">사건 관리</Link>
+        <span aria-hidden="true">/</span>
+        <span>{meta.jurisdiction === "KR" ? "한국 출원" : "미국 출원"}</span>
+      </nav>
+      <div className="row" style={{ justifyContent: "space-between", marginTop: 8 }}>
         <input
           className="title-input"
           aria-label="사건 이름"
@@ -79,30 +82,29 @@ function CaseHeader({ meta, onChange }: { meta: CaseMeta; onChange: (meta: CaseM
           }}
           onKeyDown={(e) => e.key === "Enter" && e.currentTarget.blur()}
         />
-        <select
-          aria-label="상태"
-          value={meta.status}
-          onChange={(e) => save({ status: e.target.value as CaseStatus })}
-        >
-          {Object.entries(CASE_STATUS).map(([value, label]) => (
-            <option key={value} value={value}>
-              {label}
-            </option>
-          ))}
-        </select>
-        <label>
-          마감일{" "}
-          <input
-            type="date"
-            value={meta.deadline ?? ""}
-            onChange={(e) => save({ deadline: e.target.value || null })}
-          />
-        </label>
-        <button type="button" className="button danger" onClick={remove}>
-          삭제
-        </button>
+        <div className="row">
+          <label className="deadline-box">
+            의견서 제출 기한
+            <input type="date" value={meta.deadline ?? ""} onChange={(e) => save({ deadline: e.target.value || null })} />
+            {meta.deadline && <span className={`left-badge${left.soon ? " soon" : ""}`}>{left.text}</span>}
+          </label>
+          <label className="field">
+            사건 상태
+            <select value={meta.status} onChange={(e) => save({ status: e.target.value as CaseStatus })}>
+              {Object.entries(CASE_STATUS).map(([value, label]) => (
+                <option key={value} value={value}>
+                  {label}
+                </option>
+              ))}
+            </select>
+          </label>
+          <button type="button" className="button danger" onClick={remove}>
+            삭제
+          </button>
+        </div>
       </div>
       {error && <p className="error">{error}</p>}
+      <Tabs id={String(meta.id)} />
     </header>
   );
 }

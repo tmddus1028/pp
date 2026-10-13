@@ -45,13 +45,16 @@ export default function NewCasePage() {
   }
 
   return (
-    <>
+    <div className="page">
       <header className="page-header">
-        <h1>새 사건</h1>
+        <div>
+          <h1>새 사건 등록</h1>
+          <p>출원 문서와 심사관 통지서를 올리면 거절 이유와 영향 범위를 정리합니다</p>
+        </div>
       </header>
       <form className="stack" onSubmit={submit}>
         <fieldset className="row" disabled={busy}>
-          <legend>특허 관할</legend>
+          <legend>출원 국가</legend>
           {(["US", "KR"] as const).map((value) => (
             <label key={value}>
               <input type="radio" checked={jurisdiction === value} onChange={() => setJurisdiction(value)} />{" "}
@@ -70,36 +73,36 @@ export default function NewCasePage() {
         </fieldset>
 
         {/* key resets inputs when the jurisdiction changes, like the Streamlit upload did. */}
-        <fieldset className="grid-2" disabled={busy} key={jurisdiction + mode}>
+        <fieldset className="form-grid" disabled={busy} key={jurisdiction + mode}>
           {mode === "file" ? (
             <>
               <label className="card">
-                <b>01 · {korean ? "명세서·청구범위" : "Patent / Claims"}</b>
+                <b>1 · {korean ? "명세서와 청구범위" : "출원 청구항"}</b>
                 <input type="file" name="patent" required accept={korean ? ".pdf,.txt" : ".pdf,.txt,.json"} />
               </label>
               <label className="card">
-                <b>02 · {korean ? "의견제출통지서 XML / PDF" : "Office Action"}</b>
+                <b>2 · {korean ? "의견제출통지서 · XML 또는 PDF" : "심사관 통지서 · Office Action"}</b>
                 <input type="file" name="office_action" required accept={korean ? ".xml,.pdf" : ".pdf,.txt,.json"} />
               </label>
               {korean && (
                 <label className="card">
-                  <b>인용발명 원문 (선택, 최대 10개)</b>
+                  <b>선행문헌 원문 · 선택 사항, 최대 10개</b>
                   <input type="file" name="references" multiple accept=".pdf" />
                 </label>
               )}
               <label className="card">
-                <b>사건 이름 (선택)</b>
+                <b>사건 이름 · 선택 사항</b>
                 <input name="title" maxLength={200} placeholder="비우면 특허 파일 이름" />
               </label>
             </>
           ) : (
             <>
               <label className="card">
-                <b>01 · {korean ? "명세서·청구범위" : "Patent / Claims"}</b>
+                <b>1 · {korean ? "명세서와 청구범위" : "출원 청구항"}</b>
                 <textarea name="patent_text" rows={14} required />
               </label>
               <label className="card">
-                <b>02 · {korean ? "의견제출통지서 (XML 전체 또는 본문)" : "Office Action"}</b>
+                <b>2 · {korean ? "의견제출통지서 · XML 전체 또는 본문" : "심사관 통지서 · Office Action"}</b>
                 <textarea name="office_action_text" rows={14} required />
               </label>
             </>
@@ -116,13 +119,13 @@ export default function NewCasePage() {
             disabled={busy}
             onClick={() => run(() => api(`/cases/demo?jurisdiction=${jurisdiction}`, { method: "POST" }))}
           >
-            예제 분석 · 가상 문서
+            예제로 체험하기
           </button>
-          {busy && <span className="muted">청구항과 거절 사유를 분석하고 있습니다… 문서에 따라 몇 분 걸릴 수 있습니다.</span>}
+          {busy && <span className="muted">청구항과 거절 이유를 분석하고 있습니다… 문서에 따라 몇 분 걸릴 수 있습니다.</span>}
         </div>
         {error && <p className="error">{error}</p>}
         <p className="muted">PDF 원본은 변경하지 않습니다. 분석 결과와 원본 PDF는 사건으로 저장됩니다.</p>
       </form>
-    </>
+    </div>
   );
 }

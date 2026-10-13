@@ -1,93 +1,171 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { api } from "@/lib/api";
-import { CASE_STATUS, type CaseListItem, type CaseStatus } from "@/lib/view-types";
+import { deadlineLabel } from "@/lib/labels";
+import { CASE_STATUS, STATUS_TONE, type CaseListItem, type CaseStatus } from "@/lib/view-types";
 
-function dday(deadline: string | null) {
-  if (!deadline) return "";
-  const days = Math.round((Date.parse(deadline) - Date.parse(new Date().toISOString().slice(0, 10))) / 86_400_000);
-  return days === 0 ? "D-day" : days > 0 ? `D-${days}` : `D+${-days}`;
-}
+const COUNTRY = { US: "미국", KR: "한국" } as const;
 
 export default function CasesPage() {
-  const router = useRouter();
   const [cases, setCases] = useState<CaseListItem[] | null>(null);
   const [error, setError] = useState("");
   const [status, setStatus] = useState<CaseStatus | "all">("all");
+  const [country, setCountry] = useState<"all" | "US" | "KR">("all");
+  const [query, setQuery] = useState("");
 
   useEffect(() => {
     api<CaseListItem[]>("/cases").then(setCases, (e: Error) => setError(e.message));
   }, []);
 
-  const shown = cases?.filter((c) => status === "all" || c.status === status) ?? [];
+  const all = cases ?? [];
+  const q = query.trim().toLowerCase();
+  const shown = all.filter(
+    (c) =>
+      (status === "all" || c.status === status) &&
+      (country === "all" || c.jurisdiction === country) &&
+      (!q || c.title.toLowerCase().includes(q)),
+  );
+  // Open work with a deadline, nearest first.
+  const due = all
+    .filter((c) => c.deadline && (c.status === "open" || c.status === "in_progress"))
+    .sort((a, b) => a.deadline!.localeCompare(b.deadline!))
+    .slice(0, 3);
+  const filters: [CaseStatus | "all", string][] = [["all", "전체"], ...(Object.entries(CASE_STATUS) as [CaseStatus, string][])];
 
   return (
-    <>
+    <div className="page">
       <header className="page-header">
-        <h1>사건 목록</h1>
+        <div>
+          <h1>사건 관리</h1>
+          <p>거절 통지를 받은 출원을 제출 기한 순서로 관리합니다</p>
+        </div>
         <Link href="/cases/new" className="button primary">
-          새 사건
+          새 사건 등록
         </Link>
       </header>
-      <div className="toolbar">
-        <label>
-          상태{" "}
-          <select value={status} onChange={(e) => setStatus(e.target.value as CaseStatus | "all")}>
-            <option value="all">전체</option>
-            {Object.entries(CASE_STATUS).map(([value, label]) => (
-              <option key={value} value={value}>
-                {label}
-              </option>
-            ))}
-          </select>
-        </label>
-      </div>
+
       {error && <p className="error">{error}</p>}
-      {cases === null && !error && <p className="muted">불러오는 중…</p>}
-      {cases?.length === 0 && (
-        <p className="muted">
-          아직 사건이 없습니다. <Link href="/cases/new">새 사건</Link>에서 문서를 업로드하세요.
-        </p>
+
+      {due.length > 0 && (
+        <section aria-labelledby="due-title" className="stack" style={{ gap: 12 }}>
+          <h2 id="due-title" style={{ fontSize: 16 }}>
+            기한이 가까운 사건
+          </h2>
+          <div className="due-grid">
+            {due.map((c) => {
+              const left = deadlineLabel(c.deadline);
+              return (
+                <Link key={c.id} href={`/cases/${c.id}/review`} className="panel due-card">
+                  <span className="row" style={{ justifyContent: "space-between" }}>
+                    <span className={`due-left${left.soon ? " soon" : ""}`}>{left.text}</span>
+                    <span className="muted" style={{ fontSize: 12 }}>
+                      {c.deadline} 마감
+                    </span>
+                  </span>
+                  <span>
+                    <strong style={{ fontSize: 15 }}>{c.title}</strong>
+                    <span className="muted" style={{ display: "block", fontSize: 12, marginTop: 2 }}>
+                      {COUNTRY[c.jurisdiction]} 출원 · {CASE_STATUS[c.status]}
+                    </span>
+                  </span>
+                  <span style={{ fontSize: 13, color: "var(--text-3)" }}>
+                    거절 이유 {c.rejection_count}건 · 거절된 청구항 {c.direct_count}개
+                  </span>
+                </Link>
+              );
+            })}
+          </div>
+        </section>
       )}
-      {shown.length > 0 && (
-        <table className="table">
-          <thead>
-            <tr>
-              <th>사건</th>
-              <th>관할</th>
-              <th>거절 사유</th>
-              <th>직접 지적 청구항</th>
-              <th>상태</th>
-              <th>마감일</th>
-              <th>등록일</th>
-            </tr>
-          </thead>
-          <tbody>
-            {shown.map((c) => (
-              <tr key={c.id} className="clickable" onClick={() => router.push(`/cases/${c.id}/review`)}>
-                <td>
-                  <Link href={`/cases/${c.id}/review`} onClick={(e) => e.stopPropagation()}>
-                    {c.title}
-                  </Link>
-                </td>
-                <td>{c.jurisdiction === "KR" ? "한국" : "미국"}</td>
-                <td>{c.rejection_count}</td>
-                <td>{c.direct_count}</td>
-                <td>
-                  <span className={`badge status-${c.status}`}>{CASE_STATUS[c.status]}</span>
-                </td>
-                <td>
-                  {c.deadline ?? "—"} <span className="muted">{dday(c.deadline)}</span>
-                </td>
-                <td>{c.created_at.slice(0, 10)}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
-    </>
+
+      <section aria-labelledby="all-title" className="panel" style={{ overflow: "hidden" }}>
+        <div className="panel-head">
+          <div className="row" style={{ gap: 14 }}>
+            <h2 id="all-title" style={{ fontSize: 16 }}>
+              전체 사건
+            </h2>
+            <div className="segmented" role="group" aria-label="사건 상태로 거르기">
+              {filters.map(([value, label]) => (
+                <button key={value} type="button" aria-pressed={status === value} onClick={() => setStatus(value)}>
+                  {label} {value === "all" ? all.length : all.filter((c) => c.status === value).length}
+                </button>
+              ))}
+            </div>
+          </div>
+          <div className="row" style={{ gap: 10 }}>
+            <label className="search">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
+                <circle cx="11" cy="11" r="7" />
+                <path d="M20 20l-3.5-3.5" />
+              </svg>
+              <span className="sr-only">사건 검색</span>
+              <input type="search" placeholder="사건 이름으로 검색" value={query} onChange={(e) => setQuery(e.target.value)} />
+            </label>
+            <label className="field">
+              출원 국가
+              <select value={country} onChange={(e) => setCountry(e.target.value as typeof country)}>
+                <option value="all">전체</option>
+                <option value="US">미국</option>
+                <option value="KR">한국</option>
+              </select>
+            </label>
+          </div>
+        </div>
+
+        {cases === null && !error && <p className="empty">불러오는 중…</p>}
+        {cases?.length === 0 && (
+          <p className="empty">
+            아직 사건이 없습니다. <Link href="/cases/new">새 사건 등록</Link>에서 문서를 올리세요.
+          </p>
+        )}
+        {all.length > 0 && shown.length === 0 && <p className="empty">조건에 맞는 사건이 없습니다</p>}
+        {shown.length > 0 && (
+          <div className="table-wrap">
+            <table className="table" style={{ minWidth: 860 }}>
+              <thead>
+                <tr>
+                  <th scope="col">사건</th>
+                  <th scope="col">출원 국가</th>
+                  <th scope="col">거절 이유</th>
+                  <th scope="col">거절된 청구항</th>
+                  <th scope="col">제출 기한</th>
+                  <th scope="col">사건 상태</th>
+                  <th scope="col">등록일</th>
+                </tr>
+              </thead>
+              <tbody>
+                {shown.map((c) => {
+                  const left = deadlineLabel(c.deadline);
+                  return (
+                    <tr key={c.id}>
+                      <td>
+                        <Link href={`/cases/${c.id}/review`} className="case-link">
+                          {c.title}
+                        </Link>
+                      </td>
+                      <td>{COUNTRY[c.jurisdiction]}</td>
+                      <td>{c.rejection_count}건</td>
+                      <td style={{ fontWeight: 600, color: "var(--direct)" }}>{c.direct_count}개</td>
+                      <td>
+                        {c.deadline && <span style={{ fontSize: 13, marginRight: 8 }}>{c.deadline}</span>}
+                        <span className={c.deadline ? `left-badge${left.soon ? " soon" : ""}` : "muted"}>{left.text}</span>
+                      </td>
+                      <td>
+                        <span className={`pill ${STATUS_TONE[c.status]}`}>{CASE_STATUS[c.status]}</span>
+                      </td>
+                      <td className="muted" style={{ fontSize: 13 }}>
+                        {c.created_at.slice(0, 10)}
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </section>
+    </div>
   );
 }
