@@ -27,6 +27,9 @@ from backend.precedents.kipris import Kipris, KiprisError  # noqa: E402
 from backend.precedents.taxonomy import argument_types, categorize  # noqa: E402
 
 OUT = ROOT / "data/precedents/kr_kipris_cases.jsonl"
+# One row per 거절결정: did the applicant respond, and does it list unresolved reasons?
+# Source of the deck's "22건 중 18건(82%)" (scripts/report_numbers.py).
+REFUSALS_OUT = ROOT / "data/precedents/kr_refusal_decisions.jsonl"
 SAMPLES = ROOT / "data/downloads/kr_review_package/official_samples"
 OA_2015 = ROOT / "data/downloads/kr_review_package/kipris_patent_oa_2015.zip"
 EXCERPT = 900
@@ -203,8 +206,21 @@ def events(api, app):
     return sorted(oas, key=lambda e: e["date"]), decisions, amendments
 
 
-def build_app(api, app):
+def build_app(api, app, refusals=None):
     oas, decisions, amendments = events(api, app)
+    if refusals is not None:
+        refusals += [
+            {
+                "application": app,
+                "send_number": d["send_number"],
+                "date": d["date"],
+                "responded": not d["no_response"],
+                "has_unresolved_table": bool(d["unresolved"]),
+                "unresolved": [{"part": p, "statute": s} for p, s in d["unresolved"]],
+            }
+            for d in decisions
+            if d["kind"] == "RE"
+        ]
     timeline = sorted(oas + decisions, key=lambda e: (e["date"], e["kind"] != "OA"))
     records = []
     for oa in oas:
@@ -362,10 +378,10 @@ def main():
     parser.add_argument("--per-date", type=int, default=5, help="applications per seed date")
     args = parser.parse_args()
     api = Kipris()
-    records, failed = [], {}
+    records, refusals, failed = [], [], {}
     for app in applications(args):
         try:
-            records += build_app(api, app)
+            records += build_app(api, app, refusals)
         except KiprisError as exc:
             failed[app] = str(exc)
             if "한도" in str(exc):

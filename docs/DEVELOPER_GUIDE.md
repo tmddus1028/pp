@@ -1,7 +1,8 @@
 # PinPoint 개발자 가이드
 
 처음 코드를 보는 팀원용 지도입니다. "무엇이 어디 있고, 무엇을 고치려면 어디를 보면 되는지"만 정리했습니다.
-실행 방법은 [README](../README.md), 수치와 실험 기록은 [PRECEDENT_VALIDATION](validation/PRECEDENT_VALIDATION.md)을 보세요.
+실행 방법은 [README](../README.md), 수치와 실험 기록은 [PRECEDENT_VALIDATION](validation/PRECEDENT_VALIDATION.md),
+발표 숫자 설명·재계산은 [PRESENTATION_NUMBERS](PRESENTATION_NUMBERS.md)(`uv run python scripts/report_numbers.py`)를 보세요.
 
 ## 1. 한 장 요약
 

@@ -325,7 +325,10 @@ def test_build_app_labels_from_refusal_table_and_flags_reexamination():
             ],
         }
     )
-    records = {(r["oa_type"], r["category"]): r for r in build_app(api, a)}
+    refusals = []
+    records = {(r["oa_type"], r["category"]): r for r in build_app(api, a, refusals)}
+    [refusal] = refusals
+    assert refusal["responded"] and refusal["has_unresolved_table"]
     novelty = records[("의견제출통지서", "novelty")]
     inventive = records[("의견제출통지서", "inventive_step")]
     assert (novelty["outcome"], inventive["outcome"]) == ("resolved", "unresolved")
