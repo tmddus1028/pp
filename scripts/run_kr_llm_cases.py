@@ -18,7 +18,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
 from backend.config import Settings  # noqa: E402
-from backend.errors import ProviderError  # noqa: E402
+from backend.errors import DocumentError, ProviderError  # noqa: E402
 from backend.improvements.models import ImprovementRequest  # noqa: E402
 from backend.improvements.service import generate_improvement  # noqa: E402
 from backend.jurisdictions.korean import analyze_korean  # noqa: E402
@@ -34,6 +34,10 @@ CASES = {
 
 
 def inputs(app):
+    gold = ROOT / "data/eval/kr" / f"{app}.json"
+    if app not in CASES and gold.exists():
+        paths = json.loads(gold.read_text(encoding="utf-8"))["inputs"]
+        return ROOT / paths["patent"], ROOT / paths["office_action"]
     folder = next((PACKAGE / "official_samples").glob(f"{app}_*"))
     oa = folder / f"{folder.name}.xml"
     patent = PACKAGE / "publications" / f"{CASES[app]}.pdf"
@@ -42,9 +46,13 @@ def inputs(app):
 
 def run(app, settings):
     patent, oa = inputs(app)
-    result = analyze_korean(
-        patent.read_bytes(), patent.name, oa.read_bytes(), oa.name, settings.max_document_chars
-    )
+    try:
+        result = analyze_korean(
+            patent.read_bytes(), patent.name, oa.read_bytes(), oa.name, settings.max_document_chars
+        )
+    except DocumentError as exc:
+        # The analysis pipeline itself could not read this real notice: record, do not crash.
+        return {"application": app, "ok": False, "error": "analysis: " + str(exc), "seconds": 0}
     claims = sorted(
         {n for r in result.rejections if r.action_type == "rejection" for n in r.claims}
     )
@@ -75,6 +83,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("--label", required=True)
     parser.add_argument("--only", nargs="*", default=list(CASES))
+    parser.add_argument("--eval", action="store_true", help="run every gold case in data/eval/kr")
     args = parser.parse_args()
     settings = Settings()
     out = ROOT / "data/outputs/llm_runs" / args.label
@@ -88,7 +97,8 @@ def main():
         "prune_invalid": settings.improvement_prune_invalid,
         "cases": [],
     }
-    for app in args.only:
+    apps = sorted(p.stem for p in (ROOT / "data/eval/kr").glob("*.json")) if args.eval else args.only
+    for app in apps:
         record = run(app, settings)
         (out / f"{app}.json").write_text(
             json.dumps(record, ensure_ascii=False, indent=1), encoding="utf-8"
