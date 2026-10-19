@@ -20,7 +20,7 @@ PinPoint: 한국 의견제출통지서(미국 Office Action도 지원)와 청구
 | `backend/` | 분석·체크리스트·대응 사례·LLM 전부 | 있음 |
 | `frontend/` | Streamlit 화면 (해커톤 데모) | 있음 |
 | `web/` | Next.js 화면 (해커톤 뒤 이식) | 이식할 때 |
-| `data/precedents/` | **대응 사례 DB**: 미국 PatRe 1,019건 + 한국 KIPRIS 164건 (앱이 읽는 완성본) | 있음 |
+| `data/precedents/` | **대응 사례 DB**: 미국 PatRe 1,019건 + 한국 KIPRIS 383건 (앱이 읽는 완성본) | 있음 |
 | `data/eval/` | **LLM 채점표**: 실제 대응·결과가 있는 사건으로 AI 개선안을 채점 (0844, 0874) | 평가할 때 |
 | `data/downloads/kr_review_package/` | 한국 실사건 5건 입력(통지서 XML/PDF + 공개공보) | 데모할 때 |
 | `data/raw/` | 예제 버튼용 가상 문서, 미국 실사건 | 데모할 때 |
@@ -331,7 +331,7 @@ uv run python scripts/load_precedents_pg.py            # 선택: PostgreSQL resp
   `uv run python scripts/build_kr_precedents.py --oa-2015 --limit 50`. 의견제출통지서·거절결정서·등록결정서·청구항 변동 이력으로
   통지별 사유 → 대응(보정/의견서) → 다음 조치를 만들고, 거절결정서의 "해소되지 않은 부분" 표로 사유별 해소를 정합니다.
   무대응·재심사 경유·표 없는 결정은 제외합니다. 응답은 `data/kipris_cache/`에 캐시되며 서비스별 월 950회에서 멈춥니다.
-  현재 55개 출원·164행. 체크리스트와 API(`?source=KR`)에 함께 표시하며, 분석 중인 출원 자신의 결과는 제외합니다.
+  현재 139개 출원·383행. 체크리스트와 API(`?source=KR`)에 함께 표시하며, 분석 중인 출원 자신의 결과는 제외합니다.
   자세한 수치: [PRECEDENT_VALIDATION.md](docs/validation/PRECEDENT_VALIDATION.md).
 - **한계**: 거절 유형 단위 라벨입니다(청구항 단위 아님). 대응 유형은 정규식 분류라 오분류가 있습니다.
   미국 통계는 한국 심사 결과를 예측하지 않으며 모든 항목에 "참고용, 변리사 검토 필요"를 붙입니다.

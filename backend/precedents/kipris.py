@@ -97,25 +97,60 @@ class Kipris:
         usage[month][service] = used + 1
         self.usage_path.write_text(json.dumps(usage, indent=2) + "\n", encoding="utf-8")
 
+    def _get(self, url, params, attempts=3):
+        """KIPRIS sometimes resets connections; retry with backoff before giving up."""
+        client = self.client or httpx
+        for attempt in range(attempts):
+            try:
+                response = client.get(url, params=params, timeout=30)
+                response.raise_for_status()
+                return response
+            except httpx.HTTPError as exc:
+                if attempt + 1 == attempts:
+                    raise KiprisError(f"KIPRIS 연결 실패: {exc}") from exc
+                time.sleep(2 * (attempt + 1))
+
     def raw(self, service, operation, application_number):
         name = SERVICES.get(service, service)
         path = self.cache / name / operation / f"{application_number}.xml"
         if path.exists():
             return path.read_text(encoding="utf-8")
         self._count(name)
-        client = self.client or httpx
-        response = client.get(
+        response = self._get(
             f"{BASE}/{name}/{operation}",
-            params={"applicationNumber": application_number, "accessKey": self.key or access_key()},
-            timeout=30,
+            {"applicationNumber": application_number, "accessKey": self.key or access_key()},
         )
-        response.raise_for_status()
         text = response.text
         parse_items(text)  # raise on API errors before caching
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(text, encoding="utf-8")
         time.sleep(self.sleep)
         return text
+
+    def search_by_date(self, send_date, start=1, count=50):
+        """의견제출통지서 발송일 검색 → (applicationNumber list, total). Cached like other calls."""
+        name = SERVICES["OP"]
+        path = self.cache / name / "advancedSearchInfo-date" / f"{send_date}-{start}-{count}.xml"
+        if not path.exists():
+            self._count(name)
+            response = self._get(
+                f"{BASE}/{name}/advancedSearchInfo",
+                {
+                    "sendDate": send_date,
+                    "docsStart": start,
+                    "docsCount": count,
+                    "accessKey": self.key or access_key(),
+                },
+            )
+            parse_items(response.text)
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_text(response.text, encoding="utf-8")
+            time.sleep(self.sleep)
+        text = path.read_text(encoding="utf-8")
+        total = re.search(r"<totCnt>(\d+)</totCnt>", text)
+        return [i["applicationNumber"] for i in parse_items(text)], int(
+            total.group(1)
+        ) if total else 0
 
     def items(self, service, operation, application_number):
         return parse_items(self.raw(service, operation, application_number))
@@ -125,8 +160,11 @@ class Kipris:
         path = self.cache / "pdf" / f"{name}.pdf"
         if not path.exists():
             client = self.client or httpx
-            response = client.get(url, timeout=60, follow_redirects=True)
-            response.raise_for_status()
+            try:
+                response = client.get(url, timeout=60, follow_redirects=True)
+                response.raise_for_status()
+            except httpx.HTTPError as exc:
+                raise KiprisError(f"KIPRIS 문서 다운로드 실패: {exc}") from exc
             if not response.content.startswith(b"%PDF"):
                 raise KiprisError("KIPRIS 문서 응답이 PDF가 아닙니다.")
             path.parent.mkdir(parents=True, exist_ok=True)

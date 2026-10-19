@@ -319,8 +319,34 @@ def build_app(api, app):
     return records
 
 
+def seed_dates(per_month=1):
+    """Weekdays spread over 2019-2023 (recent notices may not have an outcome yet)."""
+    import datetime
+
+    out = []
+    for year in range(2019, 2024):
+        for month in range(1, 13):
+            for k in range(per_month):
+                day = datetime.date(year, month, 8 + 7 * k)
+                while day.weekday() >= 5:
+                    day += datetime.timedelta(days=1)
+                out.append(day.strftime("%Y%m%d"))
+    return out
+
+
 def applications(args):
     apps = sorted({p.name.split("_")[0] for p in SAMPLES.iterdir() if p.is_dir()})
+    if args.from_dates:
+        api = Kipris()
+        seeded = []
+        for send_date in seed_dates():
+            try:
+                found, _ = api.search_by_date(send_date, 1, args.per_date)
+            except KiprisError:
+                break
+            # 특허(10-) only; utility models (20-) follow different rules.
+            seeded += [a for a in found if a.startswith("10") and a not in seeded]
+        apps += [a for a in seeded if a not in apps]
     if args.oa_2015:
         with zipfile.ZipFile(OA_2015) as z:
             extra = sorted({Path(n).name.split("_")[0] for n in z.namelist() if n.endswith(".xml")})
@@ -332,6 +358,8 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("--oa-2015", action="store_true", help="add apps from the 2015 OA zip")
     parser.add_argument("--limit", type=int, default=50, help="max extra 2015 applications")
+    parser.add_argument("--from-dates", action="store_true", help="seed apps from OA send dates")
+    parser.add_argument("--per-date", type=int, default=5, help="applications per seed date")
     args = parser.parse_args()
     api = Kipris()
     records, failed = [], {}
