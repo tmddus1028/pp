@@ -21,7 +21,7 @@ PDF 3페이지에는 Claim 20 취소 및 첫 거절이, 10페이지에는 Claim 
 R6는 별도의 §103 거절이 아니라 objection입니다.
 특허 공개 문서에는 Claim 20이 있지만 OA에는 취소되어 있어, 두 입력의 버전이 완전히 같다고 주장하지 않습니다.
 
-원본 사본·해시·페이지별 근거: [fixture 설명](tests/fixtures/oa_status/README.md).
+원본 사본·해시·페이지별 근거: [fixture 설명](../../tests/fixtures/oa_status/README.md).
 검증에 사용한 PDF는 원본의 바이트 사본이며 원본 PDF를 수정·재저장하지 않았습니다.
 
 ## 오류 원인과 수정
@@ -82,10 +82,10 @@ UI 기존 요약 테스트에는 새 허용 카드(예제에서 0)를 추가했�
 Claim 15가 계속 펼쳐지는 것을 확인했습니다. Claim 20은 취소 상태와 원문 근거를 표시합니다.
 재현 입력에서는 4/6/10·인용 2개, Claim 15 허용·red 없음 및 허용 근거를 확인했습니다.
 
-- [실제 PDF 화면](data/outputs/oa-status-actual.png)
-- [사용자 정답표 재현 화면](data/outputs/oa-status-reconstructed.png)
-- [실제 PDF API 결과](data/validation/oa_status/actual.json)
-- [재현 TXT API 결과](data/validation/oa_status/reconstructed.json)
+- [실제 PDF 화면](../../data/outputs/oa-status-actual.png)
+- [사용자 정답표 재현 화면](../../data/outputs/oa-status-reconstructed.png)
+- [실제 PDF API 결과](../../data/validation/oa_status/actual.json)
+- [재현 TXT API 결과](../../data/validation/oa_status/reconstructed.json)
 
 재현 명령:
 

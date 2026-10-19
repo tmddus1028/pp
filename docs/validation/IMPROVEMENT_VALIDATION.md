@@ -76,7 +76,7 @@ KR은 기존 `korean_prototype/.env` 또는 환경변수의 `KR_AZURE_OPENAI_*` 
 
 미국은 `pp_ex1/pp_vd1`, `pp_ex2/pp_vd2`, `pp_ex3/pp_vd3` **전체 원본 PDF**를
 실제 multipart API에 다시 입력했다. SHA-256, 기대값 및 Evidence 검사는
-[golden-checks.json](data/outputs/improvements/golden/golden-checks.json)에 보존했다.
+[golden-checks.json](../../data/outputs/improvements/golden/golden-checks.json)에 보존했다.
 
 | 사례 | 기존 분석 유지 | 새 검토 결과 |
 |---|---|---|
@@ -85,10 +85,10 @@ KR은 기존 `korean_prototype/.env` 또는 환경변수의 `KR_AZURE_OPENAI_*` 
 | 17/708,932 | 직접 17, Objection 2, 허용 0, relied 7; Wei/Oda/Biyikli 내부 보존 | Claim 15·16/R6만 명시적 조건부 재작성; Claim 1/R1에는 붙이지 않음 |
 | 10-2019-0000844 | 실제 PDF/XML 재입력: 1항, 직접 1, 종속 0, 제29조제2항, 인용발명 3 | 한국 용어로 표시; 명세서 자동 연결 및 선행문헌 본문 부재를 명시하고 구체적 한정 제안 제한 |
 
-7개 요청 모두 PASS. [요청별 결과](data/outputs/improvements/improvement-checks.json),
-[브라우저 기록](data/outputs/improvements/browser.json),
-[미국 화면](data/outputs/improvements/us-improvement.png),
-[한국 화면](data/outputs/improvements/kr-improvement.png).
+7개 요청 모두 PASS. [요청별 결과](../../data/outputs/improvements/improvement-checks.json),
+[브라우저 기록](../../data/outputs/improvements/browser.json),
+[미국 화면](../../data/outputs/improvements/us-improvement.png),
+[한국 화면](../../data/outputs/improvements/kr-improvement.png).
 개선 버튼 브라우저 검사에는 미국 특허 40–41쪽과 재구성 OA fixture를 사용했다.
 전체 미국 OA 원본 검증은 위 별도 multipart 검사로 수행했으며 두 검사를 혼동하지 않는다.
 

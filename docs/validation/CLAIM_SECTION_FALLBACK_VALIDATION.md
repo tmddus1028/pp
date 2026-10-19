@@ -30,7 +30,7 @@ Fallback 번호 경계는 줄 시작뿐 아니라 마침표·세미콜론과 공
 
 ## 실제 파일 및 회귀 결과
 
-- 원본의 바이트 사본: [pp_ex3.pdf](tests/fixtures/claim_sections/pp_ex3.pdf).
+- 원본의 바이트 사본: [pp_ex3.pdf](../../tests/fixtures/claim_sections/pp_ex3.pdf).
 - SHA-256: `e8d5120002a99f6a36c9835b2cb7e932e2304fe110e1ae1ac681d64964003cf9`.
 - 18페이지, OCR 사용 없음, 명시적 Claim 제목 없음.
 - **Claim 1~20 모두 추출, 총 20개.** Claim 1은 PDF 17페이지, Claim 16~20은 18페이지.
@@ -42,7 +42,7 @@ Fallback 번호 경계는 줄 시작뿐 아니라 마침표·세미콜론과 공
 - 실제 FastAPI multipart 업로드 성공.
 - 실제 Edge에서 원본 사본 업로드 성공, 20개 Claim 카드 확인.
   Claim 1 → PDF 17페이지, Claim 19·20 → PDF 18페이지 이동 및 선택 카드 확인.
-- [브라우저 화면](data/outputs/claim-section-pp-ex3.png).
+- [브라우저 화면](../../data/outputs/claim-section-pp-ex3.png).
 
 API·브라우저 테스트의 OA는 전송 및 분석 경로 확인용 합성 TXT입니다.
 실제 같은 사건의 특허/OA 쌍이나 법률적 분석 정확도를 검증한 것이 아닙니다.

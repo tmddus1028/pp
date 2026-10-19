@@ -77,7 +77,7 @@ OCR 제목 오타 fallback은 자모 거리와 양쪽 구간 경계를 요구하
 
 구형 XML 178개 중 **165개 추출, 13개 명시적 미지원 오류**입니다.
 165개는 수동 정답·청구범위 짝 검증이 없어 정확도 PASS가 아닙니다.
-[구형 XML 개별 결과](data/outputs/kr_parity/legacy_xml.json).
+[구형 XML 개별 결과](../../data/outputs/kr_parity/legacy_xml.json).
 
 상위 거절 내 세부 항목별 인용 조합을 완전히 별도 rejection으로 나누지는 않습니다.
 예컨대 0874 R2는 대상 1–9와 인용 1+2를 상위 그룹으로 보존합니다.
@@ -91,7 +91,7 @@ native 텍스트가 페이지당 30자 미만이면 PDFium 텍스트를 재시�
 raw OCR, 정규화 텍스트, 페이지, 단어 bbox·신뢰도, OCR 사용 경고를 별도로 보존합니다.
 
 공식 모델 URL·SHA-256·라이선스는
-[ocr_model.json](korean_prototype/data/ocr_model.json)에 있습니다.
+[ocr_model.json](../../korean_prototype/data/ocr_model.json)에 있습니다.
 설치: `uv run python korean_prototype/scripts/install_korean_ocr.py`.
 Tesseract 자체 설치도 필요합니다. `KR_TESSERACT_CMD`, `KR_TESSDATA_DIR`로 경로를 지정합니다.
 현재 kor 모델은 혼합 영어 약어에 오류가 남습니다.
@@ -131,8 +131,8 @@ XML의 화면 p.1은 논리 페이지로, OA PDF의 물리 페이지가 아닙�
 
 ## 10–11. 실제 fixture와 expected / actual
 
-원본·출처·해시·수동 라벨: [data/fixtures/korean](data/fixtures/korean/README.md).
-개별 실제 결과: [parser_metrics.json](data/outputs/kr_parity/parser_metrics.json).
+원본·출처·해시·수동 라벨: [data/fixtures/korean](../../data/fixtures/korean/README.md).
+개별 실제 결과: [parser_metrics.json](../../data/outputs/kr_parity/parser_metrics.json).
 
 | 출원 | 청구항 expected=actual | 상위 거절 expected=actual | 상태 expected=actual | 고유 문헌 |
 |---|---|---|---|---:|
@@ -167,7 +167,7 @@ reference 없는 3사건의 0/0을 reference 정확도 100% 분모에 넣지 않
 
 ## 13. OCR 평가
 
-[OCR 결과](data/outputs/kr_parity/ocr/metrics.json).
+[OCR 결과](../../data/outputs/kr_parity/ocr/metrics.json).
 공개 문서를 300 dpi로 이미지화한 파생 자료이며, 실제 스캐너 자료가 아닙니다.
 
 | 입력 | 핵심 결과 | OCR 범위 |
@@ -201,9 +201,9 @@ Edge headless로 실제 로컬 HTTP 앱을 조작했습니다.
 | 긴 문장 | 1920/1440/1280/1024px 네 화면 자연 줄바꿈 PASS |
 | 미국 UI 전후 | 네 화면 픽셀 및 CSS/geometry hash 동일 PASS |
 
-[KR 브라우저 기록](data/outputs/kr_parity/browser/checks.json),
-[스크린샷 폴더](data/outputs/kr_parity/browser),
-[US 전후 캡처](data/outputs/jurisdiction).
+[KR 브라우저 기록](../../data/outputs/kr_parity/browser/checks.json),
+[스크린샷 폴더](../../data/outputs/kr_parity/browser),
+[US 전후 캡처](../../data/outputs/jurisdiction).
 미국 줄바꿈 검사는 24개 화면영역/viewport 조합에서 최소 본문폭302px,
 검사 영문 문장은 최대3줄이었습니다. 새 한국 전용 화면이나 CSS는 만들지 않았습니다.
 브라우저는 실제 한국 2사건 중심이며 모든 5사건의 모든 클릭 조합을 검사한 것은 아닙니다.
@@ -236,7 +236,7 @@ diff와 후보 검색을 의미상 지지 판정으로 대신하지 않습니다
 - 17/708,932: 실제 OA fixture, 직접17/Objection2/허용0,
   relied7/supporting1/not-relied2 유지. 관련 상태·문헌 테스트39 PASS.
 - 작업 전 해시와 대조한 US parser/ingestion/graph/service/CSS 보호 파일 **27개 변경0**.
-  [해시 대조 결과](data/outputs/kr_parity/us_protected_hash_check.json).
+  [해시 대조 결과](../../data/outputs/kr_parity/us_protected_hash_check.json).
 - Ruff 검사 PASS. 테스트 경고2개는 기존 Starlette/httpx·anyio deprecation입니다.
 
 기존 US golden expected는 변경하지 않았습니다. 한국 capability 기대값만 새 실제 동작에

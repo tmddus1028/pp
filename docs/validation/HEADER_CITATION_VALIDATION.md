@@ -10,7 +10,7 @@ impact/evaluation 로직은 다시 작성하지 않았습니다.
   출원 14/623,904, 41쪽. 로컬 사본: `data/raw/us20150283132a1/US20150283132A1.pdf`.
 - 회귀 PDF: 원본의 40·41쪽을 페이지 객체 그대로 추출한
   `tests/fixtures/patent_headers/us20150283132a1_pages_40_41.pdf`.
-  [source.json](tests/fixtures/patent_headers/source.json)에 원본/발췌 SHA-256, URL, 페이지 대응을 기록했습니다.
+  [source.json](../../tests/fixtures/patent_headers/source.json)에 원본/발췌 SHA-256, URL, 페이지 대응을 기록했습니다.
 - Office Action: 실제 사용자 파일은 제공되지 않았습니다.
   `tests/fixtures/citations/office_action_14623904_reconstructed.txt`는 사용자가 알려준
   출원번호, Claims 1–19, §112/§103(a), 다섯 인용문헌으로 만든 **가상 재현 fixture**입니다.

@@ -41,7 +41,7 @@ PDF 검토의 Claim/OA/citation evidence, 설명 문단, TXT 대체 뷰;
 - 지도 Claim 7의 R1/R3 및 Liu/Donmez/Huang 연결, Claim/OA PDF 이동, 선택 유지 검증 통과.
 - 심사관 지적의 미리보기/펼치기/접기, 다른 비교 카드 유지, 원문 문자 동일성 검증 통과.
 
-세부 측정: [readable-text-validation.json](data/outputs/readable-text-validation.json).
+세부 측정: [readable-text-validation.json](../../data/outputs/readable-text-validation.json).
 
 ## 자동 검증
 

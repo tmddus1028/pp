@@ -170,9 +170,9 @@ prior_art_assessment는 OA_ONLY 또는 INSUFFICIENT_EVIDENCE다. 명세서 지�
 - 15/914,356: 20항, 거절3, 인용5; 47/13페이지 유지.
 - 17/708,932: 직접17, Objection2, 허용0, relied7; 보조/기록 문헌 내부 보존.
 
-[원본 해시·기대값 비교](data/outputs/revisions/golden/golden-checks.json),
-[브라우저 mock 검증](data/outputs/revisions/browser.json),
-[mock 화면](data/outputs/revisions/mock-revision.png).
+[원본 해시·기대값 비교](../../data/outputs/revisions/golden/golden-checks.json),
+[브라우저 mock 검증](../../data/outputs/revisions/browser.json),
+[mock 화면](../../data/outputs/revisions/mock-revision.png).
 미국 개선 workflow 화면은 실제 특허 40–41쪽+재구성 OA fixture를 사용한다.
 전체 미국 원본 검증은 별도의 golden multipart 실행이다.
 

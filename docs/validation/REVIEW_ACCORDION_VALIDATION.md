@@ -45,7 +45,7 @@ Claim 번호·상태·법조항은 접힌 카드에도 보이고, 오른쪽 화�
 Streamlit 회귀 4개로 초기 상태, 재진입 및 늦은 이벤트 무시, 명시적 PDF 링크,
 선택 없는 관계 지도 이동을 검사합니다. 최종 명령 결과는 [VALIDATION.md](VALIDATION.md)에 기록합니다.
 
-화면: [처음 진입](data/outputs/review-accordion-initial.png), [Claim 14 상세](data/outputs/review-accordion-claim14.png).
+화면: [처음 진입](../../data/outputs/review-accordion-initial.png), [Claim 14 상세](../../data/outputs/review-accordion-claim14.png).
 
 ## 수정 파일
 

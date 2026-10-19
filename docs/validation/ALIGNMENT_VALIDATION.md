@@ -96,11 +96,11 @@
 
 ## 결과 파일
 
-- [정렬 측정 결과](data/outputs/alignment/browser.json)
-- [기능 diff 검사](data/outputs/alignment/functional_diff.json)
-- [변경 전 업로드](data/outputs/alignment/before-upload.png)
-- [변경 후 한국 업로드 1440px](data/outputs/alignment/upload-kr-1440.png)
-- [한국 업로드 1024px](data/outputs/alignment/upload-kr-1024.png)
-- [근거 비교 1440px](data/outputs/alignment/근거%20비교-1440.png)
+- [정렬 측정 결과](../../data/outputs/alignment/browser.json)
+- [기능 diff 검사](../../data/outputs/alignment/functional_diff.json)
+- [변경 전 업로드](../../data/outputs/alignment/before-upload.png)
+- [변경 후 한국 업로드 1440px](../../data/outputs/alignment/upload-kr-1440.png)
+- [한국 업로드 1024px](../../data/outputs/alignment/upload-kr-1024.png)
+- [근거 비교 1440px](../../data/outputs/alignment/근거%20비교-1440.png)
 
 공통 앱 `http://127.0.0.1:8501`에 적용했다.

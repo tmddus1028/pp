@@ -82,7 +82,7 @@ Edge 브라우저 흐름:
 Ruff check 및 format check도 통과했습니다.
 `scripts/browser_pdf_review.py`의 **전체 41쪽 실제 특허 PDF** 검사도 통과했습니다.
 기존 accordion·bbox·badge·관계 지도·목록·원본 다운로드·실제 Tesseract OCR 흐름을 함께 확인했습니다.
-화면: [Claim 14 비교](data/outputs/evidence-comparison-claim14.png), [좁은 화면](data/outputs/evidence-comparison-narrow.png).
+화면: [Claim 14 비교](../../data/outputs/evidence-comparison-claim14.png), [좁은 화면](../../data/outputs/evidence-comparison-narrow.png).
 
 ## 수정 파일
 

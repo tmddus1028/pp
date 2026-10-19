@@ -48,7 +48,7 @@ git HEAD로 되돌리지 않았다. 기준 해시는
 - PDF/지도/원문 펼치기 JavaScript 이벤트 처리 파일은 변경하지 않았다.
 - 기존 테스트의 expected 값은 수정하지 않았다.
 
-검사 결과: [functional_diff.json](data/outputs/visual_reskin/functional_diff.json).
+검사 결과: [functional_diff.json](../../data/outputs/visual_reskin/functional_diff.json).
 이 비교와 아래 회귀 검사는 확인한 경로의 보호 근거이며 모든 가능한 입력에 대한
 동작을 수학적으로 증명한다는 의미는 아니다.
 
@@ -92,13 +92,13 @@ git HEAD로 되돌리지 않았다. 기준 해시는
 넘침, 장식 클릭 차단 여부를 검사했다. Streamlit의 기존 사이드바 resize handle은
 원래 경계를 넘는 입력 영역이므로 내용 넘침 검사에서 제외하고 기능은 유지했다.
 
-- [반응형 검사 수치](data/outputs/visual_reskin/browser.json)
-- [한국 실제 문서 정답 비교](data/outputs/visual_reskin/kr-golden/parser_metrics.json)
-- [미국 원본 PDF 3쌍 정답 비교](data/outputs/visual_reskin/golden/golden-checks.json)
-- [한국 업로드 1440px](data/outputs/visual_reskin/upload-kr-1440.png)
-- [미국 업로드 1024px](data/outputs/visual_reskin/upload-us-1024.png)
-- [PDF 검토 1440px](data/outputs/visual_reskin/PDF%20검토-1440.png)
-- [관계 지도 1440px](data/outputs/visual_reskin/관계%20지도-1440.png)
-- [근거 비교 1440px](data/outputs/visual_reskin/근거%20비교-1440.png)
+- [반응형 검사 수치](../../data/outputs/visual_reskin/browser.json)
+- [한국 실제 문서 정답 비교](../../data/outputs/visual_reskin/kr-golden/parser_metrics.json)
+- [미국 원본 PDF 3쌍 정답 비교](../../data/outputs/visual_reskin/golden/golden-checks.json)
+- [한국 업로드 1440px](../../data/outputs/visual_reskin/upload-kr-1440.png)
+- [미국 업로드 1024px](../../data/outputs/visual_reskin/upload-us-1024.png)
+- [PDF 검토 1440px](../../data/outputs/visual_reskin/PDF%20검토-1440.png)
+- [관계 지도 1440px](../../data/outputs/visual_reskin/관계%20지도-1440.png)
+- [근거 비교 1440px](../../data/outputs/visual_reskin/근거%20비교-1440.png)
 
 현재 실행 중인 공통 앱 `http://127.0.0.1:8501`에 적용되어 있다.

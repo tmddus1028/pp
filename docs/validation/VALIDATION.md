@@ -68,7 +68,7 @@ Claim/OA/명세서/선행기술의 2×2 비교 화면, Claim·지적 사유 선�
 Claim 변경·종속 영향·900px 스택·명세서 빈 상태 및 기존 명시적 문단/도면 연결을 확인했습니다.
 기존 accordion·Claim 1/14/18 bbox·badge 19개·관계 지도·OCR을 포함한 전체 Edge 검사도 통과했습니다.
 설명과 수정 파일: [EVIDENCE_COMPARISON_VALIDATION.md](EVIDENCE_COMPARISON_VALIDATION.md).
-[Claim 14 비교 화면](data/outputs/evidence-comparison-claim14.png).
+[Claim 14 비교 화면](../../data/outputs/evidence-comparison-claim14.png).
 
 **이전 변경: PDF 검토 카드 기본 접힘 및 단일 accordion.**
 
@@ -79,7 +79,7 @@ PDF 검토에 처음 또는 일반 메뉴로 재진입하면 선택·펼침이 �
 실제 41쪽 특허 PDF와 재현 OA의 전체 Edge 검사에서 Claim 7→14→재클릭 접힘,
 PDF 41쪽 이동·키보드·일반 재진입 접힘 및 기존 bbox/badge/관계 지도/citation/OCR 흐름이 통과했습니다.
 설명과 수정 파일: [REVIEW_ACCORDION_VALIDATION.md](REVIEW_ACCORDION_VALIDATION.md).
-[처음 진입 화면](data/outputs/review-accordion-initial.png).
+[처음 진입 화면](../../data/outputs/review-accordion-initial.png).
 
 **이전 변경: 청구항 분석을 간결한 Claim별 상태 목록으로 개편.**
 
@@ -89,7 +89,7 @@ OCR·시스템 안내를 접힌 처리 정보로 모으고, 작은 요약 카드
 처리 정보 숨김/펼침, 기존 bbox·badge 19개·관계 지도·citation·다운로드 및 실제 스캔 OCR 흐름도 통과했습니다.
 1366px/900px에서 목록 간격과 PDF 버튼의 전체 문구를 확인했습니다.
 자세한 변경과 파일 목록: [CLAIM_ANALYSIS_VALIDATION.md](CLAIM_ANALYSIS_VALIDATION.md).
-[청구항 분석 화면](data/outputs/claim-analysis-desktop.png).
+[청구항 분석 화면](../../data/outputs/claim-analysis-desktop.png).
 
 **이전 변경: 모든 Claim annotation의 번호 badge 표시 통일.**
 
@@ -101,7 +101,7 @@ badge **19개가 모두 표시**되는 것을 확인했습니다. 왼쪽·오른
 기존 관계 지도·citation·검색/다운로드·bbox·명세서/도면·실제 OCR 브라우저 흐름도 통과했습니다.
 Backend/OCR/parser/Evidence/bbox 병합은 변경하지 않았습니다.
 자세한 정책·파일 목록: [BADGE_VALIDATION.md](BADGE_VALIDATION.md).
-[41쪽 badge 화면](data/outputs/pdf-review-badges-page41.png).
+[41쪽 badge 화면](../../data/outputs/pdf-review-badges-page41.png).
 
 **이전 변경: 보조 관계 지도와 PDF 검토 양방향 연결.**
 
@@ -121,8 +121,8 @@ missing Claim, 선택 항목·거절 범위의 왕복 전달과 이전 이벤트
 Backend/parser/OCR/API와 기존 Claim 좌표/병합은 변경하지 않았습니다.
 OA는 실제 14/623,904 원본이 아닌 기존 **재현 PDF**를 사용했습니다.
 전체 구현·파일·제한: [RELATIONSHIP_MAP_VALIDATION.md](RELATIONSHIP_MAP_VALIDATION.md).
-캡처: [Claim 14 관계 지도](data/outputs/relationship-map-claim14.png),
-[Greco citation](data/outputs/relationship-map-citation.png), [좁은 화면](data/outputs/relationship-map-narrow.png).
+캡처: [Claim 14 관계 지도](../../data/outputs/relationship-map-claim14.png),
+[Greco citation](../../data/outputs/relationship-map-citation.png), [좁은 화면](../../data/outputs/relationship-map-narrow.png).
 
 **이전 변경: Claim 전체 영역 테두리와 열별 bbox 병합.**
 
@@ -134,8 +134,8 @@ Claim 1의 **40쪽 17개 → 1개 / 41쪽 5개 → 1개**.
 기존 PDF 검토 브라우저 전체 흐름과 실제 OCR도 통과했습니다.
 이번 변경은 frontend 렌더링에 한정하며 backend/OCR/parser/Evidence 좌표 계산은 변경하지 않았습니다.
 상세 알고리즘·변경 파일·검증 범위: [CLAIM_BORDER_VALIDATION.md](CLAIM_BORDER_VALIDATION.md).
-캡처: [Claim 1](data/outputs/pdf-review-claim-1-border.png),
-[Claim 14](data/outputs/pdf-review-claim-14-border.png), [Claim 18](data/outputs/pdf-review-claim-18-border.png).
+캡처: [Claim 1](../../data/outputs/pdf-review-claim-1-border.png),
+[Claim 14](../../data/outputs/pdf-review-claim-14-border.png), [Claim 18](../../data/outputs/pdf-review-claim-18-border.png).
 
 **이전 변경: PDF 중심 검토 UI, 원문 좌표 adapter, OCR overlay metadata.**
 
@@ -158,9 +158,9 @@ Microsoft Edge 1366×768에서 `scripts/browser_pdf_review.py`를 실행하여 �
 **재현용 OA PDF**를 사용했습니다. 이 출원의 동일 시점 청구항·전체 OA 원본 쌍을 검증한 결과는 아닙니다.
 명세서/도면 링크는 원문의 명시적 참조만 연결하며 support 판단을 새로 생성하지 않습니다.
 자료·구현·제한·전체 변경 파일: [PDF_REVIEW_VALIDATION.md](PDF_REVIEW_VALIDATION.md).
-스크린샷: [데스크톱](data/outputs/pdf-review-desktop.png),
-[종속 영향](data/outputs/pdf-review-dependency.png), [좁은 화면](data/outputs/pdf-review-narrow.png),
-[OCR](data/outputs/pdf-review-ocr.png).
+스크린샷: [데스크톱](../../data/outputs/pdf-review-desktop.png),
+[종속 영향](../../data/outputs/pdf-review-dependency.png), [좁은 화면](../../data/outputs/pdf-review-narrow.png),
+[OCR](../../data/outputs/pdf-review-ocr.png).
 
 **이전 변경: Patent PDF 여백 정리와 WO/NPL 인용문헌 완전성 수정.**
 당시 127 tests passed, backend coverage 92%, Ruff lint/format 통과.
@@ -193,12 +193,12 @@ OA의 **5/6/2016 제출물에 대한 응답** 표시를 대조해 **OA 당시와
 
 7월 답변서 표지에는 OA 날짜가 5월 31일로 적혀 있으나, 실제 OA 표지와 인증 이력은 6월 17일입니다.
 이 불일치를 숨기거나 입력에서 수정하지 않았고, 동일 버전 판정은 미수정 선언과 제출 이력에 근거합니다.
-근거 페이지와 문서 전체 여부, 판정의 한계는 [원본·버전 검토 기록](data/raw/uspto_14455526_20160617/README.md)에 있습니다.
+근거 페이지와 문서 전체 여부, 판정의 한계는 [원본·버전 검토 기록](../../data/raw/uspto_14455526_20160617/README.md)에 있습니다.
 
-- [전체 OA PDF](data/raw/uspto_14455526_20160617/office_action.pdf), [전체 청구항 PDF](data/raw/uspto_14455526_20160617/claims.pdf)
-- [버전 확인 근거 PDF](data/raw/uspto_14455526_20160617/version_evidence.pdf), [출처·SHA-256·페이지 매핑](data/raw/uspto_14455526_20160617/manifest.json)
-- [기준 라벨](data/raw/uspto_14455526_20160617/ground_truth.json), [분석 결과](data/validation/uspto_14455526_20160617/analysis.json)
-- [평가 수치](data/validation/uspto_14455526_20160617/metrics.json), [검사 결과](data/validation/uspto_14455526_20160617/checks.json)
+- [전체 OA PDF](../../data/raw/uspto_14455526_20160617/office_action.pdf), [전체 청구항 PDF](../../data/raw/uspto_14455526_20160617/claims.pdf)
+- [버전 확인 근거 PDF](../../data/raw/uspto_14455526_20160617/version_evidence.pdf), [출처·SHA-256·페이지 매핑](../../data/raw/uspto_14455526_20160617/manifest.json)
+- [기준 라벨](../../data/raw/uspto_14455526_20160617/ground_truth.json), [분석 결과](../../data/validation/uspto_14455526_20160617/analysis.json)
+- [평가 수치](../../data/validation/uspto_14455526_20160617/metrics.json), [검사 결과](../../data/validation/uspto_14455526_20160617/checks.json)
 
 ## 실제 1쌍의 결과
 
@@ -225,7 +225,7 @@ Del Favero et al **US8073775**, Davis et al **US20090070263**입니다.
 초기 실행은 PDF의 중복 OCR 레이어 때문에 Claim 1 중복 오류로 실패했습니다.
 동일 내용을 가진 명시적 OCR 레이어의 중복 처리, `Listing of claims` 제목,
 `USPAP`/`USPN` 번호 및 복합 성명·슬래시 연결 인용을 수정했습니다.
-[수정 전 실패 기록](data/raw/uspto_14455526_20160617/baseline.json)을 보존했고 회귀 테스트를 추가했습니다.
+[수정 전 실패 기록](../../data/raw/uspto_14455526_20160617/baseline.json)을 보존했고 회귀 테스트를 추가했습니다.
 
 재현 명령:
 

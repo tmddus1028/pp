@@ -41,7 +41,7 @@ OA 원본 자체를 검증한 것은 아닙니다.
 - Claim 14/19 클릭과 Review Panel 연동, 원본 annotation 객체 불변.
 - 기존 관계 지도·PDF 왕복·필터·citation·원본 다운로드·실제 OCR 흐름 유지.
 
-캡처: [41쪽 전체 badge](data/outputs/pdf-review-badges-page41.png).
+캡처: [41쪽 전체 badge](../../data/outputs/pdf-review-badges-page41.png).
 최종 실행 결과: [VALIDATION.md](VALIDATION.md).
 
 ## 수정 파일

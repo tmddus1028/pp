@@ -47,12 +47,12 @@ PDF의 기존 옅은 배경과 명확한 사각 경계도 그대로다.
 
 ## 증거
 
-- [화면별 검사 결과](data/outputs/annotation_boxes/checks.json)
-- [수정 전후 PDF 좌표·배지 비교](data/outputs/annotation_boxes/pdf_before_after.json)
-- [소스 해시 비교](data/outputs/annotation_boxes/functional_diff.json): 기존 파일 133개 불변, review.css만 변경
-- [미국 원문 박스](data/outputs/annotation_boxes/text-1440.png)
-- [한국 실제 PDF 박스](data/outputs/annotation_boxes/kr-pdf-1440.png)
-- [한국 XML 원문 박스](data/outputs/annotation_boxes/kr-xml-1440.png)
+- [화면별 검사 결과](../../data/outputs/annotation_boxes/checks.json)
+- [수정 전후 PDF 좌표·배지 비교](../../data/outputs/annotation_boxes/pdf_before_after.json)
+- [소스 해시 비교](../../data/outputs/annotation_boxes/functional_diff.json): 기존 파일 133개 불변, review.css만 변경
+- [미국 원문 박스](../../data/outputs/annotation_boxes/text-1440.png)
+- [한국 실제 PDF 박스](../../data/outputs/annotation_boxes/kr-pdf-1440.png)
+- [한국 XML 원문 박스](../../data/outputs/annotation_boxes/kr-xml-1440.png)
 
 변경 파일: `frontend/pdf_review_component/review.css`,
 `scripts/browser_annotation_boxes.py`, `ANNOTATION_BOX_VALIDATION.md`.

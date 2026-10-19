@@ -20,7 +20,7 @@ OCR worker는 별도 프로세스로 실행하므로 위 기본 커버리지 명
 `ocr_pages=[1,2]`, CLI와 같은 결과를 확인했습니다. Streamlit health도 200입니다.
 Streamlit 자동 테스트는 OCR 안내·페이지 목록·OCR 원문 표시와 메타데이터가 없는 이전 응답의 표시를 확인합니다.
 
-검증 산출물: [분석 JSON](data/validation/ocr/analysis.json), [실행 환경·입력 해시·실서버 결과](data/validation/ocr/checks.json).
+검증 산출물: [분석 JSON](../../data/validation/ocr/analysis.json), [실행 환경·입력 해시·실서버 결과](../../data/validation/ocr/checks.json).
 
 ## OCR 처리 흐름
 
@@ -45,7 +45,7 @@ PyMuPDF 1.28.2 우선 선택과 300 DPI 호출 계약, strict 모드 실패는 �
 ## 특허 표현·downstream 검사
 
 `14/623,904` 형식을 본뜬 **가상 문서**로 텍스트 PDF, 이미지 전용 스캔 PDF, 혼합 PDF를 만들었습니다.
-[fixture 구성과 정답 문구](tests/fixtures/ocr/README.md)를 참고하세요. 실제 사건의 거절 사실을 재현한 문서가 아닙니다.
+[fixture 구성과 정답 문구](../../tests/fixtures/ocr/README.md)를 참고하세요. 실제 사건의 거절 사실을 재현한 문서가 아닙니다.
 
 | 검사 | 결과 |
 |---|---|
@@ -72,7 +72,7 @@ OCR 결과가 비어 있지 않아도 오인식은 가능하며, 원문 대조�
 ## Windows 준비 및 실제 파일 테스트
 
 현재 PC에는 Tesseract와 영어 데이터가 `%LOCALAPPDATA%\Programs\Tesseract-OCR`에 설치되어 자동 탐색됩니다.
-다른 PC에서는 Tesseract Windows 설치와 `uv sync`가 필요합니다. 자세한 링크·경로 설정은 [README](README.md#스캔-pdf-자동-ocr)에 있습니다.
+다른 PC에서는 Tesseract Windows 설치와 `uv sync`가 필요합니다. 자세한 링크·경로 설정은 [README](../../README.md#스캔-pdf-자동-ocr)에 있습니다.
 
 ```dotenv
 TESSERACT_CMD=C:\Program Files\Tesseract-OCR\tesseract.exe

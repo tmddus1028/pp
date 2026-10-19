@@ -63,7 +63,7 @@ uv run --no-project --with playwright --python 3.11 python -X utf8 -u scripts/br
 | 별도 Edge 근거 이동 검사 | 통과, R1 p.3 / R2 p.4 |
 | 전체 41쪽 PDF Edge 회귀 | 통과, accordion·Claim 1/14/18 bbox·badge 19개·지도·비교·OCR 포함 |
 
-[Claim 1을 유지한 OA 근거 화면](data/outputs/claim1-oa-evidence.png).
+[Claim 1을 유지한 OA 근거 화면](../../data/outputs/claim1-oa-evidence.png).
 전체 회귀가 마지막으로 저장한 캡처는 기존 재현 OA의 R2 p.2를 표시한다.
 
 ## 수정 파일

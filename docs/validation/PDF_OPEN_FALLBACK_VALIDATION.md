@@ -52,7 +52,7 @@ PyMuPDF 우선과 open 실패 후 PDFium 전환 분기는 별도 mock 회귀로 
 | 문헌 종류 | 특허 3개, NPL 2개 |
 | OCR | 특허 35쪽만 기존 OCR, OA는 native 텍스트 사용 |
 
-파일 SHA-256 및 세부 기대값은 [manifest](tests/fixtures/pdf_fallback/manifest.json)에 고정한다.
+파일 SHA-256 및 세부 기대값은 [manifest](../../tests/fixtures/pdf_fallback/manifest.json)에 고정한다.
 등록특허와 OA 당시 청구항 버전이 동일하다는 검증은 포함하지 않는다.
 
 ## 재현 및 검증
@@ -81,8 +81,8 @@ uv run --no-project --with playwright --python 3.11 python -X utf8 scripts/brows
 | `scripts.validate_pdf_fallback` | 모든 check true, 원본 파일 해시 유지 |
 | 실제 Edge 파일 업로드 | 47/13쪽, 20 Claims, 거절 3개, citation 5개, Claim 1 → OA p.5 통과 |
 
-[분석 JSON](data/validation/pdf_fallback/analysis.json), [검사 결과](data/validation/pdf_fallback/checks.json),
-[웹 화면 캡처](data/outputs/pdf-fallback-pp-pair.png).
+[분석 JSON](../../data/validation/pdf_fallback/analysis.json), [검사 결과](../../data/validation/pdf_fallback/checks.json),
+[웹 화면 캡처](../../data/outputs/pdf-fallback-pp-pair.png).
 pytest의 warning 2개는 기존 Starlette/httpx 및 anyio deprecation 안내이다.
 
 수정 파일:

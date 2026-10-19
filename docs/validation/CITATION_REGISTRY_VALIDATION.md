@@ -101,10 +101,10 @@ Oda·Biyikli를 R6 또는 다른 거절 아래에 연결하지 않습니다.
 
 산출물:
 
-- [7개 문헌 목록](data/outputs/citation-registry-seven.png)
-- [Liu R2 인용 원문 이동](data/outputs/citation-registry-liu-r2.png)
-- [기록 문헌 2개](data/outputs/citation-registry-recorded.png)
-- [실제 PDF 분석 JSON](data/validation/citation_registry/analysis.json)
+- [7개 문헌 목록](../../data/outputs/citation-registry-seven.png)
+- [Liu R2 인용 원문 이동](../../data/outputs/citation-registry-liu-r2.png)
+- [기록 문헌 2개](../../data/outputs/citation-registry-recorded.png)
+- [실제 PDF 분석 JSON](../../data/validation/citation_registry/analysis.json)
 
 ## 추가 테스트
 

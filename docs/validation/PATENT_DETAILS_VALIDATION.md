@@ -59,11 +59,11 @@ x/y/width/height 차이 **0px**. 제목 및 설명문과 카드 장식의 겹침
 
 ## 결과 자료
 
-- [변경 전후 좌표 비교](data/outputs/patent_details/geometry.json)
-- [보호 파일 해시 비교](data/outputs/patent_details/functional_diff.json)
-- [정렬 검사](data/outputs/patent_details/alignment/browser.json)
-- [한국 모드 1440px](data/outputs/patent_details/kr-1440.png)
-- [미국 모드 1280px](data/outputs/patent_details/us-1280.png)
-- [한국 모드 1024px](data/outputs/patent_details/kr-1024.png)
+- [변경 전후 좌표 비교](../../data/outputs/patent_details/geometry.json)
+- [보호 파일 해시 비교](../../data/outputs/patent_details/functional_diff.json)
+- [정렬 검사](../../data/outputs/patent_details/alignment/browser.json)
+- [한국 모드 1440px](../../data/outputs/patent_details/kr-1440.png)
+- [미국 모드 1280px](../../data/outputs/patent_details/us-1280.png)
+- [한국 모드 1024px](../../data/outputs/patent_details/kr-1024.png)
 
 공통 앱 `http://127.0.0.1:8501`에 적용했다.

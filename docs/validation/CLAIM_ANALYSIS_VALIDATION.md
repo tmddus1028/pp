@@ -61,4 +61,4 @@ PDF viewer 및 annotation geometry·provider·API 구조는 변경하지 않았�
 - `scripts/browser_pdf_review.py`, `scripts/browser_citation_smoke.py`, `scripts/browser_smoke.py` — 새 UI 흐름으로 연결.
 - `README.md`, `VALIDATION.md`, 이 문서 — 사용 방법·검증 기록.
 
-화면: [데스크톱](data/outputs/claim-analysis-desktop.png), [900px 화면](data/outputs/claim-analysis-narrow.png).
+화면: [데스크톱](../../data/outputs/claim-analysis-desktop.png), [900px 화면](../../data/outputs/claim-analysis-narrow.png).
