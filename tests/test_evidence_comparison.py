@@ -145,7 +145,7 @@ def test_comparison_to_pdf_navigation_and_return_preserve_selection(app, target,
         "R2" if expected == "rejection-R2" else None
     )
     assert app.session_state["review_ui"]["scope"] == scope
-    app.sidebar.radio[0].set_value("근거 비교").run()
+    app.radio(key="section").set_value("근거 비교").run()
     assert app.selectbox(key="comparison_claim").value == 14
     assert app.selectbox(key="comparison_scope").value == scope
 
@@ -162,7 +162,7 @@ def test_comparison_has_no_pdf_viewer_or_renderer(app):
 @pytest.mark.parametrize("origin", ["pdf", "map"])
 def test_other_views_send_claim_and_scope_to_comparison(app, origin):
     section = "PDF 검토" if origin == "pdf" else "관계 지도"
-    app.sidebar.radio[0].set_value(section).run()
+    app.radio(key="section").set_value(section).run()
     if origin == "pdf":
         ui = {
             **app.session_state["review_ui"],

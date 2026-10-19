@@ -39,8 +39,8 @@ def test_plain_reentry_clears_details_and_discards_late_events(app):
     with patch("frontend.pdf_review._component", return_value=event):
         app.run()
     assert app.session_state["review_ui"]["expanded"] == "claim-4"
-    app.sidebar.radio[0].set_value("청구항 분석").run()
-    app.sidebar.radio[0].set_value("PDF 검토").run()
+    app.radio(key="section").set_value("청구항 분석").run()
+    app.radio(key="section").set_value("PDF 검토").run()
     assert app.session_state["review_ui"]["selected"] is None
     assert app.session_state["review_ui"]["expanded"] is None
     assert app.session_state["selected_claim"] is None
@@ -56,7 +56,7 @@ def test_plain_reentry_clears_details_and_discards_late_events(app):
 
 
 def test_explicit_pdf_link_opens_only_the_requested_claim(app):
-    app.sidebar.radio[0].set_value("청구항 분석").run()
+    app.radio(key="section").set_value("청구항 분석").run()
     app.button(key="claim-pdf-4").click().run()
     assert app.session_state["review_ui"]["selected"] == "claim-4"
     assert app.session_state["review_ui"]["expanded"] == "claim-4"
@@ -99,8 +99,8 @@ def test_oa_navigation_persists_claim_and_independent_viewer_state(app):
     app.run()
     assert app.session_state["review_ui"] == ui
     # Plain reentry clears Claim and evidence focus together, retaining normal accordion behavior.
-    app.sidebar.radio[0].set_value("청구항 분석").run()
-    app.sidebar.radio[0].set_value("PDF 검토").run()
+    app.radio(key="section").set_value("청구항 분석").run()
+    app.radio(key="section").set_value("PDF 검토").run()
     for field in ("selected", "expanded", "viewer_evidence", "active_rejection"):
         assert app.session_state["review_ui"][field] is None
     assert app.session_state["result"] == before

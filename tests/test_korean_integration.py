@@ -203,7 +203,7 @@ def test_same_four_screens_and_mode_state_isolation(korean_result, result):
         patch("httpx.post", side_effect=response) as post,
     ):
         ui = AppTest.from_file(ROOT / "frontend/app.py", default_timeout=30).run()
-        assert ui.radio(key="jurisdiction_selector").value == "미국 특허"
+        assert ui.radio(key="jurisdiction_selector").value == "한국 특허"  # service default
         ui.radio(key="jurisdiction_selector").set_value("한국 특허").run()
         assert [s.value for s in ui.subheader] == ["01 · 명세서·청구범위", "02 · 의견제출통지서"]
         ui.button(key="demo").click().run()
@@ -212,7 +212,7 @@ def test_same_four_screens_and_mode_state_isolation(korean_result, result):
         assert ui.session_state["review_ui"]["selected"] is None
         assert ui.session_state["review_ui"]["expanded"] is None
         for screen in ["청구항 분석", "관계 지도", "근거 비교", "PDF 검토"]:
-            ui.sidebar.radio[0].set_value(screen).run()
+            ui.radio(key="section").set_value(screen).run()
             assert not ui.exception
             assert ui.session_state["result"] == kr
             if screen == "청구항 분석":
@@ -241,7 +241,7 @@ def test_same_four_screens_and_mode_state_isolation(korean_result, result):
                 assert ui.button(key="comparison-oa-R1").label == "의견제출통지서에서 보기"
                 assert any("특허문헌" in e.label for e in ui.expander)
                 assert any("의견제출통지서 요약" in m.value for m in ui.markdown)
-        ui.sidebar.radio[0].set_value("문서 업로드").run()
+        ui.radio(key="section").set_value("문서 업로드").run()
         assert ui.radio(key="jurisdiction_selector").value == "한국 특허"
         ui.radio(key="jurisdiction_selector").set_value("미국 특허").run()
         assert [s.value for s in ui.subheader] == ["01 · Patent / Claims", "02 · Office Action"]

@@ -68,7 +68,7 @@ function toggleCard(id){
 function setFilter(value){
   state.filter=value;
   // List filtering never changes Claim/rejection selection or PDF evidence focus.
-  drawToolbar();drawPanel();$('review-list').scrollTop=0;emit();
+  drawToolbar();drawPanel();drawPrecedents();drawAI();$('review-list').scrollTop=0;emit();
 }
 function annotations(){
   return model.annotations.filter(a=>{
@@ -330,35 +330,7 @@ function details(item,body){
       clearTimeout(timer);
       send('streamlit:setComponentValue',{value:{nonce:Date.now()+Math.random(),navigation:serverNavigation,ui:state,action:'open_comparison'},dataType:'json'});
     },'claim-pdf-link'));
-    if(item.rejection_ids.length){
-      const rid=state.scope!=='all'?state.scope:(item.rejection_ids.includes(state.active_rejection)?state.active_rejection:null);
-      const key=item.claim_number+':'+(rid||'all');
-      const event = (action, text) => {
-        clearTimeout(timer);
-        send('streamlit:setComponentValue',{value:{nonce:Date.now()+Math.random(),navigation:serverNavigation,ui:state,action,improvement_rejection:rid,revision_text:text},dataType:'json'});
-      };
-      body.append(button('개선 방안 보기',()=>{
-        const current=body.querySelector('.improvement-detail');
-        if(current){current.open=true;return;}
-        event('open_improvement');
-      },'claim-pdf-link'));
-      if(improvementOpen[key]){
-        const detail=el('details','improvement-detail');detail.open=true;detail.append(el('summary','','개선 방안'));
-        detail.append(button('AI 개선안 생성',()=>event('improve_claim'),'claim-pdf-link'));
-        if(improvementErrors[key])detail.append(el('p','notice',improvementErrors[key]));
-        if(improvements[key]){const content=el('div','readable-panel');content.innerHTML=improvements[key];detail.append(content);}
-        detail.append(el('h4','','수정 Claim 검증'));
-        const input=el('textarea','readable-text');input.rows=7;input.maxLength=12000;
-        input.setAttribute('aria-label','수정 Claim');input.value=revisionDrafts[key]||'';
-        input.style.boxSizing='border-box';input.style.resize='vertical';
-        input.addEventListener('input',()=>{revisionDrafts[key]=input.value;});
-        detail.append(input);
-        detail.append(button('수정본 검증',()=>event('review_revision',input.value),'claim-pdf-link'));
-        if(revisionErrors[key])detail.append(el('p','notice',revisionErrors[key]));
-        if(revisionResults[key]){const content=el('div','readable-panel');content.innerHTML=revisionResults[key];detail.append(content);}
-        body.append(detail);
-      }
-    }
+    if(item.rejection_ids.length)body.append(button('AI 방어 전략 보기',()=>openSection('ai-section'),'claim-pdf-link'));
   }
 }
 function drawPanel(){
@@ -402,7 +374,91 @@ function drawPanel(){
     list.append(card);
   });list.scrollTop=scroll;
 }
-function draw(){if(!model)return;drawToolbar();drawPanel();drawPage();}
+
+// ---- Right-panel sections: 대응 사례 and AI 방어 전략 follow the selected claim ----
+const OUTCOMES={resolved:'해소',unresolved:'미해소',excluded:'제외'};
+const RESPONSES={amendment:'보정 포함',argument_only:'주장만',none:'무대응',unknown:'대응 방식 미확인'};
+const pct=rate=>rate===null||rate===undefined?'–':Math.round(rate*100)+'%';
+function openSection(id){
+  const section=$(id);section.classList.remove('collapsed');
+  section.querySelector('.section-toggle').setAttribute('aria-expanded','true');
+  section.scrollIntoView({block:'nearest',behavior:'smooth'});
+}
+function selectedClaim(){const item=itemById(state.selected);return item&&item.kind==='claim'?item:null;}
+function scopeRejections(){
+  const claim=selectedClaim();
+  return (claim?claim.rejection_ids:model.rejections.map(r=>r.rejection_id)).filter(r=>state.scope==='all'||r===state.scope);
+}
+function caseCard(c){
+  const card=el('details','prec-case'),summary=el('summary');
+  summary.append(el('span','badge '+(c.outcome==='resolved'?'allowed':'direct_rejection'),OUTCOMES[c.outcome]||c.outcome));
+  summary.append(el('span','',' '+(RESPONSES[c.response_type]||c.response_type)+' → '+c.next_action));
+  card.append(summary);
+  if(c.statute)card.append(el('div','source-caption',c.statute+(c.claims?' · '+c.claims:'')));
+  if(c.argument_types?.length)card.append(el('div','source-caption','대응 유형: '+c.argument_types.join(', ')));
+  if(c.amendment_summary)card.append(el('div','evidence readable-text','보정: '+c.amendment_summary));
+  if(c.argument_excerpt)card.append(el('div','evidence readable-text',c.argument_excerpt));
+  if(c.examiner_reply_excerpt)card.append(el('div','source-caption','심사관: '+c.examiner_reply_excerpt));
+  card.append(el('div','source-caption',c.case_id));
+  return card;
+}
+function rateRow(label,group){
+  const row=el('div','prec-row'),bar=el('span','prec-bar'),fill=el('i');
+  fill.style.width=(group.rate||0)*100+'%';bar.append(fill);
+  row.append(el('span','prec-label',label),bar,el('span','prec-num',pct(group.rate)+' · '+group.cases+'건'));
+  return row;
+}
+function drawPrecedents(){
+  const root=$('precedent-body');root.replaceChildren();
+  const claim=selectedClaim(),rids=scopeRejections(),seen=new Set();
+  $('precedent-scope').textContent=claim?itemTitle(claim):'전체 거절 사유';
+  const entries=model.impacts.filter(i=>rids.includes(i.rejection_id)).flatMap(i=>i.review_items||[])
+    .filter(e=>e.precedent&&!seen.has(e.precedent.category)&&seen.add(e.precedent.category));
+  if(!entries.length){root.append(el('p','empty','이 거절 유형에 연결된 대응 사례가 없습니다. (신규성·진보성·기재불비만 연결)'));return;}
+  for(const entry of entries){
+    const p=entry.precedent,s=p.stats;
+    root.append(el('h4','prec-title',s.label+' · 같은 유형 거절에서 실제로 어떻게 대응했나'));
+    root.append(el('p','prec-lead','미국 '+s.labeled+'건 중 '+pct(s.resolved_rate)+'가 다음 심사에서 해소'));
+    const rows=el('div','prec-rows');
+    for(const [kind,group] of Object.entries(s.by_response))if(group.cases)rows.append(rateRow(RESPONSES[kind],group));
+    for(const a of s.by_argument.slice(0,5))rows.append(rateRow(a.label,a));
+    root.append(rows);
+    if(p.kr_stats?.labeled){
+      root.append(el('h4','','한국 실제 사건 (KIPRIS) · '+p.kr_stats.labeled+'건 중 해소 '+p.kr_stats.resolved+'건'));
+      for(const c of p.kr_cases||[])root.append(caseCard(c));
+    }
+    root.append(el('h4','','미국 사례 (PatRe)'));
+    for(const c of p.cases||[])root.append(caseCard(c));
+    root.append(el('p','notice',s.note));
+  }
+}
+function drawAI(){
+  const root=$('ai-body');root.replaceChildren();
+  const item=selectedClaim();
+  $('ai-scope').textContent=item?itemTitle(item):'';
+  if(!item||!item.rejection_ids.length){root.append(el('p','empty','검토 포인트에서 거절된 청구항을 선택하면 AI 방어 전략을 요청할 수 있습니다.'));return;}
+  const rid=state.scope!=='all'?state.scope:(item.rejection_ids.includes(state.active_rejection)?state.active_rejection:null);
+  const key=item.claim_number+':'+(rid||'all');
+  const event=(action,text)=>{
+    clearTimeout(timer);
+    send('streamlit:setComponentValue',{value:{nonce:Date.now()+Math.random(),navigation:serverNavigation,ui:state,action,improvement_rejection:rid,revision_text:text},dataType:'json'});
+  };
+  root.append(el('p','prec-lead',itemTitle(item)+' · '+(rid||'연결된 전체 거절 사유')+' 기준'));
+  if(!improvementOpen[key]){root.append(button('방어 전략 열기',()=>event('open_improvement'),'claim-pdf-link'));return;}
+  root.append(button('AI 방어 전략 생성',()=>event('improve_claim'),'claim-pdf-link'));
+  if(improvementErrors[key])root.append(el('p','notice',improvementErrors[key]));
+  if(improvements[key]){const content=el('div','readable-panel');content.innerHTML=improvements[key];root.append(content);}
+  root.append(el('h4','','수정 Claim 검증'));
+  const input=el('textarea','readable-text');input.rows=6;input.maxLength=12000;
+  input.setAttribute('aria-label','수정 Claim');input.value=revisionDrafts[key]||'';
+  input.style.boxSizing='border-box';input.style.resize='vertical';input.style.width='100%';
+  input.addEventListener('input',()=>{revisionDrafts[key]=input.value;});
+  root.append(input);
+  root.append(button('수정본 검증',()=>event('review_revision',input.value),'claim-pdf-link'));
+  if(revisionErrors[key])root.append(el('p','notice',revisionErrors[key]));
+  if(revisionResults[key]){const content=el('div','readable-panel');content.innerHTML=revisionResults[key];root.append(content);}
+}
+function draw(){if(!model)return;drawToolbar();drawPanel();drawPrecedents();drawAI();drawPage();}
 function normalize(s){return s.normalize('NFKC').toLowerCase().replace(/[^\p{L}\p{N}]/gu,'');}
 function searchNext(){
   const query=$('search').value.trim().slice(0,300);
@@ -449,3 +505,8 @@ window.addEventListener('message',event=>{
   draw();frameSize();
 });
 send('streamlit:componentReady',{apiVersion:1});send('streamlit:setFrameHeight',{height:650});
+// Collapsible right-panel sections (presentation only; review state is untouched).
+document.querySelectorAll('.section-toggle').forEach(toggle=>toggle.addEventListener('click',()=>{
+  const section=toggle.closest('.panel-section'),collapsed=section.classList.toggle('collapsed');
+  toggle.setAttribute('aria-expanded',String(!collapsed));
+}));

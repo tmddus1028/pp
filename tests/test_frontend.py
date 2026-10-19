@@ -18,7 +18,7 @@ def analysis_app(result):
     ):
         app = AppTest.from_file(ROOT / "frontend/app.py", default_timeout=15).run()
         app.button(key="demo").click().run()
-        app.sidebar.radio[0].set_value("청구항 분석").run()
+        app.radio(key="section").set_value("청구항 분석").run()
         yield app
 
 
@@ -74,9 +74,9 @@ def test_exact_claim_search_filters_and_empty_state(analysis_app):
     assert any("조건에 맞는 Claim이 없습니다" in m.value for m in app.markdown)
     assert [m.value for m in app.metric] == counts
     assert app.session_state["result"] == original
-    app.sidebar.radio[0].set_value("PDF 검토").run()
+    app.radio(key="section").set_value("PDF 검토").run()
     app.session_state["claim_status_filter"] = "§103"
-    app.sidebar.radio[0].set_value("청구항 분석").run()
+    app.radio(key="section").set_value("청구항 분석").run()
     assert app.radio(key="claim_status_filter").value == "전체"
     assert app.text_input(key="claim_number_search").value == "999"
     assert not app.exception
@@ -91,7 +91,7 @@ def test_claim_pdf_roundtrip_keeps_selection_and_filters(analysis_app):
     assert app.session_state["review_ui"]["selected"] == "claim-4"
     assert app.session_state["review_ui"]["scope"] == "all"
     assert app.session_state["review_ui"]["search"] == ""
-    app.sidebar.radio[0].set_value("청구항 분석").run()
+    app.radio(key="section").set_value("청구항 분석").run()
     assert app.text_input(key="claim_number_search").value == "4"
     assert any('data-claim="4"' in m.value and "selected" in m.value for m in app.markdown)
 
@@ -107,7 +107,7 @@ def test_checklist_state_shared_between_claims_and_pdf(analysis_app):
     assert next(c for c in app.checkbox if "Smith" in c.label).value
     app.button(key="claim-pdf-2").click().run()
     app.session_state["review_ui"]["checked"][item_id] = False
-    app.sidebar.radio[0].set_value("청구항 분석").run()
+    app.radio(key="section").set_value("청구항 분석").run()
     assert not next(c for c in app.checkbox if "Smith" in c.label).value
     assert not app.exception
 
