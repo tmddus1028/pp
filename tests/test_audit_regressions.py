@@ -100,16 +100,16 @@ def test_repeat_analysis_resets_claim_and_comparison_filters(result):
     ):
         app = AppTest.from_file(ROOT / "frontend/app.py", default_timeout=15).run()
         app.button(key="demo").click().run()
-        app.sidebar.radio[0].set_value("청구항 분석").run()
+        app.radio(key="section").set_value("청구항 분석").run()
         app.text_input(key="claim_number_search").set_value("999").run()
-        app.sidebar.radio[0].set_value("근거 비교").run()
+        app.radio(key="section").set_value("근거 비교").run()
         app.selectbox(key="comparison_claim").set_value(7).run()
-        app.sidebar.radio[0].set_value("문서 업로드").run()
+        app.radio(key="section").set_value("문서 업로드").run()
         app.button(key="demo").click().run()
         assert app.session_state["review_ui"]["selected"] is None
-        app.sidebar.radio[0].set_value("청구항 분석").run()
+        app.radio(key="section").set_value("청구항 분석").run()
         assert app.text_input(key="claim_number_search").value == ""
-        app.sidebar.radio[0].set_value("근거 비교").run()
+        app.radio(key="section").set_value("근거 비교").run()
         assert app.selectbox(key="comparison_claim").value == 1
 
 
@@ -121,7 +121,7 @@ def test_stale_map_event_does_not_override_explicit_navigation(result):
     ):
         app = AppTest.from_file(ROOT / "frontend/app.py", default_timeout=15).run()
         app.button(key="demo").click().run()
-        app.sidebar.radio[0].set_value("관계 지도").run()
+        app.radio(key="section").set_value("관계 지도").run()
         old_navigation = app.session_state["relationship_navigation"]
         app.session_state["relationship_jump"] = "claim-2"
         component.return_value = {
@@ -153,5 +153,5 @@ def test_sidebar_navigation_consumes_pending_component_selection(result, section
             "navigation": app.session_state[key + "_navigation"],
             "ui": ui,
         }
-        app.sidebar.radio[0].set_value("근거 비교").run()
+        app.radio(key="section").set_value("근거 비교").run()
         assert app.selectbox(key="comparison_claim").value == 7

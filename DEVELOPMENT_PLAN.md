@@ -56,6 +56,6 @@ Python 3.11+, FastAPI, Pydantic v2, pypdf, NetworkX, Streamlit, OpenAI SDK.
 - 초기 공개 자료는 OA PDF 직접 다운로드 403, 특허 청구항 페이지의 내장 텍스트 부재를 확인.
 - 추가로 출원 14/455,526의 전체 OA와 미수정 청구항 재제출본을 확보해 PDF/API/CLI 검증을 완료.
   같은 버전 판정 근거와 표지 날짜 불일치를 보존하고, 중복 OCR 및 인용 형식 문제를 수정.
-  상세 범위와 재현 명령은 [VALIDATION.md](VALIDATION.md)에 기록.
+  상세 범위와 재현 명령은 [VALIDATION.md](docs/validation/VALIDATION.md)에 기록.
 - Specification/Figure/Claim amendment/법률 판단은 구현 범위에 포함하지 않았다.
-- OCR 설치·Windows 렌더러 제약·실제 엔진 검증은 [OCR_VALIDATION.md](OCR_VALIDATION.md)에 기록.
+- OCR 설치·Windows 렌더러 제약·실제 엔진 검증은 [OCR_VALIDATION.md](docs/validation/OCR_VALIDATION.md)에 기록.

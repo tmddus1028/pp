@@ -180,10 +180,68 @@ def claim_details(row, model, result):
             on_change=save_check,
             args=(entry["item_id"], key),
         )
+        if entry.get("precedent"):
+            render_precedent(entry["precedent"])
     if not entries:
         st.caption("연결된 체크리스트 항목이 없습니다.")
     if row["rejection_ids"]:
         render_improvement(result, row["claim_number"])
+
+
+OUTCOME = {"resolved": "해소", "unresolved": "미해소", "excluded": "제외"}
+RESPONSE = {"amendment": "보정 포함", "argument_only": "주장만"}
+
+
+def render_precedent(precedent):
+    """US response outcomes for the same rejection type. Reference data, not this case's evidence."""
+    stats = precedent["stats"]
+    with st.expander(f"유사 사례·해소 비율 근거 ({stats['label']}, {stats['labeled']}건)"):
+        st.caption(stats["note"])
+        rows = [
+            {
+                "대응 방식": RESPONSE[k],
+                "사례": v["cases"],
+                "해소": v["resolved"],
+                "해소율": f"{round(v['rate'] * 100)}%" if v["rate"] is not None else "–",
+            }
+            for k, v in stats["by_response"].items()
+        ] + [
+            {
+                "대응 방식": a["label"],
+                "사례": a["cases"],
+                "해소": a["resolved"],
+                "해소율": f"{round(a['rate'] * 100)}%" if a["rate"] is not None else "–",
+            }
+            for a in stats["by_argument"]
+        ]
+        st.dataframe(rows, hide_index=True, use_container_width=True)
+        for case in precedent["cases"]:
+            render_case(case)
+        kr = precedent.get("kr_stats") or {}
+        if kr.get("labeled"):
+            st.markdown(
+                f"**한국 실제 사건 (KIPRIS)** · {kr['labeled']}건 중 해소 {kr['resolved']}건"
+            )
+            st.caption(kr["note"])
+            for case in precedent.get("kr_cases", []):
+                render_case(case)
+
+
+def render_case(case):
+    st.markdown(
+        f"**{case['case_id']}** · {case['oa_type']} → {case['next_action']} · "
+        f"{RESPONSE.get(case['response_type'], '대응 방식 미확인')} · "
+        f"**{OUTCOME[case['outcome']]}**"
+    )
+    if case.get("statute"):
+        st.caption(f"{case['statute']} · {case.get('claims', '')}")
+    if case["argument_types"]:
+        st.caption("대응 유형: " + ", ".join(case["argument_types"]))
+    if case.get("amendment_summary"):
+        st.caption("보정 내용: " + case["amendment_summary"])
+    readable_text(case["argument_excerpt"])
+    if case["examiner_reply_excerpt"]:
+        st.caption("심사관 응답: " + case["examiner_reply_excerpt"])
 
 
 def render_analysis(result):

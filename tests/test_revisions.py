@@ -352,7 +352,7 @@ def test_revision_session_click_cache_history_and_document_reset(analysis):
         post.return_value = httpx.Response(200, json=data)
         ui = AppTest.from_file(ROOT / "frontend/app.py", default_timeout=30).run()
         ui.button(key="demo").click().run()
-        ui.sidebar.radio[0].set_value("청구항 분석").run()
+        ui.radio(key="section").set_value("청구항 분석").run()
         ui.button(key="improve-" + analysis.analysis_id + "-1:all").click().run()
         assert post.call_count == 1  # opening does not invoke an LLM
         for index in range(1, 5):

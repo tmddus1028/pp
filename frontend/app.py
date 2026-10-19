@@ -46,7 +46,8 @@ def api_request(path, **kwargs):
 def current_labels():
     return labels(
         st.session_state.get("result"),
-        korean=st.session_state.get("upload_jurisdiction") == "한국 특허",
+        # Korean is the default before the (hidden) jurisdiction choice is first rendered.
+        korean=st.session_state.get("upload_jurisdiction", "한국 특허") == "한국 특허",
     )
 
 
@@ -91,22 +92,24 @@ try:
 except (httpx.HTTPError, ValueError, KeyError):
     provider = "연결 대기"
 
-with st.sidebar:
+# Top navigation bar (was a left sidebar): more horizontal room for the PDF and review panel.
+with st.container(key="topnav", horizontal=True, vertical_alignment="center"):
     st.markdown(BRAND_HTML, unsafe_allow_html=True)
-    st.caption("AI와 함께하는 특허 검토")
-    st.divider()
     section = st.radio(
         "작업 공간",
         ["문서 업로드", "PDF 검토", "청구항 분석", "관계 지도", "근거 비교"],
         key="section",
+        horizontal=True,
         label_visibility="collapsed",
+        # One review screen: claim analysis lives in its right panel. Map/comparison open from
+        # buttons there, so their menu entries are hidden by CSS unless currently open.
+        format_func=lambda name: "검토" if name == "PDF 검토" else name,
     )
-    st.markdown('<div class="sidebar-space"></div>', unsafe_allow_html=True)
-    if st.button("⚙  설정", key="settings_nav", width="stretch"):
+    st.caption(provider.upper() + " 분석")
+    if st.button("⚙ 설정", key="settings_nav"):
         settings_dialog()
-    if st.button("?  도움말", key="help_nav", width="stretch"):
+    if st.button("? 도움말", key="help_nav"):
         help_dialog()
-    st.caption(provider.upper() + " · Patent Review")
 
 previous_section = st.session_state.get("previous_section")
 section_changed = previous_section != section
@@ -168,17 +171,27 @@ def upload_documents():
             t("같은 시점의 청구항과 Office Action을 연결하여 원문에서 검토 근거를 확인합니다.")
         )
         st.markdown(HERO_DECORATION, unsafe_allow_html=True)
+    show_us = os.getenv("SHOW_US_MODE", "").strip().lower() in {"1", "true", "yes"}
     with st.container(key="upload-options"):
-        country_column, input_column = st.columns([1, 2], gap="large")
+        # Without the US choice there is no country column to leave empty.
+        country_column, input_column = (
+            st.columns([1, 2], gap="large") if show_us else (st.container(), st.container())
+        )
     jurisdiction = country_column.radio(
         "특허 관할",
         ["미국 특허", "한국 특허"],
-        index=1 if st.session_state.get("upload_jurisdiction") == "한국 특허" else 0,
+        # Korean is the service default; US stays available (SHOW_US_MODE=true shows the choice).
+        index=0 if st.session_state.get("upload_jurisdiction") == "미국 특허" else 1,
         horizontal=True,
         key="jurisdiction_selector",
         on_change=change_jurisdiction,
         label_visibility="collapsed",
     )
+    if not show_us:
+        st.markdown(
+            "<style>.st-key-jurisdiction_selector{display:none!important}</style>",
+            unsafe_allow_html=True,
+        )
     korean = jurisdiction == "한국 특허"
     st.session_state.upload_jurisdiction = jurisdiction
     api_suffix = "?jurisdiction=KR" if korean else ""

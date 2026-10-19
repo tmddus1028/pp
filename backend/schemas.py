@@ -160,6 +160,8 @@ class ReviewItem(Model):
     claim_numbers: list[int]
     text: str
     evidence: Evidence
+    # US response-precedent basis (backend/precedents); reference statistics, not evidence.
+    precedent: dict | None = None
 
 
 class ClaimDisposition(Model):

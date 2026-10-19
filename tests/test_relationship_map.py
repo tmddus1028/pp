@@ -78,7 +78,7 @@ def test_map_claim_to_pdf_preserves_rejection_scope_and_consumes_event(result):
         app = AppTest.from_file(ROOT / "frontend/app.py", default_timeout=15).run()
         app.button(key="demo").click().run()
         assert app.session_state["section"] == "PDF 검토"
-        app.sidebar.radio[0].set_value("관계 지도").run()
+        app.radio(key="section").set_value("관계 지도").run()
         assert not app.exception
         component.return_value = {
             "nonce": "claim-jump",
@@ -91,7 +91,7 @@ def test_map_claim_to_pdf_preserves_rejection_scope_and_consumes_event(result):
         assert app.session_state["section"] == "PDF 검토"
         assert app.session_state["review_ui"]["selected"] == "claim-4"
         assert app.session_state["review_ui"]["scope"] == "R1"
-        app.sidebar.radio[0].set_value("관계 지도").run()
+        app.radio(key="section").set_value("관계 지도").run()
         assert app.session_state["section"] == "관계 지도"  # Do not replay the old navigation.
 
 
@@ -104,7 +104,7 @@ def test_map_citation_to_pdf_and_pdf_back_to_map(result):
     ):
         app = AppTest.from_file(ROOT / "frontend/app.py", default_timeout=15).run()
         app.button(key="demo").click().run()
-        app.sidebar.radio[0].set_value("관계 지도").run()
+        app.radio(key="section").set_value("관계 지도").run()
         component.return_value = {
             "nonce": "citation-jump",
             "navigation": app.session_state["relationship_navigation"],

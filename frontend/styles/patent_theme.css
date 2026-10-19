@@ -329,3 +329,26 @@ body:has(>#workspace),body:has(>#map-workspace) { background: var(--ivory); colo
 @media(prefers-reduced-motion:reduce) {
   [data-testid="stMain"] .stButton button { transition: none; }
 }
+
+/* ---- Top navigation (2026-10-19): sidebar moved to a horizontal bar ---- */
+[data-testid="stSidebar"], [data-testid="stSidebarCollapsedControl"], [data-testid="stExpandSidebarButton"] { display: none !important; }
+.st-key-topnav { background: linear-gradient(90deg, #13293b, #1b3a4c); border-radius: 12px; padding: 8px 18px !important; gap: 18px !important; margin-bottom: 6px; flex-wrap: wrap; }
+.st-key-topnav .brand { display: flex; flex-direction: row; align-items: center; gap: 10px; white-space: nowrap; }
+.st-key-topnav .brand .patent-brand-mark { width: 26px; height: 30px; color: #e4c487; }
+.st-key-topnav .brand .brand-name { font-size: 20px; color: #f1d9a6; }
+.st-key-topnav [data-testid="stElementContainer"]:has(.brand) { width: auto !important; flex: 0 0 auto; }
+.st-key-topnav .st-key-section { flex: 1 1 auto; width: auto !important; }
+.st-key-topnav [data-testid="stRadio"] [role="radiogroup"] { gap: 4px; flex-wrap: nowrap; }
+.st-key-topnav [data-testid="stRadio"] label[data-testid="stRadioOption"] { padding: 7px 14px; border-radius: 8px; margin: 0; }
+.st-key-topnav [data-testid="stRadio"] label[data-testid="stRadioOption"]>div>div>div:first-child { display: none; }
+.st-key-topnav [data-testid="stRadio"] label[data-testid="stRadioOption"] p { color: #d5e0e4; font-size: 14px; white-space: nowrap; margin: 0; }
+.st-key-topnav [data-testid="stRadio"] label[data-testid="stRadioOption"]:hover { background: #ffffff14; }
+.st-key-topnav [data-testid="stRadio"] label[data-testid="stRadioOption"]:has(input:checked) { background: #ffffff1c; box-shadow: inset 0 -2px 0 #e9ca8e; }
+.st-key-topnav [data-testid="stRadio"] label[data-testid="stRadioOption"]:has(input:checked) p { color: #fffaf0; font-weight: 600; }
+.st-key-topnav [data-testid="stCaptionContainer"] { width: auto !important; flex: 0 0 auto; }
+.st-key-topnav [data-testid="stCaptionContainer"] p { color: #9fb4bb; font-size: 11px; margin: 0; white-space: nowrap; }
+.st-key-topnav .stButton { width: auto !important; flex: 0 0 auto; }
+.st-key-topnav .stButton button { background: transparent; border: 1px solid #ffffff2e; color: #e6edef; min-height: 32px; padding: 2px 12px; }
+.st-key-topnav .stButton button:hover { background: #ffffff14; color: #f5d99e; border-color: #f5d99e66; }
+/* Menu = 문서 업로드 / 검토. 청구항 분석·관계 지도·근거 비교 stay reachable from the review screen. */
+.st-key-topnav [data-testid="stRadio"] label[data-testid="stRadioOption"]:nth-child(n+3):not([data-selected="true"]) { display: none; }

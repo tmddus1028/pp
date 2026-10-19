@@ -1,7 +1,35 @@
 # Patent Review · AI 기반 특허 검토 지원
 
-특허 청구항과 USPTO Office Action 사이의 관계를 원문 근거와 함께 구조화하는 로컬 MVP입니다.
-구현 계획은 [DEVELOPMENT_PLAN.md](DEVELOPMENT_PLAN.md)를 참고하세요.
+PinPoint: 한국 의견제출통지서(미국 Office Action도 지원)와 청구항의 관계를 원문 근거와 함께 구조화하고,
+같은 유형 거절에서 실제로 어떤 대응이 통했는지(대응 사례)를 근거로 붙여 주는 로컬 MVP입니다.
+구현 계획은 [DEVELOPMENT_PLAN.md](DEVELOPMENT_PLAN.md), **코드 지도·자주 하는 작업·용어 사전은 [개발자 가이드](docs/DEVELOPER_GUIDE.md)** 를 참고하세요.
+**발표 숫자를 직접 확인하려면** `uv run python scripts/report_numbers.py`, 설명은 [발표 숫자 설명서](docs/PRESENTATION_NUMBERS.md).
+
+## 한눈에 보기
+
+```
+① 업로드      공개특허 PDF + 의견제출통지서(XML/PDF)            frontend/app.py → POST /analyze/files
+② 파싱        청구항 · 거절 사유 · 조문 · 인용문헌               backend/jurisdictions/korean.py (US: backend/service.py)
+③ 공통 스키마  신규성·진보성·기재불비… 한국/미국 같은 형식          backend/schemas.py, backend/precedents/taxonomy.py
+④ 매칭        청구항 ↔ 명세서 근거 문장 후보                     backend/view/, backend/improvements/retrieval.py
+⑤ 체크리스트   고정 문구 + [대응 사례] 유사 사례·해소 비율          backend/analysis/checklist_generator.py
+⑥ AI 개선안    버튼을 눌렀을 때만 LLM 호출 → 근거 ID·인용 검증      backend/improvements/
+```
+
+| 폴더 | 무엇 | 평소에 볼 일 |
+| --- | --- | --- |
+| `backend/` | 분석·체크리스트·대응 사례·LLM 전부 | 있음 |
+| `frontend/` | Streamlit 화면 (해커톤 데모) | 있음 |
+| `web/` | Next.js 화면 (해커톤 뒤 이식) | 이식할 때 |
+| `data/precedents/` | **대응 사례 DB**: 미국 PatRe 1,019건 + 한국 KIPRIS 383건 (앱이 읽는 완성본) | 있음 |
+| `data/eval/` | **LLM 채점표**: 실제 대응·결과가 있는 사건으로 AI 개선안을 채점 (0844, 0874) | 평가할 때 |
+| `data/downloads/kr_review_package/` | 한국 실사건 5건 입력(통지서 XML/PDF + 공개공보) | 데모할 때 |
+| `data/raw/` | 예제 버튼용 가상 문서, 미국 실사건 | 데모할 때 |
+| `data/fixtures/`, `data/validation/`, `tests/fixtures/` | 해시가 고정된 테스트 정답 — 수정 금지 | 거의 없음 |
+| `data/research/`, `korean_prototype/` | 0844 조사 기록, 초기 한국 시제품(추출 모듈은 backend가 재사용) | 거의 없음 |
+| `data/datasets/`, `data/kipris_cache/`, `data/outputs/` | 원재료·API 캐시·실행 결과 (Git 제외) | 재생성할 때 |
+| `scripts/` | 실행(`start.ps1`)과 데이터 생성(`build_*precedents.py`), 나머지는 일회성 검증 | 가끔 |
+| `docs/validation/` | 기능별 검증 기록 30개. 대응 사례·LLM 실호출은 [PRECEDENT_VALIDATION.md](docs/validation/PRECEDENT_VALIDATION.md) | 필요할 때 |
 
 ## 실행
 
@@ -81,7 +109,7 @@ API는 기존 `/analyze/files`, `/analyze/text`에 선택적 query `jurisdiction
 한국 문서의 기존 분석에 자동 적용하지 않습니다. 독립 시제품의 명시적 Azure 검토는 그대로 보존됩니다.
 공통 앱에서는 아래의 **개선 방안 보기** 버튼으로만 별도 검토를 요청합니다.
 한국 실제 5개 사건의 XML/PDF 10개 조합을 검증했습니다. 모든 시기의 심사 문서와
-실제 저품질 스캔까지 지원한다는 의미는 아닙니다. [지원 범위·정량 검증·한계](KR_SUPPORT_VALIDATION.md).
+실제 저품질 스캔까지 지원한다는 의미는 아닙니다. [지원 범위·정량 검증·한계](docs/validation/KR_SUPPORT_VALIDATION.md).
 
 한국어 스캔을 사용하려면 Tesseract를 설치한 뒤 다음을 한 번 실행합니다.
 
@@ -103,7 +131,7 @@ JSON 문자열 Form `version_history`를 받습니다. 보정 이력의 `submiss
 
 기존 실행 명령으로 두 모드를 사용할 수 있으며 8502/8001의 별도 한국 서버는 필요하지 않습니다.
 한국 추출 모듈을 재사용하므로 `korean_prototype/kr_review/` 폴더를 함께 유지해야 합니다.
-통합 검증과 화면 전후 비교 결과는 [KOREAN_INTEGRATION_VALIDATION.md](KOREAN_INTEGRATION_VALIDATION.md)에 기록합니다.
+통합 검증과 화면 전후 비교 결과는 [KOREAN_INTEGRATION_VALIDATION.md](docs/validation/KOREAN_INTEGRATION_VALIDATION.md)에 기록합니다.
 
 ### 청구항 개선 방안 — 명시적 실행
 
@@ -129,6 +157,41 @@ PDF 검토에서는 선택한 거절 범위(또는 현재 확인 중인 거절 �
   입력은 최대 12,000자, 요소 구간은 최대 32개입니다. 원본 PDF를 수정하거나 수정본을 파일로 저장하지 않습니다.
 - 명세서 지지 여부는 LLM이 `SUPPORTED / PARTIALLY_SUPPORTED / NOT_FOUND / UNCERTAIN`으로 검토합니다.
   유사도는 별도 참고 수치이며 지지 판정에 threshold를 적용하지 않습니다.
+
+#### 팀 기본 설정: 지금은 로컬 Ollama, 키 발급 후 Claude API
+
+Azure는 더 이상 기본 경로가 아닙니다. `.env.example`을 `.env`로 복사하면 바로 로컬 Ollama를 씁니다.
+
+```powershell
+ollama pull qwen3:14b   # 이미 있으면 생략. 메모리가 부족하면 qwen3:8b
+Copy-Item .env.example .env
+```
+
+```dotenv
+IMPROVEMENT_PROVIDER=local_ollama
+LOCAL_LLM_MODEL=qwen3:14b
+LOCAL_LLM_TIMEOUT_SECONDS=600
+LOCAL_LLM_THINK=false           # qwen3 추론 모드 끔: 빠르고 JSON만 반환
+LOCAL_LLM_CONTEXT_TOKENS=40960
+LOCAL_LLM_MAX_OUTPUT_TOKENS=12000
+IMPROVEMENT_REPAIR_ATTEMPTS=1   # 근거 검증에 떨어지면 실패 사유를 알려주고 1회 재요청
+```
+
+Claude API 키가 생기면 두 줄만 바꿉니다. 근거 ID·원문 인용 검증은 공급자와 무관하게 동일합니다.
+
+```dotenv
+IMPROVEMENT_PROVIDER=anthropic
+ANTHROPIC_API_KEY=sk-ant-...
+# 선택: ANTHROPIC_MODEL=claude-opus-5-5, ANTHROPIC_EFFORT=high
+```
+
+Claude 호출은 공식 `anthropic` SDK의 `messages.parse`(Pydantic 구조화 출력)를 사용합니다.
+`stop_reason`이 `end_turn`이 아니면 완료된 검토로 표시하지 않습니다.
+한국 모드에서 `anthropic`/`local_ollama`/`qwen`을 지정하면 `korean_prototype/.env`의 Azure 값은 무시됩니다.
+
+모델 응답의 청구항 요소·인용문 일치 검사는 공백·줄바꿈을 무시하고 비교합니다
+(PDF 청구항이 "부
+여하고"처럼 단어 중간에서 줄바꿈되기 때문). 글자 자체는 여전히 정확히 일치해야 합니다.
 
 #### Qwen API로 개선안·수정본 검토
 
@@ -179,7 +242,7 @@ uv run python -X utf8 -m scripts.validate_qwen --live
 `--revised-file 수정본.txt`를 지정합니다. 미국 사례 등 저장한 공통 분석 JSON은
 `--analysis-json 분석.json --claim 1 --rejection R1`로 선택할 수 있습니다.
 결과는 `data/outputs/qwen/<실행시각>/`에 저장합니다.
-실제 API 키 없는 테스트와 실제 모델 품질은 구분합니다. [Qwen 검증 기록](QWEN_API_VALIDATION.md).
+실제 API 키 없는 테스트와 실제 모델 품질은 구분합니다. [Qwen 검증 기록](docs/validation/QWEN_API_VALIDATION.md).
 공식 참고: [키 발급](https://www.alibabacloud.com/help/en/model-studio/get-api-key),
 [구조화 출력과 지원 모델](https://www.alibabacloud.com/help/en/model-studio/qwen-structured-output).
 
@@ -239,8 +302,40 @@ AZURE_OPENAI_DEPLOYMENT=YOUR-DEPLOYMENT-NAME
 설정 변경 후 API 서버를 재시작하세요. API는 `POST /improvements`와
 `POST /improvements/revisions`이며 기존 분석 응답은 바뀌지 않습니다.
 
-최신 검증과 한계: [REVISION_VALIDATION.md](REVISION_VALIDATION.md).
-이전 1단계 구현 기록: [IMPROVEMENT_VALIDATION.md](IMPROVEMENT_VALIDATION.md).
+최신 검증과 한계: [REVISION_VALIDATION.md](docs/validation/REVISION_VALIDATION.md).
+이전 1단계 구현 기록: [IMPROVEMENT_VALIDATION.md](docs/validation/IMPROVEMENT_VALIDATION.md).
+
+### 대응 사례 DB — 미국 OA → 대응 → 다음 조치 (PatRe)
+
+한국에서 구하기 어려운 "출원인이 어떻게 대응했고 해소됐는지" 데이터를 미국 실제 심사 이력으로 채웁니다.
+출처는 [PatRe](https://huggingface.co/datasets/PatRe-Bench/PatRe)(MIT, 480개 출원, OA·출원인 REMARKS·다음 OA)입니다.
+`data/precedents/us_patre_cases.jsonl`에 **1,019건**(357개 출원 × 거절 유형)이 들어 있으며 원본 parquet는 Git에 넣지 않습니다.
+
+```powershell
+uv run python scripts/build_precedents.py --download   # 원본 받기 + 재생성
+uv run python scripts/load_precedents_pg.py            # 선택: PostgreSQL response_cases 테이블로 복사
+```
+
+- **공통 거절 유형**: `backend/precedents/taxonomy.py`가 한국 조문(제29조제1항·제2항, 제42조 등)과
+  미국 §101/102/103/112를 신규성·진보성·기재불비·성립성·선출원으로 묶습니다. 재사용은 신규성·진보성 중심,
+  기재불비는 "요건 차이 있음"으로 표시합니다.
+- **해소 라벨**(재설계안 규칙): 다음 조치가 등록(Notice of Allowance/Quayle)이면 해소, 다음 OA에 같은 유형이 남으면 미해소,
+  빠졌으면 해소. Final Rejection 뒤 Non-Final(RCE)은 통계에서 **제외**합니다. "보정 포함"과 "주장만"을 따로 셉니다.
+- **대응 유형**: 구성요소 부재 주장, 결합 동기 부재, 반대 교시, 현저한 효과, 한정 추가, 종속항 병합, 명확화, 뒷받침 위치 제시.
+- **체크리스트**: 신규성·진보성·기재불비 거절마다 `[대응 사례]` 항목이 추가되고, 청구항 분석 화면에서
+  **유사 사례·해소 비율 근거**를 펼치면 대응 방식별 해소율과 대표 사례(해소/주장만 해소/미해소)를 원문 발췌와 함께 봅니다.
+- **AI 개선안**: 같은 통계와 대표 사례가 `response_precedents`로 프롬프트에 들어갑니다. 모델은 이를 우선순위 참고로만 쓰고
+  근거 ID·인용으로는 쓸 수 없습니다(기존 검증 게이트 그대로).
+- **API**: `GET /precedents/stats?statute=특허법 제29조제2항`, `GET /precedents?category=inventive_step&q=...`,
+  `GET /precedents/{case_id}`, `GET /precedents/categories`.
+- **한국 실제 사건 (KIPRIS Plus)**: `.env`에 `KIPRIS_ACCESS_KEY`(또는 `REST_AccessKey`)를 넣고
+  `uv run python scripts/build_kr_precedents.py --oa-2015 --limit 50`. 의견제출통지서·거절결정서·등록결정서·청구항 변동 이력으로
+  통지별 사유 → 대응(보정/의견서) → 다음 조치를 만들고, 거절결정서의 "해소되지 않은 부분" 표로 사유별 해소를 정합니다.
+  무대응·재심사 경유·표 없는 결정은 제외합니다. 응답은 `data/kipris_cache/`에 캐시되며 서비스별 월 950회에서 멈춥니다.
+  현재 139개 출원·383행. 체크리스트와 API(`?source=KR`)에 함께 표시하며, 분석 중인 출원 자신의 결과는 제외합니다.
+  자세한 수치: [PRECEDENT_VALIDATION.md](docs/validation/PRECEDENT_VALIDATION.md).
+- **한계**: 거절 유형 단위 라벨입니다(청구항 단위 아님). 대응 유형은 정규식 분류라 오분류가 있습니다.
+  미국 통계는 한국 심사 결과를 예측하지 않으며 모든 항목에 "참고용, 변리사 검토 필요"를 붙입니다.
 
 ### 기존 미국 분석 파이프라인
 
@@ -309,8 +404,8 @@ TXT/JSON은 PDF로 위장하지 않고 텍스트 원문으로 표시합니다.
 OCR 좌표가 없는 과거 결과는 다시 분석해야 스캔 하이라이트를 사용할 수 있습니다.
 추가 설치·DB·로그인·외부 OCR API는 없습니다.
 
-화면 및 검증 상세는 [PDF_REVIEW_VALIDATION.md](PDF_REVIEW_VALIDATION.md)를 참고하세요.
-관계 지도와 실제 Claim 1·14·15 연결 검사는 [RELATIONSHIP_MAP_VALIDATION.md](RELATIONSHIP_MAP_VALIDATION.md)에 기록합니다.
+화면 및 검증 상세는 [PDF_REVIEW_VALIDATION.md](docs/validation/PDF_REVIEW_VALIDATION.md)를 참고하세요.
+관계 지도와 실제 Claim 1·14·15 연결 검사는 [RELATIONSHIP_MAP_VALIDATION.md](docs/validation/RELATIONSHIP_MAP_VALIDATION.md)에 기록합니다.
 
 ```powershell
 # 합성 회귀 PDF 재생성
@@ -435,7 +530,7 @@ Tesseract 경로 설정 공유를 피합니다. 작업용 PDF와 이미지 임�
 엔진이 읽지 못한 페이지를 빈 텍스트로 성공 처리하지 않습니다.
 
 사용자 원본 `pp_ex2.pdf`(47쪽)와 `pp_vd2.pdf`(13쪽)의 parser fallback·Claim 1~20·§103 거절 3개·
-인용문헌 5개 회귀는 [PDF_OPEN_FALLBACK_VALIDATION.md](PDF_OPEN_FALLBACK_VALIDATION.md)에 기록합니다.
+인용문헌 5개 회귀는 [PDF_OPEN_FALLBACK_VALIDATION.md](docs/validation/PDF_OPEN_FALLBACK_VALIDATION.md)에 기록합니다.
 원본 fixture 해시와 출처·문서 버전 범위는 [fixture 설명](tests/fixtures/pdf_fallback/README.md)을 참고하세요.
 
 ```powershell
@@ -459,7 +554,7 @@ uv run pytest -q -m ocr_integration
 
 fixture는 요청에 나온 출원번호 `14/623,904`, Claims 1–19, §112/§103 형식을 본떠 **새로 만든 가상 문서**입니다.
 실제 사건의 심사 내용을 재현한다고 주장하지 않습니다. 자세한 구성은 [fixture 설명](tests/fixtures/ocr/README.md),
-검증 결과와 수정 파일은 [OCR_VALIDATION.md](OCR_VALIDATION.md)에 있습니다.
+검증 결과와 수정 파일은 [OCR_VALIDATION.md](docs/validation/OCR_VALIDATION.md)에 있습니다.
 
 ## LLM 설정
 
@@ -502,7 +597,7 @@ LLM은 OA chunk에서 구조화된 지적 사유·설명·인용문헌과 원문
 출원 **14/455,526**의 **2016-06-17 전체 OA 16쪽 + 2016-07-05 미수정 청구항 3쪽**으로
 PDF → 로컬 분석 → API/CLI 검증을 완료했습니다. 미수정 선언과 제출 이력으로 OA 당시 청구항 버전과 대조했습니다.
 당시 제출 파일 자체와 직접 비교한 것은 아니며, 답변서 표지의 날짜 불일치도 기록했습니다.
-[실제 쌍의 출처·버전 근거](data/raw/uspto_14455526_20160617/README.md)와 [검증 결과](VALIDATION.md)를 참고하세요.
+[실제 쌍의 출처·버전 근거](data/raw/uspto_14455526_20160617/README.md)와 [검증 결과](docs/validation/VALIDATION.md)를 참고하세요.
 
 - 영어 스캔 페이지의 로컬 OCR을 지원합니다. 복잡한 다단 편집 복원, 변경 표시/취소 범위 병합은 후속 범위입니다.
   명시적인 중복 OCR 레이어 일부는 내용 유사도를 확인해 한 레이어를 사용하고 경고합니다. OCR 철자 보정은 하지 않습니다.
@@ -524,35 +619,35 @@ OA 연구 데이터의 문서 수준 라벨을 청구항별 정답으로 간주�
 
 ## 검증
 
-2026-09-15 인용문헌 중복·역할 분리: [CITATION_REGISTRY_VALIDATION.md](CITATION_REGISTRY_VALIDATION.md).
+2026-09-15 인용문헌 중복·역할 분리: [CITATION_REGISTRY_VALIDATION.md](docs/validation/CITATION_REGISTRY_VALIDATION.md).
 실제 17/708,932 OA에서 거절 인용 **7개**, 보조 증거 **Wei 1개**, 거절에 사용하지 않은 기록 **Oda·Biyikli 2개**를 확인했습니다.
 Liu 카드는 하나이며 R1~R5와 연결합니다. `citations`는 고유 문헌, `rejection_citations`는 역할·근거를 가진 연결입니다.
 기존 `rejections[].cited_references`도 같은 canonical ID를 참조하도록 유지했습니다.
 최신 전체 검사: **244 tests passed**, backend coverage **93%**, Ruff lint/format 통과입니다.
 
-2026-09-15 OA 상태 분리 검증: [OA_CLAIM_STATUS_VALIDATION.md](OA_CLAIM_STATUS_VALIDATION.md).
+2026-09-15 OA 상태 분리 검증: [OA_CLAIM_STATUS_VALIDATION.md](docs/validation/OA_CLAIM_STATUS_VALIDATION.md).
 OA의 rejected/objected/allowed/withdrawn/canceled/pending/unknown을 별도로 기록하고,
 objection은 직접 거절로 세지 않으며 허용·취소·심사 대상 제외 항은 종속 영향에서 제외합니다.
 제공된 pp_vd3.pdf의 실제 결과는 **17/708,932: 직접 거절 17, objection 2, 취소 1**입니다.
 사용자 정답표의 4/6/10 및 Wu·Ando는 다른 사건을 표현하는 별도 합성 TXT로 검증했습니다.
 최신 전체 검사: **226 tests passed**, backend coverage **92%**, Ruff lint/format 통과입니다.
 
-2026-09-15 제목 없는 청구항 탐지 회귀는 [CLAIM_SECTION_FALLBACK_VALIDATION.md](CLAIM_SECTION_FALLBACK_VALIDATION.md)에 기록했습니다.
+2026-09-15 제목 없는 청구항 탐지 회귀는 [CLAIM_SECTION_FALLBACK_VALIDATION.md](docs/validation/CLAIM_SECTION_FALLBACK_VALIDATION.md)에 기록했습니다.
 기존 제목 기반 탐지를 유지하며, 제목이 없는 전체 문서는 후반부의 Claim 1부터 최소 3개 연속 번호,
 청구항 문장 형태와 앞 청구항 참조를 함께 확인합니다. 같은 줄로 추출된 다음 청구항 번호도 구분합니다.
 사용자 제공 `pp_ex3.pdf`(US20220325409A1)에서 **Claim 1~20 모두 추출**, 실제 API·Edge 업로드를 확인했습니다.
 최신 전체 검사: **205 tests passed**, backend coverage **92%**, Ruff lint/format 통과입니다.
 재현: `uv run pytest -q tests/test_claim_sections.py`.
 
-2026-09-14 PDF 검토 UI·좌표 adapter·OCR overlay 검증은 [PDF_REVIEW_VALIDATION.md](PDF_REVIEW_VALIDATION.md)에 기록했습니다.
+2026-09-14 PDF 검토 UI·좌표 adapter·OCR overlay 검증은 [PDF_REVIEW_VALIDATION.md](docs/validation/PDF_REVIEW_VALIDATION.md)에 기록했습니다.
 최종 결과는 **143 tests passed**, backend coverage **92%**, Ruff lint/format 통과입니다.
 관계 지도 추가 후 실제 Claim 1·14·15와 citation 5개, 모든 필터 및 PDF 왕복 연결 검증은
-[RELATIONSHIP_MAP_VALIDATION.md](RELATIONSHIP_MAP_VALIDATION.md)에 기록했습니다.
+[RELATIONSHIP_MAP_VALIDATION.md](docs/validation/RELATIONSHIP_MAP_VALIDATION.md)에 기록했습니다.
 실제 Edge에서 PDF 업로드, 양방향 선택, 검색/다운로드, 5개 citation, 실제 OCR 및 좁은 화면 배치를 확인했습니다.
 실제 공개 특허 41쪽을 사용했으며, Application 14/623,904 OA는 원본 미제공으로 재현용 PDF를 사용했습니다.
-이전 헤더/푸터·WO/NPL 인용 회귀 검증은 [HEADER_CITATION_VALIDATION.md](HEADER_CITATION_VALIDATION.md)에 기록했습니다.
+이전 헤더/푸터·WO/NPL 인용 회귀 검증은 [HEADER_CITATION_VALIDATION.md](docs/validation/HEADER_CITATION_VALIDATION.md)에 기록했습니다.
 OCR 추가 당시 검증 결과는 **107 tests passed**, backend coverage **92%**였습니다.
-실제 Tesseract 스캔·혼합 PDF 및 특허 표현 보존 검증은 [OCR_VALIDATION.md](OCR_VALIDATION.md)에 기록했습니다.
+실제 Tesseract 스캔·혼합 PDF 및 특허 표현 보존 검증은 [OCR_VALIDATION.md](docs/validation/OCR_VALIDATION.md)에 기록했습니다.
 실제 PDF 1쌍에서 거절 2개, 법조항–청구항 연결 8개, 인용 특허 4개, 종속관계 3개가 원문 기준 라벨과 일치했습니다.
 이 사례를 보며 코드를 보완한 개발·회귀 검증이며 일반 성능이나 LLM 성능 수치가 아닙니다.
 2026-09-11에는 실제 Edge 브라우저에서 가상 예제 실행, 그래프 Claim 클릭, 상세 전환, 체크리스트 체크, JSON 다운로드를 확인했습니다.

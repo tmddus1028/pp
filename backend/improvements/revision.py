@@ -284,6 +284,8 @@ def review_revision(request, settings, provider=None):
     )
     for element in elements:
         element.candidate_evidence_ids = choices[element.element_id]
+    # Precedents guide improvement strategies only; a revision is checked against its own evidence.
+    context.pop("response_precedents", None)
     context.update(
         revised_claim=request.revised_text,
         elements=[e.model_dump() for e in elements],

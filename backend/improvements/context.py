@@ -5,6 +5,8 @@ import json
 import re
 
 from backend.improvements.models import ImprovementRequest, ReviewEvidence
+from backend.precedents import repository
+from backend.precedents.taxonomy import REUSABLE, categorize
 from backend.schemas import Evidence
 from frontend.review_model import explicit_support
 
@@ -198,6 +200,7 @@ def build_context(request: ImprovementRequest):
             "선행문헌 원문 미확보: 인용 위치는 심사관 문서의 인용 문장입니다. 선행문헌 본문을 읽거나 기술적 차이를 검증한 결과가 아닙니다."
         )
     context = {
+        "response_precedents": response_precedents(rejections, claim.text),
         "jurisdiction": "kr" if result.analysis_id.startswith("kr-") else "us",
         "claim_number": claim.claim_number,
         "claim_text": claim.text,
@@ -217,3 +220,52 @@ def build_context(request: ImprovementRequest):
         )
     digest = hashlib.sha256(serialized.encode()).hexdigest()
     return context, sources, digest
+
+
+def response_precedents(rejections, claim_text):
+    """Outcome patterns from other (US) applications. Reference only, never evidence."""
+    out = []
+    for category in dict.fromkeys(
+        categorize(r.statute, None, r.examiner_explanation)
+        for r in rejections
+        if r.action_type == "rejection"
+    ):
+        if category not in REUSABLE:
+            continue
+        stats = repository.stats(category)
+        if not stats["labeled"]:
+            continue
+        out.append(
+            {
+                "category": category,
+                "label": stats["label"],
+                "rejection_ids": [
+                    r.rejection_id
+                    for r in rejections
+                    if categorize(r.statute, None, r.examiner_explanation) == category
+                ],
+                "resolved_rate": stats["resolved_rate"],
+                "labeled_cases": stats["labeled"],
+                "by_response": stats["by_response"],
+                "by_argument": stats["by_argument"][:6],
+                "cases": [
+                    {
+                        key: case[key]
+                        for key in (
+                            "case_id",
+                            "response_type",
+                            "argument_types",
+                            "next_action",
+                            "outcome",
+                            "examiner_reply",
+                        )
+                    }
+                    | {
+                        "argument_excerpt": case["argument_excerpt"][:400],
+                        "examiner_reply_excerpt": case["examiner_reply_excerpt"][:200],
+                    }
+                    for case in repository.find(category, claim_text)
+                ],
+            }
+        )
+    return out

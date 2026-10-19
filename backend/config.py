@@ -8,9 +8,12 @@ class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 
     llm_provider: Literal["local", "openai", "azure"] = "local"
-    improvement_provider: Literal["inherit", "local", "local_ollama", "openai", "azure", "qwen"] = (
-        "inherit"
-    )
+    improvement_provider: Literal[
+        "inherit", "local", "local_ollama", "anthropic", "openai", "azure", "qwen"
+    ] = "inherit"
+    anthropic_api_key: str = Field(default="", repr=False)
+    anthropic_model: str = "claude-opus-5-5"
+    anthropic_effort: Literal["low", "medium", "high", "xhigh", "max"] = "high"
     qwen_api_key: str = Field(default="", repr=False)
     qwen_base_url: str = ""
     qwen_model: str = ""
@@ -19,7 +22,17 @@ class Settings(BaseSettings):
     local_llm_model: str = ""
     local_embedding_model: str = ""
     local_llm_timeout_seconds: float = Field(default=180, gt=0, le=600)
-    local_llm_context_tokens: int = Field(default=32768, ge=8192, le=131072)
+    local_llm_think: bool = False
+    local_llm_max_output_tokens: int = Field(default=12000, ge=1000, le=32768)
+    # Re-ask the model once when its draft fails an evidence gate (gates stay unchanged).
+    improvement_repair_attempts: int = Field(default=1, ge=0, le=3)
+    # Off = team policy: any failed gate hides the whole suggestion. On = hide only failed items.
+    improvement_prune_invalid: bool = False
+    # Experiment knobs (defaults = previous behaviour).
+    improvement_spec_mode: Literal["retrieve", "elements", "full"] = "retrieve"
+    improvement_prompt: Literal["v1", "v2"] = "v1"
+    improvement_context_chars: int = Field(default=48000, ge=8000, le=400000)
+    local_llm_context_tokens: int = Field(default=40960, ge=8192, le=131072)
     openai_api_key: str = Field(default="", repr=False)
     openai_model: str = ""
     azure_openai_endpoint: str = ""

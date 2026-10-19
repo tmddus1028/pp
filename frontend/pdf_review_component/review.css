@@ -77,3 +77,75 @@
 #text-page .text-highlight:focus-visible{
   outline:2px solid var(--annotation-color);outline-offset:2px;
 }
+
+/* ---- Reader layout (2026-10-19): large page on the left, collapsible sections on the right ---- */
+/* PDF a bit narrower, review panel wider (about 60:40). */
+#workspace{grid-template-columns:minmax(0,1.45fr) minmax(400px,1fr);gap:14px}
+.viewer{border-color:#e6e9ec}
+.toolbar{display:grid;grid-template-columns:minmax(120px,1fr) auto minmax(120px,1fr);align-items:center;gap:10px;padding:7px 12px;border-bottom:1px solid #eceff1}
+.toolbar-left{min-width:0}
+.toolbar-left #document{width:100%;border:1px solid transparent;font-weight:600;padding:5px 6px;border-radius:6px;background:transparent}
+.toolbar-left #document:hover{border-color:var(--line)}
+.toolbar-center{display:flex;align-items:center;gap:4px;justify-content:center;white-space:nowrap}
+.toolbar-right{display:flex;align-items:center;gap:6px;justify-content:flex-end;min-width:0}
+.toolbar button{min-height:28px;font-size:12px;padding:3px 9px}
+.toolbar button.icon{border-color:transparent;background:transparent;font-size:18px;line-height:1;padding:2px 7px;min-width:30px}
+.toolbar button.icon:hover{background:#f1f4f5}
+.toolbar #fit-width,.toolbar #fit-page{border-radius:16px}
+.toolbar #zoom-label{font-size:12px;min-width:40px;text-align:center;color:#4c5d6b}
+.toolbar .page-controls{gap:2px;border:1px solid var(--line);border-radius:16px;padding:0 4px}
+.toolbar .page-controls #page-number{border:none;width:34px;font-weight:600}
+.toolbar .sep{width:1px;height:18px;background:#e2e7ea;margin:0 6px}
+.toolbar .search{max-width:190px;margin-left:0}
+.toolbar .icon-button{padding:2px 9px;font-size:16px}
+.page-status{min-height:0;padding:4px 14px;font-size:10px;background:#fff;border-bottom:1px solid #f1f3f4}
+.page-status:empty{display:none}
+.pdf-scroll{background:#f2f3f5;padding:22px 26px}
+.paper{box-shadow:0 1px 3px #0000000f,0 6px 18px #0b1d2a0d}
+.legend{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;padding:7px 12px}
+.legend-colors{margin-bottom:0}
+
+.review-panel{background:#fff}
+.panel-section{border-bottom:1px solid #eef1f3;flex-shrink:0}
+.panel-section.grow{flex:1;min-height:0;display:flex;flex-direction:column;border-bottom:none}
+.section-header{display:flex;align-items:center;justify-content:space-between;padding:11px 16px 9px}
+.section-toggle{display:flex;align-items:center;gap:7px;border:none;background:none;padding:2px 0;min-height:0;font-weight:650;font-size:13px;color:#1d2f40}
+.section-toggle:hover{background:none;color:var(--teal)}
+.chev{display:inline-block;color:#8a97a1;font-size:13px;transition:transform .15s}
+.panel-section.collapsed .chev{transform:rotate(-90deg)}
+.panel-section.collapsed .section-body{display:none}
+.section-header .count{font-size:11px;color:var(--muted)}
+.section-body{padding:0 16px 13px}
+.panel-section.grow .section-body{flex:1;min-height:0;display:flex;flex-direction:column;padding-bottom:0}
+.panel-section.grow.collapsed{flex:0}
+.summary{padding:0 0 10px}
+.scope-row{padding:0}
+.rejection-links{padding:0 0 9px}
+.rejection-links button{border-radius:16px;background:#f1f4f6;border-color:transparent;font-size:11px;padding:4px 11px}
+.rejection-links button:hover{background:#e4f1ed}
+.relationship-summary{border-bottom:none;padding-bottom:0;margin-bottom:0}
+.point-filters{padding:0 0 10px}
+.point-filters button{border-radius:16px}
+.review-list{padding:0 0 14px}
+/* 대응 사례 / AI 방어 전략 sections */
+.scroll-body{max-height:300px;overflow-y:auto}
+.prec-title{font-size:12px;margin:2px 0 4px;color:#1d3a4c}
+.prec-lead{font-size:11px;color:#5b6d7a;margin:0 0 8px}
+.prec-rows{display:flex;flex-direction:column;gap:5px;margin-bottom:10px}
+.prec-row{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(60px,1fr) auto;gap:8px;align-items:center;font-size:11px}
+.prec-label{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#2f4555}
+.prec-bar{height:6px;border-radius:4px;background:#edf1f3;overflow:hidden}
+.prec-bar i{display:block;height:100%;background:linear-gradient(90deg,#4fa391,#137d72);border-radius:4px}
+.prec-num{color:#6b7c88;font-size:10px;white-space:nowrap}
+.prec-case{border:1px solid #e6ecef;border-radius:7px;padding:6px 9px;margin:6px 0;font-size:11px}
+.prec-case summary{cursor:pointer;font-size:11px}
+.prec-case .badge{margin-left:0}
+#ai-body textarea{border:1px solid var(--line);border-radius:6px;padding:8px;font:inherit;font-size:12px}
+/* With five sections the panel scrolls as a whole; each long section scrolls inside its own cap. */
+.review-panel{overflow-y:auto}
+.panel-section.grow{flex:none;display:block}
+.panel-section.grow .section-body{display:block;padding-bottom:12px}
+.review-list{max-height:460px}
+.panel-footer{flex-shrink:0}
+.panel-section.collapsed .section-body{display:none!important}
+.panel-section.grow.collapsed{flex:none}
