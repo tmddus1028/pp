@@ -4,12 +4,13 @@ import json
 from typing import Protocol
 from urllib.parse import urlparse
 
+import anthropic
 import httpx
 from openai import APIError
 
 from backend.errors import ProviderError
 from backend.improvements.models import ClaimImprovementSuggestion
-from backend.improvements.prompts import COMMON, KR, US
+from backend.improvements.prompts import COMMON, KR, KR_V2, US
 from backend.llm.client import OpenAIExtractionClient
 
 # Model Studio json_object mode accepts every text model but requires the word JSON in the
@@ -29,6 +30,8 @@ class ImprovementProvider(Protocol):
 class StructuredProvider:
     def generate_improvement(self, context):
         prompt = COMMON + (KR if context["jurisdiction"] == "kr" else US)
+        if getattr(self.settings, "improvement_prompt", "v1") == "v2":
+            prompt += KR_V2
         return self.complete(context, ClaimImprovementSuggestion, prompt)
 
     def review_revision(self, context, schema, instructions):
@@ -63,6 +66,51 @@ class OpenAIImprovementProvider(StructuredProvider):
             client.close()
 
 
+class AnthropicImprovementProvider(StructuredProvider):
+    """Claude Messages API with Pydantic structured output; same evidence gates afterwards."""
+
+    def __init__(self, settings, client=None):
+        self.settings, self.client = settings, client
+
+    def complete(self, context, schema, instructions):
+        if not self.settings.anthropic_model.strip():
+            raise ProviderError("Claude 검토에는 ANTHROPIC_MODEL 설정이 필요합니다.")
+        client = self.client or anthropic.Anthropic(
+            api_key=self.settings.anthropic_api_key.strip() or None,
+            timeout=self.settings.llm_timeout_seconds,
+        )
+        try:
+            # Opus writes ~15k tokens for a long Korean claim; 16k truncated the JSON. Stream so a
+            # 32k ceiling does not hit request timeouts.
+            with client.messages.stream(
+                model=self.settings.anthropic_model,
+                max_tokens=32000,
+                output_config={"effort": self.settings.anthropic_effort},
+                system=instructions,
+                messages=[{"role": "user", "content": json.dumps(context, ensure_ascii=False)}],
+                output_format=schema,
+            ) as stream:
+                response = stream.get_final_message()
+        except anthropic.AuthenticationError as exc:
+            raise ProviderError("Claude API 키(ANTHROPIC_API_KEY)를 확인하세요.") from exc
+        except anthropic.NotFoundError as exc:
+            raise ProviderError("ANTHROPIC_MODEL 모델명을 확인하세요.") from exc
+        except anthropic.RateLimitError as exc:
+            raise ProviderError("Claude API 호출 한도 또는 잔액을 확인하세요.") from exc
+        except anthropic.APIStatusError as exc:
+            raise ProviderError(f"Claude API 오류({exc.status_code})입니다.") from exc
+        except anthropic.APIConnectionError as exc:
+            raise ProviderError("Claude API에 연결할 수 없습니다. 네트워크를 확인하세요.") from exc
+        except ValueError as exc:
+            raise ProviderError("Claude 응답이 검토 JSON 형식과 일치하지 않습니다.") from exc
+        if response.stop_reason != "end_turn" or response.parsed_output is None:
+            raise ProviderError(
+                f"Claude 응답이 완료되지 않았습니다({response.stop_reason}). "
+                "완료된 검토로 표시하지 않습니다."
+            )
+        return schema.model_validate(response.parsed_output.model_dump())
+
+
 class AzureImprovementProvider(OpenAIImprovementProvider):
     """Reuse the existing Azure endpoint/deployment setup in OpenAIExtractionClient."""
 
@@ -84,6 +132,24 @@ def local_endpoint(settings):
     return url
 
 
+def grammar_schema(node):
+    """Drop upper bounds before Ollama turns the schema into a sampling grammar.
+
+    Older Ollama builds (e.g. 0.24) reject large repetition counts such as maxLength 4000
+    ("number of repetitions exceeds sane defaults"). Pydantic re-validates every bound on the
+    response, so nothing is loosened.
+    """
+    if isinstance(node, dict):
+        return {
+            k: grammar_schema(v)
+            for k, v in node.items()
+            if k not in {"maxLength", "maxItems", "maxProperties"}
+        }
+    if isinstance(node, list):
+        return [grammar_schema(v) for v in node]
+    return node
+
+
 class OllamaImprovementProvider(StructuredProvider):
     def __init__(self, settings):
         self.settings = settings
@@ -99,7 +165,9 @@ class OllamaImprovementProvider(StructuredProvider):
                 json={
                     "model": self.settings.local_llm_model,
                     "stream": False,
-                    "format": schema.model_json_schema(),
+                    # qwen3-style reasoning models: keep JSON in content, skip slow thinking.
+                    "think": self.settings.local_llm_think,
+                    "format": grammar_schema(schema.model_json_schema()),
                     "messages": [
                         {
                             "role": "system",
@@ -110,7 +178,7 @@ class OllamaImprovementProvider(StructuredProvider):
                     "options": {
                         "temperature": 0,
                         "num_ctx": self.settings.local_llm_context_tokens,
-                        "num_predict": 6000,
+                        "num_predict": self.settings.local_llm_max_output_tokens,
                     },
                 },
                 timeout=self.settings.local_llm_timeout_seconds,
@@ -245,10 +313,12 @@ def get_provider(settings, client_factory=OpenAIExtractionClient):
         return QwenImprovementProvider(settings)
     if settings.llm_provider == "local_ollama":
         return OllamaImprovementProvider(settings)
+    if settings.llm_provider == "anthropic":
+        return AnthropicImprovementProvider(settings)
     if settings.llm_provider == "azure":
         return AzureImprovementProvider(settings, client_factory)
     if settings.llm_provider == "openai":
         return OpenAIImprovementProvider(settings, client_factory)
     raise ProviderError(
-        "AI 검토에는 IMPROVEMENT_PROVIDER=qwen, local_ollama, azure 또는 openai 설정이 필요합니다."
+        "AI 검토에는 IMPROVEMENT_PROVIDER=local_ollama, anthropic, qwen, azure 또는 openai 설정이 필요합니다."
     )

@@ -327,7 +327,7 @@ def test_explicit_click_cache_and_analysis_change_reset(result, local):
         post.return_value = httpx.Response(200, json=data)
         ui = AppTest.from_file(ROOT / "frontend/app.py", default_timeout=30).run()
         ui.button(key="demo").click().run()
-        ui.sidebar.radio[0].set_value("청구항 분석").run()
+        ui.radio(key="section").set_value("청구항 분석").run()
         assert post.call_count == 1  # Only initial analysis; opening details never calls LLM.
         response = generate_improvement(request(result), local).model_dump(mode="json")
         post.return_value = httpx.Response(200, json=response)
@@ -346,3 +346,40 @@ def test_explicit_click_cache_and_analysis_change_reset(result, local):
         ui.run()
         assert ui.session_state["improvement_results"] == {}
         assert not ui.exception
+
+
+def test_missing_claim_id_is_attached_only_for_verbatim_elements(result):
+    req = request(result, rid="R1")
+    context, _, _ = build_context(req)
+    draft = local_review(context)
+    claim_id = f"CLAIM-{context['claim_number']}"
+    draft.strategies[0].evidence_ids.remove(claim_id)
+    response = generate_improvement(req, cloud(), lambda _: provider(draft))
+    assert claim_id in response.suggestion.strategies[0].evidence_ids
+    invented = local_review(context)
+    invented.strategies[0].evidence_ids.remove(claim_id)
+    invented.strategies[0].target_elements = ["new quantum limitation"]
+    with pytest.raises(ProviderError):
+        generate_improvement(req, cloud(), lambda _: provider(invented))
+
+
+def test_prune_invalid_hides_only_failed_items_when_enabled(result):
+    req = request(result, rid="R1")
+    context, _, _ = build_context(req)
+    draft = local_review(context)
+    good = draft.strategies[0].model_copy(deep=True)
+    bad = good.model_copy(deep=True)
+    bad.grounding[0].quote = "Invented source quote"
+    draft.strategies = [good, bad]
+    with pytest.raises(ProviderError):
+        generate_improvement(req, cloud(), lambda _: provider(draft))
+    settings = cloud().model_copy(update={"improvement_prune_invalid": True})
+    response = generate_improvement(req, settings, lambda _: provider(draft))
+    assert [s.grounding[0].quote for s in response.suggestion.strategies] == [
+        good.grounding[0].quote
+    ]
+    assert response.status == "limited"
+    assert any("1개는 표시하지 않았습니다" in c for c in response.suggestion.cautions)
+    draft.rejection_basis[0].statute = "unknown law"
+    with pytest.raises(ProviderError):
+        generate_improvement(req, settings, lambda _: provider(draft))

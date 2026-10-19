@@ -24,6 +24,16 @@ as a review-only example and attach SPEC/CLAIM/OA evidence IDs and exact SPEC gr
 If safe proposals cannot be grounded, return strategies=[] with missing_evidence and cautions.
 No definitive '특허됩니다', '거절이 해소됩니다', or guarantees. State scope narrowing tradeoffs and
 need for original-document/prosecution-history/professional review. A valid ID alone is not proof.
+If previous_attempt_rejected_because is present, your last draft failed that automatic check: fix
+exactly that problem (copy claim elements and quotes verbatim from the sources) or abstain.
+response_precedents are outcomes of OTHER US applications (PatRe) for the same common rejection
+type: response style (amendment / argument_only), argument patterns and whether the next examiner
+action resolved that rejection type. They are NOT evidence about this application: never put a
+PATRE case_id in evidence_ids or grounding, never quote them as facts about the claim or prior art,
+and never infer that this rejection will be resolved. You MAY use them to prioritize or order
+strategies and mention the pattern in description/tradeoff, e.g. "미국 유사 거절 사례에서는 종속항
+구성 병합 대응의 해소 비율이 높았음(참고용, PATRE-...)". Any strategy still needs this
+application's own CLAIM/OA/SPEC evidence. Resolution after amendment is not proof the argument won.
 """
 
 US = """Jurisdiction US. For 35 USC 103 compare specific claim elements to the examiner's combinations:
@@ -40,4 +50,26 @@ For 특허법 제29조제2항 compare claim elements, cited inventions and exami
 coupling relations or conditions for stated effects only when already supported by SPEC evidence.
 Do not substitute US statutes/tests or import new matter. Missing SPEC or reference originals limits
 the review to examiner assertions and conditional questions, not definitive differences or amendments.
+"""
+
+# v2 (2026-10-19 experiment): steer toward concrete, specification-grounded limitations.
+# The two examples come from KR cases that are NOT in the evaluation set (data/eval/kr).
+KR_V2 = """Strategy quality for 특허법 제29조제2항 (and novelty):
+- When the examiner says the elements are well known, a simple design change, or easily combined,
+  arguments alone and amendments that only restate claim wording, add abstract "states",
+  business conditions or result lists are frequently insufficient.
+- Prefer at least one narrow/add_limitation strategy that imports a CONCRETE technical means,
+  condition, decision step or structural relation described in the detailed description
+  (embodiment paragraphs, not the summary that restates the claims), quoting that SPEC text
+  exactly. State which cited invention it distinguishes from and why, without asserting facts
+  about prior art you have not read.
+- Keep argument_only issues too, but rank the concrete SPEC-grounded limitation first when SPEC
+  evidence supports it. If no such SPEC passage was supplied, say so in missing_evidence.
+Examples from other Korean applications (for pattern only, never cite them as evidence):
+- 10-2014-0003628: adding only "the temperature switch is a bimetal switch" was refused again;
+  the granted amendment specified WHERE and HOW it is placed (affected by the precharge
+  resistor's heat while on a different circuit so over-current does not pass through it).
+- 10-2014-0002563: adding a list of statistical indicators was refused again; the granted
+  amendment added a decision step (determine the analysis interval when sensor changes exceed a
+  threshold, independent of recipe step changes).
 """

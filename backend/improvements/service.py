@@ -22,7 +22,7 @@ DISCLAIMER = (
 
 
 class ReviewProviderSettings(Settings):
-    llm_provider: Literal["local", "local_ollama", "openai", "azure", "qwen"] = "local"
+    llm_provider: Literal["local", "local_ollama", "anthropic", "openai", "azure", "qwen"] = "local"
 
 
 def provider_settings(settings, jurisdiction):
@@ -31,9 +31,12 @@ def provider_settings(settings, jurisdiction):
         if settings.improvement_provider == "inherit"
         else settings.improvement_provider
     )
+    # Legacy: the standalone KR prototype's Azure keys apply only when no explicit
+    # provider is chosen. Claude/Ollama/Qwen never fall through to Azure.
     if jurisdiction == "kr" and settings.improvement_provider not in {
         "local",
         "local_ollama",
+        "anthropic",
         "qwen",
     }:
         path = Path(__file__).resolve().parents[2] / "korean_prototype" / ".env"
@@ -177,6 +180,11 @@ def local_review(context):
     )
 
 
+def squash(text):
+    """PDF/OCR claim text wraps mid-word ("부\\n여하고"); compare quotes without whitespace."""
+    return re.sub(r"\s+", "", text)
+
+
 def validate_suggestion(draft, context):
     sources = {s["evidence_id"]: s for s in context["sources"]}
     claim_id = f"CLAIM-{context['claim_number']}"
@@ -212,9 +220,8 @@ def validate_suggestion(draft, context):
         if not set(ids) <= sources.keys():
             raise ValueError("개선안이 제공되지 않은 근거 ID를 사용했습니다.")
         for quote in grounding:
-            if (
-                quote.evidence_id not in ids
-                or quote.quote not in sources[quote.evidence_id]["evidence"]["text"]
+            if quote.evidence_id not in ids or squash(quote.quote) not in squash(
+                sources[quote.evidence_id]["evidence"]["text"]
             ):
                 raise ValueError("개선안의 근거 인용문이 제공 원문과 일치하지 않습니다.")
 
@@ -226,7 +233,10 @@ def validate_suggestion(draft, context):
     claim_texts = [context["claim_text"]] + [p["text"] for p in context["parents"]]
 
     def target(elements):
-        if any(not e.strip() or not any(e in text for text in claim_texts) for e in elements):
+        if any(
+            not e.strip() or not any(squash(e) in squash(text) for text in claim_texts)
+            for e in elements
+        ):
             raise ValueError("개선안이 원문에서 확인되지 않은 청구항 요소를 지정했습니다.")
 
     def core(ids):
@@ -285,31 +295,132 @@ def validate_suggestion(draft, context):
     return draft
 
 
+def attach_claim_ids(draft, context):
+    """Add the CLAIM/PARENT id whose text literally contains a cited claim element.
+
+    Mechanical bookkeeping only: the element must already be verbatim in that claim, and the
+    OA/SPEC evidence requirements are untouched. Small local models often omit this id.
+    """
+    texts = {f"CLAIM-{context['claim_number']}": context["claim_text"]}
+    texts |= {p["evidence_id"]: p["text"] for p in context["parents"]}
+
+    def owners(elements):
+        return [
+            eid
+            for eid, text in texts.items()
+            if any(e.strip() and squash(e) in squash(text) for e in elements)
+        ]
+
+    for item in draft.element_comparison:
+        item.evidence_ids = list(dict.fromkeys(owners([item.claim_element]) + item.evidence_ids))
+    for item in draft.strategies:
+        item.evidence_ids = list(dict.fromkeys(owners(item.target_elements) + item.evidence_ids))
+
+
+def prune_invalid(draft, context):
+    """Keep only comparisons/strategies that pass every gate on their own.
+
+    The rejection basis must still pass as a whole; otherwise nothing is shown.
+    """
+    empty = {
+        "available": False,
+        "text": None,
+        "disclaimer": draft.optional_example.disclaimer,
+        "evidence_ids": [],
+        "grounding": [],
+    }
+    base = draft.model_copy(
+        update={"strategies": [], "element_comparison": [], "optional_example": empty},
+        deep=True,
+    )
+    base.optional_example = type(draft.optional_example).model_validate(empty)
+    try:
+        validate_suggestion(base, context)
+    except ValueError:
+        return None, 0
+
+    def passes(**update):
+        try:
+            validate_suggestion(base.model_copy(update=update), context)
+            return True
+        except ValueError:
+            return False
+
+    comparisons = [c for c in draft.element_comparison if passes(element_comparison=[c])]
+    strategies = [s for s in draft.strategies if passes(strategies=[s])]
+    example = (
+        draft.optional_example
+        if passes(optional_example=draft.optional_example)
+        else base.optional_example
+    )
+    pruned = (
+        len(draft.element_comparison)
+        - len(comparisons)
+        + len(draft.strategies)
+        - len(strategies)
+        + (example is not draft.optional_example and draft.optional_example.available)
+    )
+    kept = base.model_copy(
+        update={
+            "element_comparison": comparisons,
+            "strategies": strategies,
+            "optional_example": example,
+        }
+    )
+    validate_suggestion(kept, context)
+    return kept, pruned
+
+
 def generate_improvement(request, settings, client_factory=OpenAIExtractionClient):
     context, sources, digest = build_context(request)
     config = provider_settings(settings, context["jurisdiction"])
     if request.require_llm:
         if config.llm_provider == "local":
             raise ProviderError(
-                "AI 개선안에는 IMPROVEMENT_PROVIDER=qwen, local_ollama, azure 또는 openai 설정이 필요합니다."
+                "AI 개선안에는 IMPROVEMENT_PROVIDER=local_ollama, anthropic, qwen, azure 또는 openai 설정이 필요합니다."
             )
         context, sources, digest, _, _ = retrieved_context(
-            request, [("selected_claim", context["claim_text"])]
+            request,
+            [("selected_claim", context["claim_text"])],
+            spec_mode=settings.improvement_spec_mode,
+            max_chars=settings.improvement_context_chars,
         )
     if config.llm_provider == "local":
         draft = local_review(context)
+        attempts = 1
     else:
-        draft = get_provider(config, client_factory).generate_improvement(context)
-    try:
-        validate_suggestion(draft, context)
-    except ValueError as exc:
-        raise ProviderError("개선 방안의 근거 검증에 실패했습니다. " + str(exc)) from exc
+        provider = get_provider(config, client_factory)
+        draft = provider.generate_improvement(context)
+        attempts = 1 + settings.improvement_repair_attempts
+    pruned = 0
+    for attempt in range(attempts):
+        attach_claim_ids(draft, context)
+        try:
+            validate_suggestion(draft, context)
+            break
+        except ValueError as exc:
+            if attempt + 1 < attempts:
+                # Repair round: same sources, the failed gate stated. Gates are not relaxed.
+                draft = provider.generate_improvement(
+                    {**context, "previous_attempt_rejected_because": str(exc)}
+                )
+                continue
+            draft, pruned = (
+                prune_invalid(draft, context) if settings.improvement_prune_invalid else (None, 0)
+            )
+            if draft is None:
+                raise ProviderError("개선 방안의 근거 검증에 실패했습니다. " + str(exc)) from exc
     draft.missing_evidence = list(
         dict.fromkeys(context["missing_evidence"] + draft.missing_evidence)
     )
     draft.cautions = list(
         dict.fromkeys(
             [DISCLAIMER, "근거 ID와 인용문 일치는 기술적·법적 타당성을 보증하지 않습니다."]
+            + (
+                [f"근거 검증을 통과하지 못한 제안·비교 {pruned}개는 표시하지 않았습니다."]
+                if pruned
+                else []
+            )
             + draft.cautions
         )
     )
@@ -322,7 +433,7 @@ def generate_improvement(request, settings, client_factory=OpenAIExtractionClien
         status="abstained"
         if not draft.strategies
         else "limited"
-        if draft.missing_evidence or config.llm_provider == "local"
+        if draft.missing_evidence or pruned or config.llm_provider == "local"
         else "review",
         suggestion=draft,
         sources=sources,

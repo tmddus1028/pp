@@ -78,10 +78,88 @@ def specification_chunks(analysis):
     return chunks
 
 
-def retrieved_context(request, queries):
+def claim_elements(claim_text):
+    """Split a claim into its elements (';'-separated parts and wrapped clauses)."""
+    parts = re.split(r";|\n(?=상기)|,\s*\n|wherein", claim_text)
+    return [p.strip() for p in parts if len(p.strip()) > 25]
+
+
+def merged_window(chunks, index):
+    """A chunk plus its contiguous neighbours: short KR paragraphs split one embodiment."""
+    lo, hi = index, index
+    for step in (-1, 1):
+        j = index + step
+        if 0 <= j < len(chunks):
+            a, b = sorted((chunks[index].evidence, chunks[j].evidence), key=lambda e: e.start)
+            if b.start - a.end <= 2:
+                lo, hi = min(lo, j), max(hi, j)
+    if lo == hi:
+        return chunks[index]
+    return (chunks[lo].evidence, chunks[hi].evidence, lo, hi, None)
+
+
+def retrieved_context(request, queries, spec_mode="retrieve", max_chars=MAX_CONTEXT_CHARS):
+    """spec_mode: retrieve (claim-level top-3, legacy), elements (per element + neighbours),
+    full (every specification chunk; for large-context API models)."""
     context, sources, _ = build_context(request)
     candidates = specification_chunks(request.analysis)
     selections, selected, scores = {}, {}, {}
+    if spec_mode == "full":
+        for source in candidates:
+            selected[source.evidence_id] = source
+        selections = {key: [] for key, _ in queries}
+        queries = []
+    elif spec_mode == "elements":
+        claim = queries[0][1] if queries else ""
+        doc = next(
+            d
+            for d in request.analysis.documents
+            if d.document_id == request.analysis.patent.document_id
+        )
+        expanded = queries + [(f"element-{i}", e) for i, e in enumerate(claim_elements(claim), 1)]
+        for key, text in expanded:
+            # Down-weight summary paragraphs that merely restate the claim.
+            ranked = sorted(
+                range(len(candidates)),
+                key=lambda i: (
+                    -(
+                        cosine(text, candidates[i].evidence.text)
+                        - 0.5 * max(0.0, cosine(claim, candidates[i].evidence.text) - 0.45)
+                    )
+                ),
+            )
+            selections[key] = []
+            for i in ranked[:2]:
+                if cosine(text, candidates[i].evidence.text) <= 0 or len(selected) >= 16:
+                    continue
+                window = merged_window(candidates, i)
+                if isinstance(window, tuple):
+                    first, last, _, _, _ = window
+                    start, end = first.start, last.end
+                    window = ReviewEvidence(
+                        evidence_id=f"SPEC-RETRIEVED-{start}-{end}",
+                        kind="specification",
+                        label="명세서 검색 후보 · 지지 여부 미판정",
+                        navigation_item=f"spec-{start}",
+                        evidence=Evidence(
+                            document_id=doc.document_id,
+                            text=doc.text[start:end],
+                            start=start,
+                            end=end,
+                            page_numbers=[
+                                p.number for p in doc.pages if p.start < end and p.end > start
+                            ],
+                        ),
+                    )
+                if any(
+                    s.evidence.start < window.evidence.end
+                    and window.evidence.start < s.evidence.end
+                    for s in selected.values()
+                ):
+                    continue
+                selected[window.evidence_id] = window
+                selections[key].append(window.evidence_id)
+        queries = []
     for key, text in queries:
         ranked = sorted(
             ((cosine(text, s.evidence.text), s) for s in candidates),
@@ -157,7 +235,11 @@ def retrieved_context(request, queries):
                 reference_candidates.setdefault(citation["citation_id"], []).append(eid)
     context["sources"] = [s.model_dump(mode="json") for s in sources]
     context["retrieval"] = {
-        "method": "lexical cosine top-3 per element, max 12",
+        "method": {
+            "retrieve": "lexical cosine top-3 per element, max 12",
+            "elements": "lexical cosine per claim element + neighbouring paragraphs, max 16",
+            "full": "entire specification (claims excluded)",
+        }[spec_mode],
         "candidates": selections,
         "support_is_unverified": True,
     }
@@ -170,14 +252,14 @@ def retrieved_context(request, queries):
     context["retrieval_limitations"] = [
         "명세서 검색 후보의 유사도는 support 판정이 아닙니다. 검색에서 누락된 근거가 있을 수 있습니다."
     ]
-    digest = context_hash(context)
+    digest = context_hash(context, max_chars)
     return context, sources, digest, selections, scores
 
 
-def context_hash(context):
+def context_hash(context, max_chars=MAX_CONTEXT_CHARS):
     serialized = json.dumps(context, ensure_ascii=False, sort_keys=True)
-    if len(serialized) > MAX_CONTEXT_CHARS:
+    if len(serialized) > max_chars:
         raise ValueError(
-            "관련 검토 근거가 48,000자 한도를 넘습니다. 거절 범위 또는 수정 청구항을 줄이세요."
+            f"관련 검토 근거가 {max_chars:,}자 한도를 넘습니다. 거절 범위 또는 수정 청구항을 줄이세요."
         )
     return hashlib.sha256(serialized.encode()).hexdigest()
