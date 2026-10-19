@@ -80,10 +80,12 @@ def categorize(statute, jurisdiction=None, text=""):
 
 # PatRe "meta.rejection_types" labels, e.g. "103 - Obviousness".
 def categorize_patre(label):
+    """PatRe rejection label (e.g. '103 - Obviousness') → common category key."""
     return categorize(label, "us")
 
 
 def label(category):
+    """Korean display name of a category key."""
     return CATEGORIES.get(category, CATEGORIES["other"])["label"]
 
 
@@ -131,10 +133,12 @@ ARGUMENT_TYPES = {
 
 
 def argument_types(text):
+    """Applicant argument/amendment pattern keys found in a REMARKS text."""
     return [
         key for key, (_, pattern) in ARGUMENT_TYPES.items() if re.search(pattern, text or "", re.I)
     ]
 
 
 def argument_label(key):
+    """Korean display name of an argument pattern key."""
     return ARGUMENT_TYPES[key][0] if key in ARGUMENT_TYPES else key

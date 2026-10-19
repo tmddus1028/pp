@@ -35,6 +35,7 @@ STOPWORDS = set(
 
 @lru_cache
 def load(path=DEFAULT_PATH):
+    """All cases of one JSONL table (cached per process; restart the API after rebuilding)."""
     path = Path(path)
     if not path.exists():
         return ()
@@ -140,6 +141,7 @@ def find(category, query="", limit=3, path=DEFAULT_PATH, exclude_applications=fr
 
 
 def summary(case):
+    """Compact card used by the checklist, API and AI prompt."""
     return {
         "case_id": case["case_id"],
         "application": case["application"],
@@ -161,6 +163,7 @@ def summary(case):
 
 
 def get(case_id):
+    """One case by case_id from the US or KR table."""
     return next(
         (c for path in (DEFAULT_PATH, KR_PATH) for c in load(path) if c["case_id"] == case_id),
         None,

@@ -43,6 +43,7 @@ class KiprisError(RuntimeError):
 
 
 def access_key():
+    """KIPRIS key from the environment or .env (KIPRIS_ACCESS_KEY, then REST_AccessKey)."""
     env = dotenv_values(ROOT / ".env")
     for name in KEY_NAMES:
         value = (os.environ.get(name) or env.get(name) or "").strip()
@@ -52,6 +53,7 @@ def access_key():
 
 
 def clean(text):
+    """Unescape KIPRIS text and turn <br> into newlines."""
     text = html.unescape(text or "")
     text = re.sub(r"<\s*br\s*/?\s*>", "\n", text, flags=re.I)
     return re.sub(r"[ \t]+", " ", text).strip()
@@ -153,6 +155,7 @@ class Kipris:
         ) if total else 0
 
     def items(self, service, operation, application_number):
+        """Parsed rows of service/operation for one application number (cached)."""
         return parse_items(self.raw(service, operation, application_number))
 
     def document_pdf(self, url, name):

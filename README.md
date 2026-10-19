@@ -2,7 +2,7 @@
 
 PinPoint: 한국 의견제출통지서(미국 Office Action도 지원)와 청구항의 관계를 원문 근거와 함께 구조화하고,
 같은 유형 거절에서 실제로 어떤 대응이 통했는지(대응 사례)를 근거로 붙여 주는 로컬 MVP입니다.
-구현 계획은 [DEVELOPMENT_PLAN.md](DEVELOPMENT_PLAN.md)를 참고하세요.
+구현 계획은 [DEVELOPMENT_PLAN.md](DEVELOPMENT_PLAN.md), **코드 지도·자주 하는 작업·용어 사전은 [개발자 가이드](docs/DEVELOPER_GUIDE.md)** 를 참고하세요.
 
 ## 한눈에 보기
 

@@ -36,6 +36,7 @@ class Grade(BaseModel):
 
 
 def suggestion_text(record):
+    """Plain-text view of a recorded suggestion for the judge."""
     if not record.get("ok"):
         return "(no suggestion: run failed: " + record.get("error", "") + ")"
     s = record["response"]["suggestion"]
@@ -53,6 +54,7 @@ def suggestion_text(record):
 
 
 def grade(client, gold, record):
+    """One judge pass: rubric verdicts and the weighted score."""
     prompt = (
         "You grade an AI's suggested response strategy to a Korean patent office action.\n"
         "The AI only saw the first office action. Below is what really happened later, and a "

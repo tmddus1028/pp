@@ -11,6 +11,7 @@ router = APIRouter(prefix="/precedents", tags=["precedents"])
 
 
 def resolve(category, statute):
+    """Category from ?category= or, failing that, from a statute string."""
     if category:
         if category not in CATEGORIES:
             raise HTTPException(status_code=422, detail="알 수 없는 거절 유형입니다.")
@@ -22,6 +23,7 @@ def resolve(category, statute):
 
 @router.get("/categories")
 def categories():
+    """Common rejection categories with their KR/US statutes."""
     return CATEGORIES
 
 
@@ -34,6 +36,7 @@ def stats(
     statute: str | None = Query(None, max_length=200),
     source: Literal["US", "KR"] = "US",
 ):
+    """Resolution statistics for one category (US PatRe by default, ?source=KR for KIPRIS)."""
     return repository.stats(resolve(category, statute), PATHS[source])
 
 
@@ -45,11 +48,13 @@ def search(
     limit: int = Query(3, ge=1, le=20),
     source: Literal["US", "KR"] = "US",
 ):
+    """Representative cases (resolved by amendment / argument only / unresolved)."""
     return repository.find(resolve(category, statute), q, limit, PATHS[source])
 
 
 @router.get("/{case_id}")
 def case(case_id: str):
+    """Full stored record of one case."""
     found = repository.get(case_id)
     if found is None:
         raise HTTPException(status_code=404, detail="대응 사례가 없습니다.")

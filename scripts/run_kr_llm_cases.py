@@ -1,4 +1,4 @@
-"""Run the AI improvement on the 5 official KR cases and record every result.
+"""Run the AI improvement on KR cases (5 official samples, or --eval for every gold case).
 
 uv run python scripts/run_kr_llm_cases.py --label qwen3-14b-local
 LOCAL_LLM_BASE_URL=http://127.0.0.1:11435 LOCAL_LLM_MODEL=qwen3:32b \\
@@ -34,6 +34,7 @@ CASES = {
 
 
 def inputs(app):
+    """(patent, office action) paths: official samples, or the gold case's own inputs."""
     gold = ROOT / "data/eval/kr" / f"{app}.json"
     if app not in CASES and gold.exists():
         paths = json.loads(gold.read_text(encoding="utf-8"))["inputs"]
@@ -45,6 +46,7 @@ def inputs(app):
 
 
 def run(app, settings):
+    """One AI improvement for the case's first rejected claim; failures are recorded, not raised."""
     patent, oa = inputs(app)
     try:
         result = analyze_korean(
@@ -97,7 +99,9 @@ def main():
         "prune_invalid": settings.improvement_prune_invalid,
         "cases": [],
     }
-    apps = sorted(p.stem for p in (ROOT / "data/eval/kr").glob("*.json")) if args.eval else args.only
+    apps = (
+        sorted(p.stem for p in (ROOT / "data/eval/kr").glob("*.json")) if args.eval else args.only
+    )
     for app in apps:
         record = run(app, settings)
         (out / f"{app}.json").write_text(
