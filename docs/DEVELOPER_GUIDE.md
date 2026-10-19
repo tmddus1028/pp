@@ -122,5 +122,6 @@ KIPRIS 키는 월 한도가 있어 팀원별로 받는 게 좋습니다. 받은 
 | 특허 문장 수정 | 보정 | `amendment` |
 | 거절이 풀림 / 안 풀림 | 해소 / 미해소 | `resolved` / `unresolved` |
 | 최종 거절 / 등록 | 거절결정 / 등록결정 | `RE` / `RG` (KIPRIS 서비스) |
+| 한미 거절 이름 맞추기 | 거절 유형 공통 분류 | `taxonomy.py`의 `CATEGORIES`, `categorize()` |
 | 대응 사례 카드 | - | `data/precedents/*.jsonl`의 한 줄 |
 | 채점표 | 평가셋 | `data/eval/kr/*.json` |
