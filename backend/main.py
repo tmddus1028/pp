@@ -196,3 +196,7 @@ async def analyze_files(
 from backend.cases import router as cases_router  # noqa: E402  cases imports this module; keep last
 
 app.include_router(cases_router)
+
+from backend.precedents.api import router as precedents_router  # noqa: E402
+
+app.include_router(precedents_router)

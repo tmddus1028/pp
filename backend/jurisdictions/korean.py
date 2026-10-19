@@ -151,8 +151,10 @@ def analyze_korean(
         for s in extracted.claim_statuses
     ]
     impacts = analyze_impacts(patent, rejections, statuses)
+    # Never show this application's own later outcome as a "similar case".
+    own = {d.source_metadata.get("application_number") for d in documents} - {None, ""}
     for rejection, impact in zip(rejections, impacts):
-        impact.review_items = generate_checklist(rejection, impact)
+        impact.review_items = generate_checklist(rejection, impact, own)
     citations = [
         CitationDocument(
             citation_id=ref.citation_id,

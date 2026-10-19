@@ -1,0 +1,39 @@
+{
+  "source": "https://huggingface.co/datasets/PatRe-Bench/PatRe/resolve/main/PatRe-test.parquet",
+  "license": "MIT (PatRe-Bench/PatRe)",
+  "raw_sha256": "473dcd4155a54ed52dfd03c294495ee7ed94fbd60ee40ef1fea7440acddb42b8",
+  "records": 1019,
+  "applications": 357,
+  "skipped_responses": {
+    "no_rejection": 10,
+    "no_next_action": 3
+  },
+  "by_category_response_outcome": {
+    "description|amendment|excluded": 17,
+    "description|amendment|resolved": 162,
+    "description|amendment|unresolved": 26,
+    "description|argument_only|excluded": 1,
+    "description|argument_only|resolved": 22,
+    "eligibility|amendment|excluded": 4,
+    "eligibility|amendment|resolved": 39,
+    "eligibility|amendment|unresolved": 11,
+    "eligibility|argument_only|resolved": 1,
+    "inventive_step|amendment|excluded": 52,
+    "inventive_step|amendment|resolved": 221,
+    "inventive_step|amendment|unresolved": 99,
+    "inventive_step|argument_only|excluded": 7,
+    "inventive_step|argument_only|resolved": 22,
+    "inventive_step|argument_only|unresolved": 13,
+    "novelty|amendment|excluded": 14,
+    "novelty|amendment|resolved": 134,
+    "novelty|amendment|unresolved": 29,
+    "novelty|argument_only|excluded": 2,
+    "novelty|argument_only|resolved": 17,
+    "novelty|argument_only|unresolved": 5,
+    "prior_application|amendment|excluded": 5,
+    "prior_application|amendment|resolved": 61,
+    "prior_application|amendment|unresolved": 18,
+    "prior_application|argument_only|resolved": 31,
+    "prior_application|argument_only|unresolved": 6
+  }
+}

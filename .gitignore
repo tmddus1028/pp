@@ -10,3 +10,7 @@ data/outputs/*
 data/processed/*
 !data/processed/.gitkeep
 *.log
+# Raw downloads (rebuild via scripts/build_precedents.py --download)
+data/datasets/
+# KIPRIS API response cache (public data; rebuild spends quota)
+data/kipris_cache/
