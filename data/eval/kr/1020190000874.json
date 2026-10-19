@@ -1,0 +1,110 @@
+{
+  "application": "1020190000874",
+  "title": "선택적 데이터 제공을 위한 장치 및 방법",
+  "purpose": "LLM 개선안 채점표. 모델에는 2019-04-01 의견제출통지서와 당시 청구항(공개공보 A)만 준다. 의견서 원문 없이 KIPRIS API만으로 만든 첫 사례.",
+  "input_cutoff": "2019-04-01",
+  "inputs": {
+    "patent": "data/downloads/kr_review_package/publications/KR20190003855A.pdf",
+    "office_action": "data/downloads/kr_review_package/official_samples/1020190000874_952019023937404/1020190000874_952019023937404.xml",
+    "rejections": [
+      {
+        "claims": "5-7",
+        "statute": "특허법 제42조제4항제2호"
+      },
+      {
+        "claims": "1-9",
+        "statute": "특허법 제29조제2항"
+      }
+    ],
+    "citations": [
+      "KR20070073517A (인용발명 1, 무선 네트워크 선택)",
+      "KR20100021334A (인용발명 2, 과금/비과금 DNS)"
+    ]
+  },
+  "prosecution": [
+    {
+      "round": 1,
+      "date": "2019-05-02",
+      "response": "amendment + opinion",
+      "claims_deleted": [
+        2,
+        9
+      ],
+      "claim_1_added": [
+        "상기 사용자 단말기에 대한 데이터 서비스 기능의 설정 상태를 인식하고, 상기 데이터 서비스 기능의 설정 상태에 따라서 (선택적으로 데이터 제공)"
+      ],
+      "arguments_from_refusal_decision": [
+        "차이점 1: APN 접속 경로 → 데이터 서비스 기능 설정 상태 인식 → 선택적 데이터 제공. 인용발명 1은 선택 인자로 최적 무선 네트워크를 고를 뿐",
+        "차이점 2: 인용발명 2는 과금/비과금 DNS 중 하나로만 접속, 설정 상태에 따른 선택 제공과 다름"
+      ],
+      "next_action": {
+        "type": "거절결정",
+        "date": "2019-10-08",
+        "send_number": "9-5-2019-0729317-16"
+      },
+      "examiner_reasoning": "차이점 1: 인용발명 1의 청구항 1·2·5와 단락 [0042](선택 기준이 RSSI 등에 한정되지 않음)로 설정 상태 인식에 따른 선택 제공 가능. 차이점 2: 인용발명 2의 과금/비과금 데이터 차단·제공을 결합한 것에 불과.",
+      "outcome": {
+        "특허법 제42조제4항제2호": "resolved",
+        "특허법 제29조제2항": "unresolved"
+      },
+      "sources": [
+        "KIPRIS ClaimsChangeHistoryService/amendmentHistoryDetailInfo (receiptSendNumber 112019045074723)",
+        "KIPRIS IntermediateDocumentREService examineResultInfo + 거절결정서 PDF '2. 의견서를 통한 출원인의 주장 / 3. 출원인의 주장에 대한 검토'"
+      ]
+    },
+    {
+      "round": 2,
+      "date": "2019-11-05",
+      "response": "재심사 청구: amendment (의견서 원문 미확보)",
+      "claim_1_added": [
+        "접속된 무선 네트워크를 확인하여",
+        "접속된 무선 네트워크에 따라 데이터 차단 상태인지 여부를 판단하여",
+        "과금 및 비과금 데이터 중 적어도 하나 (를 제공)"
+      ],
+      "claims_also_amended": [
+        5,
+        8
+      ],
+      "next_action": {
+        "type": "등록결정",
+        "date": "2019-11-08"
+      },
+      "outcome": "resolved",
+      "sources": [
+        "KIPRIS ClaimsChangeHistoryService/amendmentHistoryDetailInfo (receiptSendNumber 112019113207705)",
+        "KIPRIS IntermediateDocumentRGService/bibliographicInfo"
+      ]
+    }
+  ],
+  "rubric": [
+    {
+      "id": "concrete_decision_step",
+      "weight": 3,
+      "question": "'설정 상태를 인식'처럼 추상적인 한정이 아니라, 접속된 무선 네트워크를 확인하고 그에 따라 데이터 차단 여부를 판단하는 것처럼 구체적인 판단 단계를 추가하는 방향을 제시했는가?",
+      "why": "등록된 재심사 보정의 핵심. 1차의 추상적 한정은 인용발명 1 [0042]로 거절됨"
+    },
+    {
+      "id": "billing_data_distinction",
+      "weight": 2,
+      "question": "과금/비과금 데이터를 구분해 제공하는 구성을 인용발명 2와의 관계 속에서 다루었는가?",
+      "why": "등록 청구항에 '과금 및 비과금 데이터 중 적어도 하나'가 들어갔고, 인용발명 2가 과금/비과금 DNS를 개시"
+    },
+    {
+      "id": "citation_1_paragraph_0042",
+      "weight": 2,
+      "question": "인용발명 1이 선택 기준을 넓게 개시(단락 [0042])한다는 점을 고려해, 선택 인자 기반 네트워크 선택과 구별되는 지점을 찾으려 했는가?",
+      "why": "1차 주장이 무너진 지점"
+    },
+    {
+      "id": "no_guarantee",
+      "weight": 1,
+      "question": "등록·해소를 보장하는 표현 없이 권리범위 축소 트레이드오프를 밝혔는가?",
+      "why": "서비스 원칙"
+    }
+  ],
+  "notes": [
+    "재심사 의견서(2019-11-05)는 미확보. 등록 이유는 청구항 변경 내용으로만 판단했다.",
+    "채점 시 이 사건은 대응 사례 DB(KIPRIS)에서 제외한다.",
+    "기재불비(청구항 5-7) 항목은 제외: 채점 실행은 청구항 1 기준이며 그 거절은 청구항 1과 연결되지 않는다."
+  ]
+}

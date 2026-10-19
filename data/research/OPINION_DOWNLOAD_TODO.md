@@ -1,0 +1,50 @@
+# 의견서 다운로드 체크리스트
+
+대응 사례 카드의 빈 칸(③ 출원인이 왜 다르다고 주장했나)을 채우기 위한 목록입니다.
+대상: KIPRIS로 모은 한국 사례 중 **대응 후 등록된** 통지 37건. 거절된 사례는 거절결정서에 주장 요약이 이미 있어 제외했습니다.
+
+## 받는 방법 (건당 1~2분)
+1. `OPD 열기` 링크 → 심사정보 목록에서 **제출일 날짜의 `[거절이유 등 통지에 따른 의견]의견(답변, 소명)서`** 줄의 **원문** 클릭
+   (같은 날 `보정서`도 있지만 받지 않아도 됩니다. 보정 내용은 API로 이미 있음)
+2. 보안문자(CAPTCHA) 입력 → PDF 저장
+3. 화살표 뒤 경로에 저장 (폴더가 없으면 만들기). 제출일이 "~사이"로 적힌 건은 목록에서 그 기간의 의견서 날짜로 파일 이름을 바꿔 주세요.
+4. 이 파일에서 `[ ]`를 `[x]`로 바꾸기
+
+## 목록
+- [ ] **10-2014-0000068** · 의견서 · 제출일 2015.11.09 · 받은 거절: 제29조제2항 · [OPD 열기](https://kopd.kipo.go.kr:8888/viewFamilySearchResult.do?paramType=A&cntry=KR&appno=20140000068&code=A&docgrp=ALL&from=K) → `data/research/kr_1020140000068/opinion_20151109.pdf`
+- [ ] **10-2014-0000094** · 의견서 · 제출일 2015.11.19 · 받은 거절: 제42조제4항제2호 · [OPD 열기](https://kopd.kipo.go.kr:8888/viewFamilySearchResult.do?paramType=A&cntry=KR&appno=20140000094&code=A&docgrp=ALL&from=K) → `data/research/kr_1020140000094/opinion_20151119.pdf`
+- [ ] **10-2014-0000184** · 의견서 · 제출일 2015.11.24 · 받은 거절: 제29조제2항 · [OPD 열기](https://kopd.kipo.go.kr:8888/viewFamilySearchResult.do?paramType=A&cntry=KR&appno=20140000184&code=A&docgrp=ALL&from=K) → `data/research/kr_1020140000184/opinion_20151124.pdf`
+- [ ] **10-2014-0000258** · 의견서 · 제출일 2015.11.25 · 받은 거절: 제29조제2항 · [OPD 열기](https://kopd.kipo.go.kr:8888/viewFamilySearchResult.do?paramType=A&cntry=KR&appno=20140000258&code=A&docgrp=ALL&from=K) → `data/research/kr_1020140000258/opinion_20151125.pdf`
+- [ ] **10-2014-0000343** · 의견서 · 제출일 2016.03.30 · 받은 거절: 제42조제4항제2호 · [OPD 열기](https://kopd.kipo.go.kr:8888/viewFamilySearchResult.do?paramType=A&cntry=KR&appno=20140000343&code=A&docgrp=ALL&from=K) → `data/research/kr_1020140000343/opinion_20160330.pdf`
+- [ ] **10-2014-0000505** · 의견서 · 제출일 2015.10.30 · 받은 거절: 제42조제4항제2호 · [OPD 열기](https://kopd.kipo.go.kr:8888/viewFamilySearchResult.do?paramType=A&cntry=KR&appno=20140000505&code=A&docgrp=ALL&from=K) → `data/research/kr_1020140000505/opinion_20151030.pdf`
+- [ ] **10-2014-0000655** · 의견서 · 제출일 2015.11.30 · 받은 거절: 제29조제2항, 제42조제4항제2호 · [OPD 열기](https://kopd.kipo.go.kr:8888/viewFamilySearchResult.do?paramType=A&cntry=KR&appno=20140000655&code=A&docgrp=ALL&from=K) → `data/research/kr_1020140000655/opinion_20151130.pdf`
+- [ ] **10-2014-0000665** · 의견서 · 제출일 2015.09.10 · 받은 거절: 제42조제4항제2호 · [OPD 열기](https://kopd.kipo.go.kr:8888/viewFamilySearchResult.do?paramType=A&cntry=KR&appno=20140000665&code=A&docgrp=ALL&from=K) → `data/research/kr_1020140000665/opinion_20150910.pdf`
+- [ ] **10-2014-0000979** · 의견서 · 제출일 2015.09.22 · 받은 거절: 제42조제4항제1호, 제42조제4항제2호 · [OPD 열기](https://kopd.kipo.go.kr:8888/viewFamilySearchResult.do?paramType=A&cntry=KR&appno=20140000979&code=A&docgrp=ALL&from=K) → `data/research/kr_1020140000979/opinion_20150922.pdf`
+- [ ] **10-2014-0001170** · 의견서 · 제출일 2015.11.03 · 받은 거절: 제29조제2항 · [OPD 열기](https://kopd.kipo.go.kr:8888/viewFamilySearchResult.do?paramType=A&cntry=KR&appno=20140001170&code=A&docgrp=ALL&from=K) → `data/research/kr_1020140001170/opinion_20151103.pdf`
+- [ ] **10-2014-0001347** · 재심사 의견서 · 제출일 2016.04.14 · 받은 거절: 제29조 제2항 · [OPD 열기](https://kopd.kipo.go.kr:8888/viewFamilySearchResult.do?paramType=A&cntry=KR&appno=20140001347&code=A&docgrp=ALL&from=K) → `data/research/kr_1020140001347/opinion_20160414.pdf`
+- [ ] **10-2014-0001373** · 의견서 · 제출일 2015.10.30 · 받은 거절: 제29조제2항, 제42조제8항 및 시행령 제5조제6항 · [OPD 열기](https://kopd.kipo.go.kr:8888/viewFamilySearchResult.do?paramType=A&cntry=KR&appno=20140001373&code=A&docgrp=ALL&from=K) → `data/research/kr_1020140001373/opinion_20151030.pdf`
+- [ ] **10-2014-0001427** · 재심사 의견서 · 제출일 2016.04.25 · 받은 거절: 제29조제2항 · [OPD 열기](https://kopd.kipo.go.kr:8888/viewFamilySearchResult.do?paramType=A&cntry=KR&appno=20140001427&code=A&docgrp=ALL&from=K) → `data/research/kr_1020140001427/opinion_20160425.pdf`
+- [ ] **10-2014-0001662** · 의견서 · 제출일 2015.11.06 · 받은 거절: 제42조제4항제2호 · [OPD 열기](https://kopd.kipo.go.kr:8888/viewFamilySearchResult.do?paramType=A&cntry=KR&appno=20140001662&code=A&docgrp=ALL&from=K) → `data/research/kr_1020140001662/opinion_20151106.pdf`
+- [ ] **10-2014-0001663** · 의견서 · 제출일 2015.11.06 · 받은 거절: 제29조제2항 · [OPD 열기](https://kopd.kipo.go.kr:8888/viewFamilySearchResult.do?paramType=A&cntry=KR&appno=20140001663&code=A&docgrp=ALL&from=K) → `data/research/kr_1020140001663/opinion_20151106.pdf`
+- [ ] **10-2014-0002077** · 의견서 · 제출일 2015.11.09 · 받은 거절: 제29조제1항제2호, 제29조제2항, 제42조제4항제2호 · [OPD 열기](https://kopd.kipo.go.kr:8888/viewFamilySearchResult.do?paramType=A&cntry=KR&appno=20140002077&code=A&docgrp=ALL&from=K) → `data/research/kr_1020140002077/opinion_20151109.pdf`
+- [ ] **10-2014-0002166** · 의견서 · 제출일 2015.12.01 · 받은 거절: 제29조제1항제2호, 제29조제2항 · [OPD 열기](https://kopd.kipo.go.kr:8888/viewFamilySearchResult.do?paramType=A&cntry=KR&appno=20140002166&code=A&docgrp=ALL&from=K) → `data/research/kr_1020140002166/opinion_20151201.pdf`
+- [ ] **10-2014-0002447** · 의견서 · 제출일 2015.10.07 · 받은 거절: 제29조제2항 · [OPD 열기](https://kopd.kipo.go.kr:8888/viewFamilySearchResult.do?paramType=A&cntry=KR&appno=20140002447&code=A&docgrp=ALL&from=K) → `data/research/kr_1020140002447/opinion_20151007.pdf`
+- [ ] **10-2014-0002504** · 의견서 · 제출일 2015.09.18~2016.03.14 사이 · 받은 거절: 제29조제2항 · [OPD 열기](https://kopd.kipo.go.kr:8888/viewFamilySearchResult.do?paramType=A&cntry=KR&appno=20140002504&code=A&docgrp=ALL&from=K) → `data/research/kr_1020140002504/opinion_YYYYMMDD.pdf`
+- [ ] **10-2014-0002563** · 의견서 · 제출일 2015.09.23 · 받은 거절: 제42조제4항제2호 · [OPD 열기](https://kopd.kipo.go.kr:8888/viewFamilySearchResult.do?paramType=A&cntry=KR&appno=20140002563&code=A&docgrp=ALL&from=K) → `data/research/kr_1020140002563/opinion_20150923.pdf`
+- [ ] **10-2014-0002785** · 의견서 · 제출일 2015.09.30 · 받은 거절: 제42조제4항제2호 · [OPD 열기](https://kopd.kipo.go.kr:8888/viewFamilySearchResult.do?paramType=A&cntry=KR&appno=20140002785&code=A&docgrp=ALL&from=K) → `data/research/kr_1020140002785/opinion_20150930.pdf`
+- [ ] **10-2014-0002880** · 의견서 · 제출일 2015.11.18 · 받은 거절: 제29조제2항, 제42조제4항제2호 · [OPD 열기](https://kopd.kipo.go.kr:8888/viewFamilySearchResult.do?paramType=A&cntry=KR&appno=20140002880&code=A&docgrp=ALL&from=K) → `data/research/kr_1020140002880/opinion_20151118.pdf`
+- [ ] **10-2014-0002989** · 의견서 · 제출일 2015.12.18 · 받은 거절: 제42조제4항제2호 · [OPD 열기](https://kopd.kipo.go.kr:8888/viewFamilySearchResult.do?paramType=A&cntry=KR&appno=20140002989&code=A&docgrp=ALL&from=K) → `data/research/kr_1020140002989/opinion_20151218.pdf`
+- [ ] **10-2014-0003040** · 의견서 · 제출일 2015.09.04 · 받은 거절: 제47조제2항 · [OPD 열기](https://kopd.kipo.go.kr:8888/viewFamilySearchResult.do?paramType=A&cntry=KR&appno=20140003040&code=A&docgrp=ALL&from=K) → `data/research/kr_1020140003040/opinion_20150904.pdf`
+- [ ] **10-2014-0003056** · 의견서 · 제출일 2015.11.25 · 받은 거절: 제29조제2항 · [OPD 열기](https://kopd.kipo.go.kr:8888/viewFamilySearchResult.do?paramType=A&cntry=KR&appno=20140003056&code=A&docgrp=ALL&from=K) → `data/research/kr_1020140003056/opinion_20151125.pdf`
+- [ ] **10-2014-0003062** · 의견서 · 제출일 2015.11.03 · 받은 거절: 제42조제4항제2호 · [OPD 열기](https://kopd.kipo.go.kr:8888/viewFamilySearchResult.do?paramType=A&cntry=KR&appno=20140003062&code=A&docgrp=ALL&from=K) → `data/research/kr_1020140003062/opinion_20151103.pdf`
+- [ ] **10-2014-0003151** · 의견서 · 제출일 2015.10.12 · 받은 거절: 제42조제4항제2호 · [OPD 열기](https://kopd.kipo.go.kr:8888/viewFamilySearchResult.do?paramType=A&cntry=KR&appno=20140003151&code=A&docgrp=ALL&from=K) → `data/research/kr_1020140003151/opinion_20151012.pdf`
+- [ ] **10-2014-0003154** · 의견서 · 제출일 2015.11.16 · 받은 거절: 제42조제4항제2호 · [OPD 열기](https://kopd.kipo.go.kr:8888/viewFamilySearchResult.do?paramType=A&cntry=KR&appno=20140003154&code=A&docgrp=ALL&from=K) → `data/research/kr_1020140003154/opinion_20151116.pdf`
+- [ ] **10-2014-0003199** · 재심사 의견서 · 제출일 2016.04.01 · 받은 거절: 제29조제2항 · [OPD 열기](https://kopd.kipo.go.kr:8888/viewFamilySearchResult.do?paramType=A&cntry=KR&appno=20140003199&code=A&docgrp=ALL&from=K) → `data/research/kr_1020140003199/opinion_20160401.pdf`
+- [ ] **10-2014-0003250** · 의견서 · 제출일 2015.11.02 · 받은 거절: 제29조제2항 · [OPD 열기](https://kopd.kipo.go.kr:8888/viewFamilySearchResult.do?paramType=A&cntry=KR&appno=20140003250&code=A&docgrp=ALL&from=K) → `data/research/kr_1020140003250/opinion_20151102.pdf`
+- [ ] **10-2014-0003324** · 의견서 · 제출일 2015.11.17 · 받은 거절: 제29조제2항 · [OPD 열기](https://kopd.kipo.go.kr:8888/viewFamilySearchResult.do?paramType=A&cntry=KR&appno=20140003324&code=A&docgrp=ALL&from=K) → `data/research/kr_1020140003324/opinion_20151117.pdf`
+- [ ] **10-2014-0003488** · 의견서 · 제출일 2015.12.22 · 받은 거절: 제29조제2항, 제42조제4항제2호 · [OPD 열기](https://kopd.kipo.go.kr:8888/viewFamilySearchResult.do?paramType=A&cntry=KR&appno=20140003488&code=A&docgrp=ALL&from=K) → `data/research/kr_1020140003488/opinion_20151222.pdf`
+- [ ] **10-2014-0003628** · 재심사 의견서 · 제출일 2016.04.22 · 받은 거절: 제29조제2항 · [OPD 열기](https://kopd.kipo.go.kr:8888/viewFamilySearchResult.do?paramType=A&cntry=KR&appno=20140003628&code=A&docgrp=ALL&from=K) → `data/research/kr_1020140003628/opinion_20160422.pdf`
+- [x] **10-2019-0000844** · 재심사 의견서 · 제출일 2020.02.10 · 받은 거절: 제29조제2항 · [OPD 열기](https://kopd.kipo.go.kr:8888/viewFamilySearchResult.do?paramType=A&cntry=KR&appno=20190000844&code=A&docgrp=ALL&from=K) → `data/research/kr_1020190000844/opinion_20200210.pdf`
+- [ ] **10-2019-0000874** · 재심사 의견서 · 제출일 2019.11.05 · 받은 거절: 제29조제2항 · [OPD 열기](https://kopd.kipo.go.kr:8888/viewFamilySearchResult.do?paramType=A&cntry=KR&appno=20190000874&code=A&docgrp=ALL&from=K) → `data/research/kr_1020190000874/opinion_20191105.pdf`
+- [ ] **10-2019-0000902** · 의견서 · 제출일 2019.04.18 · 받은 거절: 제42조제4항제2호 · [OPD 열기](https://kopd.kipo.go.kr:8888/viewFamilySearchResult.do?paramType=A&cntry=KR&appno=20190000902&code=A&docgrp=ALL&from=K) → `data/research/kr_1020190000902/opinion_20190418.pdf`
+- [ ] **10-2019-0000903** · 의견서 · 제출일 2019.05.27 · 받은 거절: 제29조제2항, 제42조제4항제2호 · [OPD 열기](https://kopd.kipo.go.kr:8888/viewFamilySearchResult.do?paramType=A&cntry=KR&appno=20190000903&code=A&docgrp=ALL&from=K) → `data/research/kr_1020190000903/opinion_20190527.pdf`

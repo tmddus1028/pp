@@ -1,0 +1,100 @@
+{
+  "application": "1020190000844",
+  "title": "전자쿠폰 시스템 및 전자쿠폰 처리 방법",
+  "purpose": "LLM 개선안 채점표. 모델에는 2019-04-09 의견제출통지서와 당시 청구항(공개공보 A)만 준다. 이후 실제 대응·결과는 채점에만 쓴다.",
+  "input_cutoff": "2019-04-09",
+  "inputs": {
+    "patent": "data/downloads/kr_review_package/publications/KR20190025857A.pdf",
+    "office_action": "data/downloads/kr_review_package/official_samples/1020190000844_952019025682492/1020190000844_952019025682492.xml",
+    "rejection": {"claims": [1], "statute": "특허법 제29조제2항", "citations": ["KR20150096573A", "KR20150090348A", "KR20150093093A"]}
+  },
+  "prosecution": [
+    {
+      "round": 1,
+      "date": "2019-08-09",
+      "response": "amendment + opinion",
+      "claim_1_added": [
+        "소비자 단말과 통신하여 (소비자 단말의) 각 (구성에 대한 정보를 수집)",
+        "활성 타임 및 활성 지역을 각각 전자쿠폰과 매칭된 행사 기간 및 행사 지역에 기초하여 설정",
+        "사용 이력을 추출하여 공급자 또는 소비자 별로 분류 → 소비자 별 사용 통계, 공급자 별 승인 통계, 발급/사용 비율을 포함하는 결제정보 생성",
+        "행사 지역에 대응되는 공급자의 위치 탐색",
+        "소비자 단말은 소비자의 의사에 따라 사용 금액과 지불시기를 결정 → 공급자-소비자 거래를 상호 비동기화 방식으로 구현"
+      ],
+      "spec_basis_cited": ["[0093]-[0094]", "[0110]"],
+      "arguments": [
+        "① 활성 타임·활성 지역을 행사 기간·지역에 기초해 설정",
+        "② 사용 이력을 공급자/소비자 별로 분류한 통계 결제정보 생성",
+        "③ 소비자 의사에 따른 금액·지불시기 결정(비동기화 거래)"
+      ],
+      "next_action": {"type": "거절결정", "date": "2019-12-09", "send_number": "9-5-2019-0889992-12"},
+      "examiner_reasoning": "부가 한정했으나 지역 행사 기간에 맞춘 쿠폰 연계는 널리 알려진 서비스, 통계는 인용발명 1·3에서 쉽게 도출, ③은 인용발명 2에서 도출 가능 → 진보성 거절 유지",
+      "outcome": "unresolved",
+      "sources": [
+        "data/research/kr_1020190000844/opinion_20190809.pdf",
+        "KIPRIS ClaimsChangeHistoryService/amendmentHistoryDetailInfo (receiptSendNumber 112019082004907)",
+        "KIPRIS IntermediateDocumentREService (거절결정서 PDF '라. 의견서에 대한 검토')"
+      ]
+    },
+    {
+      "round": 2,
+      "date": "2020-02-10",
+      "response": "재심사 청구: amendment + opinion",
+      "claim_1_added": [
+        "소비자 단말의 디스플레이 장치의 해상도 및 NFC를 사용하기 위한 구성의 구비여부에 적합한 (QR/NFC/RFID/비콘) 발행 형식 결정",
+        "공급자의 의사와 상관없이 소비자의 의사만으로 (금액·지불시기 결정)",
+        "위치정보에 따라 지도에 활성 지역과 공급자 위치를 표시하고, 지도에서 공급자를 선택하면 그 공급자의 서비스 정보를 제공"
+      ],
+      "spec_basis_cited": ["[0077]-[0079]", "[0099]-[0100]", "[0110]"],
+      "arguments": [
+        "핵심: 단말 하드웨어 특성(해상도·NFC 구비)을 수집해 쿠폰 형식을 결정하는 기술 수단. 인용발명 2의 단말 식별정보 수집은 '대상 파악' 목적이지 '하드웨어 특성 판단'이 아님",
+        "구성 i: 소비자 주도 원웨이 결제(공급자 의사와 무관)",
+        "구성 ii: 지도상 공급자 위치·서비스 정보 제공 — 인용발명 1의 위치 기반 쿠폰 정렬과 수준이 다름",
+        "목적·효과: 다양한 기종에서 이용 불가 상황 최소화"
+      ],
+      "next_action": {"type": "등록결정", "date": "2020-03-02", "send_number": "9-5-2020-0158423-34"},
+      "examiner_note": "직권보정 1건(청구항 1 19줄 '상기 공급자 단말로' → '공급자 단말로', 단순 오기)만 있고 추가 거절 없음",
+      "outcome": "resolved",
+      "sources": [
+        "data/research/kr_1020190000844/opinion_20200210.pdf",
+        "KIPRIS ClaimsChangeHistoryService/amendmentHistoryDetailInfo (receiptSendNumber 112020013730044)",
+        "KIPRIS IntermediateDocumentRGService/contentInfo, amendmentInfo"
+      ]
+    }
+  ],
+  "rubric": [
+    {
+      "id": "technical_means",
+      "weight": 3,
+      "question": "서비스·정책 수준이 아니라 명세서에 있는 구체적 기술 수단(단말 하드웨어 특성에 따른 쿠폰 형식 결정 등)으로 한정하는 방향을 제시했는가?",
+      "why": "등록된 2차 보정의 핵심. 1차의 서비스 수준 한정은 '널리 알려진 서비스'로 거절됨"
+    },
+    {
+      "id": "spec_paragraphs",
+      "weight": 2,
+      "question": "실제 등록 보정이 근거로 쓴 단락 [0077]-[0079], [0099]-[0100], [0110] 중 하나 이상을 근거로 인용했는가?",
+      "why": "명세서 뒷받침이 있는 한정만 신규사항 문제 없이 보정 가능"
+    },
+    {
+      "id": "citation_2_distinction",
+      "weight": 2,
+      "question": "인용발명 2의 단말 식별정보 수집(단락 [0041], [0082])과의 차이를 목적·대상 관점에서 구분하려 했는가?",
+      "why": "심사관이 쿠폰 발행부에 대해 든 가장 가까운 선행기술"
+    },
+    {
+      "id": "avoid_rejected_direction",
+      "weight": 1,
+      "question": "1차 보정처럼 '행사 기간·지역 기반 설정'이나 통계 항목 나열만으로 진보성을 주장하지 않았는가?",
+      "why": "거절결정서에서 그 방향은 쉽게 도출 가능하다고 판단됨"
+    },
+    {
+      "id": "no_guarantee",
+      "weight": 1,
+      "question": "등록·해소를 보장하는 표현 없이 트레이드오프(권리범위 축소)를 밝혔는가?",
+      "why": "서비스 원칙: 참고용, 변리사 검토 필요"
+    }
+  ],
+  "notes": [
+    "채점 시 이 사건은 대응 사례 DB(KIPRIS)에서 제외한다 — 모델이 정답을 미리 보지 않도록.",
+    "2020-02-10 재심사 보정서는 명세서 [0088], [0106]도 정정했다(이번 채점 범위 밖)."
+  ]
+}
