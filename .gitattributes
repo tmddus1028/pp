@@ -1,0 +1,4 @@
+# Hash-pinned fixtures and official samples must stay byte-identical on Windows (core.autocrlf).
+data/** -text
+korean_prototype/data/** -text
+tests/fixtures/** -text

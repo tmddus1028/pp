@@ -11,6 +11,13 @@ from backend.service import analyze
 ROOT = Path(__file__).resolve().parents[1]
 
 
+@pytest.fixture(autouse=True)
+def isolate_settings_env(monkeypatch):
+    # frontend/app.py calls load_dotenv(); a developer's .env must not change test outcomes.
+    for name in Settings.model_fields:
+        monkeypatch.delenv(name.upper(), raising=False)
+
+
 @pytest.fixture
 def settings():
     return Settings(_env_file=None, llm_provider="local")
