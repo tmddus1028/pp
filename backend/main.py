@@ -28,6 +28,11 @@ Jurisdiction = Literal["US", "KR", "us", "kr"]
 
 
 from backend.improvements.models import ImprovementRequest, ImprovementResponse  # noqa: E402
+from backend.improvements.opinion import (  # noqa: E402
+    OpinionRequest,
+    OpinionResponse,
+    generate_opinion,
+)
 from backend.improvements.revision import review_revision  # noqa: E402
 from backend.improvements.revision_models import RevisionRequest, RevisionReview  # noqa: E402
 from backend.improvements.service import generate_improvement  # noqa: E402
@@ -37,6 +42,16 @@ from backend.improvements.service import generate_improvement  # noqa: E402
 def improvements(request: ImprovementRequest, settings: Config):
     try:
         return generate_improvement(request, settings)
+    except ValueError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
+    except ProviderError as exc:
+        raise HTTPException(status_code=502, detail=str(exc)) from exc
+
+
+@app.post("/improvements/opinion", response_model=OpinionResponse)
+def opinion(request: OpinionRequest, settings: Config):
+    try:
+        return generate_opinion(request, settings)
     except ValueError as exc:
         raise HTTPException(status_code=422, detail=str(exc)) from exc
     except ProviderError as exc:

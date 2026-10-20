@@ -17,7 +17,9 @@ from fastapi.responses import JSONResponse
 from pydantic import BaseModel, Field
 
 from backend import store
-from backend.main import Config, Jurisdiction, analyze_files, analyze_text, app
+from backend.errors import ProviderError
+from backend.improvements.opinion import Selection, check_selection, generate_from_selection
+from backend.main import Config, analyze_files, analyze_text, app
 from backend.schemas import AnalysisResult, TextAnalysisRequest
 from backend.view.models import build_relationship_model, claim_rows, comparison_for_claim
 from backend.view.pdf_adapter import attach_coordinates, render_png, search_boxes
@@ -45,9 +47,8 @@ def database_unavailable(_request: Request, _exc: psycopg.OperationalError):
     )
 
 
-def save(result: AnalysisResult, uploads, jurisdiction, title):
+def save(result: AnalysisResult, uploads, title):
     """Persist the analysis, its PDFs and the coordinate-resolved review model once."""
-    korean = jurisdiction.upper() == "KR"
     data = result.model_dump(mode="json")
     # Same PDF↔document matching the Streamlit upload used (KR ids end with the file hash).
     files = {
@@ -56,24 +57,20 @@ def save(result: AnalysisResult, uploads, jurisdiction, title):
         for name, content in uploads
         if Path(name).suffix.lower() == ".pdf"
         and document["filename"] == name
-        and (
-            not korean or document["document_id"].endswith(hashlib.sha256(content).hexdigest()[:16])
-        )
+        and document["document_id"].endswith(hashlib.sha256(content).hexdigest()[:16])
     }
     assets = {document_id: content for document_id, (_, content) in files.items()}
     review = attach_coordinates(build_review_model(data), data, assets)
-    case_id = store.create_case(
-        data["analysis_id"], title, "KR" if korean else "US", data, review, files
-    )
+    case_id = store.create_case(data["analysis_id"], title, "KR", data, review, files)
     return {"id": case_id}
 
 
+# The web product handles Korean 의견제출통지서 only.
 @router.post("", status_code=201)
 async def create_case(
     patent: UploadFile,
     office_action: UploadFile,
     settings: Config,
-    jurisdiction: Jurisdiction = "US",
     references: list[UploadFile] | None = None,
     amendments: list[UploadFile] | None = None,
     version_history: Annotated[str | None, Form(max_length=20000)] = None,
@@ -85,36 +82,27 @@ async def create_case(
         uploads.append((upload.filename or "upload", await upload.read(limit)))
         await upload.seek(0)  # analyze_files re-reads and enforces the size limits
     result = await analyze_files(
-        patent, office_action, settings, jurisdiction, references, amendments, version_history
+        patent, office_action, settings, "KR", references, amendments, version_history
     )
     name = title or Path(patent.filename or "사건").stem
-    return await run_in_threadpool(save, result, uploads, jurisdiction, name)
+    return await run_in_threadpool(save, result, uploads, name)
 
 
 @router.post("/text", status_code=201)
-def create_text_case(
-    request: TextAnalysisRequest, settings: Config, jurisdiction: Jurisdiction = "US"
-):
-    result = analyze_text(request, settings, jurisdiction)
-    return save(result, [], jurisdiction, "텍스트 입력 · " + date.today().isoformat())
+def create_text_case(request: TextAnalysisRequest, settings: Config):
+    result = analyze_text(request, settings, "KR")
+    return save(result, [], "텍스트 입력 · " + date.today().isoformat())
 
 
 @router.post("/demo", status_code=201)
-def create_demo_case(settings: Config, jurisdiction: Jurisdiction = "US"):
-    korean = jurisdiction.upper() == "KR"
+def create_demo_case(settings: Config):
     raw = ROOT / "data/raw"
     request = TextAnalysisRequest(
-        patent_text=(raw / ("kr_demo_patent.txt" if korean else "demo_patent.txt")).read_text(
-            encoding="utf-8"
-        ),
-        office_action_text=(
-            raw / ("kr_demo_office_action.xml" if korean else "demo_office_action.txt")
-        ).read_text(encoding="utf-8"),
+        patent_text=(raw / "kr_demo_patent.txt").read_text(encoding="utf-8"),
+        office_action_text=(raw / "kr_demo_office_action.xml").read_text(encoding="utf-8"),
     )
-    result = analyze_text(request, settings, jurisdiction)
-    return save(
-        result, [], jurisdiction, "예제 분석 · 가상 문서 · " + ("한국" if korean else "미국")
-    )
+    result = analyze_text(request, settings, "KR")
+    return save(result, [], "예제 분석 · 가상 문서")
 
 
 @router.get("")
@@ -169,6 +157,53 @@ def comparison(case_id: int, claim: int, scope: str = "all"):
     if not any(item.get("claim_number") == claim for item in review["items"]):
         raise HTTPException(status_code=404, detail="청구항을 찾을 수 없습니다.")
     return comparison_for_claim(review, claim, scope)
+
+
+@router.get("/{case_id}/selections")
+def list_selections(case_id: int):
+    """Every confirmed version, newest first per issue (요구사항 5장 선택 확정 기록)."""
+    load(case_id)
+    return store.list_selections(case_id)
+
+
+@router.post("/{case_id}/selections", status_code=201)
+def confirm_selection(case_id: int, selection: Selection):
+    result = AnalysisResult.model_validate(load(case_id)["result"])
+    try:
+        check_selection(selection, result)
+    except ValueError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
+    record = selection.model_dump(mode="json", exclude={"confirmed_by"})
+    return store.create_selection(case_id, selection.rejection_id, record, selection.confirmed_by)
+
+
+class DraftRequest(BaseModel):
+    selection_id: int
+
+
+@router.post("/{case_id}/drafts", status_code=201)
+def create_draft(case_id: int, request: DraftRequest, settings: Config):
+    """Draft from one confirmed selection version; the record keeps what it was written from."""
+    result = AnalysisResult.model_validate(load(case_id)["result"])
+    saved = store.get_selection(case_id, request.selection_id)
+    if saved is None:
+        raise HTTPException(status_code=404, detail="선택 기록을 찾을 수 없습니다.")
+    selection = Selection(**saved["record"], confirmed_by=saved["confirmed_by"])
+    try:
+        response, model = generate_from_selection(result, selection, settings)
+    except ValueError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
+    except ProviderError as exc:
+        raise HTTPException(status_code=502, detail=str(exc)) from exc
+    return store.create_draft(
+        case_id, saved["id"], response.provider, model, response.model_dump(mode="json")
+    )
+
+
+@router.get("/{case_id}/drafts")
+def list_drafts(case_id: int):
+    load(case_id)
+    return store.list_drafts(case_id)
 
 
 def case_file(case_id, document_id):
