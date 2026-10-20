@@ -65,6 +65,8 @@ class Strategy(Model):
     grounding: list[Grounding] = Field(min_length=1)
     expected_effect: str
     tradeoff: str
+    # case_ids from response_precedents[].similar_cases this strategy follows (precedent, not evidence)
+    precedent_ids: list[str] = Field(default_factory=list)
 
 
 class Example(Model):

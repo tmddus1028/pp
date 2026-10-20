@@ -155,6 +155,12 @@ def local_review(context):
                 "tradeoff": "모든 인용 한정을 누락 없이 포함해야 하며 특허 가능성을 보증하지 않습니다.",
             }
         )
+    # Rule-based review cannot reason about precedents; attach the two most similar as reference.
+    similar = [
+        c["case_id"] for p in context.get("response_precedents", []) for c in p["similar_cases"]
+    ][:2]
+    for strategy in strategies:
+        strategy["precedent_ids"] = similar
     return ClaimImprovementSuggestion.model_validate(
         {
             "claim_number": context["claim_number"],
@@ -251,7 +257,16 @@ def validate_suggestion(draft, context):
         evidence(comparison.evidence_ids)
         target([comparison.claim_element])
         core(comparison.evidence_ids)
+    precedents = {
+        case["case_id"]
+        for p in context.get("response_precedents", [])
+        for case in p.get("similar_cases", [])
+    }
     for strategy in draft.strategies:
+        if not set(strategy.precedent_ids) <= precedents:
+            raise ValueError("개선안이 검색되지 않은 과거 사례를 인용했습니다.")
+        if context.get("precedents_required") and precedents and not strategy.precedent_ids:
+            raise ValueError("각 대응 방안은 유사 과거 사례(precedent_ids)를 근거로 해야 합니다.")
         evidence(strategy.evidence_ids, strategy.grounding)
         target(strategy.target_elements)
         core(strategy.evidence_ids)
@@ -389,6 +404,8 @@ def generate_improvement(request, settings, client_factory=OpenAIExtractionClien
         draft = local_review(context)
         attempts = 1
     else:
+        # Rule-based local review cannot read precedents; a model must ground each strategy in one.
+        context["precedents_required"] = True
         provider = get_provider(config, client_factory)
         draft = provider.generate_improvement(context)
         attempts = 1 + settings.improvement_repair_attempts

@@ -1,6 +1,4 @@
-"""Read-only precedent API for the web client (checklist "유사 사례·해소 비율" panel)."""
-
-from typing import Literal
+"""Read-only Korean precedent API for the web client (대응 방안 panel and checklist)."""
 
 from fastapi import APIRouter, HTTPException, Query
 
@@ -23,21 +21,27 @@ def resolve(category, statute):
 
 @router.get("/categories")
 def categories():
-    """Common rejection categories with their KR/US statutes."""
+    """Common rejection categories with their Korean statutes."""
     return CATEGORIES
 
 
-PATHS = {"US": repository.DEFAULT_PATH, "KR": repository.KR_PATH}
-
-
 @router.get("/stats")
-def stats(
+def stats(category: str | None = None, statute: str | None = Query(None, max_length=200)):
+    """Resolution statistics for one category (real KIPRIS cases only)."""
+    return repository.stats(resolve(category, statute))
+
+
+@router.get("/similar")
+def similar(
     category: str | None = None,
     statute: str | None = Query(None, max_length=200),
-    source: Literal["US", "KR"] = "US",
+    q: str = Query("", max_length=8000),
+    limit: int = Query(5, ge=1, le=20),
+    exclude: str = Query("", max_length=40),
 ):
-    """Resolution statistics for one category (US PatRe by default, ?source=KR for KIPRIS)."""
-    return repository.stats(resolve(category, statute), PATHS[source])
+    """Cases whose rejected claim resembles `q` (needs claim text; today the DEMO cases)."""
+    skip = frozenset({exclude}) if exclude else frozenset()
+    return repository.similar(resolve(category, statute), q, limit, skip)
 
 
 @router.get("")
@@ -46,10 +50,9 @@ def search(
     statute: str | None = Query(None, max_length=200),
     q: str = Query("", max_length=4000),
     limit: int = Query(3, ge=1, le=20),
-    source: Literal["US", "KR"] = "US",
 ):
-    """Representative cases (resolved by amendment / argument only / unresolved)."""
-    return repository.find(resolve(category, statute), q, limit, PATHS[source])
+    """Representative real cases (resolved by amendment / argument only / unresolved)."""
+    return repository.find(resolve(category, statute), q, limit)
 
 
 @router.get("/{case_id}")

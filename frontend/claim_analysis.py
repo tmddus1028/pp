@@ -193,7 +193,7 @@ RESPONSE = {"amendment": "보정 포함", "argument_only": "주장만"}
 
 
 def render_precedent(precedent):
-    """US response outcomes for the same rejection type. Reference data, not this case's evidence."""
+    """Korean (KIPRIS) outcomes for the same rejection type. Reference data, not this case's evidence."""
     stats = precedent["stats"]
     with st.expander(f"유사 사례·해소 비율 근거 ({stats['label']}, {stats['labeled']}건)"):
         st.caption(stats["note"])
@@ -217,14 +217,6 @@ def render_precedent(precedent):
         st.dataframe(rows, hide_index=True, use_container_width=True)
         for case in precedent["cases"]:
             render_case(case)
-        kr = precedent.get("kr_stats") or {}
-        if kr.get("labeled"):
-            st.markdown(
-                f"**한국 실제 사건 (KIPRIS)** · {kr['labeled']}건 중 해소 {kr['resolved']}건"
-            )
-            st.caption(kr["note"])
-            for case in precedent.get("kr_cases", []):
-                render_case(case)
 
 
 def render_case(case):

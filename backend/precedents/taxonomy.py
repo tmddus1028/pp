@@ -1,38 +1,30 @@
-"""Common rejection types shared by KR (특허법) and US (35 U.S.C.) rejections.
+"""Common rejection types for Korean (특허법) rejections.
 
 Mapping draft from the redesign doc (2026-10-19). Re-check article numbers against the statute
-text before relying on them. Only novelty/inventive_step reuse US response cases fully.
+text before relying on them.
 """
 
 import re
 
 CATEGORIES = {
-    "novelty": {"label": "신규성", "kr": "제29조제1항", "us": "35 U.S.C. 102", "reuse": "high"},
+    "novelty": {"label": "신규성", "kr": "제29조제1항"},
     "inventive_step": {
         "label": "진보성",
         "kr": "제29조제2항",
-        "us": "35 U.S.C. 103",
-        "reuse": "high",
     },
     "description": {
         "label": "기재불비",
         "kr": "제42조제3항·제4항",
-        "us": "35 U.S.C. 112(a)·(b)",
-        "reuse": "partial",
     },
     "eligibility": {
         "label": "발명 성립성·산업상 이용가능성",
         "kr": "제29조제1항 본문",
-        "us": "35 U.S.C. 101",
-        "reuse": "low",
     },
     "prior_application": {
         "label": "선출원·확대된 선출원·이중특허",
         "kr": "제36조, 제29조제3항",
-        "us": "35 U.S.C. 102(a)(2), double patenting",
-        "reuse": "low",
     },
-    "other": {"label": "기타", "kr": "", "us": "", "reuse": "low"},
+    "other": {"label": "기타", "kr": ""},
 }
 
 REUSABLE = {"novelty", "inventive_step", "description"}
@@ -76,12 +68,6 @@ def categorize(statute, jurisdiction=None, text=""):
             "112": "description",
         }[number.group(1)]
     return "other"
-
-
-# PatRe "meta.rejection_types" labels, e.g. "103 - Obviousness".
-def categorize_patre(label):
-    """PatRe rejection label (e.g. '103 - Obviousness') → common category key."""
-    return categorize(label, "us")
 
 
 def label(category):

@@ -111,6 +111,13 @@ def test_korean_real_context_law_and_retrieved_specification(local):
     )
     assert any("선행문헌 원문 미확보" in m for m in response.suggestion.missing_evidence)
     assert all(s.action_type == "argument_only" for s in response.suggestion.strategies)
+    # Korean cases get Korean precedents (never this application) and strategies cite them.
+    context, _, _ = build_context(request(result, rid="R1"))
+    precedent = context["response_precedents"][0]
+    assert precedent["source"] == "KIPRIS (KIPO)"
+    similar = [c["case_id"] for c in precedent["similar_cases"]]
+    assert similar and all("1020190000844" not in c for c in similar)
+    assert all(s.precedent_ids == similar[:2] for s in response.suggestion.strategies)
 
 
 def test_api_request_is_read_only_and_local_has_no_cloud_calls(result, local):

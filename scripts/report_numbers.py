@@ -64,13 +64,6 @@ def main():
     )
     print(f"    지금 main: {len({c['application'] for c in current})}개 출원, {len(current)}건")
 
-    manifest = json.loads((PRECEDENTS / "manifest.json").read_text("utf-8"))
-    print("\n[3] 미국 1,019건")
-    print(
-        f"    {manifest['records']:,}건 ({manifest['applications']}개 출원 × 거절 종류)"
-        " — data/precedents/manifest.json"
-    )
-
     print("\n[4] 대응했는데 최종 거절된 건 중 '안 풀린 이유' 표를 적어 둔 비율")
     print("    (발표본 '22건 중 18건, 82%'는 KIPRIS 중복 응답 2건을 두 번 센 값)")
     for label, subset in (("발표 당시", apps), ("지금 main", None)):
@@ -79,16 +72,6 @@ def main():
             f"    {label}: 거절결정 {total}건 중 대응한 {responded}건,"
             f" 그중 표 있음 {with_table}건 = {pct(with_table, responded)}"
         )
-
-    us = r.stats("inventive_step")
-    merge = next(a for a in us["by_argument"] if a["type"] == "dependent_merge")
-    print("\n[5] 미국 진보성 거절 355건 중 68%가 풀림")
-    print(
-        f"    {us['resolved']}/{us['labeled']} = {pct(us['resolved'], us['labeled'])}"
-        f" (제외 {us['excluded']}건 빼고)"
-    )
-    print("\n[6] 종속항 내용을 독립항에 합친 경우 81%")
-    print(f"    {merge['resolved']}/{merge['cases']} = {pct(merge['resolved'], merge['cases'])}")
 
 
 if __name__ == "__main__":

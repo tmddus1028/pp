@@ -199,9 +199,12 @@ def build_context(request: ImprovementRequest):
         missing.append(
             "선행문헌 원문 미확보: 인용 위치는 심사관 문서의 인용 문장입니다. 선행문헌 본문을 읽거나 기술적 차이를 검증한 결과가 아닙니다."
         )
+    jurisdiction = "kr" if result.analysis_id.startswith("kr-") else "us"
+    # Never show this application's own later outcome as a "similar case".
+    own = {d.source_metadata.get("application_number") for d in result.documents} - {None, ""}
     context = {
-        "response_precedents": response_precedents(rejections, claim.text),
-        "jurisdiction": "kr" if result.analysis_id.startswith("kr-") else "us",
+        "response_precedents": response_precedents(rejections, claim.text, jurisdiction, own),
+        "jurisdiction": jurisdiction,
         "claim_number": claim.claim_number,
         "claim_text": claim.text,
         "claim_status": status.status if status else "unknown",
@@ -222,8 +225,14 @@ def build_context(request: ImprovementRequest):
     return context, sources, digest
 
 
-def response_precedents(rejections, claim_text):
-    """Outcome patterns from other (US) applications. Reference only, never evidence."""
+def response_precedents(rejections, claim_text, jurisdiction="kr", exclude=frozenset()):
+    """Korean (KIPRIS) outcome patterns plus similar past cases the model may cite as precedent.
+
+    `similar_cases` are other applications whose rejected claim resembles this one; a strategy
+    cites them in precedent_ids. They are never evidence about this application's documents.
+    """
+    if jurisdiction != "kr":
+        return []
     out = []
     for category in dict.fromkeys(
         categorize(r.statute, None, r.examiner_explanation)
@@ -232,11 +241,13 @@ def response_precedents(rejections, claim_text):
     ):
         if category not in REUSABLE:
             continue
-        stats = repository.stats(category)
-        if not stats["labeled"]:
+        stats = repository.stats(category, exclude_applications=exclude)
+        similar = repository.similar(category, claim_text, 5, exclude)
+        if not stats["labeled"] and not similar:
             continue
         out.append(
             {
+                "source": stats["source"],
                 "category": category,
                 "label": stats["label"],
                 "rejection_ids": [
@@ -248,23 +259,22 @@ def response_precedents(rejections, claim_text):
                 "labeled_cases": stats["labeled"],
                 "by_response": stats["by_response"],
                 "by_argument": stats["by_argument"][:6],
-                "cases": [
+                "similar_cases": [
                     {
-                        key: case[key]
+                        key: case.get(key, "")
                         for key in (
                             "case_id",
-                            "response_type",
-                            "argument_types",
-                            "next_action",
+                            "demo",
+                            "title",
                             "outcome",
-                            "examiner_reply",
+                            "response_type",
+                            "response_method",
+                            "added_limitation",
+                            "examiner_reply_excerpt",
                         )
                     }
-                    | {
-                        "argument_excerpt": case["argument_excerpt"][:400],
-                        "examiner_reply_excerpt": case["examiner_reply_excerpt"][:200],
-                    }
-                    for case in repository.find(category, claim_text)
+                    | {"claims_before": case["claims_before"][:400]}
+                    for case in similar
                 ],
             }
         )

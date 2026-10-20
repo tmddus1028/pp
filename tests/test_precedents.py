@@ -50,17 +50,45 @@ def test_argument_types():
     assert "teach_away" not in found
 
 
-def test_built_table_matches_manifest():
-    manifest = json.loads((DATA / "manifest.json").read_text(encoding="utf-8"))
-    cases = repository.load()
-    assert len(cases) == manifest["records"] > 900
-    assert len({c["case_id"] for c in cases}) == len(cases)
+def test_korean_table_and_demo_cases_are_separate():
+    cases = repository.load(repository.KR_PATH)
+    assert len(cases) > 300 and len({c["case_id"] for c in cases}) == len(cases)
     for case in cases:
+        assert case["jurisdiction"] == "KR" and not case.get("demo")
         assert case["outcome"] in {"resolved", "unresolved", "excluded"}
-        assert (case["outcome"] == "excluded") == (case["exclusion_reason"] == "rce")
-        assert case["response_type"] in {"amendment", "argument_only"}
-        if case["next_action"] == "Notice of Allowance":
+        if case["next_action"] == "등록결정":
             assert case["outcome"] in {"resolved", "excluded"}
+    demo = repository.load(repository.DEMO_PATH)
+    assert demo and all(c["demo"] and c["application"].startswith("DEMO-") for c in demo)
+    # Demo cases never change the real statistics.
+    real = repository.stats("inventive_step")
+    assert real["labeled"] == sum(
+        c["category"] == "inventive_step" and c["outcome"] != "excluded" for c in cases
+    )
+
+
+def test_similar_ranks_by_rejected_claim_words():
+    # No real coupon case clears the similarity floor, so labelled demo cases stand in.
+    query = "소비자 단말 전자쿠폰 발급 승인 공급자 서버"
+    found = repository.similar("inventive_step", query, 3, frozenset({"1020190000844"}))
+    assert found and found[0]["title"].startswith("전자쿠폰")
+    assert all(c["demo"] and c["claims_before"] for c in found)
+    assert all(c["similarity"] >= repository.MIN_SIMILARITY for c in found)
+    assert repository.similar("inventive_step", "", 3) == []
+
+
+def test_claim_history_is_merged_into_real_cases():
+    if not repository.HISTORY_PATH.exists():
+        pytest.skip("run scripts/build_kr_claim_history.py first")
+    rounds = [c for c in repository.real_cases() if c["application"] == "1020190000844"]
+    granted = next(c for c in rounds if c["next_action"] == "등록결정")
+    # The re-examination amendment that led to grant: display resolution and NFC.
+    assert "해상도" in granted["added_limitation"] and "NFC" in granted["added_limitation"]
+    assert granted["amendment_documents"] and not granted.get("demo")
+    # A real case finds real neighbours once their claims are comparable.
+    case = next(c for c in repository.real_cases() if c.get("claims_before"))
+    found = repository.similar(case["category"], case["claims_before"], 3)
+    assert found and found[0]["case_id"] == case["case_id"]
 
 
 @pytest.fixture
@@ -141,11 +169,12 @@ def test_find_mixes_outcomes_and_ranks_by_query(tiny):
 
 
 def test_checklist_precedent_only_for_reusable_rejections(result):
-    rejection = result.rejections[0].model_copy(update={"statute": "35 U.S.C. 103"})
+    rejection = result.rejections[0].model_copy(update={"statute": "특허법 제29조제2항"})
     text, basis = precedent_item(rejection)
-    assert "[대응 사례]" in text and "변리사 검토" in text
+    assert "[대응 사례]" in text and "KIPRIS" in text and "미국" not in text
     assert basis["category"] == "inventive_step" and basis["cases"]
-    assert precedent_item(rejection.model_copy(update={"statute": "35 U.S.C. 101"})) is None
+    eligibility = rejection.model_copy(update={"statute": "특허법 제29조제1항 본문"})
+    assert precedent_item(eligibility) is None
     objection = rejection.model_copy(update={"action_type": "objection"})
     assert precedent_item(objection) is None
 
@@ -372,11 +401,11 @@ def test_kipris_cache_and_monthly_guard(tmp_path, monkeypatch):
 def test_checklist_never_shows_the_analyzed_application_as_kr_precedent(result):
     rejection = result.rejections[0].model_copy(update={"statute": "특허법 제29조제2항"})
     _, basis = precedent_item(rejection)
-    own = {c["application"] for c in basis["kr_cases"]}
+    own = {c["application"] for c in basis["cases"]}
     assert own, "KIPRIS table should have inventive-step cases"
     _, filtered = precedent_item(rejection, frozenset(own))
-    assert not {c["application"] for c in filtered["kr_cases"]} & own
-    assert filtered["kr_stats"]["labeled"] < basis["kr_stats"]["labeled"]
+    assert not {c["application"] for c in filtered["cases"]} & own
+    assert filtered["stats"]["labeled"] < basis["stats"]["labeled"]
 
 
 def test_no_response_refusal_is_excluded_not_unresolved():

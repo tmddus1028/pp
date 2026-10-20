@@ -418,16 +418,11 @@ function drawPrecedents(){
   for(const entry of entries){
     const p=entry.precedent,s=p.stats;
     root.append(el('h4','prec-title',s.label+' · 같은 유형 거절에서 실제로 어떻게 대응했나'));
-    root.append(el('p','prec-lead','미국 '+s.labeled+'건 중 '+pct(s.resolved_rate)+'가 다음 심사에서 해소'));
+    root.append(el('p','prec-lead','한국 실제 사건(KIPRIS) '+s.labeled+'건 중 '+pct(s.resolved_rate)+'가 다음 심사에서 해소'));
     const rows=el('div','prec-rows');
     for(const [kind,group] of Object.entries(s.by_response))if(group.cases)rows.append(rateRow(RESPONSES[kind],group));
     for(const a of s.by_argument.slice(0,5))rows.append(rateRow(a.label,a));
     root.append(rows);
-    if(p.kr_stats?.labeled){
-      root.append(el('h4','','한국 실제 사건 (KIPRIS) · '+p.kr_stats.labeled+'건 중 해소 '+p.kr_stats.resolved+'건'));
-      for(const c of p.kr_cases||[])root.append(caseCard(c));
-    }
-    root.append(el('h4','','미국 사례 (PatRe)'));
     for(const c of p.cases||[])root.append(caseCard(c));
     root.append(el('p','notice',s.note));
   }

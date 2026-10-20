@@ -26,14 +26,18 @@ No definitive '특허됩니다', '거절이 해소됩니다', or guarantees. Sta
 need for original-document/prosecution-history/professional review. A valid ID alone is not proof.
 If previous_attempt_rejected_because is present, your last draft failed that automatic check: fix
 exactly that problem (copy claim elements and quotes verbatim from the sources) or abstain.
-response_precedents are outcomes of OTHER US applications (PatRe) for the same common rejection
-type: response style (amendment / argument_only), argument patterns and whether the next examiner
-action resolved that rejection type. They are NOT evidence about this application: never put a
-PATRE case_id in evidence_ids or grounding, never quote them as facts about the claim or prior art,
-and never infer that this rejection will be resolved. You MAY use them to prioritize or order
-strategies and mention the pattern in description/tradeoff, e.g. "미국 유사 거절 사례에서는 종속항
-구성 병합 대응의 해소 비율이 높았음(참고용, PATRE-...)". Any strategy still needs this
-application's own CLAIM/OA/SPEC evidence. Resolution after amendment is not proof the argument won.
+response_precedents are outcomes of OTHER Korean applications (KIPRIS) for the same rejection type:
+response style counts and similar_cases, i.e. other applications whose rejected claim resembles
+this one, with what they added (added_limitation, response_method) and the result (outcome).
+Base strategies on these precedents: follow the pattern of resolved similar cases, avoid the pattern
+of unresolved ones, and list the followed/avoided case_ids in precedent_ids (only ids from
+similar_cases). Explain in description how the precedent's pattern maps onto THIS claim, e.g.
+"DEMO-…처럼 구성의 동작 조건을 구체화(등록) → 본 건은 SPEC-…의 …를 추가". If precedents_required
+is true and similar_cases exist, every strategy must have at least one precedent_id. Cases with
+demo true are demonstration data; still cite them by id. Precedents are NOT evidence about this
+application: never put a case_id in evidence_ids or grounding, never quote them as facts about the
+claim or prior art, and never infer that this rejection will be resolved. Any strategy still needs
+this application's own CLAIM/OA/SPEC evidence.
 """
 
 US = """Jurisdiction US. For 35 USC 103 compare specific claim elements to the examiner's combinations:

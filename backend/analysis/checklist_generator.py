@@ -5,53 +5,31 @@ from backend.schemas import Impact, Rejection, ReviewItem
 RESPONSE_LABELS = {"amendment": "보정 포함 대응", "argument_only": "보정 없이 주장만"}
 
 
-def _percent(rate):
-    return "–" if rate is None else f"{round(rate * 100)}%"
-
-
 def precedent_item(rejection: Rejection, exclude_applications=frozenset()):
-    """Checklist prompt backed by US response outcomes for the same common rejection type."""
+    """Checklist prompt backed by Korean (KIPRIS) response outcomes for the same rejection type."""
     if rejection.action_type != "rejection":
         return None
     category = categorize(rejection.statute, None, rejection.examiner_explanation)
     if category not in REUSABLE:
         return None
-    stats = repository.stats(category)
+    stats = repository.stats(category, exclude_applications=exclude_applications)
     if not stats["labeled"]:
         return None
     responses = ", ".join(
-        f"{RESPONSE_LABELS[kind]} {_percent(group['rate'])}({group['cases']}건)"
+        f"{RESPONSE_LABELS[kind]} {group['resolved']}/{group['cases']}건"
         for kind, group in stats["by_response"].items()
         if group["cases"]
     )
-    best = sorted(
-        (a for a in stats["by_argument"] if a["cases"] >= 20),
-        key=lambda a: a["rate"] or 0,
-        reverse=True,
-    )[:2]
-    strong = "; ".join(f"{a['label']} {_percent(a['rate'])}({a['cases']}건)" for a in best)
     text = (
-        f"[대응 사례] 같은 유형({stats['label']}) 미국 거절 {stats['labeled']}건 중 "
-        f"{_percent(stats['resolved_rate'])}가 다음 조치에서 해소됐습니다 — {responses}."
+        f"[대응 사례] 같은 유형({stats['label']}) 한국 실제 사건(KIPRIS) {stats['labeled']}건 중 "
+        f"{stats['resolved']}건이 다음 조치에서 해소됐습니다 — {responses}. "
+        "표본이 작아 사례로만 참고하며 변리사 검토가 필요합니다."
     )
-    if strong:
-        text += f" 해소 비율이 높았던 대응: {strong}."
-    if stats["reuse"] == "partial":
-        text += " 한국·미국 요건 차이가 있어 대응 방식만 참고하세요."
-    kr = repository.stats(category, repository.KR_PATH, exclude_applications)
-    if kr["labeled"]:
-        text += (
-            f" 한국 실제 사건(KIPRIS) {kr['labeled']}건 중 해소 {kr['resolved']}건"
-            f"(표본이 작아 사례로만 참고)."
-        )
-    text += " 참고용 통계이며 변리사 검토가 필요합니다."
     return text, {
         "category": category,
         "stats": stats,
-        "cases": repository.find(category, rejection.examiner_explanation),
-        "kr_stats": kr,
-        "kr_cases": repository.find(
-            category, path=repository.KR_PATH, exclude_applications=exclude_applications
+        "cases": repository.find(
+            category, rejection.examiner_explanation, exclude_applications=exclude_applications
         ),
     }
 
