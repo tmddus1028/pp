@@ -11,6 +11,73 @@ export type Evidence = Schemas["Evidence"];
 export type Page = Schemas["Page"];
 export type GraphNode = Schemas["GraphNode"];
 export type GraphEdge = Schemas["GraphEdge"];
+export type ImprovementResponse = Schemas["ImprovementResponse"];
+export type Strategy = Schemas["Strategy"];
+export type ReviewEvidence = Schemas["ReviewEvidence"];
+export type OpinionResponse = Schemas["OpinionResponse"];
+
+/** backend/improvements/opinion.py Selection, saved per confirmation in the selections table. */
+export type Direction = "반박" | "보정" | "반박과 보정" | "추가 조사" | "보류";
+export type SelectionInput = {
+  claim_number: number;
+  rejection_id: string;
+  precedent_ids: string[];
+  direction: Direction;
+  emphasize: string;
+  use_arguments: string;
+  exclude_arguments: string;
+  keep_elements: string[];
+  add_elements: string;
+  forbidden_changes: string;
+  confirmed_by: string;
+};
+export type SelectionRecord = {
+  id: number;
+  rejection_id: string;
+  version: number;
+  record: Omit<SelectionInput, "confirmed_by">;
+  confirmed_by: string;
+  confirmed_at: string;
+};
+export type DraftRecord = {
+  id: number;
+  selection_id: number;
+  provider: string;
+  model: string;
+  created_at: string;
+  response: Schemas["OpinionResponse"];
+};
+
+/** backend/precedents/repository.py stats() / summary(): plain dicts. */
+type ResponseGroup = { cases: number; resolved: number; rate: number | null };
+export type PrecedentStats = {
+  category: string;
+  label: string;
+  labeled: number;
+  resolved: number;
+  by_response: { amendment: ResponseGroup; argument_only: ResponseGroup };
+  source: string;
+  note: string;
+};
+export type PrecedentCase = {
+  case_id: string;
+  application: string;
+  oa_date: string;
+  response_type: string;
+  argument_types: string[];
+  next_action: string;
+  outcome: "resolved" | "unresolved" | "excluded";
+  argument_excerpt: string;
+  amendment_summary?: string;
+  /** Only on cases with claim text (today: DEMO cases from data/precedents/kr_demo_cases.jsonl). */
+  demo?: boolean;
+  title?: string;
+  response_method?: "spec_limitation" | "dependent_merge" | "clarification" | "argument_only" | "none";
+  amendment_documents?: string[];
+  added_limitation?: string;
+  claims_before?: string;
+  similarity?: number;
+};
 
 export type CaseStatus = "open" | "in_progress" | "responded" | "closed";
 export const CASE_STATUS: Record<CaseStatus, string> = {
@@ -30,7 +97,7 @@ export type CaseMeta = {
   id: number;
   analysis_id: string;
   title: string;
-  jurisdiction: "US" | "KR";
+  jurisdiction: "KR";
   status: CaseStatus;
   deadline: string | null;
   created_at: string;

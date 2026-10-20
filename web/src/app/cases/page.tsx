@@ -6,13 +6,10 @@ import { api } from "@/lib/api";
 import { deadlineLabel } from "@/lib/labels";
 import { CASE_STATUS, STATUS_TONE, type CaseListItem, type CaseStatus } from "@/lib/view-types";
 
-const COUNTRY = { US: "미국", KR: "한국" } as const;
-
 export default function CasesPage() {
   const [cases, setCases] = useState<CaseListItem[] | null>(null);
   const [error, setError] = useState("");
   const [status, setStatus] = useState<CaseStatus | "all">("all");
-  const [country, setCountry] = useState<"all" | "US" | "KR">("all");
   const [query, setQuery] = useState("");
 
   useEffect(() => {
@@ -23,9 +20,7 @@ export default function CasesPage() {
   const q = query.trim().toLowerCase();
   const shown = all.filter(
     (c) =>
-      (status === "all" || c.status === status) &&
-      (country === "all" || c.jurisdiction === country) &&
-      (!q || c.title.toLowerCase().includes(q)),
+      (status === "all" || c.status === status) && (!q || c.title.toLowerCase().includes(q)),
   );
   // Open work with a deadline, nearest first.
   const due = all
@@ -67,7 +62,7 @@ export default function CasesPage() {
                   <span>
                     <strong style={{ fontSize: 15 }}>{c.title}</strong>
                     <span className="muted" style={{ display: "block", fontSize: 12, marginTop: 2 }}>
-                      {COUNTRY[c.jurisdiction]} 출원 · {CASE_STATUS[c.status]}
+                      {CASE_STATUS[c.status]}
                     </span>
                   </span>
                   <span style={{ fontSize: 13, color: "var(--text-3)" }}>
@@ -103,14 +98,6 @@ export default function CasesPage() {
               <span className="sr-only">사건 검색</span>
               <input type="search" placeholder="사건 이름으로 검색" value={query} onChange={(e) => setQuery(e.target.value)} />
             </label>
-            <label className="field">
-              출원 국가
-              <select value={country} onChange={(e) => setCountry(e.target.value as typeof country)}>
-                <option value="all">전체</option>
-                <option value="US">미국</option>
-                <option value="KR">한국</option>
-              </select>
-            </label>
           </div>
         </div>
 
@@ -127,7 +114,6 @@ export default function CasesPage() {
               <thead>
                 <tr>
                   <th scope="col">사건</th>
-                  <th scope="col">출원 국가</th>
                   <th scope="col">거절 이유</th>
                   <th scope="col">거절된 청구항</th>
                   <th scope="col">제출 기한</th>
@@ -145,7 +131,6 @@ export default function CasesPage() {
                           {c.title}
                         </Link>
                       </td>
-                      <td>{COUNTRY[c.jurisdiction]}</td>
                       <td>{c.rejection_count}건</td>
                       <td style={{ fontWeight: 600, color: "var(--direct)" }}>{c.direct_count}개</td>
                       <td>

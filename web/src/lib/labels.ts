@@ -1,15 +1,5 @@
 /** Plain-Korean labels for generated values. Source evidence text is never rewritten. */
 
-const US_KIND: Record<string, string> = {
-  "101": "특허 적격성 없음",
-  "102": "신규성 없음",
-  "103": "진보성 없음",
-  "112": "기재 요건 위반",
-  "112(a)": "명세서 기재 요건 위반",
-  "112(b)": "기재 불명확",
-  "112(d)": "종속항 형식 위반",
-};
-
 const KR_KIND: Record<string, string> = {
   "29-1": "신규성 없음",
   "29-2": "진보성 없음",
@@ -24,14 +14,8 @@ const KR_KIND: Record<string, string> = {
   "47-2": "보정 범위 초과",
 };
 
-/** "35 USC 112(b)" → 기재 불명확 · 미국 특허법 제112조 b항; "특허법 제29조제2항" → 진보성 없음. */
+/** "특허법 제29조제2항" → 진보성 없음 · 특허법 제29조제2항. */
 export function describeStatute(statute: string, objection = false) {
-  const us = statute.match(/35\s*U\.?\s*S\.?\s*C\.?\s*§*\s*(\d+)((?:\s*\([a-z0-9]+\))*)/i);
-  if (us) {
-    const [section, ...parts] = [us[1], ...[...us[2].matchAll(/\(([a-z0-9]+)\)/gi)].map((m) => m[1])];
-    const law = `미국 특허법 제${section}조` + (parts[0] ? ` ${parts[0]}항` : "") + (parts[1] ? ` ${parts[1]}호` : "");
-    return { kind: objection ? "형식 지적" : US_KIND[`${section}(${parts[0]})`] ?? US_KIND[section] ?? "거절 이유", law };
-  }
   const kr = statute.match(/제\s*(\d+)\s*조(?:\s*제\s*(\d+)\s*항)?/);
   if (kr) {
     const kind = KR_KIND[`${kr[1]}-${kr[2]}`] ?? KR_KIND[kr[1]] ?? "거절 이유";
@@ -71,8 +55,8 @@ export function claimRole(claim: { status?: string; direct?: string[]; indirect?
   return CLAIM_ROLES[4];
 }
 
-export function documentLabel(kind: string, korean: boolean, filename: string) {
-  if (kind === "office_action") return korean ? "의견제출통지서" : "심사관 통지서";
-  if (kind === "patent") return korean ? "명세서와 청구범위" : "출원 청구항";
+export function documentLabel(kind: string, filename: string) {
+  if (kind === "office_action") return "의견제출통지서";
+  if (kind === "patent") return "명세서와 청구범위";
   return "선행문헌 원문 · " + filename.replace(/\.[^.]+$/, "");
 }

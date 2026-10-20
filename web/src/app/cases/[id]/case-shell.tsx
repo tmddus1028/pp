@@ -21,7 +21,7 @@ const TABS = [
   ["review", "거절 이유 검토"],
   ["claims", "청구항 현황"],
   ["map", "관계도"],
-  ["compare", "선행문헌 대비"],
+  ["compare", "대응 방안"],
 ] as const;
 
 export function CaseShell({ id, children }: { id: string; children: ReactNode }) {
@@ -68,7 +68,7 @@ function CaseHeader({ meta, onChange }: { meta: CaseMeta; onChange: (meta: CaseM
       <nav className="breadcrumb" aria-label="위치">
         <Link href="/cases">사건 관리</Link>
         <span aria-hidden="true">/</span>
-        <span>{meta.jurisdiction === "KR" ? "한국 출원" : "미국 출원"}</span>
+        <span>한국 출원</span>
       </nav>
       <div className="row" style={{ justifyContent: "space-between", marginTop: 8 }}>
         <input

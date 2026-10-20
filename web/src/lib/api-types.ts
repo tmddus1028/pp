@@ -21,6 +21,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/improvements/opinion": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Opinion */
+        post: operations["opinion_improvements_opinion_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/improvements/revisions": {
         parameters: {
             query?: never;
@@ -220,6 +237,106 @@ export interface paths {
         };
         /** Search Page */
         get: operations["search_page_cases__case_id__files__document_id__pages__number__search_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/precedents/categories": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Categories
+         * @description Common rejection categories with their Korean statutes.
+         */
+        get: operations["categories_precedents_categories_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/precedents/stats": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Stats
+         * @description Resolution statistics for one category (real KIPRIS cases only).
+         */
+        get: operations["stats_precedents_stats_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/precedents/similar": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Similar
+         * @description Cases whose rejected claim resembles `q` (needs claim text; today the DEMO cases).
+         */
+        get: operations["similar_precedents_similar_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/precedents": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Search
+         * @description Representative real cases (resolved by amendment / argument only / unresolved).
+         */
+        get: operations["search_precedents_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/precedents/{case_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Case
+         * @description Full stored record of one case.
+         */
+        get: operations["case_precedents__case_id__get"];
         put?: never;
         post?: never;
         delete?: never;
@@ -745,6 +862,66 @@ export interface components {
             /** Confidence */
             confidence: number;
         };
+        /** OpinionDraft */
+        OpinionDraft: {
+            /** Amended Claim */
+            amended_claim: string | null;
+            /** Sections */
+            sections: components["schemas"]["OpinionSection"][];
+            /** Cautions */
+            cautions: string[];
+        };
+        /** OpinionParagraph */
+        OpinionParagraph: {
+            /** Text */
+            text: string;
+            /** Evidence Ids */
+            evidence_ids: string[];
+            /** Grounding */
+            grounding: components["schemas"]["Grounding"][];
+        };
+        /** OpinionRequest */
+        OpinionRequest: {
+            analysis: components["schemas"]["AnalysisResult"];
+            /** Claim Number */
+            claim_number: number;
+            /** Rejection Id */
+            rejection_id?: string | null;
+            /**
+             * Require Llm
+             * @default false
+             */
+            require_llm: boolean;
+            strategy: components["schemas"]["Strategy"];
+        };
+        /** OpinionResponse */
+        OpinionResponse: {
+            /** Analysis Id */
+            analysis_id: string;
+            /** Claim Number */
+            claim_number: number;
+            /** Rejection Id */
+            rejection_id: string | null;
+            /** Provider */
+            provider: string;
+            draft: components["schemas"]["OpinionDraft"];
+            /** Changes */
+            changes: components["schemas"]["TextChange"][];
+            /** Sources */
+            sources: components["schemas"]["ReviewEvidence"][];
+            /** Limitations */
+            limitations: string[];
+        };
+        /** OpinionSection */
+        OpinionSection: {
+            /**
+             * Heading
+             * @enum {string}
+             */
+            heading: "보정사항" | "거절이유의 요지" | "본원발명의 요지" | "인용발명과의 대비" | "결론";
+            /** Paragraphs */
+            paragraphs: components["schemas"]["OpinionParagraph"][];
+        };
         /** Page */
         Page: {
             /** Number */
@@ -886,6 +1063,10 @@ export interface components {
             /** Text */
             text: string;
             evidence: components["schemas"]["Evidence"];
+            /** Precedent */
+            precedent?: {
+                [key: string]: unknown;
+            } | null;
         };
         /** RevisionAssessment */
         RevisionAssessment: {
@@ -995,6 +1176,8 @@ export interface components {
             expected_effect: string;
             /** Tradeoff */
             tradeoff: string;
+            /** Precedent Ids */
+            precedent_ids?: string[];
         };
         /** TextAnalysisRequest */
         TextAnalysisRequest: {
@@ -1065,6 +1248,39 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["ImprovementResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    opinion_improvements_opinion_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["OpinionRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["OpinionResponse"];
                 };
             };
             /** @description Validation Error */
@@ -1223,9 +1439,7 @@ export interface operations {
     };
     create_case_cases_post: {
         parameters: {
-            query?: {
-                jurisdiction?: "US" | "KR" | "us" | "kr";
-            };
+            query?: never;
             header?: never;
             path?: never;
             cookie?: never;
@@ -1258,9 +1472,7 @@ export interface operations {
     };
     create_text_case_cases_text_post: {
         parameters: {
-            query?: {
-                jurisdiction?: "US" | "KR" | "us" | "kr";
-            };
+            query?: never;
             header?: never;
             path?: never;
             cookie?: never;
@@ -1293,9 +1505,7 @@ export interface operations {
     };
     create_demo_case_cases_demo_post: {
         parameters: {
-            query?: {
-                jurisdiction?: "US" | "KR" | "us" | "kr";
-            };
+            query?: never;
             header?: never;
             path?: never;
             cookie?: never;
@@ -1309,15 +1519,6 @@ export interface operations {
                 };
                 content: {
                     "application/json": unknown;
-                };
-            };
-            /** @description Validation Error */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
                 };
             };
         };
@@ -1522,6 +1723,158 @@ export interface operations {
                 case_id: number;
                 document_id: string;
                 number: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    categories_precedents_categories_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+        };
+    };
+    stats_precedents_stats_get: {
+        parameters: {
+            query?: {
+                category?: string | null;
+                statute?: string | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    similar_precedents_similar_get: {
+        parameters: {
+            query?: {
+                category?: string | null;
+                statute?: string | null;
+                q?: string;
+                limit?: number;
+                exclude?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    search_precedents_get: {
+        parameters: {
+            query?: {
+                category?: string | null;
+                statute?: string | null;
+                q?: string;
+                limit?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    case_precedents__case_id__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                case_id: string;
             };
             cookie?: never;
         };

@@ -8,11 +8,9 @@ type Mode = "file" | "text";
 
 export default function NewCasePage() {
   const router = useRouter();
-  const [jurisdiction, setJurisdiction] = useState<"US" | "KR">("US");
   const [mode, setMode] = useState<Mode>("file");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
-  const korean = jurisdiction === "KR";
 
   async function run(request: () => Promise<{ id: number }>) {
     setBusy(true);
@@ -29,15 +27,14 @@ export default function NewCasePage() {
   function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const form = new FormData(event.currentTarget);
-    const query = `?jurisdiction=${jurisdiction}`;
     if (mode === "file") {
       if (!(form.get("title") as string)?.trim()) form.delete("title");
       if ((form.getAll("references") as File[]).every((f) => !f.size)) form.delete("references");
-      run(() => api("/cases" + query, { method: "POST", body: form }));
+      run(() => api("/cases", { method: "POST", body: form }));
     } else {
       run(() =>
         api(
-          "/cases/text" + query,
+          "/cases/text",
           json("POST", { patent_text: form.get("patent_text"), office_action_text: form.get("office_action_text") }),
         ),
       );
@@ -49,19 +46,10 @@ export default function NewCasePage() {
       <header className="page-header">
         <div>
           <h1>새 사건 등록</h1>
-          <p>출원 문서와 심사관 통지서를 올리면 거절 이유와 영향 범위를 정리합니다</p>
+          <p>한국 특허의 명세서와 의견제출통지서를 올리면 거절 이유와 영향 범위를 정리합니다</p>
         </div>
       </header>
       <form className="stack" onSubmit={submit}>
-        <fieldset className="row" disabled={busy}>
-          <legend>출원 국가</legend>
-          {(["US", "KR"] as const).map((value) => (
-            <label key={value}>
-              <input type="radio" checked={jurisdiction === value} onChange={() => setJurisdiction(value)} />{" "}
-              {value === "US" ? "미국 특허" : "한국 특허"}
-            </label>
-          ))}
-        </fieldset>
         <fieldset className="row" disabled={busy}>
           <legend>입력 방법</legend>
           {(["file", "text"] as const).map((value) => (
@@ -72,24 +60,21 @@ export default function NewCasePage() {
           ))}
         </fieldset>
 
-        {/* key resets inputs when the jurisdiction changes, like the Streamlit upload did. */}
-        <fieldset className="form-grid" disabled={busy} key={jurisdiction + mode}>
+        <fieldset className="form-grid" disabled={busy} key={mode}>
           {mode === "file" ? (
             <>
               <label className="card">
-                <b>1 · {korean ? "명세서와 청구범위" : "출원 청구항"}</b>
-                <input type="file" name="patent" required accept={korean ? ".pdf,.txt" : ".pdf,.txt,.json"} />
+                <b>1 · 명세서와 청구범위</b>
+                <input type="file" name="patent" required accept=".pdf,.txt" />
               </label>
               <label className="card">
-                <b>2 · {korean ? "의견제출통지서 · XML 또는 PDF" : "심사관 통지서 · Office Action"}</b>
-                <input type="file" name="office_action" required accept={korean ? ".xml,.pdf" : ".pdf,.txt,.json"} />
+                <b>2 · 의견제출통지서 · XML 또는 PDF</b>
+                <input type="file" name="office_action" required accept=".xml,.pdf" />
               </label>
-              {korean && (
-                <label className="card">
-                  <b>선행문헌 원문 · 선택 사항, 최대 10개</b>
-                  <input type="file" name="references" multiple accept=".pdf" />
-                </label>
-              )}
+              <label className="card">
+                <b>선행문헌 원문 · 선택 사항, 최대 10개</b>
+                <input type="file" name="references" multiple accept=".pdf" />
+              </label>
               <label className="card">
                 <b>사건 이름 · 선택 사항</b>
                 <input name="title" maxLength={200} placeholder="비우면 특허 파일 이름" />
@@ -98,11 +83,11 @@ export default function NewCasePage() {
           ) : (
             <>
               <label className="card">
-                <b>1 · {korean ? "명세서와 청구범위" : "출원 청구항"}</b>
+                <b>1 · 명세서와 청구범위</b>
                 <textarea name="patent_text" rows={14} required />
               </label>
               <label className="card">
-                <b>2 · {korean ? "의견제출통지서 · XML 전체 또는 본문" : "심사관 통지서 · Office Action"}</b>
+                <b>2 · 의견제출통지서 · XML 전체 또는 본문</b>
                 <textarea name="office_action_text" rows={14} required />
               </label>
             </>
@@ -117,7 +102,7 @@ export default function NewCasePage() {
             type="button"
             className="button"
             disabled={busy}
-            onClick={() => run(() => api(`/cases/demo?jurisdiction=${jurisdiction}`, { method: "POST" }))}
+            onClick={() => run(() => api("/cases/demo", { method: "POST" }))}
           >
             예제로 체험하기
           </button>

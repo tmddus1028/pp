@@ -2,11 +2,7 @@
 import assert from "node:assert/strict";
 import { deadlineLabel, describeStatute } from "./labels.ts";
 
-assert.deepEqual(describeStatute("35 USC 103"), { kind: "진보성 없음", law: "미국 특허법 제103조" });
-assert.deepEqual(describeStatute("35 USC 112(b)"), { kind: "기재 불명확", law: "미국 특허법 제112조 b항" });
-assert.deepEqual(describeStatute("35 USC 102(a)(1)"), { kind: "신규성 없음", law: "미국 특허법 제102조 a항 1호" });
-assert.equal(describeStatute("35 USC 112(f)").kind, "기재 요건 위반");
-assert.equal(describeStatute("35 USC 112(b)", true).kind, "형식 지적");
+assert.equal(describeStatute("특허법 제29조제2항", true).kind, "형식 지적");
 assert.deepEqual(describeStatute("특허법 제29조제2항"), { kind: "진보성 없음", law: "특허법 제29조제2항" });
 assert.equal(describeStatute("특허법 제42조제4항제2호").kind, "청구범위 기재 요건 위반");
 assert.equal(describeStatute("특허법 제42조의2").kind, "기재 요건 위반");
