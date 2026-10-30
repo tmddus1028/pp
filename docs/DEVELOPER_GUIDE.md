@@ -6,18 +6,18 @@
 
 ## 1. 한 장 요약
 
-사용자가 **공개특허 PDF + 거절 통지서(의견제출통지서)** 를 올리면:
+변리사가 **명세서(공개특허 PDF) + 의견제출통지서** 를 올리면 (발표자료 2p 흐름):
 
 ```
-업로드 ─▶ ① 문서 읽기 ─▶ ② 거절 종류 분류 ─▶ ③ 설명서 근거 찾기 ─▶ ④ 체크리스트 + 대응 사례 ─▶ ⑤ AI 방어 전략(버튼)
-frontend   jurisdictions/     precedents/          improvements/          analysis/checklist_      improvements/
-app.py     korean.py          taxonomy.py          retrieval.py           generator.py             service.py
-                                                                          + precedents/             + providers.py
-                                                                            repository.py
+① 업로드 ─▶ ② 텍스트 정리 ─▶ ③ 거절 이유 분석 ─▶ ④ 비슷한 사례 ─▶ ⑤ 변리사 선택 기록 ─▶ ⑥ 근거 검증 초안
+web/        jurisdictions/     jurisdictions/       precedents/        cases.py, store.py       improvements/
+cases/new   korean.py          korean.py            repository.py      (selections 버전)        opinion.py
+                               + precedents/        (similar)                                   + service.py
+                                 taxonomy.py
 ```
 
 - ①~④는 규칙 기반이라 몇 초 안에 끝나고 LLM을 쓰지 않습니다.
-- ⑤만 LLM(Claude 또는 로컬 Ollama)을 부르고, 결과는 **원문 인용이 맞는지 기계로 검증**한 뒤에만 보여줍니다.
+- ⑥만 LLM(Claude 또는 로컬 Ollama)을 부르고, **원문에 없는 인용·명세서 밖 보정·등록 보장 표현이 있으면 초안을 거부**합니다.
 
 ## 2. 폴더 지도
 
@@ -27,18 +27,19 @@ app.py     korean.py          taxonomy.py          retrieval.py           genera
 | `backend/jurisdictions/korean.py` | 한국 문서 분석 진입점 (`korean_prototype/kr_review` 추출기를 연결) | 김승제 |
 | `backend/analysis/checklist_generator.py` | 체크리스트 문구 + `[대응 사례]` 항목 생성 | 김승제 |
 | `backend/precedents/` | **대응 사례 DB** (아래 3장) | 김승제·김채희 |
-| `backend/improvements/` | AI 방어 전략: 근거 모으기 → LLM 호출 → 검증 (아래 4장) | 변유민 |
+| `backend/improvements/` | AI 방어 전략: 근거 모으기 → LLM 호출 → 검증 (아래 4장). 의견서 초안은 `opinion.py` | 변유민·김승제 |
+| `backend/cases.py`, `backend/store.py` | 사건 저장, 변리사 선택 기록(버전)과 초안 기록 | 김경훈·김승제 |
 | `backend/schemas.py` | 분석 결과 데이터 모양(Pydantic). `ReviewItem.precedent`가 대응 사례 근거 | 전원 |
-| `frontend/app.py` | Streamlit 화면 뼈대, 위쪽 메뉴(문서 업로드 / 검토) | 이승연 |
+| `frontend/app.py` | Streamlit 프로토타입 (Next.js로 이식 중) | 이승연 |
 | `frontend/pdf_review_component/` | 검토 화면(HTML/JS/CSS). 왼쪽 PDF, 오른쪽 섹션 5개 | 이승연 |
 | `scripts/` | 데이터 만들기·실험 스크립트 (아래 5장). `start.ps1`/`stop.ps1`은 앱 실행 | 전원 |
 | `data/precedents/` | 앱이 읽는 대응 사례 완성본(JSONL) | - |
 | `data/eval/kr/` | LLM 채점표 (사건별 JSON + 입력 PDF) | 김경훈 |
 | `data/research/` | 수동 자료(의견서 PDF), `OPINION_DOWNLOAD_TODO.md` | 김채희 |
-| `web/` | Next.js 화면 (해커톤 후 이식 예정) | 김승제·이승연 |
+| `web/` | **Next.js 화면 (주 화면)**. `cases/[id]/review`(거절 이유 검토), `compare`(대응 방안: 사례 → 선택 → 초안) | 김승제·이승연 |
 | `tests/` | pytest. `uv run pytest -q` 로 전체 실행 (약 8분) | 전원 |
 
-Git에 올리지 않는 것: `.env`(API 키), `data/kipris_cache/`(KIPRIS 응답 캐시), `data/datasets/`(PatRe 원본), `data/outputs/`(실행 결과).
+Git에 올리지 않는 것: `.env`(API 키), `data/kipris_cache/`(KIPRIS 응답 캐시), `data/outputs/`(실행 결과).
 
 ## 3. 대응 사례 DB (`backend/precedents/`)
 
@@ -46,16 +47,16 @@ Git에 올리지 않는 것: `.env`(API 키), `data/kipris_cache/`(KIPRIS 응답
 
 | 파일 | 역할 |
 | --- | --- |
-| `taxonomy.py` | 한·미 조문을 공통 종류로 묶음. `categorize("특허법 제29조제2항")` → `"inventive_step"`(진보성). 대응 방식 분류 정규식도 여기 |
-| `repository.py` | JSONL 읽기. `stats(category, path)` = 해소율 통계, `find(category, query, path=...)` = 대표 사례 |
+| `taxonomy.py` | 한국 조문을 거절 유형으로 묶음. `categorize("특허법 제29조제2항")` → `"inventive_step"`(진보성). 대응 방식 분류 정규식도 여기 |
+| `repository.py` | JSONL 읽기. `stats(category)` = 해소율 통계, `find(category, query)` = 대표 사례, `similar(category, claim_text)` = 청구항 TF-IDF 유사 사례 (보정 전후 청구항은 `kr_claim_history.jsonl`에서 붙임) |
 | `kipris.py` | KIPRIS Plus API 클라이언트. 모든 응답을 `data/kipris_cache/`에 캐시, 서비스별 월 950회에서 멈춤, 연결 끊김 3회 재시도 |
-| `api.py` | `GET /precedents/stats`, `/precedents`, `/precedents/{case_id}`, `/precedents/categories` |
+| `api.py` | `GET /precedents/stats`, `/precedents/similar`, `/precedents`, `/precedents/{case_id}`, `/precedents/categories` |
 
 해소 라벨 규칙 (재설계안 기준):
 - 다음 조치가 **등록** → 해소
 - **거절결정** → 결정서의 "해소되지 않은 부분" 표에 있으면 미해소, 없으면 해소
 - **다시 통지** → 같은 종류가 또 나오면 미해소
-- 제외: 무대응, 재심사·RCE 경유, 결정서에 표가 없는 경우
+- 제외: 무대응, 재심사 경유, 결정서에 표가 없는 경우
 
 ## 4. AI 방어 전략 (`backend/improvements/`)
 
@@ -76,8 +77,10 @@ service.generate_improvement()
 | 하고 싶은 일 | 명령 |
 | --- | --- |
 | 앱 실행 / 종료 | `.\scripts\start.ps1` / `.\scripts\stop.ps1` → http://127.0.0.1:8501 |
-| 미국 대응 사례 다시 만들기 | `uv run python scripts/build_precedents.py --download` |
 | 한국 대응 사례 늘리기 (KIPRIS 키 필요) | `uv run python scripts/build_kr_precedents.py --oa-2015 --limit 50 --from-dates --per-date 5` |
+| 보정 전후 청구항 연결 | `uv run python scripts/build_kr_claim_history.py` |
+| 의견서 수동 다운로드 목록 갱신 | `uv run python scripts/opinion_todo.py` → `data/research/OPINION_DOWNLOAD_TODO.md` |
+| 발표 숫자 다시 계산 | `uv run python scripts/report_numbers.py` |
 | PostgreSQL에 사례 넣기 | `docker compose up -d` 후 `uv run python scripts/load_precedents_pg.py` |
 | 채점표 자동 초안 만들기 | `uv run python scripts/build_gold_cases.py <출원번호> ...` |
 | AI 방어 전략 실행 기록 | `uv run python scripts/run_kr_llm_cases.py --eval --label <이름>` |

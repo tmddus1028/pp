@@ -12,8 +12,9 @@ PinPoint: 한국 의견제출통지서(미국 Office Action도 지원)와 청구
 ② 파싱        청구항 · 거절 사유 · 조문 · 인용문헌               backend/jurisdictions/korean.py (US: backend/service.py)
 ③ 공통 스키마  신규성·진보성·기재불비… 한국/미국 같은 형식          backend/schemas.py, backend/precedents/taxonomy.py
 ④ 매칭        청구항 ↔ 명세서 근거 문장 후보                     backend/view/, backend/improvements/retrieval.py
-⑤ 체크리스트   고정 문구 + [대응 사례] 유사 사례·해소 비율          backend/analysis/checklist_generator.py
-⑥ AI 개선안    버튼을 눌렀을 때만 LLM 호출 → 근거 ID·인용 검증      backend/improvements/
+⑤ 비슷한 사례  한국 실제 사례 · 보정 문구 · 해소율                 backend/precedents/, backend/analysis/checklist_generator.py
+⑥ 변리사 선택  대응 방향을 버전으로 기록                          backend/cases.py, backend/store.py
+⑦ 의견서 초안  선택한 버전으로 LLM 초안 → 인용·보정 범위 검증       backend/improvements/opinion.py
 ```
 
 | 폴더 | 무엇 | 평소에 볼 일 |
@@ -21,14 +22,14 @@ PinPoint: 한국 의견제출통지서(미국 Office Action도 지원)와 청구
 | `backend/` | 분석·체크리스트·대응 사례·LLM 전부 | 있음 |
 | `frontend/` | Streamlit 화면 (해커톤 데모) | 있음 |
 | `web/` | Next.js 화면 (해커톤 뒤 이식) | 이식할 때 |
-| `data/precedents/` | **대응 사례 DB**: 미국 PatRe 1,019건 + 한국 KIPRIS 383건 (앱이 읽는 완성본) | 있음 |
+| `data/precedents/` | **대응 사례 DB**: 한국 KIPRIS 139개 출원·383건 + 보정 전후 청구항 314건 (앱이 읽는 완성본) | 있음 |
 | `data/eval/` | **LLM 채점표**: 실제 대응·결과가 있는 사건으로 AI 개선안을 채점 (0844, 0874) | 평가할 때 |
 | `data/downloads/kr_review_package/` | 한국 실사건 5건 입력(통지서 XML/PDF + 공개공보) | 데모할 때 |
 | `data/raw/` | 예제 버튼용 가상 문서, 미국 실사건 | 데모할 때 |
 | `data/fixtures/`, `data/validation/`, `tests/fixtures/` | 해시가 고정된 테스트 정답 — 수정 금지 | 거의 없음 |
 | `data/research/`, `korean_prototype/` | 0844 조사 기록, 초기 한국 시제품(추출 모듈은 backend가 재사용) | 거의 없음 |
 | `data/datasets/`, `data/kipris_cache/`, `data/outputs/` | 원재료·API 캐시·실행 결과 (Git 제외) | 재생성할 때 |
-| `scripts/` | 실행(`start.ps1`)과 데이터 생성(`build_*precedents.py`), 나머지는 일회성 검증 | 가끔 |
+| `scripts/` | 실행(`start.ps1`)과 데이터 생성(`build_kr_*.py`), 숫자 확인(`report_numbers.py`), 나머지는 일회성 검증 | 가끔 |
 | `docs/validation/` | 기능별 검증 기록 30개. 대응 사례·LLM 실호출은 [PRECEDENT_VALIDATION.md](docs/validation/PRECEDENT_VALIDATION.md) | 필요할 때 |
 
 ## 실행
@@ -305,37 +306,32 @@ AZURE_OPENAI_DEPLOYMENT=YOUR-DEPLOYMENT-NAME
 최신 검증과 한계: [REVISION_VALIDATION.md](docs/validation/REVISION_VALIDATION.md).
 이전 1단계 구현 기록: [IMPROVEMENT_VALIDATION.md](docs/validation/IMPROVEMENT_VALIDATION.md).
 
-### 대응 사례 DB — 미국 OA → 대응 → 다음 조치 (PatRe)
+### 대응 사례 DB — 한국 의견제출통지 → 대응 → 다음 조치 (KIPRIS)
 
-한국에서 구하기 어려운 "출원인이 어떻게 대응했고 해소됐는지" 데이터를 미국 실제 심사 이력으로 채웁니다.
-출처는 [PatRe](https://huggingface.co/datasets/PatRe-Bench/PatRe)(MIT, 480개 출원, OA·출원인 REMARKS·다음 OA)입니다.
-`data/precedents/us_patre_cases.jsonl`에 **1,019건**(357개 출원 × 거절 유형)이 들어 있으며 원본 parquet는 Git에 넣지 않습니다.
+같은 유형 거절에서 출원인이 실제로 어떻게 보정했고 해소됐는지를 한국 심사 이력으로 보여 줍니다.
+`.env`에 `KIPRIS_ACCESS_KEY`(또는 `REST_AccessKey`)가 필요하고, 응답은 `data/kipris_cache/`에 캐시되며 서비스별 월 950회에서 멈춥니다.
 
 ```powershell
-uv run python scripts/build_precedents.py --download   # 원본 받기 + 재생성
-uv run python scripts/load_precedents_pg.py            # 선택: PostgreSQL response_cases 테이블로 복사
+uv run python scripts/build_kr_precedents.py --oa-2015 --limit 50 --from-dates --per-date 5  # 사례 (kr_kipris_cases.jsonl)
+uv run python scripts/build_kr_claim_history.py                                               # 보정 전후 청구항 (kr_claim_history.jsonl)
+uv run python scripts/load_precedents_pg.py                                                   # 선택: PostgreSQL로 복사
 ```
 
-- **공통 거절 유형**: `backend/precedents/taxonomy.py`가 한국 조문(제29조제1항·제2항, 제42조 등)과
-  미국 §101/102/103/112를 신규성·진보성·기재불비·성립성·선출원으로 묶습니다. 재사용은 신규성·진보성 중심,
-  기재불비는 "요건 차이 있음"으로 표시합니다.
-- **해소 라벨**(재설계안 규칙): 다음 조치가 등록(Notice of Allowance/Quayle)이면 해소, 다음 OA에 같은 유형이 남으면 미해소,
-  빠졌으면 해소. Final Rejection 뒤 Non-Final(RCE)은 통계에서 **제외**합니다. "보정 포함"과 "주장만"을 따로 셉니다.
-- **대응 유형**: 구성요소 부재 주장, 결합 동기 부재, 반대 교시, 현저한 효과, 한정 추가, 종속항 병합, 명확화, 뒷받침 위치 제시.
-- **체크리스트**: 신규성·진보성·기재불비 거절마다 `[대응 사례]` 항목이 추가되고, 청구항 분석 화면에서
-  **유사 사례·해소 비율 근거**를 펼치면 대응 방식별 해소율과 대표 사례(해소/주장만 해소/미해소)를 원문 발췌와 함께 봅니다.
-- **AI 개선안**: 같은 통계와 대표 사례가 `response_precedents`로 프롬프트에 들어갑니다. 모델은 이를 우선순위 참고로만 쓰고
-  근거 ID·인용으로는 쓸 수 없습니다(기존 검증 게이트 그대로).
-- **API**: `GET /precedents/stats?statute=특허법 제29조제2항`, `GET /precedents?category=inventive_step&q=...`,
+- **사례**: 의견제출통지서·거절결정서·등록결정서·보정 이력으로 통지별 사유 → 대응(보정/의견서) → 다음 조치를 만듭니다.
+  현재 139개 출원·383건, 그중 314건에 보정 전후 청구항과 추가·변경 문구(`added_limitation`)를 연결했습니다.
+- **해소 라벨**: 다음 조치가 등록결정이면 해소, 거절결정이면 결정서의 "해소되지 않은 부분" 표에 있으면 미해소,
+  다시 통지되면 같은 유형이 남았는지로 판단합니다. 무대응·재심사 경유·표 없는 결정은 통계에서 제외합니다.
+- **보정 방식**(`response_method`): 보정 전후 청구항 비교로 종속항 병합 / 명세서 내용 한정 / 변화 없음을 나눕니다.
+- **비슷한 사례**: 거절 당시 청구항을 TF-IDF 코사인 유사도로 비교해 찾고, 분석 중인 출원 자신은 제외합니다.
+  실제 사례가 없을 때만 `kr_demo_cases.jsonl`의 데모 사례를 보여 주며 통계에는 넣지 않습니다.
+- **변리사 선택 → 초안**: 쟁점별 대응 방향(반박·보정·병행·추가 조사·보류)을 버전으로 기록하고, 확정한 버전으로 의견서 초안을 만듭니다
+  (`backend/improvements/opinion.py`, `POST /improvements/opinion`). 원문에 없는 인용, 명세서 밖 보정, 등록 보장 표현이 있으면 거부합니다.
+- **API**: `GET /precedents/stats?statute=특허법 제29조제2항`, `GET /precedents/similar?q=<청구항>`, `GET /precedents?category=inventive_step`,
   `GET /precedents/{case_id}`, `GET /precedents/categories`.
-- **한국 실제 사건 (KIPRIS Plus)**: `.env`에 `KIPRIS_ACCESS_KEY`(또는 `REST_AccessKey`)를 넣고
-  `uv run python scripts/build_kr_precedents.py --oa-2015 --limit 50`. 의견제출통지서·거절결정서·등록결정서·청구항 변동 이력으로
-  통지별 사유 → 대응(보정/의견서) → 다음 조치를 만들고, 거절결정서의 "해소되지 않은 부분" 표로 사유별 해소를 정합니다.
-  무대응·재심사 경유·표 없는 결정은 제외합니다. 응답은 `data/kipris_cache/`에 캐시되며 서비스별 월 950회에서 멈춥니다.
-  현재 139개 출원·383행. 체크리스트와 API(`?source=KR`)에 함께 표시하며, 분석 중인 출원 자신의 결과는 제외합니다.
-  자세한 수치: [PRECEDENT_VALIDATION.md](docs/validation/PRECEDENT_VALIDATION.md).
-- **한계**: 거절 유형 단위 라벨입니다(청구항 단위 아님). 대응 유형은 정규식 분류라 오분류가 있습니다.
-  미국 통계는 한국 심사 결과를 예측하지 않으며 모든 항목에 "참고용, 변리사 검토 필요"를 붙입니다.
+- **의견서 본문**: KIPRIS에 없고 특허청 OPD에서 보안문자를 넣어 손으로 받습니다. 목록과 분담은
+  [OPINION_DOWNLOAD_TODO.md](data/research/OPINION_DOWNLOAD_TODO.md) (`uv run python scripts/opinion_todo.py`로 갱신).
+- 자세한 수치: [PRECEDENT_VALIDATION.md](docs/validation/PRECEDENT_VALIDATION.md), 발표 숫자: [PRESENTATION_NUMBERS.md](docs/PRESENTATION_NUMBERS.md).
+  미국 PatRe 사례(1,019건)는 10/20에 한국 데이터로 전환하며 삭제했습니다(`git show c8fa868:data/precedents/us_patre_cases.jsonl`).
 
 ### 기존 미국 분석 파이프라인
 
