@@ -14,3 +14,7 @@ LLM 개선안과 파서를 **개발에 쓰지 않은 기준**으로 채점하기
 | 1020190000902 | 등록 | 미확보 | - |
 | 1020190000903 | 등록 | 미확보 | - |
 | 1020190000948 | 거절결정 → 불복심판 2019원2316 | 미확보 | - |
+
+2014년 출원 5건(1347·1427·2504·2880·3199)은 `scripts/build_gold_cases.py`가 KIPRIS 이력으로 만든 자동 초안이며 사람 검토 전입니다.
+최신 점수(7건, 2026-11-09): Opus + `full` + v2 **54%**, Sonnet + `elements` + v2 **41%** —
+[PRECEDENT_VALIDATION.md](../../docs/validation/PRECEDENT_VALIDATION.md).

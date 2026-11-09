@@ -4,6 +4,8 @@ PinPoint: 한국 의견제출통지서(미국 Office Action도 지원)와 청구
 같은 유형 거절에서 실제로 어떤 대응이 통했는지(대응 사례)를 근거로 붙여 주는 로컬 MVP입니다.
 구현 계획은 [DEVELOPMENT_PLAN.md](DEVELOPMENT_PLAN.md), **코드 지도·자주 하는 작업·용어 사전은 [개발자 가이드](docs/DEVELOPER_GUIDE.md)** 를 참고하세요.
 **발표 숫자를 직접 확인하려면** `uv run python scripts/report_numbers.py`, 설명은 [발표 숫자 설명서](docs/PRESENTATION_NUMBERS.md).
+**AI 대응 전략 성능**: 채점표 7건 기준 Opus 54%, Sonnet 41% (기본 설정 11%). 표와 해석은
+[PRECEDENT_VALIDATION.md](docs/validation/PRECEDENT_VALIDATION.md)의 "파서 수정 후 7건 전체".
 
 ## 한눈에 보기
 
@@ -23,7 +25,7 @@ PinPoint: 한국 의견제출통지서(미국 Office Action도 지원)와 청구
 | `frontend/` | Streamlit 화면 (해커톤 데모) | 있음 |
 | `web/` | Next.js 화면 (해커톤 뒤 이식) | 이식할 때 |
 | `data/precedents/` | **대응 사례 DB**: 한국 KIPRIS 139개 출원·383건 + 보정 전후 청구항 314건 (앱이 읽는 완성본) | 있음 |
-| `data/eval/` | **LLM 채점표**: 실제 대응·결과가 있는 사건으로 AI 개선안을 채점 (0844, 0874) | 평가할 때 |
+| `data/eval/` | **LLM 채점표**: 실제 대응·결과가 있는 7개 사건으로 AI 개선안을 채점 (Opus 54%, Sonnet 41%) | 평가할 때 |
 | `data/downloads/kr_review_package/` | 한국 실사건 5건 입력(통지서 XML/PDF + 공개공보) | 데모할 때 |
 | `data/raw/` | 예제 버튼용 가상 문서, 미국 실사건 | 데모할 때 |
 | `data/fixtures/`, `data/validation/`, `tests/fixtures/` | 해시가 고정된 테스트 정답 — 수정 금지 | 거의 없음 |
