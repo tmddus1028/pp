@@ -4,7 +4,8 @@ uv run python scripts/run_kr_llm_cases.py --label qwen3-14b-local
 LOCAL_LLM_BASE_URL=http://127.0.0.1:11435 LOCAL_LLM_MODEL=qwen3:32b \\
   uv run python scripts/run_kr_llm_cases.py --label qwen3-32b-s165
 
-Uses the current .env provider (IMPROVEMENT_PROVIDER / LOCAL_LLM_* / ANTHROPIC_*).
+Uses the current .env provider (IMPROVEMENT_PROVIDER / LOCAL_LLM_* / ANTHROPIC_*) and
+KIPRIS_FETCH_CITATIONS (cited KR originals from KIPRIS).
 Writes data/outputs/llm_runs/<label>/<application>.json and summary.json.
 """
 
@@ -50,7 +51,12 @@ def run(app, settings):
     patent, oa = inputs(app)
     try:
         result = analyze_korean(
-            patent.read_bytes(), patent.name, oa.read_bytes(), oa.name, settings.max_document_chars
+            patent.read_bytes(),
+            patent.name,
+            oa.read_bytes(),
+            oa.name,
+            settings.max_document_chars,
+            fetch_citations=settings.kipris_fetch_citations,
         )
     except DocumentError as exc:
         # The analysis pipeline itself could not read this real notice: record, do not crash.
@@ -97,6 +103,7 @@ def main():
         if settings.improvement_provider == "local_ollama"
         else settings.anthropic_model,
         "prune_invalid": settings.improvement_prune_invalid,
+        "kipris_fetch_citations": settings.kipris_fetch_citations,
         "cases": [],
     }
     apps = (

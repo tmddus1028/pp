@@ -15,7 +15,8 @@ LAW = re.compile(
     r"특허법\s*제\s*\d+\s*조(?:\s*의\s*\d+)?(?:\s*제\s*\d+\s*항)?(?:\s*제\s*\d+\s*호)?"
 )
 DEPENDENCY = re.compile(
-    r"^\s*((?:청구항\s*)?제?\s*\d+\s*항?[\s\S]{0,140}?)"
+    # "청구항 1" or "제1항": a bare "제 1 룸 … 에 있어서" (claim 1's own preamble) is not a reference.
+    r"^\s*((?:청구항\s*제?\s*\d+\s*항?|제\s*\d+\s*항)[\s\S]{0,140}?)"
     r"(?:에\s*있어서|에\s*따른|에\s*기재된|중\s*(?:어느|어떤)\s*한\s*항)"
 )
 REFERENCE = re.compile(

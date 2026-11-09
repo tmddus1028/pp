@@ -103,6 +103,19 @@ def _rows(document):
     previous = 0
     for law in LAW.finditer(table):
         prefix = table[previous : law.start()]
+        # A cell cut by a page break ("제5항,\n수신 :\n\n제7항\n2 청구항 …"): the claims before
+        # the next row's 순번 still belong to the previous row.
+        row_start = re.search(r"(?m)^\s*\d+\s+(?=청구항|발명의\s*설명)", prefix)
+        if rows and row_start:
+            spill = prefix[: row_start.start()]
+            claims = re.search(r"제\s*\d+\s*항", spill)
+            if claims:
+                subject_text, law_info = rows[-1]
+                rows[-1] = (
+                    subject_text + " " + " ".join(spill[claims.start() :].split()),
+                    law_info,
+                )
+            prefix = prefix[row_start.start() :]
         subject = re.search(r"청구항|발명의\s*설명|제\s*\d+\s*항", prefix)
         if subject:
             rows.append((prefix[subject.start() :].strip(), statute(law[0])))

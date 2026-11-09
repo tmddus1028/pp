@@ -96,6 +96,28 @@ def test_cited_originals_not_uploaded_are_fetched_and_linked(korean_inputs):
     assert any(link.citation_id for link in result.evidence_links)
 
 
+@pytest.mark.parametrize(
+    "application, grounds, depends",
+    [
+        # Table cell split by a page break: "제5항,\n수신 :\n\n제7항" still belongs to row 1.
+        (
+            "1020140001427",
+            [("특허법 제29조제1항제2호", [1, 2, 4, 5, 7]), ("특허법 제29조제2항", [3, 6, 9])],
+            {1: [], 2: [1], 7: [], 9: [7]},
+        ),
+        # Claim 1's preamble "제 1 룸(21-1) … 에 있어서" is not a claim reference.
+        ("1020140002504", [("특허법 제29조제2항", [1, 2, 3, 4, 5])], {1: [], 2: [1], 5: [4]}),
+    ],
+)
+def test_gold_case_notices_parse(application, grounds, depends):
+    gold = json.loads((ROOT / f"data/eval/kr/{application}.json").read_text(encoding="utf-8"))
+    patent, oa = (ROOT / gold["inputs"][k] for k in ("patent", "office_action"))
+    result = extract_korean(patent.read_bytes(), patent.name, oa.read_bytes(), oa.name)
+    assert [(r.statute, r.claims) for r in result.rejections] == grounds
+    numbers = {c.number: c.depends_on for c in result.claims}
+    assert {n: numbers[n] for n in depends} == depends
+
+
 def test_evidence_offsets_and_logical_xml_page(korean_result):
     result = korean_result
     documents = {d.document_id: d for d in result.documents}
