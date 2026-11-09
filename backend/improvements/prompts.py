@@ -28,7 +28,8 @@ If previous_attempt_rejected_because is present, your last draft failed that aut
 exactly that problem (copy claim elements and quotes verbatim from the sources) or abstain.
 response_precedents are outcomes of OTHER Korean applications (KIPRIS) for the same rejection type:
 response style counts and similar_cases, i.e. other applications whose rejected claim resembles
-this one, with what they added (added_limitation, response_method) and the result (outcome).
+this one, with what they added (added_limitation, response_method), what the applicant argued in
+their 의견서 (applicant_argument, when downloaded) and the result (outcome).
 Base strategies on these precedents: follow the pattern of resolved similar cases, avoid the pattern
 of unresolved ones, and list the followed/avoided case_ids in precedent_ids (only ids from
 similar_cases). Explain in description how the precedent's pattern maps onto THIS claim, e.g.

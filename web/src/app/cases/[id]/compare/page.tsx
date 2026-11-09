@@ -426,6 +426,12 @@ function CaseCard({ c }: { c: PrecedentCase }) {
           {c.added_limitation.length > 240 ? c.added_limitation.slice(0, 240) + "…" : c.added_limitation}
         </span>
       )}
+      {c.applicant_argument && (
+        <span style={{ fontSize: 12, lineHeight: 1.6 }}>
+          <b>출원인 주장</b> <span className="hint">(의견서 {c.opinion_date})</span>{" "}
+          {c.applicant_argument.length > 240 ? c.applicant_argument.slice(0, 240) + "…" : c.applicant_argument}
+        </span>
+      )}
       {c.amendment_documents?.length ? (
         <span className="hint" style={{ margin: 0 }}>
           {c.amendment_documents.join(" · ")}

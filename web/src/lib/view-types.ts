@@ -75,6 +75,9 @@ export type PrecedentCase = {
   response_method?: "spec_limitation" | "dependent_merge" | "clarification" | "argument_only" | "none";
   amendment_documents?: string[];
   added_limitation?: string;
+  /** The applicant's conclusion from their 의견서 (data/precedents/kr_opinions.jsonl), when downloaded. */
+  applicant_argument?: string;
+  opinion_date?: string;
   claims_before?: string;
   similarity?: number;
 };

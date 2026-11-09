@@ -81,7 +81,7 @@ follow it instead of choosing a strategy yourself. direction: 반박 = argue onl
 use_arguments, never use exclude_arguments. keep_elements must stay verbatim in amended_claim.
 add_elements says what to add: take the technical wording from SPEC sources only. Respect
 forbidden_changes. reference_cases are other applications the attorney chose as precedent: follow
-their pattern (added_limitation, outcome) only as 참고, never cite them as evidence or facts.
+their pattern (added_limitation, applicant_argument, outcome) only as 참고, never cite them as evidence or facts.
 """
 
 

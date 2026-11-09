@@ -270,6 +270,7 @@ def response_precedents(rejections, claim_text, jurisdiction="kr", exclude=froze
                             "response_type",
                             "response_method",
                             "added_limitation",
+                            "applicant_argument",
                             "examiner_reply_excerpt",
                         )
                     }

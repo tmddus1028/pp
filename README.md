@@ -314,6 +314,7 @@ AZURE_OPENAI_DEPLOYMENT=YOUR-DEPLOYMENT-NAME
 ```powershell
 uv run python scripts/build_kr_precedents.py --oa-2015 --limit 50 --from-dates --per-date 5  # 사례 (kr_kipris_cases.jsonl)
 uv run python scripts/build_kr_claim_history.py                                               # 보정 전후 청구항 (kr_claim_history.jsonl)
+uv run python scripts/build_kr_opinions.py                                                    # 출원인 의견서 본문 (kr_opinions.jsonl)
 uv run python scripts/load_precedents_pg.py                                                   # 선택: PostgreSQL로 복사
 ```
 
@@ -330,6 +331,7 @@ uv run python scripts/load_precedents_pg.py                                     
   `GET /precedents/{case_id}`, `GET /precedents/categories`.
 - **의견서 본문**: KIPRIS에 없고 특허청 OPD에서 보안문자를 넣어 손으로 받습니다. 목록과 분담은
   [OPINION_DOWNLOAD_TODO.md](data/research/OPINION_DOWNLOAD_TODO.md) (`uv run python scripts/opinion_todo.py`로 갱신).
+  받은 PDF는 `build_kr_opinions.py`가 사례에 붙여 `applicant_argument`(출원인 결론)로 사례 카드와 AI 프롬프트에 씁니다.
 - 자세한 수치: [PRECEDENT_VALIDATION.md](docs/validation/PRECEDENT_VALIDATION.md), 발표 숫자: [PRESENTATION_NUMBERS.md](docs/PRESENTATION_NUMBERS.md).
   미국 PatRe 사례(1,019건)는 10/20에 한국 데이터로 전환하며 삭제했습니다(`git show c8fa868:data/precedents/us_patre_cases.jsonl`).
 

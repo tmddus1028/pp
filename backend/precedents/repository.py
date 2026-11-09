@@ -5,6 +5,8 @@ demo works without PostgreSQL; scripts/load_precedents_pg.py copies it into `res
 
 KIPRIS records carry no claim text; scripts/build_kr_claim_history.py adds it per case from the
 claim-change history (kr_claim_history.jsonl: claims before/after the response, added wording).
+scripts/build_kr_opinions.py adds the applicant's own 의견서 text (kr_opinions.jsonl, from PDFs
+downloaded by hand from 특허청 OPD): applicant_argument is their conclusion, opinion_text the body.
 `kr_demo_cases.jsonl` holds clearly marked DEMO cases, used for similar-case retrieval only in a
 category where no real case has claim text yet. Demo cases never enter the statistics.
 """
@@ -22,6 +24,7 @@ ROOT = Path(__file__).resolve().parents[2]
 KR_PATH = ROOT / "data/precedents/kr_kipris_cases.jsonl"
 DEMO_PATH = ROOT / "data/precedents/kr_demo_cases.jsonl"
 HISTORY_PATH = ROOT / "data/precedents/kr_claim_history.jsonl"
+OPINION_PATH = ROOT / "data/precedents/kr_opinions.jsonl"
 DEFAULT_PATH = KR_PATH
 HISTORY_FIELDS = (
     "claims_before",
@@ -31,6 +34,7 @@ HISTORY_FIELDS = (
     "amendment_documents",
     "history_source",
 )
+OPINION_FIELDS = ("opinion_date", "opinion_file", "applicant_argument", "opinion_text")
 NOTE = (
     "한국 특허청 실제 사건(KIPRIS 의견제출통지서·거절결정서·등록결정서)의 집계입니다. 표본이 작아 "
     "경향으로 해석하지 말고 사례로만 참고하세요. 변리사 검토가 필요합니다."
@@ -194,12 +198,20 @@ def find(category, query="", limit=3, path=DEFAULT_PATH, exclude_applications=fr
 
 @lru_cache
 def real_cases():
-    """KIPRIS cases with their claim history merged in (when the history file exists)."""
-    history = {h["case_id"]: h for h in load(HISTORY_PATH)}
+    """KIPRIS cases with their claim history and 의견서 merged in (when those files exist)."""
+    extras = [
+        ({h["case_id"]: h for h in load(HISTORY_PATH)}, HISTORY_FIELDS),
+        ({o["case_id"]: o for o in load(OPINION_PATH)}, OPINION_FIELDS),
+    ]
     return tuple(
-        c | {k: history[c["case_id"]][k] for k in HISTORY_FIELDS if k in history[c["case_id"]]}
-        if c["case_id"] in history
-        else c
+        c
+        | {
+            k: rows[c["case_id"]][k]
+            for rows, fields in extras
+            if c["case_id"] in rows
+            for k in fields
+            if k in rows[c["case_id"]]
+        }
         for c in load(KR_PATH)
     )
 
@@ -265,6 +277,8 @@ def summary(case):
             "added_limitation",
             "amendment_documents",
             "history_source",
+            "opinion_date",
+            "applicant_argument",
         )
         if case.get(key)
     }

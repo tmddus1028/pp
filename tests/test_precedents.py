@@ -91,6 +91,19 @@ def test_claim_history_is_merged_into_real_cases():
     assert found and found[0]["case_id"] == case["case_id"]
 
 
+def test_opinion_text_is_merged_into_real_cases():
+    if not repository.OPINION_PATH.exists():
+        pytest.skip("run scripts/build_kr_opinions.py first")
+    rounds = [c for c in repository.real_cases() if c["application"] == "1020190000844"]
+    by_date = {c["opinion_date"]: c for c in rounds if c.get("opinion_date")}
+    # Each 의견서 lands on the round it answered: the first went to 거절결정, the second to 등록결정.
+    assert by_date["2019-08-09"]["next_action"] == "거절결정"
+    granted = by_date["2020-02-10"]
+    assert granted["next_action"] == "등록결정" and "진보성" in granted["applicant_argument"]
+    card = repository.summary(granted)
+    assert card["applicant_argument"] and "opinion_text" not in card
+
+
 @pytest.fixture
 def tiny(tmp_path):
     base = {
