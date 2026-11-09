@@ -39,6 +39,8 @@ class Settings(BaseSettings):
     azure_openai_api_key: str = Field(default="", repr=False)
     azure_openai_deployment: str = ""
     llm_timeout_seconds: float = Field(default=60, gt=0, le=300)
+    # KR: fetch cited KR publications' full text from KIPRIS when no reference PDF was uploaded.
+    kipris_fetch_citations: bool = False
     max_upload_mb: int = Field(default=20, ge=1, le=100)
     max_pdf_pages: int = Field(default=150, ge=1, le=1000)
     max_document_chars: int = Field(default=500_000, ge=1000, le=2_000_000)

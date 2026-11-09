@@ -14,6 +14,7 @@ from backend.improvements.opinion import (
     OpinionParagraph,
     OpinionRequest,
     OpinionSection,
+    asserts_not_disclosed,
     generate_opinion,
     validate_opinion,
 )
@@ -124,6 +125,25 @@ def test_particles_on_added_words_are_not_new_matter():
 def test_ungrounded_drafts_are_rejected(bad, ctx, message):
     with pytest.raises(ValueError, match=message):
         validate_opinion(bad, ctx, strategy())
+
+
+@pytest.mark.parametrize(
+    "text, asserts",
+    [
+        # Sentences Claude wrote for the demo case (original unavailable): hedges, not assertions.
+        (
+            "인용발명 1의 목적은 공급된 자료에 기재되어 있지 않고 인용문헌 원문도 확보하지 못했습니다.",
+            False,
+        ),
+        ("따라서 이 초안에서는 보정 청구항을 제시하지 않습니다.", False),
+        ("별도의 현저한 효과를 뒷받침하는 기재는 공급되지 않았습니다.", False),
+        ("인용발명이 특정 목적을 갖는지 여부를 단정하지 않습니다.", False),
+        ("보정된 구성은 인용발명 1, 2 어디에도 개시되어 있지 않습니다.", True),
+        ("인용발명 2는 해상도에 따른 형식 결정을 시사하지도 않습니다.", True),
+    ],
+)
+def test_not_disclosed_means_a_claim_about_the_cited_invention(text, asserts):
+    assert asserts_not_disclosed(text) is asserts
 
 
 def test_argument_only_must_not_amend():

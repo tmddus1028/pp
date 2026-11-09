@@ -49,7 +49,7 @@ Git에 올리지 않는 것: `.env`(API 키), `data/kipris_cache/`(KIPRIS 응답
 | --- | --- |
 | `taxonomy.py` | 한국 조문을 거절 유형으로 묶음. `categorize("특허법 제29조제2항")` → `"inventive_step"`(진보성). 대응 방식 분류 정규식도 여기 |
 | `repository.py` | JSONL 읽기. `stats(category)` = 해소율 통계, `find(category, query)` = 대표 사례, `similar(category, claim_text)` = 청구항 TF-IDF 유사 사례 (보정 전후 청구항은 `kr_claim_history.jsonl`, 출원인 의견서는 `kr_opinions.jsonl`에서 붙임) |
-| `kipris.py` | KIPRIS Plus API 클라이언트. 모든 응답을 `data/kipris_cache/`에 캐시, 서비스별 월 950회에서 멈춤, 연결 끊김 3회 재시도 |
+| `kipris.py` | KIPRIS Plus API 클라이언트. 모든 응답을 `data/kipris_cache/`에 캐시, 서비스별 월 950회에서 멈춤, 연결 끊김 3회 재시도. `publication_pdf()`는 인용발명 번호로 공보 전문 PDF를 받음 (사건 분석 시 `KIPRIS_FETCH_CITATIONS=true`) |
 | `api.py` | `GET /precedents/stats`, `/precedents/similar`, `/precedents`, `/precedents/{case_id}`, `/precedents/categories` |
 
 해소 라벨 규칙 (재설계안 기준):

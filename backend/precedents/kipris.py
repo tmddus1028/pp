@@ -7,6 +7,8 @@ Services this team subscribed to (free, 1,000 calls/month each, until 2026-12-31
 - ClaimsChangeHistoryService     청구항 변동 이력
 Operation names come from each service's spec page (plus.kipris.or.kr/portal/popup/service/
 DBII_000000000000242|243|317|327/view.do).
+- patUtiModInfoSearchSevice      특허·실용 공개·등록공보 (cited publications' full-text PDF;
+                                 kipo-api path with ServiceKey, same key)
 
 Every response is cached on disk, so rebuilding never spends quota twice, and a per-service
 monthly counter stops before the free limit.
@@ -36,6 +38,27 @@ SERVICES = {
     "RG": "IntermediateDocumentRGService",
     "CL": "ClaimsChangeHistoryService",
 }
+PUBLICATION_BASE = "http://plus.kipris.or.kr/kipo-api/kipi"
+PUBLICATION_SERVICE = "patUtiModInfoSearchSevice"  # KIPRIS's own spelling
+
+
+def publication_query(publication):
+    """KR citation number (oa.canonical_publication form) → search params and full-text operation.
+
+    KR20150090348A → 공개 10-2015-0090348; KR102235736[B1] → 등록 10-2235736 (KIPRIS pads to 13).
+    """
+    m = re.fullmatch(r"KR(\d{4})(\d{7})A\d?", publication)
+    if m:
+        return {"openNumber": f"10{m[1]}{m[2]}"}, "getPubFullTextInfoSearch"
+    m = re.fullmatch(r"KR10(\d{7})(?:B\d?)?", publication)
+    if m:
+        return {"registerNumber": f"10{m[1]}0000"}, "getAnnFullTextInfoSearch"
+    return None
+
+
+def publication_pdf_path(publication, cache=CACHE):
+    """Where publication_pdf keeps a cited publication's PDF."""
+    return Path(cache) / "pdf" / f"{publication}.pdf"
 
 
 class KiprisError(RuntimeError):
@@ -157,6 +180,50 @@ class Kipris:
     def items(self, service, operation, application_number):
         """Parsed rows of service/operation for one application number (cached)."""
         return parse_items(self.raw(service, operation, application_number))
+
+    def _publication(self, operation, params, name):
+        """One cached patUtiModInfoSearchSevice call."""
+        path = self.cache / PUBLICATION_SERVICE / operation / f"{name}.xml"
+        if path.exists():
+            return path.read_text(encoding="utf-8")
+        self._count(PUBLICATION_SERVICE)
+        response = self._get(
+            f"{PUBLICATION_BASE}/{PUBLICATION_SERVICE}/{operation}",
+            params | {"ServiceKey": self.key or access_key()},
+        )
+        parse_items(response.text)  # raise on API errors before caching
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(response.text, encoding="utf-8")
+        time.sleep(self.sleep)
+        return response.text
+
+    def publication_pdf(self, publication):
+        """Full-text PDF of a cited KR publication (cached), or None for non-KR numbers."""
+        query = publication_query(publication)
+        if query is None:
+            return None
+        path = publication_pdf_path(publication, self.cache)
+        if path.exists():
+            return path
+        params, fulltext = query
+        found = parse_items(self._publication("getAdvancedSearch", params, publication))
+        ((field, number),) = params.items()
+        found = [i for i in found if i.get(field) == number] or found
+        if not found:
+            raise KiprisError(f"{publication}을 KIPRIS에서 찾지 못했습니다.")
+        application = found[0]["applicationNumber"]
+        text = self._publication(fulltext, {"applicationNumber": application}, application)
+        url = re.search(r"<path>([^<]+)</path>", text)
+        if not url:
+            raise KiprisError(f"{publication}의 전문 PDF가 KIPRIS에 없습니다.")
+        try:
+            return self.document_pdf(html.unescape(url[1]), publication)
+        except KiprisError:
+            # The path carries a download token; ask for a fresh one next time.
+            (self.cache / PUBLICATION_SERVICE / fulltext / f"{application}.xml").unlink(
+                missing_ok=True
+            )
+            raise
 
     def document_pdf(self, url, name):
         """PDF behind an advancedSearchInfo filePath (cached; not counted as an API call)."""

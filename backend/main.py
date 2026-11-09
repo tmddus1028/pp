@@ -91,6 +91,7 @@ def run_korean(
             references,
             amendments,
             version_history,
+            settings.kipris_fetch_citations,
         )
     except DocumentError as exc:
         raise HTTPException(status_code=422, detail=str(exc)) from exc

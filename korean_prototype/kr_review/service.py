@@ -15,7 +15,10 @@ def analyze(
     references: list[tuple[str, bytes]] | None = None,
     amendments: list[tuple[str, bytes]] | None = None,
     version_history: dict | None = None,
+    fetch_reference=None,
 ) -> AnalysisResult:
+    """fetch_reference(publication) -> (filename, pdf bytes) | None supplies originals not uploaded;
+    it raises ReviewError when the lookup fails (the analysis continues without that original)."""
     if len(references or []) > 10:
         raise ReviewError("인용발명은 최대 10개까지 입력할 수 있습니다.")
     office_action = read_document(oa_data, oa_filename, "office_action")
@@ -81,6 +84,25 @@ def analyze(
                 warnings.append(
                     f"{filename}: {publication}은 이 거절이유의 인용발명 번호와 일치하지 않아 연결하지 않았습니다."
                 )
+    for publication in dict.fromkeys(c.publication_number for c in citations):
+        if fetch_reference is None or publication in reference_by_publication:
+            continue
+        try:
+            fetched = fetch_reference(publication)
+            if fetched is None:
+                continue
+            document = read_document(fetched[1], fetched[0], "reference")
+        except ReviewError as exc:
+            warnings.append(f"{publication}: 인용발명 원문 자동 조회 실패 ({exc}).")
+            continue
+        # A 등록공보 also prints its 공개번호; it was fetched for this citation, so link it here.
+        document.metadata["publication_number"] = publication
+        document.metadata["source"] = "KIPRIS"
+        if document.document_id not in seen_document_ids:
+            seen_document_ids.add(document.document_id)
+            documents.append(document)
+        reference_by_publication[publication] = document
+        warnings.append(f"{publication}: 인용발명 원문을 KIPRIS에서 자동으로 받아 연결했습니다.")
     for citation in citations:
         linked = reference_by_publication.get(citation.publication_number)
         if linked:

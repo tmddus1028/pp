@@ -279,7 +279,12 @@ def test_kr_anthropic_never_falls_back_to_azure():
 
 # --- KR (KIPRIS) -----------------------------------------------------------------------------
 
-from backend.precedents.kipris import Kipris, KiprisError, parse_items  # noqa: E402
+from backend.precedents.kipris import (  # noqa: E402
+    Kipris,
+    KiprisError,
+    parse_items,
+    publication_query,
+)
 from scripts.build_kr_precedents import build_app, decision_sections, rows  # noqa: E402
 
 OA_TABLE = "순번†거절이유가 있는 부분†관련 법조항§1†청구항 제1항†특허법 제29조제2항§2†청구항 제2항†특허법 제42조제4항제2호"
@@ -409,6 +414,62 @@ def test_kipris_cache_and_monthly_guard(tmp_path, monkeypatch):
     expired = "<response><header><resultCode>31</resultCode><resultMsg>DEADLINE</resultMsg></header></response>"
     with pytest.raises(KiprisError, match="31"):
         parse_items(expired)
+
+
+def test_publication_query_maps_citation_numbers():
+    assert publication_query("KR20150090348A") == (
+        {"openNumber": "1020150090348"},
+        "getPubFullTextInfoSearch",
+    )
+    assert publication_query("KR102235736") == (
+        {"registerNumber": "1022357360000"},
+        "getAnnFullTextInfoSearch",
+    )
+    assert publication_query("KR102235736B1")[0] == {"registerNumber": "1022357360000"}
+    assert publication_query("JP2009075123A") is None
+
+
+class FakePublicationHttp:
+    """KIPRIS 특허·실용 공개·등록공보: search → full-text path → PDF."""
+
+    def __init__(self, pdf=b"%PDF-1.4 cited"):
+        self.pdf, self.urls = pdf, []
+
+    def get(self, url, params=None, timeout=None, follow_redirects=False):
+        self.urls.append(url)
+        if url.endswith("getAdvancedSearch"):
+            text = (
+                "<response><header><resultCode>00</resultCode></header><body><items><item>"
+                "<applicationNumber>1020140010384</applicationNumber>"
+                "<openNumber>1020150090348</openNumber></item></items></body></response>"
+            )
+        elif url.endswith("FullTextInfoSearch"):
+            text = (
+                "<response><header><resultCode>00</resultCode></header><body><item>"
+                "<path>http://plus.kipris.or.kr/openapi/fileToss.jsp?arg=a&amp;b=1</path>"
+                "</item></body></response>"
+            )
+        else:
+            return SimpleNamespace(content=self.pdf, raise_for_status=lambda: None)
+        return SimpleNamespace(text=text, raise_for_status=lambda: None)
+
+
+def test_cited_publication_pdf_is_fetched_once_and_cached(tmp_path):
+    http = FakePublicationHttp()
+    api = Kipris(key="k", cache=tmp_path, client=http, sleep=0)
+    path = api.publication_pdf("KR20150090348A")
+    assert path.read_bytes().startswith(b"%PDF")
+    assert http.urls[-1].endswith("arg=a&b=1")  # XML-escaped download path
+    assert api.publication_pdf("KR20150090348A") == path
+    assert len(http.urls) == 3  # search, full text, download; second call from disk
+    assert api.publication_pdf("JP2009075123A") is None
+
+
+def test_failed_download_does_not_keep_the_tokened_path(tmp_path):
+    api = Kipris(key="k", cache=tmp_path, client=FakePublicationHttp(b"<html>"), sleep=0)
+    with pytest.raises(KiprisError, match="PDF"):
+        api.publication_pdf("KR20150090348A")
+    assert not list(tmp_path.glob("*/getPubFullTextInfoSearch/*.xml"))
 
 
 def test_checklist_never_shows_the_analyzed_application_as_kr_precedent(result):

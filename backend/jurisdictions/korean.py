@@ -11,6 +11,7 @@ from backend.analysis.impact_analyzer import analyze_impacts
 from backend.errors import DocumentError
 from backend.graph.graph_builder import build_graph
 from backend.office_action.claim_status import summarize_claim_statuses
+from backend.precedents.kipris import Kipris, KiprisError
 from backend.schemas import (
     AnalysisResult,
     CitationDocument,
@@ -28,6 +29,15 @@ from korean_prototype.kr_review.models import ReviewError
 from korean_prototype.kr_review.service import analyze as extract_korean
 
 
+def kipris_reference(publication):
+    """A cited KR publication's full-text PDF from KIPRIS (cached), shaped like an upload."""
+    try:
+        path = Kipris().publication_pdf(publication)
+    except KiprisError as exc:
+        raise ReviewError(str(exc)) from exc
+    return None if path is None else (path.name, path.read_bytes())
+
+
 def analyze_korean(
     patent_data,
     patent_filename,
@@ -37,6 +47,7 @@ def analyze_korean(
     references=None,
     amendments=None,
     version_history=None,
+    fetch_citations=False,
 ):
     try:
         extracted = extract_korean(
@@ -47,6 +58,7 @@ def analyze_korean(
             references,
             amendments,
             version_history,
+            kipris_reference if fetch_citations else None,
         )
     except ReviewError as exc:
         raise DocumentError(str(exc)) from exc

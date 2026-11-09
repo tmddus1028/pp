@@ -17,6 +17,7 @@ from backend.schemas import AnalysisResult
 from frontend.claim_analysis import claim_rows
 from frontend.pdf_adapter import attach_coordinates
 from frontend.review_model import build_review_model
+from korean_prototype.kr_review.models import ReviewError
 from korean_prototype.kr_review.service import analyze as extract_korean
 
 DATA = ROOT / "korean_prototype/data/kr_1020190000844"
@@ -71,6 +72,28 @@ def test_real_pair_maps_without_rewriting_text(korean_inputs, korean_result):
     assert len(result.rejection_citations) == 3
     assert len([node for node in result.graph.nodes if node.kind == "citation"]) == 3
     assert len([edge for edge in result.graph.edges if edge.relation == "cites"]) == 3
+
+
+def test_cited_originals_not_uploaded_are_fetched_and_linked(korean_inputs):
+    asked = []
+
+    def fetch(publication):
+        asked.append(publication)
+        if publication == "KR20150096573A":
+            raise ReviewError("KIPRIS 연결 실패")
+        return publication + ".pdf", (DATA / f"{publication}.pdf").read_bytes()
+
+    uploaded = [("KR20150093093A.pdf", (DATA / "KR20150093093A.pdf").read_bytes())]
+    result = extract_korean(*korean_inputs, uploaded, fetch_reference=fetch)
+    linked = {c.publication_number: c.document_id for c in result.citations}
+    assert sorted(asked) == ["KR20150090348A", "KR20150096573A"]  # uploaded one not fetched
+    assert linked["KR20150090348A"] and linked["KR20150093093A"]
+    assert not linked["KR20150096573A"]
+    fetched = next(d for d in result.documents if d.document_id == linked["KR20150090348A"])
+    assert fetched.metadata["source"] == "KIPRIS"
+    assert any("KIPRIS에서 자동으로" in w for w in result.warnings)
+    assert any("KR20150096573A: 인용발명 원문 자동 조회 실패" in w for w in result.warnings)
+    assert any(link.citation_id for link in result.evidence_links)
 
 
 def test_evidence_offsets_and_logical_xml_page(korean_result):

@@ -29,6 +29,8 @@ HEADINGS = ("보정사항", "거절이유의 요지", "본원발명의 요지", 
 GROUNDED = {"거절이유의 요지", "인용발명과의 대비"}
 GUARANTEE = re.compile(r"특허됩니다|등록됩니다|거절이\s*(?:반드시\s*)?해소됩니다", re.I)
 NOT_DISCLOSED = re.compile(r"(?:개시|기재|시사|제시)[^.。\n]{0,12}않")
+# "공급된 자료에 기재되어 있지 않고" describes what we were given, not the cited invention.
+OWN_MATERIAL = re.compile(r"자료|근거|명세서|본원|통지서|공급|제공")
 # Claim connectors that carry no technical content; everything else added must exist in a source.
 CONNECTORS = {
     "상기",
@@ -54,6 +56,17 @@ CONNECTORS = {
     "기준으로",
     "기반으로",
 }
+
+
+def asserts_not_disclosed(text):
+    """A sentence about a cited invention saying it does not disclose something."""
+    for sentence in re.split(r"(?<=[.。!?])\s+|\n", text):
+        if "인용" not in sentence:
+            continue
+        for match in NOT_DISCLOSED.finditer(sentence):
+            if not OWN_MATERIAL.search(sentence[max(0, match.start() - 10) : match.start()]):
+                return True
+    return False
 
 
 def known(word, text):
@@ -172,7 +185,7 @@ def validate_draft(draft, context, amend, spec, keep=()):
             verify_source_mentions(paragraph.text, context)
             if GUARANTEE.search(paragraph.text):
                 raise ValueError("의견서에 등록·거절 해소를 확정하는 표현이 있습니다.")
-            if NOT_DISCLOSED.search(paragraph.text) and not all_originals:
+            if not all_originals and asserts_not_disclosed(paragraph.text):
                 raise ValueError("원문을 확보하지 못한 인용발명에 대해 미개시를 단정했습니다.")
             if section.heading in GROUNDED and not paragraph.grounding:
                 raise ValueError(f"'{section.heading}' 문단에 원문 근거가 없습니다.")

@@ -20,6 +20,7 @@ from backend import store
 from backend.errors import ProviderError
 from backend.improvements.opinion import Selection, check_selection, generate_from_selection
 from backend.main import Config, analyze_files, analyze_text, app
+from backend.precedents.kipris import publication_pdf_path
 from backend.schemas import AnalysisResult, TextAnalysisRequest
 from backend.view.models import build_relationship_model, claim_rows, comparison_for_claim
 from backend.view.pdf_adapter import attach_coordinates, render_png, search_boxes
@@ -50,6 +51,13 @@ def database_unavailable(_request: Request, _exc: psycopg.OperationalError):
 def save(result: AnalysisResult, uploads, title):
     """Persist the analysis, its PDFs and the coordinate-resolved review model once."""
     data = result.model_dump(mode="json")
+    # Cited originals fetched from KIPRIS are stored with the case like uploaded ones.
+    uploads = list(uploads) + [
+        (document.filename, path.read_bytes())
+        for document in result.documents
+        if document.source_metadata.get("source") == "KIPRIS"
+        and (path := publication_pdf_path(document.source_metadata["publication_number"])).exists()
+    ]
     # Same PDF↔document matching the Streamlit upload used (KR ids end with the file hash).
     files = {
         document["document_id"]: (name, content)
