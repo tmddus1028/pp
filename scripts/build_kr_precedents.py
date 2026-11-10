@@ -18,6 +18,7 @@ import json
 import re
 import sys
 import zipfile
+from collections import Counter
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -383,14 +384,17 @@ def main():
         try:
             records += build_app(api, app, refusals)
         except KiprisError as exc:
+            # No break on the monthly guard: later apps may still be fully cached, and dropping
+            # them would shrink the DB that was built in earlier months.
             failed[app] = str(exc)
-            if "한도" in str(exc):
-                break
     OUT.parent.mkdir(parents=True, exist_ok=True)
     with OUT.open("w", encoding="utf-8", newline="\n") as f:
         for rec in records:
             f.write(json.dumps(rec, ensure_ascii=False) + "\n")
-    print(f"{len(records)} KR records → {OUT.relative_to(ROOT)}; failed {failed}")
+    print(f"{len(records)} KR records → {OUT.relative_to(ROOT)}; failed {len(failed)}")
+    print(
+        "failure reasons:", dict(Counter(re.sub(r"\d{6,}", "N", v)[:60] for v in failed.values()))
+    )
     print("usage:", (api.cache / "usage.json").read_text(encoding="utf-8").strip())
 
 

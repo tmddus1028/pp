@@ -14,6 +14,7 @@ Every response is cached on disk, so rebuilding never spends quota twice, and a 
 monthly counter stops before the free limit.
 """
 
+import hashlib
 import html
 import json
 import os
@@ -65,14 +66,53 @@ class KiprisError(RuntimeError):
     pass
 
 
+GOOGLE_PATENTS = "https://patents.google.com/patent/{}/ko"
+GOOGLE_UA = {"User-Agent": "Mozilla/5.0 (PinPoint research)"}
+
+
+def google_publication_pdf(publication, cache=CACHE, client=None):
+    """The same KR publication PDF from Google Patents, when KIPRIS is out of quota or the key
+    is not subscribed to 공보. Cached at publication_pdf_path like the KIPRIS copy."""
+    path = publication_pdf_path(publication, cache)
+    if path.exists():
+        return path
+    client = client or httpx
+    # A registered number ("KR10" + 7 digits) has no kind code; Google wants B1 or B.
+    registered = re.fullmatch(r"KR10\d{7}", publication)
+    names = [publication + "B1", publication + "B"] if registered else [publication]
+    for name in names:
+        try:
+            page = client.get(GOOGLE_PATENTS.format(name), headers=GOOGLE_UA, timeout=30)
+            url = re.search(r"https://patentimages[^\"]+\.pdf", page.text)
+            if page.status_code != 200 or not url:
+                continue
+            pdf = client.get(url[0], headers=GOOGLE_UA, timeout=60)
+        except httpx.HTTPError:
+            continue
+        if pdf.content.startswith(b"%PDF"):
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_bytes(pdf.content)
+            return path
+    raise KiprisError(f"{publication} 원문을 KIPRIS·Google Patents에서 받지 못했습니다.")
+
+
+def access_keys():
+    """KIPRIS keys from the environment or .env: KIPRIS_ACCESS_KEY, REST_AccessKey, then
+    teammates' KIPRIS_ACCESS_KEY_2, _3, … (used in order when the one before runs out)."""
+    env = {**dotenv_values(ROOT / ".env"), **os.environ}
+    extra = sorted(
+        (n for n in env if re.fullmatch(r"KIPRIS_ACCESS_KEY_\d+", n)),
+        key=lambda n: int(n.rsplit("_", 1)[1]),
+    )
+    keys = [(env.get(n) or "").strip() for n in (*KEY_NAMES, *extra)]
+    keys = list(dict.fromkeys(k for k in keys if k))
+    if not keys:
+        raise KiprisError(".env에 KIPRIS_ACCESS_KEY(또는 REST_AccessKey)를 설정하세요.")
+    return keys
+
+
 def access_key():
-    """KIPRIS key from the environment or .env (KIPRIS_ACCESS_KEY, then REST_AccessKey)."""
-    env = dotenv_values(ROOT / ".env")
-    for name in KEY_NAMES:
-        value = (os.environ.get(name) or env.get(name) or "").strip()
-        if value:
-            return value
-    raise KiprisError(".env에 KIPRIS_ACCESS_KEY(또는 REST_AccessKey)를 설정하세요.")
+    return access_keys()[0]
 
 
 def clean(text):
@@ -106,6 +146,7 @@ class Kipris:
         self.sleep = sleep
         self.cache.mkdir(parents=True, exist_ok=True)
         self.usage_path = self.cache / "usage.json"
+        self.exhausted = set()  # keys refused this run (our guard or KIPRIS 오류 22)
 
     def _usage(self):
         try:
@@ -113,7 +154,9 @@ class Kipris:
         except (OSError, ValueError):
             return {}
 
-    def _count(self, service):
+    def _count(self, service, key):
+        # Counted per key (a short hash, never the key): a teammate's key has its own quota.
+        service = f"{service} #{hashlib.sha256(key.encode()).hexdigest()[:6]}"
         usage = self._usage()
         month = date.today().strftime("%Y-%m")
         used = usage.setdefault(month, {}).get(service, 0)
@@ -135,18 +178,33 @@ class Kipris:
                     raise KiprisError(f"KIPRIS 연결 실패: {exc}") from exc
                 time.sleep(2 * (attempt + 1))
 
+    def _fetch(self, service, url, params, key_param="accessKey"):
+        """GET with the first key that still has quota; a quota refusal moves to the next key."""
+        error = None
+        for key in [self.key] if self.key else access_keys():
+            if key in self.exhausted:
+                continue
+            try:
+                self._count(service, key)
+                text = self._get(url, params | {key_param: key}).text
+                parse_items(text)  # raise on API errors before caching
+                return text
+            except KiprisError as exc:
+                # 22 = quota used up, 31 = this key's subscription to the service expired/absent.
+                if not re.search(r"한도|오류 (?:22|31)", str(exc)):
+                    raise
+                self.exhausted.add(key)
+                error = exc
+        raise error or KiprisError(f"{service}: 남은 KIPRIS 키가 없습니다 (모두 한도).")
+
     def raw(self, service, operation, application_number):
         name = SERVICES.get(service, service)
         path = self.cache / name / operation / f"{application_number}.xml"
         if path.exists():
             return path.read_text(encoding="utf-8")
-        self._count(name)
-        response = self._get(
-            f"{BASE}/{name}/{operation}",
-            {"applicationNumber": application_number, "accessKey": self.key or access_key()},
+        text = self._fetch(
+            name, f"{BASE}/{name}/{operation}", {"applicationNumber": application_number}
         )
-        text = response.text
-        parse_items(text)  # raise on API errors before caching
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(text, encoding="utf-8")
         time.sleep(self.sleep)
@@ -157,19 +215,13 @@ class Kipris:
         name = SERVICES["OP"]
         path = self.cache / name / "advancedSearchInfo-date" / f"{send_date}-{start}-{count}.xml"
         if not path.exists():
-            self._count(name)
-            response = self._get(
+            text = self._fetch(
+                name,
                 f"{BASE}/{name}/advancedSearchInfo",
-                {
-                    "sendDate": send_date,
-                    "docsStart": start,
-                    "docsCount": count,
-                    "accessKey": self.key or access_key(),
-                },
+                {"sendDate": send_date, "docsStart": start, "docsCount": count},
             )
-            parse_items(response.text)
             path.parent.mkdir(parents=True, exist_ok=True)
-            path.write_text(response.text, encoding="utf-8")
+            path.write_text(text, encoding="utf-8")
             time.sleep(self.sleep)
         text = path.read_text(encoding="utf-8")
         total = re.search(r"<totCnt>(\d+)</totCnt>", text)
@@ -186,16 +238,16 @@ class Kipris:
         path = self.cache / PUBLICATION_SERVICE / operation / f"{name}.xml"
         if path.exists():
             return path.read_text(encoding="utf-8")
-        self._count(PUBLICATION_SERVICE)
-        response = self._get(
+        text = self._fetch(
+            PUBLICATION_SERVICE,
             f"{PUBLICATION_BASE}/{PUBLICATION_SERVICE}/{operation}",
-            params | {"ServiceKey": self.key or access_key()},
+            params,
+            "ServiceKey",
         )
-        parse_items(response.text)  # raise on API errors before caching
         path.parent.mkdir(parents=True, exist_ok=True)
-        path.write_text(response.text, encoding="utf-8")
+        path.write_text(text, encoding="utf-8")
         time.sleep(self.sleep)
-        return response.text
+        return text
 
     def publication_pdf(self, publication):
         """Full-text PDF of a cited KR publication (cached), or None for non-KR numbers."""

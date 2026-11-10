@@ -128,14 +128,24 @@ def main():
     apps = list(dict.fromkeys(c["application"] for c in cases))
     if args.limit:
         apps = apps[: args.limit]
+    # A failed application (e.g. KIPRIS quota) keeps the rows an earlier run already built.
+    previous = {}
+    for row in load(OUT):
+        previous.setdefault(row["application"], []).append(row)
     api, rows, failed = Kipris(), [], []
     for i, app in enumerate(apps, 1):
         try:
             filings = versions(api, app)
         except (KiprisError, ET.ParseError) as exc:
             failed.append(f"{app}: {exc}")
+            rows += previous.get(app, [])
             continue
-        rows += [r for c in cases if c["application"] == app if (r := history(c, filings))]
+        for case in (c for c in cases if c["application"] == app):
+            try:
+                if row := history(case, filings):
+                    rows.append(row)
+            except ValueError as exc:  # e.g. a claim set too long for claim_diff
+                failed.append(f"{case['case_id']}: {exc}")
         if i % 20 == 0:
             print(f"{i}/{len(apps)} applications")
     with OUT.open("w", encoding="utf-8", newline="\n") as f:
