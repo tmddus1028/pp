@@ -15,6 +15,7 @@ def tesseract_path():
         os.getenv("KR_TESSERACT_CMD"),
         shutil.which("tesseract"),
         str(Path(os.getenv("LOCALAPPDATA", "")) / "Programs/Tesseract-OCR/tesseract.exe"),
+        str(Path(os.getenv("ProgramFiles", "")) / "Tesseract-OCR/tesseract.exe"),
     ]
     return next((p for p in candidates if p and Path(p).is_file()), None)
 

@@ -16,6 +16,8 @@ def isolate_settings_env(monkeypatch):
     # frontend/app.py calls load_dotenv(); a developer's .env must not change test outcomes.
     for name in Settings.model_fields:
         monkeypatch.delenv(name.upper(), raising=False)
+    # Similar-case search never calls a local Ollama in tests: word ranking only.
+    monkeypatch.setattr("backend.precedents.repository.query_embedding", lambda text: None)
 
 
 @pytest.fixture

@@ -67,14 +67,71 @@ def test_korean_table_and_demo_cases_are_separate():
     )
 
 
-def test_similar_ranks_by_rejected_claim_words():
-    # No real coupon case clears the similarity floor, so labelled demo cases stand in.
+def test_similar_ranks_by_rejected_claim_words(monkeypatch):
     query = "소비자 단말 전자쿠폰 발급 승인 공급자 서버"
     found = repository.similar("inventive_step", query, 3, frozenset({"1020190000844"}))
-    assert found and found[0]["title"].startswith("전자쿠폰")
-    assert all(c["demo"] and c["claims_before"] for c in found)
-    assert all(c["similarity"] >= repository.MIN_SIMILARITY for c in found)
+    scores = [c["similarity"] for c in found]
+    assert found and scores == sorted(scores, reverse=True)
+    assert all(s >= repository.MIN_SIMILARITY and c["claims_before"] for s, c in zip(scores, found))
     assert repository.similar("inventive_step", "", 3) == []
+    # With no real case above the floor, labelled demo cases stand in.
+    monkeypatch.setattr(repository, "real_cases", lambda: ())
+    demo = repository.similar("inventive_step", query, 3, frozenset({"1020190000844"}))
+    assert demo and demo[0]["title"].startswith("전자쿠폰") and all(c["demo"] for c in demo)
+
+
+def test_ipc_codes_from_publication_front_page():
+    from korean_prototype.kr_review.ingestion import ipc_codes
+
+    front = (
+        "(51) 국제특허분류(Int. Cl.)\n     F01N 3/24 (2006.01)  B01D 53/94 (2006.01)\n"
+        "     F01N 3/28 (2006.01)\n(21) 출원번호       10-2012-0152255\n"
+    )
+    assert ipc_codes(front) == ["F01N 3/24", "B01D 53/94", "F01N 3/28"]
+    assert ipc_codes("청구항 1\nH01L 31/042 같은 문자열") == []  # only the (51) field counts
+
+
+def test_similar_prefers_the_same_field(monkeypatch):
+    def case(app, ipc, claim):
+        return (
+            {
+                "case_id": app,
+                "application": app,
+                "category": "inventive_step",
+                "outcome": "resolved",
+                "claims_before": claim,
+                "ipc": ipc,
+            }
+            | {k: "" for k in ("oa_type", "oa_date", "response_type", "next_action")}
+            | {
+                "argument_types": [],
+                "examiner_reply": "unknown",
+                "argument_excerpt": "",
+                "examiner_reply_excerpt": "",
+            }
+        )
+
+    claim = "단말기가 서버로 데이터를 전송하는 제어부와 통신부를 포함하는 시스템"
+    pool = (
+        case("telecom", ["H04W 72/04"], claim),
+        case("coupon", ["G06Q 30/02"], "쿠폰을 발급하는 서버와 단말기의 표시부"),
+        case("battery", ["H01M 10/05"], "양극 활물질과 전해질을 포함하는 이차전지"),
+    )
+    monkeypatch.setattr(repository, "real_cases", lambda: pool)
+    query = claim + " 쿠폰"
+    found = repository.similar("inventive_step", query, 5, frozenset(), ["G06Q 20/04"])
+    # Same subclass is shown even with few shared words; a close other-field claim still shows,
+    # an unrelated field does not.
+    assert [c["application"] for c in found] == ["telecom", "coupon"] or [
+        c["application"] for c in found
+    ] == ["coupon", "telecom"]
+    assert "battery" not in {c["application"] for c in found}
+    without_ipc = repository.similar("inventive_step", query, 5, frozenset())
+    assert [c["application"] for c in without_ipc] == ["telecom"]
+    # Kiwi morphemes: particles do not split a word.
+    assert "통신부" in repository.morphemes("통신부를") and "통신부" in repository.morphemes(
+        "통신부가"
+    )
 
 
 def test_claim_history_is_merged_into_real_cases():
@@ -411,9 +468,34 @@ def test_kipris_cache_and_monthly_guard(tmp_path, monkeypatch):
     monkeypatch.setattr("backend.precedents.kipris.MONTHLY_LIMIT", 1)
     with pytest.raises(KiprisError, match="한도"):
         api.items("OP", "advancedSearchInfo", "2")
+    # Another teammate's key has its own monthly count.
+    Kipris(key="other", cache=tmp_path, client=http, sleep=0).items("OP", "advancedSearchInfo", "2")
     expired = "<response><header><resultCode>31</resultCode><resultMsg>DEADLINE</resultMsg></header></response>"
     with pytest.raises(KiprisError, match="31"):
         parse_items(expired)
+
+
+def test_quota_refusal_moves_to_the_next_key(tmp_path, monkeypatch):
+    refused = (
+        "<response><header><resultCode>22</resultCode><resultMsg>LIMITED</resultMsg>"
+        "</header></response>"
+    )
+
+    class PerKeyHttp:
+        def __init__(self):
+            self.keys = []
+
+        def get(self, url, params, timeout):
+            self.keys.append(params["accessKey"])
+            text = refused if params["accessKey"] == "mine" else OK_XML
+            return SimpleNamespace(text=text, raise_for_status=lambda: None)
+
+    monkeypatch.setattr("backend.precedents.kipris.access_keys", lambda: ["mine", "teammate"])
+    http = PerKeyHttp()
+    api = Kipris(cache=tmp_path, client=http, sleep=0)
+    api.items("OP", "advancedSearchInfo", "1")
+    api.items("OP", "advancedSearchInfo", "2")
+    assert http.keys == ["mine", "teammate", "teammate"]  # a refused key is not retried
 
 
 def test_publication_query_maps_citation_numbers():
@@ -536,3 +618,27 @@ def test_ollama_grammar_schema_drops_upper_bounds_only():
         ClaimImprovementSuggestion.model_validate(
             suggestion().model_dump() | {"strategies": [{}] * 9}
         )
+
+
+def test_google_patents_fallback_for_cited_publications(tmp_path):
+    from backend.precedents.kipris import google_publication_pdf
+
+    class FakeGoogle:
+        def __init__(self):
+            self.urls = []
+
+        def get(self, url, headers, timeout):
+            self.urls.append(url)
+            if url.endswith(".pdf"):
+                return SimpleNamespace(status_code=200, content=b"%PDF-1.4 x")
+            found = "B1" in url
+            text = 'href="https://patentimages.storage.googleapis.com/a/KR1.pdf"' if found else ""
+            return SimpleNamespace(status_code=200 if found else 404, text=text)
+
+    http = FakeGoogle()
+    path = google_publication_pdf("KR102235736", cache=tmp_path, client=http)
+    assert path.read_bytes().startswith(b"%PDF")
+    assert http.urls[0].endswith("/KR102235736B1/ko")  # registered number gets its kind code
+    assert google_publication_pdf("KR102235736", cache=tmp_path, client=None) == path  # cached
+    with pytest.raises(KiprisError, match="Google"):
+        google_publication_pdf("KR20150000001A", cache=tmp_path, client=FakeGoogle())

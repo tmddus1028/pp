@@ -9,8 +9,13 @@ from .models import Citation, Claim, Document, Rejection, ReviewError
 CLAIM_HEADING = re.compile(
     r"(?m)^[ \t]*[\[【]?청\s*구\s*항\s*(?:제\s*)?(\d+)\s*항?[\]】]?[.．]?[ \t]*$"
 )
-SECTION_HEADING = re.compile(r"(?m)^[ \t]*[\[【]?청\s*구\s*범\s*위[\]】]?[ \t]*$")
-SECTION_END = re.compile(r"(?m)^[ \t]*[\[【]?(?:발명의\s*설명|도\s*면|요\s*약\s*서)[\]】]?[ \t]*$")
+# Older publications: "특허청구의 범위", followed by "명 세 서" instead of "발명의 설명".
+SECTION_HEADING = re.compile(
+    r"(?m)^[ \t]*[\[【]?(?:특\s*허\s*)?청\s*구\s*(?:의\s*)?범\s*위[\]】]?[ \t]*$"
+)
+SECTION_END = re.compile(
+    r"(?m)^[ \t]*[\[【]?(?:발명의\s*설명|도\s*면|요\s*약\s*서|명\s*세\s*서)[\]】]?[ \t]*$"
+)
 LAW = re.compile(
     r"특허법\s*제\s*\d+\s*조(?:\s*의\s*\d+)?(?:\s*제\s*\d+\s*항)?(?:\s*제\s*\d+\s*호)?"
 )

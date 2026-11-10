@@ -171,7 +171,9 @@ def extract_office_action(document):
         if start in used:
             raise ReviewError("하나의 거절이유 본문에 여러 청구항 범위 또는 법조항이 연결됩니다.")
         used.add(start)
-        if _scope(intro, all_claims) != numbers:
+        # "이 출원은 … 제45조 … 받을 수 없습니다" names no claim (the table does); its article
+        # number is not a claim list.
+        if re.search(r"청구항|전항", intro) and _scope(intro, all_claims) != numbers:
             raise ReviewError("거절이유 표와 본문의 대상 청구항이 일치하지 않습니다.")
         body = text[start:end]
         ids = []

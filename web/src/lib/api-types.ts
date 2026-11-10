@@ -1043,7 +1043,7 @@ export interface components {
              * Kind
              * @enum {string}
              */
-            kind: "claim" | "parent_claim" | "office_action" | "status" | "specification" | "citation_mention" | "citation_original";
+            kind: "claim" | "parent_claim" | "unrejected_claim" | "office_action" | "status" | "specification" | "citation_mention" | "citation_original";
             /** Label */
             label: string;
             evidence: components["schemas"]["Evidence"];

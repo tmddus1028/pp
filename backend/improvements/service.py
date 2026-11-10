@@ -249,8 +249,11 @@ def validate_suggestion(draft, context):
         if claim_id not in ids or not any(sources[i]["kind"] == "office_action" for i in ids):
             raise ValueError("개선안에 선택 청구항과 심사관 근거가 함께 필요합니다.")
 
+    # A dependent claim the notice did not reject is as good a source as the specification.
+    basis = {"specification", "unrejected_claim"}
+
     def specification(ids, grounding):
-        if not any(sources[q.evidence_id]["kind"] == "specification" for q in grounding):
+        if not any(sources[q.evidence_id]["kind"] in basis for q in grounding):
             raise ValueError("구체적인 수정 제안에는 실제 명세서 근거와 원문 인용이 필요합니다.")
 
     for comparison in draft.element_comparison:
@@ -273,9 +276,7 @@ def validate_suggestion(draft, context):
         if strategy.action_type not in {"argument_only", "dependency_rewrite"}:
             specification(strategy.evidence_ids, strategy.grounding)
             quotes = " ".join(
-                q.quote
-                for q in strategy.grounding
-                if sources[q.evidence_id]["kind"] == "specification"
+                q.quote for q in strategy.grounding if sources[q.evidence_id]["kind"] in basis
             )
             verify_quantities(strategy.description, context["claim_text"], quotes)
         if strategy.action_type == "dependency_rewrite":

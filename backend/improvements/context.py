@@ -97,6 +97,31 @@ def build_context(request: ImprovementRequest):
             ancestors(parent, path | {parent})
 
     ancestors(claim.claim_number, {claim.claim_number})
+    # Dependent claims of this claim that the notice did not reject: merging one is the standard
+    # first answer (KIPRIS DB: when such claims existed applicants merged ~40% of the time,
+    # vs ~5% when every claim was rejected).
+    rejected = {n for r in result.rejections if r.action_type == "rejection" for n in r.claims}
+    below, frontier = set(), {claim.claim_number}
+    while frontier:
+        frontier = {
+            c.claim_number
+            for c in claims.values()
+            if set(c.depends_on) & frontier and c.claim_number not in below
+        }
+        below |= frontier
+    unrejected = []
+    for number in sorted(below - rejected)[:6]:
+        dependent = claims[number]
+        if dependent.status == "canceled":
+            continue
+        eid = add(
+            f"DEP-{number}",
+            "unrejected_claim",
+            f"거절되지 않은 종속항 {number}",
+            dependent.evidence,
+            f"claim-{number}",
+        )
+        unrejected.append({"claim_number": number, "text": dependent.text, "evidence_id": eid})
     bases, citations = [], []
     for r in rejections:
         eid = add(
@@ -131,6 +156,12 @@ def build_context(request: ImprovementRequest):
                     "rejection_id": r.rejection_id,
                     "name": ref.name,
                     "publication_number": ref.publication_number,
+                    # "인용발명 2" as the examiner numbers it, so a draft sentence can be matched.
+                    "number": (
+                        m[1]
+                        if (m := re.search(r"인용\s*(?:발명|문헌)\s*(\d+)", ref.evidence.text))
+                        else ""
+                    ),
                     "evidence_id": eid,
                     "original_available": any(
                         link.get("citation_id") == ref.citation_id
@@ -202,14 +233,18 @@ def build_context(request: ImprovementRequest):
     jurisdiction = "kr" if result.analysis_id.startswith("kr-") else "us"
     # Never show this application's own later outcome as a "similar case".
     own = {d.source_metadata.get("application_number") for d in result.documents} - {None, ""}
+    ipc = [
+        c for d in result.documents if d.kind == "patent" for c in d.source_metadata.get("ipc", [])
+    ]
     context = {
-        "response_precedents": response_precedents(rejections, claim.text, jurisdiction, own),
+        "response_precedents": response_precedents(rejections, claim.text, jurisdiction, own, ipc),
         "jurisdiction": jurisdiction,
         "claim_number": claim.claim_number,
         "claim_text": claim.text,
         "claim_status": status.status if status else "unknown",
         "depends_on": claim.depends_on,
         "parents": parents,
+        "unrejected_dependents": unrejected,
         "rejections": bases,
         "citations": citations,
         "conditional_rewrite_supported": rewrite,
@@ -225,7 +260,7 @@ def build_context(request: ImprovementRequest):
     return context, sources, digest
 
 
-def response_precedents(rejections, claim_text, jurisdiction="kr", exclude=frozenset()):
+def response_precedents(rejections, claim_text, jurisdiction="kr", exclude=frozenset(), ipc=()):
     """Korean (KIPRIS) outcome patterns plus similar past cases the model may cite as precedent.
 
     `similar_cases` are other applications whose rejected claim resembles this one; a strategy
@@ -242,7 +277,7 @@ def response_precedents(rejections, claim_text, jurisdiction="kr", exclude=froze
         if category not in REUSABLE:
             continue
         stats = repository.stats(category, exclude_applications=exclude)
-        similar = repository.similar(category, claim_text, 5, exclude)
+        similar = repository.similar(category, claim_text, 5, exclude, ipc)
         if not stats["labeled"] and not similar:
             continue
         out.append(

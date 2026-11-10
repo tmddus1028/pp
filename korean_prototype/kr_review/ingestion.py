@@ -187,6 +187,20 @@ def _read_pdf(data: bytes) -> tuple[list[str], str, list[str]]:
     return pages, parser, warnings
 
 
+IPC = re.compile(r"\b([A-H]\d{2}[A-Z])\s*(\d{1,4}\s*/\s*\d{2,6})")
+
+
+def ipc_codes(text: str) -> list[str]:
+    """Codes in a publication's "(51) 국제특허분류(Int. Cl.)" field, e.g. ["H01L 31/042"]."""
+    field = re.search(
+        r"(?:국제특허분류|Int\.\s*Cl\.)[^\n]*\n?([\s\S]{0,400}?)(?:\(\d{2}\)|$)", text
+    )
+    if not field:
+        return []
+    codes = (m[1] + " " + re.sub(r"\s", "", m[2]) for m in IPC.finditer(field[1]))
+    return list(dict.fromkeys(codes))
+
+
 def _bibliography(text: str) -> dict:
     application = re.search(r"출\s*원\s*번\s*호\s*(10\s*-\s*\d{4}\s*-\s*\d{7})", text)
     publication = re.search(
@@ -203,6 +217,8 @@ def _bibliography(text: str) -> dict:
         metadata["document_date"] = "-".join(date.groups())
     if publication:
         metadata["publication_number"] = f"KR{publication[1]}{publication[2]}A"
+    if ipc := ipc_codes(text):
+        metadata["ipc"] = ipc  # field of technology, for same-field precedent search
     elif registered:
         # The bare registered number does not establish a kind code.
         metadata["publication_number"] = f"KR10{registered[1]}"

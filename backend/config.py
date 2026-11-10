@@ -21,6 +21,8 @@ class Settings(BaseSettings):
     local_llm_base_url: str = "http://127.0.0.1:11434"
     local_llm_model: str = ""
     local_embedding_model: str = ""
+    # Similar-case search: bge-m3 via the same Ollama; empty = Kiwi word ranking only.
+    precedent_embedding_model: str = ""
     local_llm_timeout_seconds: float = Field(default=180, gt=0, le=600)
     local_llm_think: bool = False
     local_llm_max_output_tokens: int = Field(default=12000, ge=1000, le=32768)

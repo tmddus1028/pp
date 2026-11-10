@@ -18,7 +18,12 @@ SPEC evidence. Without SPEC, abstain from these changes. Do not add technical co
 clarify must quote the actual ambiguous term identified by the examiner, or abstain.
 dependency_rewrite is permitted ONLY if conditional_rewrite_supported is true and STATUS plus
 every supplied parent is cited. Include all base/intervening limitations without promising allowance.
-No fabricated dependent-claim differentiation: only selected claim and supplied ancestors are available.
+No fabricated dependent-claim differentiation: only selected claim, supplied ancestors and
+unrejected_dependents are available. unrejected_dependents are dependent claims of this claim that
+no rejection in the notice covers. When present, first consider narrowing this claim with the
+elements of one of them (action_type narrow; cite its DEP-n id and quote it in grounding as the
+basis instead of SPEC): in past KIPRIS cases applicants did this ~40% of the time when such claims
+existed. "Not rejected in this notice" is not a promise of allowance; say so.
 optional_example is optional: prefer available=false/text=null when uncertain. If provided, label
 as a review-only example and attach SPEC/CLAIM/OA evidence IDs and exact SPEC grounding quotes.
 If safe proposals cannot be grounded, return strategies=[] with missing_evidence and cautions.

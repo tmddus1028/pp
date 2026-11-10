@@ -17,6 +17,7 @@ class ReviewEvidence(Model):
     kind: Literal[
         "claim",
         "parent_claim",
+        "unrejected_claim",
         "office_action",
         "status",
         "specification",

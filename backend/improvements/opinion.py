@@ -25,6 +25,7 @@ from backend.llm.client import OpenAIExtractionClient
 from backend.precedents import repository
 from backend.schemas import Model
 
+BASIS = {"specification", "unrejected_claim"}  # where added claim wording may come from
 HEADINGS = ("보정사항", "거절이유의 요지", "본원발명의 요지", "인용발명과의 대비", "결론")
 GROUNDED = {"거절이유의 요지", "인용발명과의 대비"}
 GUARANTEE = re.compile(r"특허됩니다|등록됩니다|거절이\s*(?:반드시\s*)?해소됩니다", re.I)
@@ -58,13 +59,17 @@ CONNECTORS = {
 }
 
 
-def asserts_not_disclosed(text):
-    """A sentence about a cited invention saying it does not disclose something."""
+def asserts_not_disclosed(text, verified=frozenset()):
+    """A sentence about a cited invention saying it does not disclose something, unless every
+    인용발명 it names by number is in `verified` (its original was read)."""
     for sentence in re.split(r"(?<=[.。!?])\s+|\n", text):
         if "인용" not in sentence:
             continue
         for match in NOT_DISCLOSED.finditer(sentence):
-            if not OWN_MATERIAL.search(sentence[max(0, match.start() - 10) : match.start()]):
+            if OWN_MATERIAL.search(sentence[max(0, match.start() - 10) : match.start()]):
+                continue
+            named = set(re.findall(r"인용\s*발명\s*(\d+)", sentence))
+            if not (named and named <= verified):
                 return True
     return False
 
@@ -83,8 +88,15 @@ Every paragraph lists evidence_ids and grounding quotes copied VERBATIM from the
 If selected_strategy.action_type is argument_only, amended_claim is null and 보정사항 says no amendment.
 Otherwise amended_claim is the full amended claim: the original claim text plus ONLY limitations
 quoted from SPEC sources of the strategy (copy their technical wording). Do not add other content.
-Never state that a cited invention does not disclose something unless every citation has
-original_available true. Never promise allowance. Mention KIPRIS precedents only as 참고.
+Say a cited invention does not disclose something only for a citation whose original_available
+is true, naming it by its number ("인용발명 2") and quoting its REF original; for the others argue
+from the examiner's own findings and this application's SPEC. Never promise allowance. Mention
+KIPRIS precedents only as 참고.
+Write every paragraph as the filed 의견서 would read (출원인은 …, 본원발명은 …, … 상이합니다):
+no "검토용", "초안", "확인 필요", "보장하지 않음" or other notes in the paragraphs; such notes go
+only in cautions, which the app shows separately.
+When amending and unrejected_dependents exist, first add the elements of one of them (the examiner
+did not reject it), quoting its DEP id; add SPEC wording beyond that only where needed.
 """
 
 
@@ -167,9 +179,7 @@ def check_quotes(sources, ids, grounding):
 def validate_opinion(draft, context, strategy):
     """Checks for a draft written from an AI strategy card."""
     sources = {s["evidence_id"]: s for s in context["sources"]}
-    spec = " ".join(
-        q.quote for q in strategy.grounding if sources[q.evidence_id]["kind"] == "specification"
-    )
+    spec = " ".join(q.quote for q in strategy.grounding if sources[q.evidence_id]["kind"] in BASIS)
     return validate_draft(draft, context, strategy.action_type != "argument_only", spec)
 
 
@@ -179,13 +189,14 @@ def validate_draft(draft, context, amend, spec, keep=()):
     if [s.heading for s in draft.sections] != list(HEADINGS):
         raise ValueError("의견서 섹션 구성이 정해진 순서와 다릅니다.")
     all_originals = all(c["original_available"] for c in context["citations"])
+    verified = {c.get("number") for c in context["citations"] if c["original_available"]} - {""}
     for section in draft.sections:
         for paragraph in section.paragraphs:
             check_quotes(sources, paragraph.evidence_ids, paragraph.grounding)
             verify_source_mentions(paragraph.text, context)
             if GUARANTEE.search(paragraph.text):
                 raise ValueError("의견서에 등록·거절 해소를 확정하는 표현이 있습니다.")
-            if not all_originals and asserts_not_disclosed(paragraph.text):
+            if not all_originals and asserts_not_disclosed(paragraph.text, verified):
                 raise ValueError("원문을 확보하지 못한 인용발명에 대해 미개시를 단정했습니다.")
             if section.heading in GROUNDED and not paragraph.grounding:
                 raise ValueError(f"'{section.heading}' 문단에 원문 근거가 없습니다.")
@@ -210,7 +221,12 @@ def validate_draft(draft, context, amend, spec, keep=()):
     # ponytail: word-level check, not a legal new-matter ruling.
     if not spec:
         raise ValueError("보정 근거가 될 명세서 인용이 없습니다.")
-    allowed = squash(spec + original + "".join(p["text"] for p in context["parents"]))
+    allowed = squash(
+        spec
+        + original
+        + "".join(p["text"] for p in context["parents"])
+        + "".join(d["text"] for d in context.get("unrejected_dependents", []))
+    )
     changes = claim_diff(original, draft.amended_claim)
     added = " ".join(c.revised for c in changes if c.change_type in {"added", "changed"})
     unknown = {w for w in content_words(added) if not known(w, allowed)}
@@ -337,9 +353,7 @@ def generate_from_selection(result, selection, settings, client_factory=OpenAIEx
         "attorney_selection": selection.model_dump(mode="json", exclude={"confirmed_by"}),
         "reference_cases": cases,
     }
-    spec = " ".join(
-        s["evidence"]["text"] for s in context["sources"] if s["kind"] == "specification"
-    )
+    spec = " ".join(s["evidence"]["text"] for s in context["sources"] if s["kind"] in BASIS)
     amend = selection.direction in AMENDING
     response = _generate(
         request,

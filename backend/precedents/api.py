@@ -38,10 +38,13 @@ def similar(
     q: str = Query("", max_length=8000),
     limit: int = Query(5, ge=1, le=20),
     exclude: str = Query("", max_length=40),
+    ipc: str = Query("", max_length=400),
 ):
-    """Cases whose rejected claim resembles `q` (needs claim text; today the DEMO cases)."""
+    """Cases whose rejected claim resembles `q`, within the same IPC subclass when `ipc` is given
+    (comma-separated codes from the patent's front page)."""
     skip = frozenset({exclude}) if exclude else frozenset()
-    return repository.similar(resolve(category, statute), q, limit, skip)
+    codes = [c.strip() for c in ipc.split(",") if c.strip()]
+    return repository.similar(resolve(category, statute), q, limit, skip, codes)
 
 
 @router.get("")

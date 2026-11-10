@@ -223,3 +223,11 @@ def test_selection_keep_elements_must_survive_the_amendment():
         validate_draft(good, context(), True, SPEC, keep=["포인트 적립 서버"])
     with pytest.raises(ValueError, match="보정 없는 대응"):
         validate_draft(good, context(), False, SPEC)
+
+
+def test_non_disclosure_is_allowed_for_citations_whose_original_was_read():
+    sentence = "인용발명 2에는 절연층의 위치가 개시되어 있지 않습니다."
+    assert asserts_not_disclosed(sentence)  # no original read
+    assert not asserts_not_disclosed(sentence, {"2"})
+    assert asserts_not_disclosed("인용발명 1, 인용발명 2에는 개시되어 있지 않습니다.", {"2"})
+    assert asserts_not_disclosed("인용발명에는 개시되어 있지 않습니다.", {"1", "2"})  # unnamed

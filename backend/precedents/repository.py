@@ -18,6 +18,8 @@ from collections import Counter
 from functools import lru_cache
 from pathlib import Path
 
+import httpx
+
 from backend.precedents.taxonomy import argument_label, label
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -25,6 +27,8 @@ KR_PATH = ROOT / "data/precedents/kr_kipris_cases.jsonl"
 DEMO_PATH = ROOT / "data/precedents/kr_demo_cases.jsonl"
 HISTORY_PATH = ROOT / "data/precedents/kr_claim_history.jsonl"
 OPINION_PATH = ROOT / "data/precedents/kr_opinions.jsonl"
+IPC_PATH = ROOT / "data/precedents/kr_ipc.jsonl"  # scripts/build_kr_ipc.py
+EMBEDDING_PATH = ROOT / "data/precedents/kr_claim_embeddings.npz"  # build_kr_embeddings.py
 DEFAULT_PATH = KR_PATH
 HISTORY_FIELDS = (
     "claims_before",
@@ -43,6 +47,11 @@ MIN_ARGUMENT_CASES = 5
 # Calibration knob: tf-idf cosine below this is unrelated technology in practice (e.g. a coupon
 # claim vs. a drug composition scored ~0.08). Re-tune once cases are filtered by IPC.
 MIN_SIMILARITY = 0.15
+# bge-m3 cosine between claims of different IPC main groups exceeds 0.63 for only ~1% of pairs
+# (median 0.45): a different-field case is shown only above it.
+CROSS_FIELD_COSINE = 0.63
+RRF_K = 60
+MORPHEME_TAGS = {"NNG", "NNP", "SL", "SH", "XR", "VV", "VA"}
 STOPWORDS = {
     "상기",
     "있어서",
@@ -143,6 +152,80 @@ def _ranker(cases, field):
     return score
 
 
+@lru_cache
+def _kiwi():
+    from kiwipiepy import Kiwi
+
+    return Kiwi()
+
+
+def morphemes(text):
+    """Nouns and verb/adjective stems (Kiwi): "통신부를" and "통신부가" are the same word."""
+    return [
+        t.form.lower()
+        for t in _kiwi().tokenize(text or "")
+        if t.tag in MORPHEME_TAGS and t.form not in STOPWORDS and len(t.form) > 1
+    ]
+
+
+def _bm25(cases, field, query, k1=1.5, b=0.75):
+    docs = [Counter(morphemes(field(c))) for c in cases]
+    lengths = [sum(d.values()) for d in docs]
+    average = sum(lengths) / len(docs) or 1
+    df = Counter(t for d in docs for t in d)
+    n = len(docs)
+    terms = set(morphemes(query))
+    return [
+        sum(
+            math.log(1 + (n - df[t] + 0.5) / (df[t] + 0.5))
+            * d[t]
+            * (k1 + 1)
+            / (d[t] + k1 * (1 - b + b * length / average))
+            for t in terms
+            if t in d
+        )
+        for d, length in zip(docs, lengths)
+    ]
+
+
+@lru_cache
+def case_embeddings():
+    """{case_id: unit vector} from scripts/build_kr_embeddings.py, {} when not built."""
+    if not EMBEDDING_PATH.exists():
+        return {}
+    import numpy as np
+
+    data = np.load(EMBEDDING_PATH)
+    return dict(zip(data["ids"].tolist(), data["vectors"].astype("float32")))
+
+
+def query_embedding(text):
+    """Unit bge-m3 vector of `text` from local Ollama, or None: search then uses words only."""
+    from backend.config import Settings
+
+    settings = Settings()
+    if not settings.precedent_embedding_model or not (text or "").strip():
+        return None
+    try:
+        response = httpx.post(
+            f"{settings.local_llm_base_url}/api/embed",
+            json={"model": settings.precedent_embedding_model, "input": [text[:4000]]},
+            timeout=30,
+        )
+        response.raise_for_status()
+    except httpx.HTTPError:
+        return None
+    import numpy as np
+
+    vector = np.asarray(response.json()["embeddings"][0], dtype="float32")
+    return vector / (np.linalg.norm(vector) or 1)
+
+
+def _ranks(scores):
+    order = sorted(range(len(scores)), key=lambda i: -scores[i])
+    return {i: rank for rank, i in enumerate(order)}
+
+
 def _cosine(cases, field, query):
     """tf-idf cosine between `query` and each case's field: long claims don't win by length."""
     docs = [Counter(_tokens(field(c))) for c in cases]
@@ -203,6 +286,7 @@ def real_cases():
         ({h["case_id"]: h for h in load(HISTORY_PATH)}, HISTORY_FIELDS),
         ({o["case_id"]: o for o in load(OPINION_PATH)}, OPINION_FIELDS),
     ]
+    ipc = {r["application"]: r["ipc"] for r in load(IPC_PATH)}
     return tuple(
         c
         | {
@@ -212,16 +296,32 @@ def real_cases():
             for k in fields
             if k in rows[c["case_id"]]
         }
+        | {"ipc": ipc.get(c["application"], [])}
         for c in load(KR_PATH)
     )
 
 
-def similar(category, claim_text, limit=5, exclude_applications=frozenset()):
-    """Cases whose claim at rejection time shares the most words with `claim_text`.
+def subclasses(codes):
+    """IPC subclasses ("H01L 31/042" → "H01L"): same subclass ≈ same field of technology."""
+    return {code[:4] for code in codes or ()}
 
-    Real cases need claim history; DEMO cases stand in only when no real case of the category
-    has claim text. ponytail: idf word overlap; swap in local embeddings if ranking is weak.
+
+def main_groups(codes):
+    return {code.split("/")[0] for code in codes or ()}
+
+
+def similar(category, claim_text, limit=5, exclude_applications=frozenset(), ipc=()):
+    """Past cases whose rejected claim resembles `claim_text`.
+
+    Hybrid ranking (DAPFAM 2025: hybrid beats either alone): Kiwi-morpheme BM25 and bge-m3
+    claim embeddings fused by reciprocal rank, plus a bonus for the same IPC main group /
+    subclass as the patent. On the DB itself (219 claims, relevance = shared IPC) this raised
+    nDCG@5 from 0.31 (tf-idf) to 0.35 before the IPC bonus.
+    Shown: same-subclass cases with shared words, or any case that is very close
+    (CROSS_FIELD_COSINE; tf-idf MIN_SIMILARITY when embeddings are unavailable).
+    Real cases need claim history; DEMO cases stand in only when no real case qualifies.
     """
+    fields, groups = subclasses(ipc), main_groups(ipc)
 
     def usable(pool):
         return [
@@ -234,15 +334,38 @@ def similar(category, claim_text, limit=5, exclude_applications=frozenset()):
         ]
 
     def ranked(cases):
-        if not cases:
+        if not cases or not (claim_text or "").strip():
             return []
-        scores = _cosine(cases, lambda c: c["claims_before"] + " " + c.get("title", ""), claim_text)
-        hits = sorted(zip(scores, (c["case_id"] for c in cases), cases), reverse=True)
-        return [
-            summary(c) | {"similarity": round(s, 3)}
-            for s, _, c in hits[:limit]
-            if s >= MIN_SIMILARITY
+
+        def text(c):
+            return c["claims_before"] + " " + c.get("title", "")
+
+        words = _bm25(cases, text, claim_text)
+        tfidf = _cosine(cases, text, claim_text)
+        query, vectors = query_embedding(claim_text), case_embeddings()
+        cosine = [
+            float(vectors[c["case_id"]] @ query)
+            if query is not None and c["case_id"] in vectors
+            else None
+            for c in cases
         ]
+        orders = [_ranks(words)] + (
+            [_ranks([-1.0 if x is None else x for x in cosine])]
+            if any(x is not None for x in cosine)
+            else []
+        )
+        hits = []
+        for i, case in enumerate(cases):
+            same_field = bool(fields & subclasses(case.get("ipc")))
+            similarity = cosine[i] if cosine[i] is not None else tfidf[i]
+            floor = CROSS_FIELD_COSINE if cosine[i] is not None else MIN_SIMILARITY
+            if not ((same_field and words[i] > 0) or similarity >= floor):
+                continue
+            score = sum(1 / (RRF_K + 1 + order[i]) for order in orders)
+            score += (bool(groups & main_groups(case.get("ipc"))) + same_field) / (2 * (RRF_K + 1))
+            hits.append((score, case["case_id"], case, similarity))
+        hits.sort(key=lambda h: (-h[0], h[1]))
+        return [summary(c) | {"similarity": round(s, 3)} for _, _, c, s in hits[:limit]]
 
     return ranked(usable(real_cases())) or ranked(usable(load(DEMO_PATH)))
 
@@ -279,6 +402,7 @@ def summary(case):
             "history_source",
             "opinion_date",
             "applicant_argument",
+            "ipc",
         )
         if case.get(key)
     }

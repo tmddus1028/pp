@@ -346,3 +346,26 @@ def test_actual_sdk_structured_parse_with_mock_transport(analysis, monkeypatch):
     assert requests[0]["store"] is False
     assert requests[0]["text"]["format"]["type"] == "json_schema"
     assert requests[0]["text"]["format"]["strict"] is True
+
+
+def test_unity_ground_without_claim_list_uses_the_table():
+    from kr_review.oa import extract_office_action
+
+    text = (
+        "심사 대상 청구항 : 제1항 내지 제3항\n"
+        "거절이유가 있는 부분과 관련 법조항\n"
+        "1 청구항 전항 특허법 제45조\n"
+        "2 청구항 제1항 내지 제3항 특허법 제29조제2항\n"
+        "[구체적인 거절이유]\n"
+        "1. 이 출원은 아래에 지적한 바와 같이 특허법 제45조 및 특허법 시행령 제6조제2호에 따른\n"
+        "요건을 충족하지 못하므로 특허를 받을 수 없습니다.\n"
+        "2. 이 출원의 청구항 제1항 내지 제3항에 기재된 발명은 특허법 제29조제2항에 따라\n"
+        "특허를 받을 수 없습니다.\n"
+    )
+    oa = Document(document_id="OA", filename="oa.pdf", kind="office_action", text=text)
+    rejections, _ = extract_office_action(oa)
+    # "제45조" is an article number, not claim 45: the table's 전항 stands.
+    assert [(r.statute, r.claims) for r in rejections] == [
+        ("특허법 제45조", [1, 2, 3]),
+        ("특허법 제29조제2항", [1, 2, 3]),
+    ]

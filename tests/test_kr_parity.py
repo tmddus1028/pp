@@ -288,3 +288,24 @@ def test_reference_number_mismatch_is_not_linked():
     )
     assert all(c.source_document_id is None for c in r.citations)
     assert any("일치하지 않아 연결하지 않았습니다" in w for w in r.warnings)
+
+
+def test_unrejected_dependent_claims_reach_the_ai_context():
+    package = ROOT / "data/downloads/kr_review_package"
+    pat = package / "publications/KR20190003855A.pdf"
+    oa = (
+        package / "official_samples/1020190000874_952019023937404/1020190000874_952019023937404.xml"
+    )
+    r = analyze_korean(pat.read_bytes(), pat.name, oa.read_bytes(), oa.name)
+    assert any(d.source_metadata.get("ipc") for d in r.documents if d.kind == "patent")
+    context, _, _ = build_context(ImprovementRequest(analysis=r, claim_number=1))
+    assert context["unrejected_dependents"] == []  # this notice rejected every claim
+    child = next(c.claim_number for c in r.patent.claims if 1 in c.depends_on)
+    # Same notice without that dependent claim among the rejected ones.
+    rejections = [
+        x.model_copy(update={"claims": [n for n in x.claims if n != child]}) for x in r.rejections
+    ]
+    narrowed = r.model_copy(update={"rejections": rejections})
+    context, sources, _ = build_context(ImprovementRequest(analysis=narrowed, claim_number=1))
+    assert [d["claim_number"] for d in context["unrejected_dependents"]] == [child]
+    assert any(s.evidence_id == f"DEP-{child}" and s.kind == "unrejected_claim" for s in sources)

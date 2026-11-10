@@ -40,6 +40,7 @@ const KIND_MARK: Record<string, Annotation["type"]> = {
   specification: "specification",
   claim: "direct_rejection",
   parent_claim: "direct_rejection",
+  unrejected_claim: "direct_rejection",
 };
 const NAME_KEY = "pinpoint.attorney";
 
@@ -104,6 +105,11 @@ export default function ResponsePage() {
     result.documents
       .map((d) => (d.source_metadata as { application_number?: string }).application_number)
       .find(Boolean) ?? "";
+  // Same field of technology only (IPC from the publication's front page).
+  const ipc = result.documents
+    .filter((d) => d.kind === "patent")
+    .flatMap((d) => (d.source_metadata as { ipc?: string[] }).ipc ?? [])
+    .join(",");
 
   const [stats, setStats] = useState<PrecedentStats | null>(null);
   const [similar, setSimilar] = useState<PrecedentCase[]>([]);
@@ -131,8 +137,9 @@ export default function ResponsePage() {
     const s = `statute=${encodeURIComponent(statute)}`;
     api<PrecedentStats>(`/precedents/stats?${s}`).then(setStats, () => setStats(null));
     const q = `&q=${encodeURIComponent(claimText.slice(0, 4000))}&exclude=${own}&limit=5`;
-    api<PrecedentCase[]>(`/precedents/similar?${s}${q}`).then(setSimilar, () => setSimilar([]));
-  }, [statute, claimText, own]);
+    const field = ipc ? `&ipc=${encodeURIComponent(ipc)}` : "";
+    api<PrecedentCase[]>(`/precedents/similar?${s}${q}${field}`).then(setSimilar, () => setSimilar([]));
+  }, [statute, claimText, own, ipc]);
 
   useEffect(() => {
     api<SelectionRecord[]>(`/cases/${meta.id}/selections`).then(setSelections, () => setSelections([]));
