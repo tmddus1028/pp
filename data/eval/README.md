@@ -1,6 +1,20 @@
-# 평가셋 (채점표)
+# 평가셋
 
 LLM 개선안과 파서를 **개발에 쓰지 않은 기준**으로 채점하기 위한 사건들입니다.
+
+## 지금 쓰는 평가: 실제 등록 보정이 정답 (`outcome/`)
+
+사람이 채점표를 쓰지 않습니다. 첫 통지서와 당시 청구항만 AI에 주고, **실제로 등록된 청구항 1 보정**을 정답으로 비교합니다.
+
+- `outcome/cases.jsonl`: 204건 준비, 149건 실행. `scripts/outcome_eval.py prepare | run --label L | grade L`.
+- 1단계 보정할지/다툴지, 2단계 종속항 병합/명세서 한정/의견만, 3단계 실제 추가 구성이 AI 전략 3개 안에 있는지(Sonnet 판정 same/partial/none).
+  1·2단계는 "가장 흔한 답 찍기" 기준선과 같이 봅니다.
+- 같은 출원은 비슷한 사례 검색에서 빠집니다(정답 누출 방지).
+- 최신(2026-11-10, Sonnet + `elements` + v2): 등록 90건 중 3단계 **64%**(partial 이상) / **35%**(same), 거절된 보정 재추천 **22%**.
+
+`drafts/cases.jsonl`(30건)은 의견서 초안을 실제 의견서와 비교합니다: `scripts/draft_eval.py`.
+
+## 예전 채점표 (`kr/`, 7건)
 
 - `kr/<출원번호>.json`: 사건 하나의 채점표. 모델에는 `input_cutoff` 날짜의 통지서와 당시 청구항만 주고,
   `prosecution`(실제 대응과 결과)은 채점에만 씁니다. `rubric` 항목마다 예/아니오 + 가중치로 점수를 냅니다.
@@ -16,5 +30,5 @@ LLM 개선안과 파서를 **개발에 쓰지 않은 기준**으로 채점하기
 | 1020190000948 | 거절결정 → 불복심판 2019원2316 | 미확보 | - |
 
 2014년 출원 5건(1347·1427·2504·2880·3199)은 `scripts/build_gold_cases.py`가 KIPRIS 이력으로 만든 자동 초안이며 사람 검토 전입니다.
-최신 점수(7건, 2026-11-09): Opus + `full` + v2 **54%**, Sonnet + `elements` + v2 **41%** —
+마지막 점수(7건, 2026-11-09): Opus + `full` + v2 **54%**, Sonnet + `elements` + v2 **41%** —
 [PRECEDENT_VALIDATION.md](../../docs/validation/PRECEDENT_VALIDATION.md).
