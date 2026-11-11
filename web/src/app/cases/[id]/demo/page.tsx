@@ -13,6 +13,16 @@ import type {
 } from "@/lib/view-types";
 import { useCase } from "../case-shell";
 
+/** backend/cases.py create_advice / list_advice row. */
+type AdviceRecord = {
+  id: number;
+  rejection_id: string;
+  claim_number: number;
+  provider: string;
+  created_at: string;
+  response: ImprovementResponse;
+};
+
 // 간단 보기: 거절 이유 → AI 추천 3개 → 고른 추천으로 의견서 초안. 세부 입력은 '대응 방안' 탭에 그대로 있다.
 const ACTION: Record<Strategy["action_type"], string> = {
   clarify: "문구 명확화",
@@ -38,24 +48,11 @@ function brief(text: string) {
 function plain(text: string) {
   return text
     .replace(/\s*\((?:clarify|narrow|add_limitation|remove_unsupported_scope|dependency_rewrite|argument_only|other)\)/g, "")
-    .replace(/(?:DEMO-)+\d+-[a-z_]+|KIPRIS-\d+-\d+-\d+-[a-z_]+/g, "비슷한 사례");
-}
-
-function stored<T>(key: string): T | null {
-  try {
-    const raw = localStorage.getItem(key);
-    return raw ? (JSON.parse(raw) as T) : null;
-  } catch {
-    return null;
-  }
-}
-
-function remember(key: string, value: unknown) {
-  try {
-    localStorage.setItem(key, JSON.stringify(value));
-  } catch {
-    // per-browser convenience only: a failed write just means asking the AI again
-  }
+    .replace(/(?:DEMO-)+\d+-[a-z_]+|KIPRIS-\d+-\d+-\d+-[a-z_]+/g, "비슷한 사례")
+    .replace(
+      /\b(clarify|narrow|add_limitation|remove_unsupported_scope|dependency_rewrite|argument_only)\b/g,
+      (word) => `'${ACTION[word as Strategy["action_type"]]}'`,
+    );
 }
 
 function reviewer() {
@@ -92,47 +89,48 @@ export default function DemoPage() {
   const rejection = rejections.find((r) => r.rejection_id === rejectionId) ?? rejections[0];
   const claim = rejection?.primary_claims?.[0] ?? rejection?.claims[0] ?? 1;
   const claimText = result.patent.claims.find((c) => c.claim_number === claim)?.text ?? "";
-  const key = `pinpoint.demo.${meta.id}.${rejection?.rejection_id}.${claim}`;
-
   const [advice, setAdvice] = useState<ImprovementResponse | null>(null);
   const [chosen, setChosen] = useState<number | null>(null);
   const [draft, setDraft] = useState<OpinionResponse | null>(null);
-  // The saved choice behind the draft: AI answers live only in this browser, choices live on the server.
+  // The saved choice behind the draft; shown on its own when no saved AI answer exists for the issue.
   const [picked, setPicked] = useState<SelectionRecord | null>(null);
   const [busy, setBusy] = useState<"" | "advice" | "draft">("");
   const [error, setError] = useState("");
 
-  // Restore this tab's earlier AI answer and the newest saved draft for the issue (no new API call).
+  // Newest saved AI answer and draft for this issue, from the server: same screen in every browser.
   useEffect(() => {
     if (!rejection) return;
-    /* eslint-disable react-hooks/set-state-in-effect -- browser storage exists only after mount */
-    setAdvice(stored<ImprovementResponse>(key));
-    setChosen(stored<number>(key + ".chosen"));
+    /* eslint-disable react-hooks/set-state-in-effect -- reset before the saved records arrive */
+    setAdvice(null);
     setDraft(null);
     setPicked(null);
+    setChosen(null);
     /* eslint-enable react-hooks/set-state-in-effect */
     Promise.all([
+      api<AdviceRecord[]>(`/cases/${meta.id}/advice`),
       api<SelectionRecord[]>(`/cases/${meta.id}/selections`),
       api<DraftRecord[]>(`/cases/${meta.id}/drafts`),
-    ]).then(([selections, drafts]) => {
+    ]).then(([saved, selections, drafts]) => {
+      const answer = saved.find((a) => a.rejection_id === rejection.rejection_id && a.claim_number === claim);
+      if (answer) setAdvice(answer.response);
       const mine = selections.filter((s) => s.rejection_id === rejection.rejection_id);
       const latest = drafts.find((d) => mine.some((s) => s.id === d.selection_id));
       if (!latest) return;
       setDraft(latest.response);
       setPicked(mine.find((s) => s.id === latest.selection_id) ?? null);
     }, () => undefined);
-  }, [key, meta.id, rejection]);
+  }, [claim, meta.id, rejection]);
 
   function ask() {
     if (!rejection) return;
     setBusy("advice");
     setError("");
     setChosen(null);
-    api<ImprovementResponse>(
-      "/improvements",
-      json("POST", { analysis: result, claim_number: claim, rejection_id: rejection.rejection_id }),
+    api<AdviceRecord>(
+      `/cases/${meta.id}/advice`,
+      json("POST", { claim_number: claim, rejection_id: rejection.rejection_id }),
     )
-      .then((made) => (setAdvice(made), remember(key, made)), (e: Error) => setError(e.message))
+      .then((made) => setAdvice(made.response), (e: Error) => setError(e.message))
       .finally(() => setBusy(""));
   }
 
@@ -141,7 +139,6 @@ export default function DemoPage() {
     setBusy("draft");
     setError("");
     setChosen(index);
-    remember(key + ".chosen", index);
     try {
       const body = toSelection(advice.suggestion.strategies[index], claim, rejection.rejection_id);
       const saved = await api<SelectionRecord>(`/cases/${meta.id}/selections`, json("POST", body));
@@ -160,6 +157,8 @@ export default function DemoPage() {
   }
   const kind = describeStatute(rejection.statute).kind;
   const strategies = advice?.suggestion.strategies.slice(0, 3) ?? [];
+  const highlighted =
+    chosen ?? (picked ? strategies.findIndex((s) => picked.record.emphasize.startsWith(`${s.title}:`)) : -1);
 
   return (
     <div className="demo-grid">
@@ -247,7 +246,7 @@ export default function DemoPage() {
           <p className="muted demo-empty">원문 근거로 확인되는 추천이 없습니다. &lsquo;대응 방안&rsquo; 탭에서 직접 정해 주세요.</p>
         )}
         {strategies.map((s, i) => (
-          <article key={i} className={`demo-card${chosen === i ? " chosen" : ""}`}>
+          <article key={i} className={`demo-card${highlighted === i ? " chosen" : ""}`}>
             <div className="row" style={{ justifyContent: "space-between", gap: 8 }}>
               <span className="demo-num">추천 {i + 1}</span>
               <span className="pill tone-info">{ACTION[s.action_type]}</span>

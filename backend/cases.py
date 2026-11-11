@@ -18,7 +18,9 @@ from pydantic import BaseModel, Field
 
 from backend import store
 from backend.errors import ProviderError
+from backend.improvements.models import ImprovementRequest
 from backend.improvements.opinion import Selection, check_selection, generate_from_selection
+from backend.improvements.service import generate_improvement
 from backend.main import Config, analyze_files, analyze_text, app
 from backend.precedents.kipris import publication_pdf_path
 from backend.schemas import AnalysisResult, TextAnalysisRequest
@@ -212,6 +214,37 @@ def create_draft(case_id: int, request: DraftRequest, settings: Config):
 def list_drafts(case_id: int):
     load(case_id)
     return store.list_drafts(case_id)
+
+
+class AdviceRequest(BaseModel):
+    claim_number: int = Field(gt=0, le=10000)
+    rejection_id: str = Field(min_length=1, max_length=40)
+
+
+@router.post("/{case_id}/advice", status_code=201)
+def create_advice(case_id: int, request: AdviceRequest, settings: Config):
+    """AI strategies for one issue, saved so every browser shows the same suggestions."""
+    result = AnalysisResult.model_validate(load(case_id)["result"])
+    improvement = ImprovementRequest(analysis=result, **request.model_dump())
+    try:
+        response = generate_improvement(improvement, settings)
+    except ValueError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
+    except ProviderError as exc:
+        raise HTTPException(status_code=502, detail=str(exc)) from exc
+    return store.create_advice(
+        case_id,
+        request.rejection_id,
+        request.claim_number,
+        response.provider,
+        response.model_dump(mode="json"),
+    )
+
+
+@router.get("/{case_id}/advice")
+def list_advice(case_id: int):
+    load(case_id)
+    return store.list_advice(case_id)
 
 
 def case_file(case_id, document_id):

@@ -52,9 +52,19 @@ CREATE TABLE IF NOT EXISTS drafts (
   created_at timestamptz NOT NULL DEFAULT now(),
   response jsonb NOT NULL
 );
+CREATE TABLE IF NOT EXISTS advice (
+  id bigserial PRIMARY KEY,
+  case_id bigint NOT NULL REFERENCES cases ON DELETE CASCADE,
+  rejection_id text NOT NULL,
+  claim_number int NOT NULL,
+  provider text NOT NULL,
+  created_at timestamptz NOT NULL DEFAULT now(),
+  response jsonb NOT NULL
+);
 """
 SELECTION = "id, case_id, rejection_id, version, record, confirmed_by, confirmed_at"
 DRAFT = "id, case_id, selection_id, provider, model, created_at, response"
+ADVICE = "id, case_id, rejection_id, claim_number, provider, created_at, response"
 _ready = False
 
 
@@ -173,6 +183,22 @@ def list_drafts(case_id):
     with connect() as conn:
         return conn.execute(
             f"SELECT {DRAFT} FROM drafts WHERE case_id = %s ORDER BY created_at DESC", [case_id]
+        ).fetchall()
+
+
+def create_advice(case_id, rejection_id, claim_number, provider, response):
+    with connect() as conn:
+        return conn.execute(
+            "INSERT INTO advice (case_id, rejection_id, claim_number, provider, response)"
+            f" VALUES (%s, %s, %s, %s, %s) RETURNING {ADVICE}",
+            [case_id, rejection_id, claim_number, provider, Jsonb(response)],
+        ).fetchone()
+
+
+def list_advice(case_id):
+    with connect() as conn:
+        return conn.execute(
+            f"SELECT {ADVICE} FROM advice WHERE case_id = %s ORDER BY created_at DESC", [case_id]
         ).fetchall()
 
 

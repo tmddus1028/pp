@@ -185,6 +185,35 @@ def test_korean_demo_case(client):
         client.delete(f"/cases/{case_id}")
 
 
+def test_ai_advice_is_saved_for_every_browser(client, monkeypatch):
+    class Fake:
+        provider = "fake"
+
+        def model_dump(self, mode):
+            return {"suggestion": {"strategies": [{"title": "추천"}]}}
+
+    seen = []
+    monkeypatch.setattr(
+        "backend.cases.generate_improvement",
+        lambda request, settings: seen.append(request) or Fake(),
+    )
+    case_id = client.post("/cases/demo").json()["id"]
+    try:
+        rejection = client.get(f"/cases/{case_id}").json()["result"]["rejections"][0]
+        body = {"claim_number": rejection["claims"][0], "rejection_id": rejection["rejection_id"]}
+        made = client.post(f"/cases/{case_id}/advice", json=body)
+        assert made.status_code == 201 and made.json()["provider"] == "fake"
+        assert seen[0].rejection_id == rejection["rejection_id"]
+        listed = client.get(f"/cases/{case_id}/advice").json()
+        assert listed[0]["response"]["suggestion"]["strategies"][0]["title"] == "추천"
+        assert (
+            client.post(f"/cases/{case_id}/advice", json={**body, "claim_number": 0}).status_code
+            == 422
+        )
+    finally:
+        client.delete(f"/cases/{case_id}")
+
+
 def test_database_down_is_a_clear_503(client, monkeypatch):
     monkeypatch.setenv("DATABASE_URL", "postgresql://nobody@127.0.0.1:1/none?connect_timeout=2")
     response = client.get("/cases")
