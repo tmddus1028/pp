@@ -38,6 +38,37 @@ PinPoint: 한국 의견제출통지서(미국 Office Action도 지원)와 청구
 
 ## 실행
 
+### 팀원 테스트 방법 (새 웹 화면, http://localhost:3000)
+
+준비물: [uv](https://docs.astral.sh/uv/), [Node.js](https://nodejs.org/) 20 이상, [Docker Desktop](https://www.docker.com/products/docker-desktop/).
+
+1. **키 설정 (처음 한 번):** `.env.example`을 복사해 `.env`로 만들고 `ANTHROPIC_API_KEY=`에 Claude API 키를 넣습니다.
+   `.env`는 git에 올리지 마세요. 키가 없어도 분석 화면은 되지만 AI 전략·의견서 초안은 나오지 않습니다.
+2. **설치 (처음 한 번):**
+   ```powershell
+   uv sync --python 3.11
+   cd web; npm install; cd ..
+   ```
+3. **켜기 (터미널 3개):**
+   ```powershell
+   docker compose up -d                                          # ① 사건 저장 DB
+   uv run uvicorn backend.main:app --host 127.0.0.1 --port 8000  # ② 백엔드 (프로젝트 루트)
+   cd web; npm run dev                                           # ③ 웹 화면
+   ```
+4. **테스트:** http://localhost:3000 → 새 사건 → 두 파일 업로드
+   - 특허 공보: `data/downloads/kr_review_package/publications/KR20190025857A.pdf`
+   - 의견제출통지서: `data/downloads/kr_review_package/official_samples/1020190000844_952019025682492/1020190000844_952019025682492.xml`
+   - 정상이면 "청구항 1 · 진보성(제29조제2항) · 인용발명 3개"가 나옵니다.
+5. **보는 순서:** 탭 왼쪽부터 **거절 이유 검토 → 청구항 현황 → 관계도 → 대응 방안**.
+   대응 방안에서 비슷한 사례를 참고하고, AI 전략 3개 중 하나를 골라 확정하면 의견서 초안이 나옵니다.
+   다른 사건은 `official_samples/`의 나머지 통지서(0874·0902·0903·0948)와 `publications/`의 해당 공보를 씁니다.
+
+- 비슷한 사례 검색의 의미 검색은 [Ollama](https://ollama.com/) `bge-m3`가 있을 때만 켜집니다(`ollama pull bge-m3`). 없으면 단어 검색으로 동작합니다.
+- 끄기: 각 터미널에서 Ctrl+C, DB는 `docker compose down`.
+- 아래의 Streamlit 화면(8501)은 예전 해커톤 데모입니다.
+
+### 예전 Streamlit 화면
+
 Python 3.11 이상과 [uv](https://docs.astral.sh/uv/)가 필요합니다. 아래 명령은 프로젝트 루트에서 실행합니다.
 
 ```powershell
