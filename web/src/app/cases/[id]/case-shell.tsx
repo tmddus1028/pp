@@ -18,6 +18,7 @@ export function useCase() {
 }
 
 const TABS = [
+  ["demo", "간단 보기"],
   ["review", "거절 이유 검토"],
   ["claims", "청구항 현황"],
   ["map", "관계도"],

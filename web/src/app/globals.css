@@ -217,3 +217,21 @@ legend { font-weight: 700; font-size: 14px; margin-right: 8px; float: left; }
 .card { display: flex; flex-direction: column; gap: 8px; padding: 16px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); font-size: 14px; }
 .card b { font-weight: 700; }
 .card textarea, .card input[name="title"] { padding: 10px; border: 1px solid var(--border-strong); border-radius: var(--radius); }
+
+/* 간단 보기 (demo tab): three steps side by side on a wide monitor, stacked on narrow screens. */
+.demo-grid { display: grid; grid-template-columns: minmax(280px, 0.9fr) minmax(340px, 1.15fr) minmax(360px, 1.25fr); gap: 16px; align-items: start; }
+.demo-col { padding: 20px; display: flex; flex-direction: column; gap: 14px; min-width: 0; min-height: 520px; max-height: calc(100vh - 190px); overflow-y: auto; }
+.demo-col .chip { white-space: normal; text-align: left; }
+.demo-head { display: flex; align-items: center; gap: 10px; font-size: 17px; font-weight: 700; margin: 0; }
+.demo-step { display: grid; place-items: center; width: 28px; height: 28px; border-radius: 999px; background: var(--accent); color: #fff; font-size: 14px; }
+.demo-quote { margin: 0; padding: 12px 14px; border-left: 3px solid var(--direct-line); background: var(--surface-2); font-size: 14px; line-height: 1.7; }
+.demo-cta { margin-top: auto; padding: 12px 16px; font-size: 15px; }
+.demo-empty { margin: auto 0; text-align: center; font-size: 14px; line-height: 1.7; padding: 24px 8px; }
+.demo-card { display: flex; flex-direction: column; gap: 8px; padding: 14px; border: 1px solid var(--border); border-radius: 10px; background: var(--surface); }
+.demo-card:hover { border-color: var(--border-strong); }
+.demo-card.chosen { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); background: var(--accent-soft); }
+.demo-num { font-size: 12px; font-weight: 700; color: var(--accent); letter-spacing: 0.02em; }
+.demo-title { margin: 0; font-size: 15px; font-weight: 700; line-height: 1.45; }
+.demo-text { margin: 0; font-size: 13px; line-height: 1.7; color: var(--text-2); }
+.demo-error { grid-column: 1 / -1; }
+@media (max-width: 1100px) { .demo-grid { grid-template-columns: 1fr; } .demo-col { min-height: 0; max-height: none; } }
