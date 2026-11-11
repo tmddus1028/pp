@@ -12,12 +12,12 @@ export default function NewCasePage() {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
 
-  async function run(request: () => Promise<{ id: number }>) {
+  async function run(request: () => Promise<{ id: number }>, tab = "review") {
     setBusy(true);
     setError("");
     try {
       const { id } = await request();
-      router.push(`/cases/${id}/review`);
+      router.push(`/cases/${id}/${tab}`);
     } catch (e) {
       setError((e as Error).message);
       setBusy(false);
@@ -105,6 +105,15 @@ export default function NewCasePage() {
             onClick={() => run(() => api("/cases/demo", { method: "POST" }))}
           >
             예제로 체험하기
+          </button>
+          <button
+            type="button"
+            className="button"
+            disabled={busy}
+            title="AI 추천과 의견서 초안까지 저장된 실제 사건입니다. API 키가 없어도 됩니다."
+            onClick={() => run(() => api("/cases/sample", { method: "POST" }), "demo")}
+          >
+            샘플 사건 불러오기 (키 없이 AI 결과까지)
           </button>
           {busy && <span className="muted">청구항과 거절 이유를 분석하고 있습니다… 문서에 따라 몇 분 걸릴 수 있습니다.</span>}
         </div>

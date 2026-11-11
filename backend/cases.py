@@ -5,6 +5,7 @@ Imported by main.py at its end, so always import the app via backend.main.
 """
 
 import hashlib
+import json
 from datetime import date
 from pathlib import Path
 from typing import Annotated, Literal
@@ -30,6 +31,8 @@ from backend.view.review_model import build_review_model
 from backend.view.terminology import component_terms
 
 ROOT = Path(__file__).resolve().parents[1]
+# Exported by scripts/export_sample_case.py; loaded by POST /cases/sample.
+SAMPLE_DIR = ROOT / "data/samples/kr_0844"
 router = APIRouter(prefix="/cases", tags=["cases"])
 Status = Literal["open", "in_progress", "responded", "closed"]
 
@@ -113,6 +116,25 @@ def create_demo_case(settings: Config):
     )
     result = analyze_text(request, settings, "KR")
     return save(result, [], "예제 분석 · 가상 문서")
+
+
+@router.post("/sample", status_code=201)
+def create_sample_case():
+    """A finished case with saved AI advice and draft: the full flow without an API key."""
+    sample = json.loads((SAMPLE_DIR / "case.json").read_text(encoding="utf-8"))
+    files = {
+        document_id: (filename, (SAMPLE_DIR / filename).read_bytes())
+        for document_id, filename in sample["files"].items()
+    }
+    case_id = store.create_case(
+        sample["analysis_id"], sample["title"], "KR", sample["result"], sample["review"], files
+    )
+    for advice in sample["advice"]:
+        store.create_advice(case_id, **advice)
+    for selection, draft in zip(sample["selections"], sample["drafts"], strict=True):
+        saved = store.create_selection(case_id, **selection)
+        store.create_draft(case_id, saved["id"], **draft)
+    return {"id": case_id}
 
 
 @router.get("")

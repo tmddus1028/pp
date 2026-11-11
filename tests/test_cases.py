@@ -214,6 +214,22 @@ def test_ai_advice_is_saved_for_every_browser(client, monkeypatch):
         client.delete(f"/cases/{case_id}")
 
 
+def test_sample_case_has_ai_results_without_a_key(client):
+    case_id = client.post("/cases/sample").json()["id"]
+    try:
+        detail = client.get(f"/cases/{case_id}").json()
+        assert detail["case"]["title"].startswith("샘플 사건")
+        advice = client.get(f"/cases/{case_id}/advice").json()
+        assert len(advice[0]["response"]["suggestion"]["strategies"]) >= 3
+        draft = client.get(f"/cases/{case_id}/drafts").json()[0]
+        selection = client.get(f"/cases/{case_id}/selections").json()[0]
+        assert draft["selection_id"] == selection["id"] and draft["response"]["draft"]["sections"]
+        patent = next(d for d in detail["review"]["documents"] if d["id"].startswith("patent_"))
+        assert client.get(f"/cases/{case_id}/files/{patent['id']}").status_code == 200
+    finally:
+        client.delete(f"/cases/{case_id}")
+
+
 def test_database_down_is_a_clear_503(client, monkeypatch):
     monkeypatch.setenv("DATABASE_URL", "postgresql://nobody@127.0.0.1:1/none?connect_timeout=2")
     response = client.get("/cases")
