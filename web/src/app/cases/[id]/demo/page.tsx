@@ -43,7 +43,7 @@ function plain(text: string) {
 
 function stored<T>(key: string): T | null {
   try {
-    const raw = sessionStorage.getItem(key);
+    const raw = localStorage.getItem(key);
     return raw ? (JSON.parse(raw) as T) : null;
   } catch {
     return null;
@@ -52,9 +52,9 @@ function stored<T>(key: string): T | null {
 
 function remember(key: string, value: unknown) {
   try {
-    sessionStorage.setItem(key, JSON.stringify(value));
+    localStorage.setItem(key, JSON.stringify(value));
   } catch {
-    // per-tab convenience only: a failed write just means asking the AI again
+    // per-browser convenience only: a failed write just means asking the AI again
   }
 }
 
@@ -97,6 +97,8 @@ export default function DemoPage() {
   const [advice, setAdvice] = useState<ImprovementResponse | null>(null);
   const [chosen, setChosen] = useState<number | null>(null);
   const [draft, setDraft] = useState<OpinionResponse | null>(null);
+  // The saved choice behind the draft: AI answers live only in this browser, choices live on the server.
+  const [picked, setPicked] = useState<SelectionRecord | null>(null);
   const [busy, setBusy] = useState<"" | "advice" | "draft">("");
   const [error, setError] = useState("");
 
@@ -107,14 +109,17 @@ export default function DemoPage() {
     setAdvice(stored<ImprovementResponse>(key));
     setChosen(stored<number>(key + ".chosen"));
     setDraft(null);
+    setPicked(null);
     /* eslint-enable react-hooks/set-state-in-effect */
     Promise.all([
       api<SelectionRecord[]>(`/cases/${meta.id}/selections`),
       api<DraftRecord[]>(`/cases/${meta.id}/drafts`),
     ]).then(([selections, drafts]) => {
-      const mine = new Set(selections.filter((s) => s.rejection_id === rejection.rejection_id).map((s) => s.id));
-      const latest = drafts.find((d) => mine.has(d.selection_id));
-      if (latest) setDraft(latest.response);
+      const mine = selections.filter((s) => s.rejection_id === rejection.rejection_id);
+      const latest = drafts.find((d) => mine.some((s) => s.id === d.selection_id));
+      if (!latest) return;
+      setDraft(latest.response);
+      setPicked(mine.find((s) => s.id === latest.selection_id) ?? null);
     }, () => undefined);
   }, [key, meta.id, rejection]);
 
@@ -142,6 +147,7 @@ export default function DemoPage() {
       const saved = await api<SelectionRecord>(`/cases/${meta.id}/selections`, json("POST", body));
       const made = await api<DraftRecord>(`/cases/${meta.id}/drafts`, json("POST", { selection_id: saved.id }));
       setDraft(made.response);
+      setPicked(saved);
     } catch (e) {
       setError((e as Error).message);
     } finally {
@@ -213,7 +219,27 @@ export default function DemoPage() {
 
       <section className="panel demo-col" aria-label="AI 추천">
         <StepHead n={2} title="AI 추천 3가지" />
-        {!advice && busy !== "advice" && (
+        {!advice && busy !== "advice" && picked && (
+          <>
+            <article className="demo-card chosen">
+              <div className="row" style={{ justifyContent: "space-between", gap: 8 }}>
+                <span className="demo-num">이 초안을 만든 추천</span>
+                <span className="pill tone-info">{picked.record.direction}</span>
+              </div>
+              <p className="demo-text">{plain(picked.record.emphasize)}</p>
+              {picked.record.use_arguments && (
+                <p className="demo-text">
+                  <b>기대 효과</b> {plain(picked.record.use_arguments)}
+                </p>
+              )}
+              <span className="hint" style={{ margin: 0 }}>
+                {picked.confirmed_by} · {new Date(picked.confirmed_at).toLocaleString("ko-KR")}
+              </span>
+            </article>
+            <p className="hint">다른 추천을 보려면 왼쪽의 &lsquo;AI 추천 받기&rsquo;를 누르세요.</p>
+          </>
+        )}
+        {!advice && busy !== "advice" && !picked && (
           <p className="muted demo-empty">왼쪽의 &lsquo;AI 추천 받기&rsquo;를 누르면 통지서·명세서 원문을 근거로 대응 방법을 제안합니다.</p>
         )}
         {busy === "advice" && <p className="muted demo-empty">추천을 만드는 중입니다…</p>}
