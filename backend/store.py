@@ -95,12 +95,27 @@ def create_case(analysis_id, title, jurisdiction, result, review, files):
     return case_id
 
 
+def _document_field(kind, field):
+    """One source_metadata field of the case's first document of `kind` (patent / office_action)."""
+    return (
+        f"(SELECT d->'source_metadata'->>'{field}' FROM jsonb_array_elements(result->'documents') d"
+        f" WHERE d->>'kind' = '{kind}' LIMIT 1)"
+    )
+
+
 def list_cases():
     with connect() as conn:
         return conn.execute(
             f"SELECT {META}, jsonb_array_length("
             "coalesce(result->'claim_summary'->'direct_rejected_claims', '[]')) AS direct_count,"
-            " jsonb_array_length(result->'rejections') AS rejection_count"
+            " coalesce(result->'claim_summary'->'direct_rejected_claims', '[]') AS direct_claims,"
+            " jsonb_array_length(result->'rejections') AS rejection_count,"
+            # Distinct statutes so the list can name the rejection (진보성 없음 …), not just count it.
+            " ARRAY(SELECT DISTINCT r->>'statute' FROM jsonb_array_elements(result->'rejections') r"
+            " WHERE r->>'action_type' IS DISTINCT FROM 'objection') AS statutes,"
+            f" {_document_field('patent', 'application_number')} AS application_number,"
+            f" {_document_field('patent', 'title')} AS invention_title,"
+            f" {_document_field('office_action', 'document_date')} AS notice_date"
             " FROM cases ORDER BY deadline ASC NULLS LAST, created_at DESC"
         ).fetchall()
 
@@ -126,6 +141,15 @@ def update_case(case_id, fields):
 def get_meta(case_id):
     with connect() as conn:
         return conn.execute(f"SELECT {META} FROM cases WHERE id = %s", [case_id]).fetchone()
+
+
+def find_case(analysis_id):
+    """The oldest case saved from this analysis, or None."""
+    with connect() as conn:
+        row = conn.execute(
+            "SELECT id FROM cases WHERE analysis_id = %s ORDER BY id LIMIT 1", [analysis_id]
+        ).fetchone()
+    return row["id"] if row else None
 
 
 def delete_case(case_id):

@@ -230,6 +230,24 @@ def test_sample_case_has_ai_results_without_a_key(client):
         client.delete(f"/cases/{case_id}")
 
 
+def test_sample_reuse_opens_the_existing_sample(client):
+    before = {c["id"] for c in client.get("/cases").json()}
+    first = client.post("/cases/sample?reuse=true").json()["id"]
+    try:
+        assert client.post("/cases/sample?reuse=true").json()["id"] == first
+        fresh = client.post("/cases/sample").json()["id"]
+        assert fresh != first
+        client.delete(f"/cases/{fresh}")
+    finally:
+        if first not in before:  # never delete a sample the user already had
+            client.delete(f"/cases/{first}")
+
+
+def test_ai_status_says_when_strategies_are_rule_based(client):
+    # The test settings have no AI provider, so the web must be told generation is rule-based.
+    assert client.get("/cases/ai").json() == {"provider": "local", "ai": False}
+
+
 def test_database_down_is_a_clear_503(client, monkeypatch):
     monkeypatch.setenv("DATABASE_URL", "postgresql://nobody@127.0.0.1:1/none?connect_timeout=2")
     response = client.get("/cases")

@@ -21,7 +21,7 @@ from backend import store
 from backend.errors import ProviderError
 from backend.improvements.models import ImprovementRequest
 from backend.improvements.opinion import Selection, check_selection, generate_from_selection
-from backend.improvements.service import generate_improvement
+from backend.improvements.service import generate_improvement, provider_settings
 from backend.main import Config, analyze_files, analyze_text, app
 from backend.precedents.kipris import publication_pdf_path
 from backend.schemas import AnalysisResult, TextAnalysisRequest
@@ -119,9 +119,14 @@ def create_demo_case(settings: Config):
 
 
 @router.post("/sample", status_code=201)
-def create_sample_case():
-    """A finished case with saved AI advice and draft: the full flow without an API key."""
+def create_sample_case(reuse: bool = False):
+    """A finished case with saved AI advice and draft: the full flow without an API key.
+
+    reuse=true (the web buttons) opens the sample already in the list instead of adding a copy;
+    without it a fresh copy is made, which tests rely on so they never delete a user's sample."""
     sample = json.loads((SAMPLE_DIR / "case.json").read_text(encoding="utf-8"))
+    if reuse and (existing := store.find_case(sample["analysis_id"])):
+        return {"id": existing}
     files = {
         document_id: (filename, (SAMPLE_DIR / filename).read_bytes())
         for document_id, filename in sample["files"].items()
@@ -140,6 +145,14 @@ def create_sample_case():
 @router.get("")
 def list_cases():
     return store.list_cases()
+
+
+@router.get("/ai")  # before /{case_id}, which would otherwise take "ai" as an id
+def ai_status(settings: Config):
+    """Which provider writes 대응 전략. "local" is the rule-based fallback (no API key), not AI,
+    so the web disables generation instead of saving the same fallback again on every click."""
+    provider = provider_settings(settings, "kr").llm_provider
+    return {"provider": provider, "ai": provider != "local"}
 
 
 def load(case_id):
