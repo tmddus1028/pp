@@ -105,7 +105,15 @@ export type CaseMeta = {
   deadline: string | null;
   created_at: string;
 };
-export type CaseListItem = CaseMeta & { direct_count: number; rejection_count: number };
+export type CaseListItem = CaseMeta & {
+  direct_count: number;
+  direct_claims: number[];
+  rejection_count: number;
+  statutes: string[];
+  application_number: string | null;
+  invention_title: string | null;
+  notice_date: string | null;
+};
 
 /** backend/view/review_model.py build_review_model() item. Fields vary by kind. */
 export type ViewItem = {

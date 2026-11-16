@@ -24,6 +24,11 @@ export function describeStatute(statute: string, objection = false) {
   return { kind: objection ? "형식 지적" : "거절 이유", law: statute === "unknown" ? "법조항 확인 필요" : statute };
 }
 
+/** 1020190000844 → 10-2019-0000844, the form attorneys write. Other values pass through. */
+export function applicationNo(n: string | null | undefined) {
+  return n && /^\d{13}$/.test(n) ? `${n.slice(0, 2)}-${n.slice(2, 6)}-${n.slice(6)}` : (n ?? "");
+}
+
 /** Days until a YYYY-MM-DD deadline, counted in local calendar days. */
 export function deadlineLabel(deadline: string | null, today = new Date()) {
   if (!deadline) return { text: "기한 없음", soon: false };

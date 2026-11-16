@@ -112,7 +112,9 @@ export default function ResponsePage() {
     .join(",");
 
   const [stats, setStats] = useState<PrecedentStats | null>(null);
-  const [similar, setSimilar] = useState<PrecedentCase[]>([]);
+  // The search takes a few seconds: keep which query an answer belongs to, so a pending query reads
+  // as "searching" instead of "no cases".
+  const [found, setFound] = useState<{ url: string; cases: PrecedentCase[] } | null>(null);
   const [selections, setSelections] = useState<SelectionRecord[]>([]);
   const [drafts, setDrafts] = useState<DraftRecord[]>([]);
   const [form, setForm] = useState<Omit<SelectionInput, "claim_number" | "rejection_id">>(() => ({
@@ -132,14 +134,19 @@ export default function ResponsePage() {
   const [marks, setMarks] = useState<Annotation[]>([]);
 
   const statute = rejection?.statute ?? "";
+  const s = `statute=${encodeURIComponent(statute)}`;
+  const similarUrl =
+    `/precedents/similar?${s}&q=${encodeURIComponent(claimText.slice(0, 4000))}&exclude=${own}&limit=5` +
+    (ipc ? `&ipc=${encodeURIComponent(ipc)}` : "");
+  const similar = !statute ? [] : found?.url === similarUrl ? found.cases : null;
   useEffect(() => {
     if (!statute) return;
-    const s = `statute=${encodeURIComponent(statute)}`;
     api<PrecedentStats>(`/precedents/stats?${s}`).then(setStats, () => setStats(null));
-    const q = `&q=${encodeURIComponent(claimText.slice(0, 4000))}&exclude=${own}&limit=5`;
-    const field = ipc ? `&ipc=${encodeURIComponent(ipc)}` : "";
-    api<PrecedentCase[]>(`/precedents/similar?${s}${q}${field}`).then(setSimilar, () => setSimilar([]));
-  }, [statute, claimText, own, ipc]);
+    api<PrecedentCase[]>(similarUrl).then(
+      (cases) => setFound({ url: similarUrl, cases }),
+      () => setFound({ url: similarUrl, cases: [] }),
+    );
+  }, [statute, s, similarUrl]);
 
   useEffect(() => {
     api<SelectionRecord[]>(`/cases/${meta.id}/selections`).then(setSelections, () => setSelections([]));
@@ -236,7 +243,9 @@ export default function ResponsePage() {
                   같은 유형({stats.label}) 실제 한국 사건 {stats.labeled}건 중 {stats.resolved}건 해소 · 유사도는 성공 가능성이 아닙니다
                 </p>
               )}
-              {similar.length ? (
+              {similar === null ? (
+                <p className="muted" style={{ margin: 0 }}>비슷한 사례를 찾는 중…</p>
+              ) : similar.length ? (
                 similar.map((c) => (
                   <label key={c.case_id} className="stack" style={{ gap: 4, cursor: "pointer" }}>
                     <span className="row" style={{ gap: 6 }}>
@@ -253,7 +262,7 @@ export default function ResponsePage() {
               ) : (
                 <p className="muted" style={{ margin: 0 }}>비교할 수 있는 비슷한 사례가 없습니다.</p>
               )}
-              {similar.some((c) => c.demo) && (
+              {similar?.some((c) => c.demo) && (
                 <p className="hint">데모 사례는 같은 분야의 실제 사례가 없을 때 보여주는 가상 데이터입니다.</p>
               )}
             </Step>

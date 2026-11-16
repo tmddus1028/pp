@@ -11,7 +11,7 @@
 ```
 ① 업로드 ─▶ ② 텍스트 정리 ─▶ ③ 거절 이유 분석 ─▶ ④ 비슷한 사례 ─▶ ⑤ 변리사 선택 기록 ─▶ ⑥ 근거 검증 초안
 web/        jurisdictions/     jurisdictions/       precedents/        cases.py, store.py       improvements/
-cases/new   korean.py          korean.py            repository.py      (selections 버전)        opinion.py
+cases 등록창 korean.py         korean.py            repository.py      (selections 버전)        opinion.py
                                + precedents/        (similar)                                   + service.py
                                  taxonomy.py
 ```

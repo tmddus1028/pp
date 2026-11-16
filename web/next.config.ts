@@ -7,6 +7,10 @@ const nextConfig: NextConfig = {
   async rewrites() {
     return [{ source: "/api/:path*", destination: `${api}/:path*` }];
   },
+  // Registration moved into a dialog on /cases; old links would otherwise hit /cases/[id] with id "new".
+  async redirects() {
+    return [{ source: "/cases/new", destination: "/cases", permanent: false }];
+  },
   experimental: {
     // Analysis runs synchronously for up to 10 minutes; the proxy default is 30 s.
     proxyTimeout: 700_000,
